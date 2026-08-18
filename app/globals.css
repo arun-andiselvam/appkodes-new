@@ -45,6 +45,14 @@
   --radius: 0.25rem;
   /* Cursor spotlight in the CTA section. */
   --spotlight: rgb(0 82 204 / 0.14);
+  /*
+   * Emphasis panel (the inverted "process" section). Defined explicitly for
+   * each theme rather than derived from --foreground: deriving it flips the
+   * panel to white in dark mode, which is exactly the wrong result. In dark
+   * mode it becomes a raised dark surface instead.
+   */
+  --emphasis: #091e42;
+  --emphasis-foreground: #faf9ff;
   --sidebar: #ffffff;
   --sidebar-foreground: #091e42;
   --sidebar-primary: #0052cc;
@@ -95,6 +103,8 @@
   --chart-4: #ffb77e;
   --chart-5: #6ee7b7;
   --spotlight: rgb(178 197 255 / 0.12);
+  --emphasis: #17223f;
+  --emphasis-foreground: #edf0ff;
   --sidebar: #121b36;
   --sidebar-foreground: #edf0ff;
   --sidebar-primary: #b2c5ff;
@@ -128,6 +138,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-emphasis: var(--emphasis);
+  --color-emphasis-foreground: var(--emphasis-foreground);
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-strong: var(--brand-blue-strong);
   --color-brand-orange: var(--brand-orange);

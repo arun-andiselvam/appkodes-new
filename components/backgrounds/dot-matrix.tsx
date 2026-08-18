@@ -16,10 +16,17 @@ export function DotMatrix({
    * 0 removes the spotlight entirely; the dot grid itself is unaffected.
    */
   spotlightDimTo = 0,
+  /**
+   * How much the cursor halo adds on top of the base grid: alpha contribution
+   * and how far dots swell. Kept low so the spotlight never reads through
+   * headline or body copy sitting above it.
+   */
+  spotlightStrength = 0.2,
   className = "",
 }: {
   gap?: number;
   spotlightDimTo?: number;
+  spotlightStrength?: number;
   className?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -122,8 +129,8 @@ export function DotMatrix({
           const d = Math.hypot(x - m.x, y - m.y);
           // `fade` scales the spotlight alone — the base grid never dims.
           const near = Math.max(0, 1 - d / 170) * fade;
-          const r = 0.9 + wave * 0.8 + near * 2.2;
-          const a = 0.10 + wave * 0.16 + near * 0.5;
+          const r = 0.9 + wave * 0.8 + near * (spotlightStrength * 4);
+          const a = 0.10 + wave * 0.16 + near * spotlightStrength;
 
           ctx.beginPath();
           ctx.fillStyle = near > 0.04 ? `rgba(${accent}, ${a})` : `rgba(${ink}, ${a})`;
@@ -149,7 +156,7 @@ export function DotMatrix({
       io.disconnect();
       cancelAnimationFrame(frameRef.current);
     };
-  }, [gap, spotlightDimTo, inkRef]);
+  }, [gap, spotlightDimTo, spotlightStrength, inkRef]);
 
   return <canvas ref={canvasRef} className={`w-full h-full block ${className}`} />;
 }

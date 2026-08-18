@@ -1,28 +1,39 @@
 import type { Feature } from "./types";
 
+/**
+ * Capability cards.
+ *
+ * Each one answers an objection an SMB or startup buyer is already holding,
+ * rather than listing a feature. Order matters: continuity fear first, because
+ * nothing else is heard until it is settled. See POSITIONING.md.
+ */
 export const features: Feature[] = [
   {
     number: "01",
-    title: "Instant Deployment",
-    description: "Push to production in seconds. Our edge network ensures your applications load instantly, anywhere in the world.",
+    title: "Your business does not stop",
+    description:
+      "The old system stays live while we move workloads across. Each one runs in parallel until it proves itself, so you keep operating through the whole migration.",
     visual: "deploy",
   },
   {
     number: "02",
-    title: "AI-Native Workflows",
-    description: "Build intelligent applications with built-in AI capabilities. From inference to training, everything scales automatically.",
+    title: "Pilots that reach production",
+    description:
+      "Most AI projects stall at proof of concept. We ship with monitoring and retraining already in place, so your model still earns its keep in month six.",
     visual: "ai",
   },
   {
     number: "03",
-    title: "Real-time Collaboration",
-    description: "Work together seamlessly. Live preview, instant feedback, and version control that actually makes sense.",
+    title: "Fixed scope before you commit",
+    description:
+      "Two weeks of assessment, then you decide. You walk away with a migration blueprint and a costed risk register, yours to keep either way.",
     visual: "collab",
   },
   {
     number: "04",
-    title: "Enterprise Security",
-    description: "Bank-grade encryption, SOC 2 compliance, and granular access controls. Your data stays yours.",
+    title: "Built for regulated industries",
+    description:
+      "Compliance work starts before the first workload moves. We settle data residency and audit trails in week one, so nothing surfaces as a surprise later.",
     visual: "security",
   },
 ];

@@ -25,8 +25,9 @@ export function SecuritySection() {
               non-negotiable.
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed mb-12">
-              Enterprise-grade security isn&apos;t optional. It&apos;s built into every layer 
-              of our platform, from infrastructure to application.
+              Your data is the part you cannot replace. We treat security as
+              delivery work from the first sprint, never as a checklist someone
+              signs off once the build is already finished.
             </p>
 
             {/* Certifications */}
