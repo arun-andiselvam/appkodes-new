@@ -59,6 +59,7 @@ this buyer, not price.
 | --- | --- |
 | Risk registers, governance, compliance programmes | Fixed price, clear timeline, working system |
 | "Zero downtime cutover" | "Your business does not stop" |
+| "Migration programme" | "We automate that for you" |
 | Multi quarter roadmaps | Weeks, not quarters |
 | Speaks to a committee | Speaks to one person who decides |
 
@@ -86,6 +87,26 @@ continue.
 and whether two weeks is the real duration. Current copy says two weeks. If it
 is free, say so loudly. If it is paid, name the price, because a named price
 reads as confidence.
+
+## Vocabulary
+
+Decided 18 August 2026. "Migration" was the working word and it is wrong. It
+means moving from one place to another, which describes only half the work.
+
+The job is either putting AI into a system the client already runs, or building
+the replacement. Either way the point is that software takes over work people
+were doing by hand. The word for that is **automation**.
+
+| Do not use | Use |
+| --- | --- |
+| AI migration | AI automation |
+| migrate | automate |
+| workload, cutover | process, system |
+| migration blueprint | costed plan |
+| legacy modernization | less manual work |
+
+Plain speech wins with this audience. A founder says "we automate that". Nobody
+in a 40 person company says "we are running a migration programme".
 
 ## Voice rules
 

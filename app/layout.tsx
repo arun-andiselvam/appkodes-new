@@ -32,7 +32,7 @@ export const dynamic = 'force-dynamic'
 
 // Brand facts come from content/site.ts so the name is defined in one place.
 export const metadata: Metadata = {
-  title: `${site.name} - AI Migration for Growing Businesses`,
+  title: `${site.name} - AI Automation for Growing Businesses`,
   description: site.description,
 }
 

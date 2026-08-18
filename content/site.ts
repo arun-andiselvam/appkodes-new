@@ -9,9 +9,12 @@ export const site = {
     height: 40,
     alt: "Appkodes",
   },
-  eyebrow: "AI & IT modernization partner",
+  // A proof point rather than a label: the headline already says what we do,
+  // so this slot carries evidence the reader can weigh. Both figures are from
+  // appkodes.com and are safe to publish. See docs/positioning.md.
+  eyebrow: "15 years, 1000+ businesses served",
   description:
-    "We migrate legacy IT to AI-powered systems for growing companies across healthcare and retail, without pausing the business.",
+    "We put AI into the systems you already run, or build the replacement, so your team spends less time on work software should be doing.",
 } as const;
 
 /**
@@ -23,8 +26,8 @@ export const site = {
  * choosing a migration partner should not meet a clone script in the main menu.
  */
 export const navLinks: NavLink[] = [
-  { name: "AI Solutions", href: "#features" },
-  { name: "Migration", href: "#how-it-works" },
+  { name: "AI Automation", href: "#features" },
+  { name: "How we work", href: "#how-it-works" },
   { name: "Industries", href: "#integrations" },
   { name: "Case Studies", href: "#studio" },
 ];
@@ -37,11 +40,11 @@ export const navLinks: NavLink[] = [
 export const heroWords: string[] = ["healthcare", "finance", "retail", "logistics"];
 
 export const heroCopy = {
-  headline: "AI migration for",
+  headline: "AI automation for",
   headlinePrefix: "",
   description:
-    "Your systems keep running while we move them. We have spent 15 years moving businesses from legacy IT to digital, and AI is the next chapter.",
-  primaryCta: "Book an AI readiness call",
+    "Your systems keep running while we change them. We have spent 15 years moving businesses from paper to software, and AI is the next chapter.",
+  primaryCta: "Book an automation review",
   secondaryCta: "See case studies",
 } as const;
 
