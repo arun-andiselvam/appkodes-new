@@ -56,10 +56,13 @@ export type Integration = {
   category: string;
 };
 
-export type Location = {
-  city: string;
+export type DeliveryHub = {
+  /** Region clients sit in. */
   region: string;
-  latency: string;
+  /** Markets inside that region we have delivered into. */
+  markets: string;
+  /** Projects delivered into that region. */
+  projects: number;
 };
 
 export type SecurityFeature = {

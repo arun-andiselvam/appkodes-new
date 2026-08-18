@@ -17,8 +17,8 @@ site should imply self-serve signup, seats or subscriptions.
 Verified facts from appkodes.com, safe to use as proof:
 
 - 15 years of delivery
-- 1000+ businesses partnered
-- 280 clients globally
+- 1000+ clients worldwide. appkodes.com also shows 280 under "happy clients
+  globally", but 1000+ is the figure to publish, confirmed 18 August 2026.
 - 2000+ projects delivered
 - Delivery presence in India, Indonesia, Dubai, Vietnam and Sharjah
 - Engagement models offered: Fixed Price, Hire Our Developer, Onsite Development
@@ -146,6 +146,40 @@ Never publish a claim the company cannot back.
 - "Sign in" is removed. There is nothing to sign in to.
 - Pricing tiers of $0 and $29 are wrong for a services business. That section
   becomes the three engagement models.
+
+## Section decisions
+
+### Track record (was "Infrastructure")
+
+The template sold hosting: 17 data centres, a 99.99% uptime SLA and sub 50ms
+latency. None of that is ours to claim, and an SLA is a contractual promise.
+
+The section now carries proof of delivery. Left column runs 2000+ projects,
+1000+ clients and 50+ countries. Right panel lists the regions clients sit in,
+with a project count against each.
+
+Two better versions of this panel exist once the numbers are available. Projects
+by industry answers "have you done this in my sector", which beats "are you
+real". Hours saved per automation type is stronger still, because it is
+denominated in what the buyer actually wants. Both need real figures from
+delivered work, so neither is written yet.
+
+The panel lists client regions with the markets inside them and a project count
+per region. An earlier version put the covering office in that column, so rows
+read "Europe and UK, served from Madurai". That frames the whole business as
+offshore delivery and works against the reach claim, so the offices are named
+once in the paragraph instead.
+
+**Blocking before launch.** Two things in this section are placeholders.
+
+- The project split across regions is invented. It sums to the published 2,000
+  total, but the distribution is a guess and must come from real records.
+- The country lists inside each region are guesses too, apart from the markets
+  where offices already sit.
+
+Publishing either as fact repeats the mistake the template shipped with, where
+"98% faster deployment" was attributed to Stripe. Replace both or remove the
+column.
 
 ## Still to do
 

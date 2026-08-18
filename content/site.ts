@@ -51,9 +51,9 @@ export const heroCopy = {
 /** Stats ticker under the hero. Real figures from appkodes.com. */
 export const heroStats = [
   { value: "15 years", label: "of delivery experience" },
-  { value: "1000+", label: "businesses partnered" },
-  { value: "280", label: "clients globally" },
+  { value: "1000+", label: "clients worldwide" },
   { value: "2000+", label: "projects delivered" },
+  { value: "50+", label: "countries delivered to" },
 ] as const;
 
 /** Full industry list for the Industries menu and section. */
