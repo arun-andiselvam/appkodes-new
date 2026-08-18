@@ -13,11 +13,12 @@ pnpm start    # serve the production build
 
 ```
 app/                 layout, page, global styles + design tokens
+docs/                positioning, voice, design system, security notes
 components/landing/  one component per page section
 components/ui/       shadcn primitives (unmodified)
 content/             all copy and data, typed — edit here, not in JSX
 hooks/               shared behaviour (in-view, canvas ink, mobile, toast)
-proxy.ts             per-request CSP nonce (see SECURITY.md)
+proxy.ts             per-request CSP nonce (see docs/security.md)
 ```
 
 ## Editing content
@@ -69,4 +70,4 @@ It honours `prefers-reduced-motion` by revealing content immediately.
 ## Security
 
 Headers, CSP and the static-vs-dynamic trade-off are documented in
-[SECURITY.md](./SECURITY.md).
+[docs/security.md](./docs/security.md).

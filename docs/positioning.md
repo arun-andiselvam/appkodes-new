@@ -3,8 +3,8 @@
 Working reference for the Appkodes site rebuild. Copy decisions, audience and
 voice rules live here so they survive between sessions. Last updated 18 August 2026.
 
-Related files: [DESIGN.md](./DESIGN.md) for the visual system,
-[Humanizer-Skill.md](./Humanizer-Skill.md) for the editing rules every piece of
+Related files: [design-system.md](./design-system.md) for the visual system,
+[humanizer-skill.md](./humanizer-skill.md) for the editing rules every piece of
 published copy has to pass.
 
 ---
@@ -89,7 +89,7 @@ reads as confidence.
 
 ## Voice rules
 
-Every published sentence passes [Humanizer-Skill.md](./Humanizer-Skill.md).
+Every published sentence passes [humanizer-skill.md](./humanizer-skill.md).
 The rules that bite most often here:
 
 - No em dashes and no semicolons anywhere.
@@ -118,9 +118,9 @@ Never publish a claim the company cannot back.
 
 ## Decisions already made
 
-- Brand colour is #0052CC, taken from DESIGN.md and matched against the logo.
+- Brand colour is #0052CC, taken from design-system.md and matched against the logo.
 - Fonts stay Instrument Sans and Instrument Serif. The Montserrat and Inter
-  swap from DESIGN.md was tried and reverted on 18 August 2026.
+  swap from design-system.md was tried and reverted on 18 August 2026.
 - Products move out of the primary navigation into the footer.
 - "Sign in" is removed. There is nothing to sign in to.
 - Pricing tiers of $0 and $29 are wrong for a services business. That section

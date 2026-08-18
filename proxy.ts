@@ -9,7 +9,7 @@ import type { NextRequest } from "next/server";
  * `unsafe-inline` is needed for script-src.
  *
  * Trade-off: reading a per-request nonce opts pages out of full static
- * generation. See SECURITY.md for the static-CSP alternative if you would
+ * generation. See docs/security.md for the static-CSP alternative if you would
  * rather keep the page fully cacheable at the edge.
  */
 export default function proxy(request: NextRequest) {

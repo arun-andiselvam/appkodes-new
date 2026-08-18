@@ -5,7 +5,7 @@ import type { Feature } from "./types";
  *
  * Each one answers an objection an SMB or startup buyer is already holding,
  * rather than listing a feature. Order matters: continuity fear first, because
- * nothing else is heard until it is settled. See POSITIONING.md.
+ * nothing else is heard until it is settled. See docs/positioning.md.
  */
 export const features: Feature[] = [
   {

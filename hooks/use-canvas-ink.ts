@@ -17,7 +17,7 @@ export function useCanvasInk() {
   const inkRef = useRef<string>("0, 0, 0");
 
   useEffect(() => {
-    // Matches --foreground in each palette: DESIGN.md navy #091E42 / #EDF0FF.
+    // Matches --foreground in each palette: design-system navy #091E42 / #EDF0FF.
     inkRef.current = resolvedTheme === "dark" ? "237, 240, 255" : "9, 30, 66";
   }, [resolvedTheme]);
 
