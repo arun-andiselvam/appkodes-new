@@ -6,13 +6,19 @@ import { steps } from "@/content/how-it-works";
 
 export function HowItWorksSection() {
   const [activeStep, setActiveStep] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const [sectionRef, isVisible] = useInView<HTMLDivElement>();
+
+  // The steps advance on their own, which is fine until someone is halfway
+  // through reading one. Hovering or focusing anywhere in the section holds
+  // the current step until they move away.
   useEffect(() => {
+    if (isPaused) return;
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isPaused]);
 
   return (
     <section
@@ -45,14 +51,20 @@ export function HowItWorksSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Three steps.
+            We find the hours your team is losing.
             <br />
-            <span className="text-emphasis-foreground/50">Infinite possibilities.</span>
+            <span className="text-emphasis-foreground/50">Then we give them back.</span>
           </h2>
         </div>
 
         {/* Main content */}
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+        <div
+          className="grid lg:grid-cols-2 gap-16 lg:gap-24"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onFocusCapture={() => setIsPaused(true)}
+          onBlurCapture={() => setIsPaused(false)}
+        >
           {/* Steps */}
           <div className="space-y-0">
             {steps.map((step, index) => (
@@ -77,10 +89,11 @@ export function HowItWorksSection() {
                     {/* Progress indicator */}
                     {activeStep === index && (
                       <div className="mt-4 h-px bg-background/20 overflow-hidden">
-                        <div 
-                          className="h-full bg-background w-0"
+                        <div
+                          className="h-full bg-emphasis-accent w-0"
                           style={{
-                            animation: 'progress 5s linear forwards'
+                            animation: 'progress 5s linear forwards',
+                            animationPlayState: isPaused ? 'paused' : 'running',
                           }}
                         />
                       </div>
@@ -91,53 +104,41 @@ export function HowItWorksSection() {
             ))}
           </div>
 
-          {/* Code display */}
+          {/*
+            Numbered rows rather than a fake terminal. Each line is one thing
+            that happens in the step, so the panel reads as a checklist the
+            client can hold us to.
+          */}
           <div className="lg:sticky lg:top-32 self-start">
-            <div className="border border-background/10 overflow-hidden">
-              {/* Window header */}
-              <div className="px-6 py-4 border-b border-background/10 flex items-center justify-between">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                  <div className="w-3 h-3 rounded-full bg-background/20" />
-                </div>
-                <span className="text-xs font-mono text-emphasis-foreground/40">workflow.ts</span>
+            <div className="border border-background/10 rounded-lg overflow-hidden">
+              <div className="px-6 py-4 border-b border-background/10">
+                <span className="text-xs font-mono text-emphasis-foreground/40">
+                  {steps[activeStep].panelLabel}
+                </span>
               </div>
 
-              {/* Code content */}
-              <div className="p-8 font-mono text-sm min-h-[280px]">
-                <pre className="text-emphasis-foreground/70">
-                  {steps[activeStep].code.split('\n').map((line, lineIndex) => (
-                    <div 
-                      key={`${activeStep}-${lineIndex}`} 
-                      className="leading-loose code-line-reveal"
-                      style={{ 
-                        animationDelay: `${lineIndex * 80}ms`,
-                      }}
-                    >
-                      <span className="text-emphasis-foreground/20 select-none w-8 inline-block">{lineIndex + 1}</span>
-                      <span className="inline-flex">
-                        {line.split('').map((char, charIndex) => (
-                          <span
-                            key={`${activeStep}-${lineIndex}-${charIndex}`}
-                            className="code-char-reveal"
-                            style={{
-                              animationDelay: `${lineIndex * 80 + charIndex * 15}ms`,
-                            }}
-                          >
-                            {char === ' ' ? '\u00A0' : char}
-                          </span>
-                        ))}
-                      </span>
-                    </div>
-                  ))}
-                </pre>
+              <div>
+                {steps[activeStep].output.split('\n').map((line, lineIndex) => (
+                  <div
+                    key={`${activeStep}-${lineIndex}`}
+                    className="flex items-center gap-6 px-6 py-6 border-b border-background/10 last:border-b-0 code-line-reveal"
+                    style={{ animationDelay: `${lineIndex * 90}ms` }}
+                  >
+                    <span className="font-mono text-sm text-emphasis-accent shrink-0">
+                      {String(lineIndex + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-lg lg:text-xl text-emphasis-foreground/90">
+                      {line}
+                    </span>
+                  </div>
+                ))}
               </div>
 
-              {/* Status */}
               <div className="px-6 py-4 border-t border-background/10 flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs font-mono text-emphasis-foreground/40">Ready</span>
+                <span className="w-2 h-2 rounded-full bg-emphasis-accent" />
+                <span className="text-xs font-mono text-emphasis-foreground/40">
+                  {steps[activeStep].duration}
+                </span>
               </div>
             </div>
           </div>
@@ -160,19 +161,6 @@ export function HowItWorksSection() {
           to {
             opacity: 1;
             transform: translateX(0);
-          }
-        }
-        
-        .code-char-reveal {
-          opacity: 0;
-          filter: blur(8px);
-          animation: charReveal 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        
-        @keyframes charReveal {
-          to {
-            opacity: 1;
-            filter: blur(0);
           }
         }
       `}</style>

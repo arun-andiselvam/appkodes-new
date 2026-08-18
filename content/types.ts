@@ -25,8 +25,12 @@ export type Step = {
   number: string;
   title: string;
   description: string;
-  /** Snippet rendered in the step's terminal panel. */
-  code: string;
+  /** When this happens, shown in the panel footer. */
+  duration: string;
+  /** Label in the panel header, where a filename used to sit. */
+  panelLabel: string;
+  /** Plain lines listing what happens or what the client receives. */
+  output: string;
 };
 
 export type Plan = {

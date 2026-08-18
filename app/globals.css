@@ -53,6 +53,12 @@
    */
   --emphasis: #091e42;
   --emphasis-foreground: #faf9ff;
+  /*
+   * Accent used on the emphasis panel. The panel is dark in both themes, so
+   * this stays the same brighter blue in each. --primary is #0052CC in light
+   * mode, which only reaches 2.41:1 on the navy and is unreadable there.
+   */
+  --emphasis-accent: #4c8dff;
   --sidebar: #ffffff;
   --sidebar-foreground: #091e42;
   --sidebar-primary: #0052cc;
@@ -105,6 +111,7 @@
   --spotlight: rgb(178 197 255 / 0.12);
   --emphasis: #17223f;
   --emphasis-foreground: #edf0ff;
+  --emphasis-accent: #4c8dff;
   --sidebar: #121b36;
   --sidebar-foreground: #edf0ff;
   --sidebar-primary: #b2c5ff;
@@ -140,6 +147,7 @@
   --color-ring: var(--ring);
   --color-emphasis: var(--emphasis);
   --color-emphasis-foreground: var(--emphasis-foreground);
+  --color-emphasis-accent: var(--emphasis-accent);
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-strong: var(--brand-blue-strong);
   --color-brand-orange: var(--brand-orange);
