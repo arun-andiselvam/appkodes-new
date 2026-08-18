@@ -181,11 +181,47 @@ Publishing either as fact repeats the mistake the template shipped with, where
 "98% faster deployment" was attributed to Stripe. Replace both or remove the
 column.
 
+### Results (was "Live metrics")
+
+The template counted a platform: API requests today, average response time and
+uptime this quarter, under a pulsing green dot and a running clock. Appkodes
+runs no API a client consumes, so all three described a different company. The
+clock was the visitor's own browser time, which made "Live" the boldest false
+claim on the page. One tile also said 184 countries served, a scroll below the
+track record section saying 50+.
+
+The section counts outcomes now, which is the version this document already
+argued for. Four figures on four different axes: hours returned each week,
+weeks to a costed plan, months to payback, and how many automations are still
+running a year on. That last one exists to answer the fear that an AI project
+dies at proof of concept.
+
+Reusing 2000+, 1000+ and 50+ here was the obvious cheap fix and it is the wrong
+one. The hero ticker spends all four verified figures and the track record
+section spends three of them again. A third airing weakens them rather than
+adding proof.
+
+The nav link above this section read "Case Studies" and pointed at `#studio`.
+It now reads "Results" and points at `#results`. Real case studies get their
+own section once there is client work cleared to name.
+
+**Blocking before launch.** Three of the four figures are drafts.
+
+- 38 hours a week returned, 5 months to payback and 90% still running are all
+  invented. They need the real averages from delivered automations.
+- Only "2 weeks to a costed plan" is backed, and it comes from the process in
+  `content/how-it-works.ts` rather than from measurement.
+
+The rule from the track record panel applies here without change. Publishing an
+invented average repeats what the template did when it put "98% faster
+deployment" next to Stripe.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
   possibilities." and shows a fake SDK code sample.
 - Replace fictional testimonials with real clients.
+- Supply the three real outcome figures for the Results section.
 - Replace the pricing tiers with engagement models.
 - Build the Industries section and the dropdown navigation once destination
   pages exist.

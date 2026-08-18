@@ -4,14 +4,30 @@ import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/use-in-view";
 import { metrics } from "@/content/metrics";
 
-function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffix?: string; prefix?: string }) {
+/**
+ * Counts up once the tile is on screen.
+ *
+ * Math.round rather than Math.floor because the figures here are small now.
+ * With floor and a cubic ease, a target of 2 sat on "1" for most of the run
+ * and read as a stuck component. Rounding reaches the target early enough to
+ * look deliberate.
+ */
+function AnimatedCounter({
+  end,
+  suffix,
+  prefix,
+}: {
+  end: number;
+  suffix?: string;
+  prefix?: string;
+}) {
   const [count, setCount] = useState(0);
   const [ref, inView] = useInView<HTMLDivElement>({ threshold: 0.5 });
 
   useEffect(() => {
     if (!inView) return;
 
-    const duration = 2000;
+    const duration = 1400;
     const startTime = performance.now();
     let frame = 0;
 
@@ -19,7 +35,7 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * end));
+      setCount(Math.round(eased * end));
 
       if (progress < 1) {
         frame = requestAnimationFrame(animate);
@@ -31,76 +47,70 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
   }, [end, inView]);
 
   return (
-    <div ref={ref} className="text-6xl lg:text-8xl font-display tracking-tight">
-      {prefix}{count.toLocaleString()}{suffix}
+    <div
+      ref={ref}
+      className="flex items-baseline gap-2 font-display tracking-tight tabular-nums text-5xl lg:text-6xl"
+    >
+      <span>
+        {prefix}
+        {count.toLocaleString()}
+      </span>
+      {suffix ? (
+        <span className="text-xl lg:text-2xl text-muted-foreground">{suffix}</span>
+      ) : null}
     </div>
   );
 }
 
 export function MetricsSection() {
-  const [time, setTime] = useState("00:00:00");
   const [sectionRef, isVisible] = useInView<HTMLElement>();
 
-  useEffect(() => {
-    const formatTime = () =>
-      new Intl.DateTimeFormat("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      }).format(new Date());
-
-    setTime(formatTime());
-    const interval = setInterval(() => setTime(formatTime()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section id="studio" ref={sectionRef} className="relative py-24 lg:py-32 border-y border-foreground/10">
+    <section id="results" ref={sectionRef} className="relative py-20 lg:py-24 border-y border-foreground/10">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16 lg:mb-24">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12 lg:mb-16">
           <div>
-            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
+            <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-4">
               <span className="w-8 h-px bg-foreground/30" />
-              Live metrics
+              What you get back
             </span>
             <h2
               className={`text-4xl lg:text-6xl font-display tracking-tight transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >
-              Performance you
+              What it saves,
               <br />
-              can measure.
+              in plain numbers.
             </h2>
           </div>
-          <div className="flex items-center gap-4 font-mono text-sm text-muted-foreground">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Live
-            </span>
-            <span className="text-foreground/30">|</span>
-            <span>{time}</span>
+          {/*
+            A pulsing green dot and a running clock used to sit here, selling
+            the section as a live feed. Nothing was live and the clock was the
+            visitor's own. The method note is true and it answers the fear that
+            an AI project stops mattering the day it ships.
+          */}
+          <div className="font-mono text-sm text-muted-foreground lg:text-right">
+            Measured after go live, not at launch
           </div>
         </div>
-        
+
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-foreground/10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-foreground/10">
           {metrics.map((metric, index) => (
             <div
               key={metric.label}
-              className={`bg-background p-8 lg:p-12 transition-all duration-700 ${
+              className={`bg-background p-6 lg:p-8 transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <AnimatedCounter 
-                end={typeof metric.value === 'number' ? metric.value : 0} 
-                suffix={metric.suffix} 
-                prefix={metric.prefix}
-              />
-              <div className="mt-4 text-lg text-muted-foreground">{metric.label}</div>
+              <AnimatedCounter end={metric.value} suffix={metric.suffix} prefix={metric.prefix} />
+              <div className="mt-3 text-base lg:text-lg leading-snug">{metric.label}</div>
+              {metric.detail ? (
+                <div className="mt-1.5 text-sm text-muted-foreground leading-snug">{metric.detail}</div>
+              ) : null}
             </div>
           ))}
         </div>

@@ -21,15 +21,21 @@ export const site = {
  * Primary navigation.
  *
  * Ordered for the SMB and startup buyer: what we do, then the offer that
- * matters most (migration), then proof they are the right kind of client.
+ * matters most (automation), then proof they are the right kind of client.
  * The ready-made product catalogue lives in the footer instead. Someone
- * choosing a migration partner should not meet a clone script in the main menu.
+ * choosing an automation partner should not meet a clone script in the menu.
+ *
+ * The last link used to read "Case Studies" and point at #studio, a leftover
+ * anchor from the template. It landed the visitor on a wall of platform
+ * uptime counters. That section counts outcomes now, so the label and the
+ * anchor say so. Case studies come back as their own section once there is
+ * delivered client work cleared to name.
  */
 export const navLinks: NavLink[] = [
   { name: "AI Automation", href: "#features" },
   { name: "How we work", href: "#how-it-works" },
   { name: "Industries", href: "#integrations" },
-  { name: "Case Studies", href: "#studio" },
+  { name: "Results", href: "#results" },
 ];
 
 /**

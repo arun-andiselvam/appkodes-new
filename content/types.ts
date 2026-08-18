@@ -73,9 +73,12 @@ export type SecurityFeature = {
 
 export type Metric = {
   value: number;
+  /** Unit shown after the numeral, at a smaller size so the figure leads. */
   suffix?: string;
   prefix?: string;
   label: string;
+  /** Optional qualifier under the label, for how the figure is counted. */
+  detail?: string;
 };
 
 export type CodeExample = {
