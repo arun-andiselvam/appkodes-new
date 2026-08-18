@@ -4,39 +4,105 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.985 0.002 90);
-  --foreground: oklch(0.12 0.01 60);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.12 0.01 60);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0.01 60);
-  --primary: oklch(0.12 0.01 60);
-  --primary-foreground: oklch(0.985 0.002 90);
-  --secondary: oklch(0.96 0.005 90);
-  --secondary-foreground: oklch(0.12 0.01 60);
-  --muted: oklch(0.94 0.005 90);
-  --muted-foreground: oklch(0.45 0.02 60);
-  --accent: oklch(0.92 0.01 90);
-  --accent-foreground: oklch(0.12 0.01 60);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.01 90);
-  --input: oklch(0.92 0.01 90);
-  --ring: oklch(0.12 0.01 60);
-  --chart-1: oklch(0.12 0.01 60);
-  --chart-2: oklch(0.35 0.02 60);
-  --chart-3: oklch(0.55 0.02 60);
-  --chart-4: oklch(0.70 0.02 60);
-  --chart-5: oklch(0.85 0.01 60);
+  color-scheme: light;
+
+  /* --- DESIGN.md "Kinetic Modular" -------------------------------------- */
+  /* Brand anchors. #0052CC is the Trustworthy Blue the design doc names as   */
+  /* the palette anchor; it is also the closest token to the logo's own       */
+  /* #0066FF while clearing WCAG AA on white, which #0066FF does not.         */
+  --brand-blue: #0052cc;
+  --brand-blue-strong: #003d9b;
+  --brand-orange: #ff8b00;
+  --brand-success: #36b37e;
+
+  --background: #faf9ff;
+  --foreground: #091e42;
+  --card: #ffffff;
+  --card-foreground: #091e42;
+  --popover: #ffffff;
+  --popover-foreground: #091e42;
+  --primary: #0052cc;
+  --primary-foreground: #ffffff;
+  /* shadcn's "secondary" is the neutral button surface, not the brand's
+     orange accent. Orange stays opt-in via --brand-orange so it cannot leak
+     into every secondary control. */
+  --secondary: #f4f5f7;
+  --secondary-foreground: #091e42;
+  --muted: #f1f3ff;
+  --muted-foreground: #434654;
+  --accent: #e9edff;
+  --accent-foreground: #003d9b;
+  --destructive: #ba1a1a;
+  --destructive-foreground: #ffffff;
+  --border: #dfe1e6;
+  --input: #dfe1e6;
+  --ring: #0052cc;
+  --chart-1: #0052cc;
+  --chart-2: #0c56d0;
+  --chart-3: #4c8dff;
+  --chart-4: #ff8b00;
+  --chart-5: #36b37e;
   --radius: 0.25rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Cursor spotlight in the CTA section. */
+  --spotlight: rgb(0 82 204 / 0.14);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #091e42;
+  --sidebar-primary: #0052cc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9edff;
+  --sidebar-accent-foreground: #003d9b;
+  --sidebar-border: #dfe1e6;
+  --sidebar-ring: #0052cc;
+}
+
+/*
+ * Dark counterpart. DESIGN.md only specifies the light scheme, so this is
+ * derived from its own Material-style inverse tokens: inverse-primary
+ * (#b2c5ff) becomes the primary fill, on-primary-fixed (#001848) the text on
+ * it, and inverse-on-surface (#edf0ff) the body colour. Every pair below is
+ * checked against WCAG AA.
+ */
+.dark {
+  color-scheme: dark;
+
+  --brand-blue: #b2c5ff;
+  --brand-blue-strong: #dae2ff;
+  --brand-orange: #ffb77e;
+  --brand-success: #6ee7b7;
+
+  --background: #0a1229;
+  --foreground: #edf0ff;
+  --card: #121b36;
+  --card-foreground: #edf0ff;
+  --popover: #121b36;
+  --popover-foreground: #edf0ff;
+  --primary: #b2c5ff;
+  --primary-foreground: #001848;
+  --secondary: #1b2440;
+  --secondary-foreground: #edf0ff;
+  --muted: #1b2440;
+  --muted-foreground: #b4bcd4;
+  --accent: #222d4d;
+  --accent-foreground: #dae2ff;
+  --destructive: #ff8a80;
+  --destructive-foreground: #2b0000;
+  --border: #2a3455;
+  --input: #2a3455;
+  --ring: #b2c5ff;
+  --chart-1: #b2c5ff;
+  --chart-2: #8fb0ff;
+  --chart-3: #6d97ff;
+  --chart-4: #ffb77e;
+  --chart-5: #6ee7b7;
+  --spotlight: rgb(178 197 255 / 0.12);
+  --sidebar: #121b36;
+  --sidebar-foreground: #edf0ff;
+  --sidebar-primary: #b2c5ff;
+  --sidebar-primary-foreground: #001848;
+  --sidebar-accent: #222d4d;
+  --sidebar-accent-foreground: #dae2ff;
+  --sidebar-border: #2a3455;
+  --sidebar-ring: #b2c5ff;
 }
 
 @theme inline {
@@ -62,6 +128,10 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-strong: var(--brand-blue-strong);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-success: var(--brand-success);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

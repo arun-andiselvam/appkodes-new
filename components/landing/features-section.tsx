@@ -1,33 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-const features = [
-  {
-    number: "01",
-    title: "Instant Deployment",
-    description: "Push to production in seconds. Our edge network ensures your applications load instantly, anywhere in the world.",
-    visual: "deploy",
-  },
-  {
-    number: "02",
-    title: "AI-Native Workflows",
-    description: "Build intelligent applications with built-in AI capabilities. From inference to training, everything scales automatically.",
-    visual: "ai",
-  },
-  {
-    number: "03",
-    title: "Real-time Collaboration",
-    description: "Work together seamlessly. Live preview, instant feedback, and version control that actually makes sense.",
-    visual: "collab",
-  },
-  {
-    number: "04",
-    title: "Enterprise Security",
-    description: "Bank-grade encryption, SOC 2 compliance, and granular access controls. Your data stays yours.",
-    visual: "security",
-  },
-];
+import { useInView } from "@/hooks/use-in-view";
+import { features } from "@/content/features";
 
 function DeployVisual() {
   return (
@@ -249,21 +223,7 @@ function AnimatedVisual({ type }: { type: string }) {
 }
 
 function FeatureCard({ feature, index }: { feature: typeof features[0]; index: number }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.2 }
-    );
-
-    if (cardRef.current) observer.observe(cardRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+  const [cardRef, isVisible] = useInView<HTMLDivElement>({ threshold: 0.2 });
   return (
     <div
       ref={cardRef}
@@ -302,21 +262,7 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
 }
 
 export function FeaturesSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+  const [sectionRef, isVisible] = useInView<HTMLDivElement>();
   return (
     <section
       id="features"

@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useCanvasInk } from "@/hooks/use-canvas-ink";
 
 export function AnimatedWave() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const inkRef = useCanvasInk();
   const frameRef = useRef(0);
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export function AnimatedWave() {
           const charIndex = Math.floor(normalized * (chars.length - 1));
           const alpha = 0.15 + normalized * 0.5;
 
-          ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+          ctx.fillStyle = `rgba(${inkRef.current}, ${alpha})`;
           ctx.fillText(chars[charIndex], px, py);
         }
       }

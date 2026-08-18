@@ -1,39 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
-
-const footerLinks = {
-  Product: [
-    { name: "Features", href: "#features" },
-    { name: "How it works", href: "#how-it-works" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Integrations", href: "#integrations" },
-  ],
-  Developers: [
-    { name: "Documentation", href: "#developers" },
-    { name: "API Reference", href: "#" },
-    { name: "SDK", href: "#developers" },
-    { name: "Status", href: "#" },
-  ],
-  Company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Careers", href: "#", badge: "Hiring" },
-    { name: "Contact", href: "#" },
-  ],
-  Legal: [
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
-    { name: "Security", href: "#security" },
-  ],
-};
-
-const socialLinks = [
-  { name: "Twitter", href: "#" },
-  { name: "GitHub", href: "#" },
-  { name: "LinkedIn", href: "#" },
-];
+import { footerLinks, socialLinks } from "@/content/footer";
+import { site } from "@/content/site";
 
 export function FooterSection() {
   return (
@@ -50,8 +21,13 @@ export function FooterSection() {
             {/* Brand Column */}
             <div className="col-span-2">
               <a href="#" className="inline-flex items-center gap-2 mb-6">
-                <span className="text-2xl font-display">Optimus</span>
-                <span className="text-xs text-muted-foreground font-mono">TM</span>
+                <Image
+                  src="/appkodes-logo.webp"
+                  alt="Appkodes"
+                  width={256}
+                  height={40}
+                  className="h-8 w-auto dark:invert dark:hue-rotate-180"
+                />
               </a>
 
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs">
@@ -86,7 +62,7 @@ export function FooterSection() {
                       >
                         {link.name}
                         {"badge" in link && link.badge && (
-                          <span className="text-xs px-2 py-0.5 bg-foreground text-background rounded-full">
+                          <span className="text-xs px-2 py-0.5 bg-primary text-primary-foreground rounded-full">
                             {link.badge}
                           </span>
                         )}
@@ -101,8 +77,12 @@ export function FooterSection() {
 
         {/* Bottom Bar */}
         <div className="py-8 border-t border-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            2025 Optimus. All rights reserved.
+          {/*
+            suppressHydrationWarning covers the one edge case where the server
+            and the visitor's clock straddle New Year across timezones.
+          */}
+          <p className="text-sm text-muted-foreground" suppressHydrationWarning>
+            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">

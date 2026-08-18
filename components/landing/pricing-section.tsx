@@ -2,56 +2,7 @@
 
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
-
-const plans = [
-  {
-    name: "Starter",
-    description: "For individuals and small projects",
-    price: { monthly: 0, annual: 0 },
-    features: [
-      "Up to 3 projects",
-      "1GB storage",
-      "Community support",
-      "Basic analytics",
-      "SSL certificates",
-    ],
-    cta: "Start free",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    description: "For growing teams and businesses",
-    price: { monthly: 29, annual: 24 },
-    features: [
-      "Unlimited projects",
-      "100GB storage",
-      "Priority support",
-      "Advanced analytics",
-      "Custom domains",
-      "Team collaboration",
-      "API access",
-    ],
-    cta: "Start trial",
-    popular: true,
-  },
-  {
-    name: "Enterprise",
-    description: "For large-scale operations",
-    price: { monthly: null, annual: null },
-    features: [
-      "Everything in Pro",
-      "Unlimited storage",
-      "24/7 dedicated support",
-      "Custom integrations",
-      "SLA guarantee",
-      "On-premise option",
-      "Security audit",
-      "Custom contracts",
-    ],
-    cta: "Contact sales",
-    popular: false,
-  },
-];
+import { plans } from "@/content/pricing";
 
 export function PricingSection() {
   const [isAnnual, setIsAnnual] = useState(true);
@@ -88,7 +39,7 @@ export function PricingSection() {
             className="relative w-14 h-7 bg-foreground/10 rounded-full p-1 transition-colors hover:bg-foreground/20"
           >
             <div
-              className={`w-5 h-5 bg-foreground rounded-full transition-transform duration-300 ${
+              className={`w-5 h-5 bg-primary rounded-full transition-transform duration-300 ${
                 isAnnual ? "translate-x-7" : "translate-x-0"
               }`}
             />
@@ -101,7 +52,7 @@ export function PricingSection() {
             Annual
           </span>
           {isAnnual && (
-            <span className="ml-2 px-2 py-1 bg-foreground text-primary-foreground text-xs font-mono">
+            <span className="ml-2 px-2 py-1 bg-primary text-primary-foreground text-xs font-mono">
               Save 17%
             </span>
           )}
@@ -117,7 +68,7 @@ export function PricingSection() {
               }`}
             >
               {plan.popular && (
-                <span className="absolute -top-3 left-8 px-3 py-1 bg-foreground text-primary-foreground text-xs font-mono uppercase tracking-widest">
+                <span className="absolute -top-3 left-8 px-3 py-1 bg-primary text-primary-foreground text-xs font-mono uppercase tracking-widest">
                   Most Popular
                 </span>
               )}
@@ -159,7 +110,7 @@ export function PricingSection() {
               <button
                 className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group ${
                   plan.popular
-                    ? "bg-foreground text-primary-foreground hover:bg-foreground/90"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
                     : "border border-foreground/20 text-foreground hover:border-foreground hover:bg-foreground/5"
                 }`}
               >

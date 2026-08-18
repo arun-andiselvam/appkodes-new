@@ -1,15 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { name: "Features", href: "#features" },
-  { name: "How it works", href: "#how-it-works" },
-  { name: "Developers", href: "#developers" },
-  { name: "Pricing", href: "#pricing" },
-];
+import { navLinks, site } from "@/content/site";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,8 +41,14 @@ export function Navigation() {
         >
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <span className={`font-display tracking-tight transition-all duration-500 ${isScrolled ? "text-xl" : "text-2xl"}`}>Optimus</span>
-            <span className={`text-muted-foreground font-mono transition-all duration-500 ${isScrolled ? "text-[10px] mt-0.5" : "text-xs mt-1"}`}>TM</span>
+            <Image
+              src="/appkodes-logo.webp"
+              alt="Appkodes"
+              width={256}
+              height={40}
+              priority
+              className={`w-auto transition-all duration-500 dark:invert dark:hue-rotate-180 ${isScrolled ? "h-6" : "h-8"}`}
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -65,21 +67,24 @@ export function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle compact={isScrolled} />
             <a href="#" className={`text-foreground/70 hover:text-foreground transition-all duration-500 ${isScrolled ? "text-xs" : "text-sm"}`}>
               Sign in
             </a>
             <Button
               size="sm"
-              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
+              className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
             >
               Start creating
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle compact />
+            <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2"
+            className="p-2"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -87,7 +92,8 @@ export function Navigation() {
             ) : (
               <Menu className="w-6 h-6" />
             )}
-          </button>
+            </button>
+          </div>
         </div>
 
       </nav>
@@ -137,7 +143,7 @@ export function Navigation() {
               Sign in
             </Button>
             <Button 
-              className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
+              className="flex-1 bg-primary text-primary-foreground rounded-full h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Start creating

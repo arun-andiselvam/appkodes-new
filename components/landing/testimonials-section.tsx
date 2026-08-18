@@ -1,37 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const testimonials = [
-  {
-    quote: "Optimus transformed our deployment pipeline. What used to take hours now happens in seconds.",
-    author: "Sarah Chen",
-    role: "CTO",
-    company: "Meridian Labs",
-    metric: "10x faster deployments",
-  },
-  {
-    quote: "The developer experience is unmatched. Our team's productivity has never been higher.",
-    author: "Marcus Webb",
-    role: "Engineering Lead",
-    company: "Flux Systems",
-    metric: "40% more features shipped",
-  },
-  {
-    quote: "Finally, infrastructure that scales with our ambition. Zero downtime since we switched.",
-    author: "Elena Rodriguez",
-    role: "VP Engineering",
-    company: "Beacon AI",
-    metric: "99.99% uptime",
-  },
-  {
-    quote: "The integrations are seamless. We connected our entire stack in a single afternoon.",
-    author: "James Liu",
-    role: "Founder",
-    company: "Prism Analytics",
-    metric: "50+ integrations used",
-  },
-];
+import { testimonials } from "@/content/testimonials";
 
 export function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -126,7 +96,7 @@ export function TestimonialsSection() {
                   }}
                   className={`h-2 transition-all duration-300 ${
                     idx === activeIndex
-                      ? "w-8 bg-foreground"
+                      ? "w-8 bg-primary"
                       : "w-2 bg-foreground/20 hover:bg-foreground/40"
                   }`}
                 />

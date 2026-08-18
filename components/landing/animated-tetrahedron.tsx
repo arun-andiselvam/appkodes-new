@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useCanvasInk } from "@/hooks/use-canvas-ink";
 
 export function AnimatedTetrahedron() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const inkRef = useCanvasInk();
   const frameRef = useRef(0);
 
   useEffect(() => {
@@ -149,7 +151,7 @@ export function AnimatedTetrahedron() {
       // Draw points
       points.forEach((point) => {
         const alpha = 0.15 + (point.z + 1.5) * 0.25;
-        ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(alpha, 0.9)})`;
+        ctx.fillStyle = `rgba(${inkRef.current}, ${Math.min(alpha, 0.9)})`;
         ctx.fillText(point.char, point.x, point.y);
       });
 

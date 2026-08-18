@@ -1,41 +1,34 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "@/hooks/use-in-view";
+import { metrics } from "@/content/metrics";
 
 function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffix?: string; prefix?: string }) {
   const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [ref, inView] = useInView<HTMLDivElement>({ threshold: 0.5 });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          let start = 0;
-          const duration = 2000;
-          const startTime = performance.now();
+    if (!inView) return;
 
-          const animate = (currentTime: number) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * end));
+    const duration = 2000;
+    const startTime = performance.now();
+    let frame = 0;
 
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            }
-          };
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * end));
 
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.5 }
-    );
+      if (progress < 1) {
+        frame = requestAnimationFrame(animate);
+      }
+    };
 
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [end, hasAnimated]);
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [end, inView]);
 
   return (
     <div ref={ref} className="text-6xl lg:text-8xl font-display tracking-tight">
@@ -44,37 +37,9 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
   );
 }
 
-const metrics = [
-  { 
-    value: 2847392, 
-    suffix: "", 
-    prefix: "",
-    label: "API requests today",
-  },
-  { 
-    value: 99, 
-    suffix: ".99%", 
-    prefix: "",
-    label: "Uptime this quarter",
-  },
-  { 
-    value: 23, 
-    suffix: "ms", 
-    prefix: "",
-    label: "Average response time",
-  },
-  { 
-    value: 184, 
-    suffix: "", 
-    prefix: "",
-    label: "Countries served",
-  },
-];
-
 export function MetricsSection() {
   const [time, setTime] = useState("00:00:00");
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const [sectionRef, isVisible] = useInView<HTMLElement>();
 
   useEffect(() => {
     const formatTime = () =>
@@ -88,18 +53,6 @@ export function MetricsSection() {
     setTime(formatTime());
     const interval = setInterval(() => setTime(formatTime()), 1000);
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
   }, []);
 
   return (

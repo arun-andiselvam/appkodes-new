@@ -1,33 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-
-const locations = [
-  { city: "San Francisco", region: "US West", latency: "12ms" },
-  { city: "New York", region: "US East", latency: "18ms" },
-  { city: "London", region: "Europe", latency: "24ms" },
-  { city: "Tokyo", region: "Asia Pacific", latency: "32ms" },
-  { city: "Sydney", region: "Oceania", latency: "45ms" },
-  { city: "Sao Paulo", region: "South America", latency: "38ms" },
-];
+import { useEffect, useState } from "react";
+import { useInView } from "@/hooks/use-in-view";
+import { locations } from "@/content/infrastructure";
 
 export function InfrastructureSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [activeLocation, setActiveLocation] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+    const [activeLocation, setActiveLocation] = useState(0);
+  const [sectionRef, isVisible] = useInView<HTMLElement>();
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveLocation((prev) => (prev + 1) % locations.length);
@@ -104,7 +83,7 @@ export function InfrastructureSection() {
                     <div className="flex items-center gap-4">
                       <span 
                         className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                          activeLocation === index ? "bg-foreground" : "bg-foreground/20"
+                          activeLocation === index ? "bg-primary" : "bg-foreground/20"
                         }`}
                       />
                       <div>

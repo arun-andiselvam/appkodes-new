@@ -1,58 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import { useInView } from "@/hooks/use-in-view";
 import { Copy, Check } from "lucide-react";
-
-const codeExamples = [
-  {
-    label: "Install",
-    code: `npm install @optimus/sdk
-
-# or
-yarn add @optimus/sdk
-pnpm add @optimus/sdk`,
-  },
-  {
-    label: "Initialize",
-    code: `import { Optimus } from '@optimus/sdk'
-
-const optimus = new Optimus({
-  apiKey: process.env.OPTIMUS_KEY
-})`,
-  },
-  {
-    label: "Deploy",
-    code: `const app = await optimus.deploy({
-  name: 'my-app',
-  region: 'auto',
-  scaling: {
-    min: 1,
-    max: 100
-  }
-})
-
-console.log('Live at:', app.url)`,
-  },
-];
-
-const features = [
-  { 
-    title: "TypeScript native", 
-    description: "Full type safety with auto-generated types."
-  },
-  { 
-    title: "Zero config", 
-    description: "Sensible defaults that just work."
-  },
-  { 
-    title: "Edge-ready", 
-    description: "Runs anywhere: Node, Deno, Bun, browsers."
-  },
-  { 
-    title: "12KB gzipped", 
-    description: "Lightweight with zero dependencies."
-  },
-];
+import { codeExamples, developerFeatures as features } from "@/content/developers";
 
 const codeAnimationStyles = `
   .dev-code-line {
@@ -85,26 +36,13 @@ const codeAnimationStyles = `
 export function DevelopersSection() {
   const [activeTab, setActiveTab] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const [sectionRef, isVisible] = useInView<HTMLElement>();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeExamples[activeTab].code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <section id="developers" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
@@ -170,7 +108,7 @@ export function DevelopersSection() {
                   >
                     {example.label}
                     {activeTab === idx && (
-                      <span className="absolute bottom-0 left-0 right-0 h-px bg-foreground" />
+                      <span className="absolute bottom-0 left-0 right-0 h-px bg-primary" />
                     )}
                   </button>
                 ))}
