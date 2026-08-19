@@ -20,46 +20,27 @@ export const site = {
 /**
  * Primary navigation.
  *
- * Ordered for the SMB and startup buyer: what we do, then the offer that
- * matters most (automation), then proof they are the right kind of client.
- * The ready-made product catalogue lives in the footer instead. Someone
- * choosing an automation partner should not meet a clone script in the menu.
+ * These became routes on 19 August 2026, when the site stopped being one long
+ * page. Anchors only worked while every section shared a document, and a menu
+ * that scrolls cannot show a visitor where they are or let them link a
+ * colleague to one part of the pitch.
  *
- * The last link used to read "Case Studies" and point at #studio, a leftover
- * anchor from the template. It landed the visitor on a wall of platform
- * uptime counters. That section counts outcomes now, so the label and the
- * anchor say so. Case studies come back as their own section once there is
- * delivered client work cleared to name.
+ * Ordered for the SMB and startup buyer: what we do, then how the engagement
+ * runs, then the proof. The ready-made product catalogue stays in the footer.
+ * Someone choosing an automation partner should not meet a clone script in the
+ * main menu.
+ *
+ * Industries is deliberately absent. It pointed at `#integrations` for months,
+ * a section about models and tooling, and there is no industries content to
+ * route to yet. A missing item beats one that lies about where it goes. It
+ * comes back when there is something real behind it.
  */
 export const navLinks: NavLink[] = [
-  { name: "AI Automation", href: "#features" },
-  { name: "How we work", href: "#how-it-works" },
-  { name: "Industries", href: "#integrations" },
-  { name: "Results", href: "#results" },
+  { name: "AI Automation", href: "/ai-automation" },
+  { name: "How we work", href: "/how-we-work" },
+  { name: "Results", href: "/results" },
 ];
 
-/**
- * What the hero headline cycles through.
- *
- * These stopped being a subset of the Industries menu on 19 August 2026. Two
- * of them are not industries at all. B2B and B2C are business models that cut
- * across every sector, and "your business" is nobody's industry. The list
- * answers who the sentence is for rather than which markets we serve, so the
- * Industries menu below stays the real taxonomy and this does not.
- *
- * "Your business" earns the last slot. A rotating list of sectors quietly
- * excludes everyone it does not name, and most of this audience runs something
- * that fits no label on the page. Ending on the catch all turns the rotation
- * from a filter into an invitation.
- *
- * B2B and B2C, not "B2B Business". The headline already supplies the noun, so
- * the longer form reads as "AI automation for B2B Business".
- *
- * The cost is dwell time. Eight words at the old 2.5s cycle ran twenty seconds
- * end to end, long enough that most visitors would leave before their own
- * segment appeared. The interval in hero-section.tsx drops to 2s to hold the
- * full cycle near sixteen. Adding a ninth word means revisiting that again.
- */
 export const heroWords: string[] = [
   "healthcare",
   "finance",
@@ -135,5 +116,5 @@ export const ctaCopy = {
     "Near one of our offices, lunch is easy to arrange. If you are not, a call does the same job. Either way the first step is two weeks at a price named before anything starts. You keep the plan whether or not we build it.",
   primaryCta: "Book an automation review",
   secondaryCta: "See how we work",
-  secondaryHref: "#how-it-works",
+  secondaryHref: "/how-we-work",
 } as const;

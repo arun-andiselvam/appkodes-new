@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Navigation } from '@/components/landing/navigation'
+import { FooterSection } from '@/components/landing/footer-section'
 import { site } from '@/content/site'
 import './globals.css'
 
@@ -32,7 +34,12 @@ export const dynamic = 'force-dynamic'
 
 // Brand facts come from content/site.ts so the name is defined in one place.
 export const metadata: Metadata = {
-  title: `${site.name} - AI Automation for Growing Businesses`,
+  // A template so each route supplies its own name and the brand is appended
+  // once, rather than every page repeating the company name by hand.
+  title: {
+    default: `${site.name} - AI Automation for Growing Businesses`,
+    template: `%s - ${site.name}`,
+  },
   description: site.description,
 }
 
@@ -55,7 +62,17 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          {/*
+            Navigation and the footer moved up here when the site became more
+            than one page. Rendering them inside each route would remount both
+            on every navigation, throwing away the header's scrolled state and
+            flashing the menu on each click.
+          */}
+          <div className="relative min-h-screen overflow-x-hidden noise-overlay">
+            <Navigation />
+            {children}
+            <FooterSection />
+          </div>
         </ThemeProvider>
         <Analytics />
       </body>

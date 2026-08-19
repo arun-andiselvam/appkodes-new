@@ -658,6 +658,47 @@ Every other panel sits at /10, so this one was ten times heavier than anything
 near it. It is /20 now, a step above the standard so the closer still reads as
 a destination.
 
+### Routing
+
+The site became four pages on 19 August 2026. It had been one document with a
+menu that scrolled between sections, which works until the sections outgrow a
+single scroll. Anchors also cannot show a visitor where they are, and nobody
+can send a colleague a link to one part of the pitch.
+
+| Route | Carries |
+| --- | --- |
+| `/` | Hero, capabilities, audiences, testimonials, in person, the close |
+| `/ai-automation` | Capabilities, what we build with, security |
+| `/how-we-work` | The three steps, audiences, security |
+| `/results` | Figures, track record, testimonials, recognition, in person |
+
+Sections repeat across routes where they earn it twice. Security sits on both
+the automation page and the process page because the question it answers
+arrives once somebody knows a model is involved, and again when they are
+working out what the engagement commits to.
+
+Navigation and the footer moved into `app/layout.tsx`. Rendered inside each
+route they would remount on every click, throwing away the header's scrolled
+state and flashing the menu. The menu uses Next `Link`, so a page change is
+client side, and the hover rule doubles as the current page marker rather than
+adding a second device beside it.
+
+**Industries is out of the menu.** It pointed at `#integrations` for months, a
+section about models and tooling, and there is no industries content to route
+to. A missing item beats one that lies about where it goes.
+
+**The footer lost most of itself, on purpose.** Eleven of its twenty links
+pointed at `#`, and two more at `#developers`, a section renamed to audiences
+long before the split. The Developers column listed Documentation, API
+Reference, SDK and Status for a company with no SDK, which is the claim the old
+developers section was replaced for making. Social links are an empty array
+that renders nothing.
+
+An entry goes back in the footer once it has a destination. About, Careers,
+Privacy and Terms all belong there and none has a page. The ready-made product
+catalogue belongs there too, per the decision above, and needs somebody to say
+which products to list.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
@@ -670,7 +711,6 @@ a destination.
 - Supply the four real outcome figures for the Results section.
 - Supply real award years, or leave the badges undated.
 - Decide where the three engagement models live. Pricing is gone.
-- Build the Industries section and the dropdown navigation once destination
-  pages exist. The nav link points at the models section in the meantime.
+- Build the Industries pages. The menu item is removed until they exist.
 - Confirm the model, stack and build tool lists against work actually delivered.
 - Decide what fills the empty right side of the hero.

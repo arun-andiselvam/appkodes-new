@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "./animated-wave";
+import Link from "next/link";
 import { footerLinks, socialLinks } from "@/content/footer";
 import { site } from "@/content/site";
 
@@ -17,10 +18,10 @@ export function FooterSection() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Main Footer */}
         <div className="py-16 lg:py-24">
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-12 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-8">
             {/* Brand Column */}
             <div className="col-span-2">
-              <a href="#" className="inline-flex items-center gap-2 mb-6">
+              <Link href="/" className="inline-flex items-center gap-2 mb-6">
                 <Image
                   src="/appkodes-logo.webp"
                   alt="Appkodes"
@@ -28,13 +29,14 @@ export function FooterSection() {
                   height={40}
                   className="h-8 w-auto dark:invert dark:hue-rotate-180"
                 />
-              </a>
+              </Link>
 
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs">
-                The platform for teams who ship. Build, deploy, and scale with unprecedented velocity.
+                {site.description}
               </p>
 
-              {/* Social Links */}
+              {/* Social Links. Empty until real accounts exist. */}
+              {socialLinks.length > 0 && (
               <div className="flex gap-6">
                 {socialLinks.map((link) => (
                   <a
@@ -47,6 +49,7 @@ export function FooterSection() {
                   </a>
                 ))}
               </div>
+              )}
             </div>
 
             {/* Link Columns */}
@@ -56,17 +59,12 @@ export function FooterSection() {
                 <ul className="space-y-4">
                   {links.map((link) => (
                     <li key={link.name}>
-                      <a
+                      <Link
                         href={link.href}
                         className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
                       >
                         {link.name}
-                        {"badge" in link && link.badge && (
-                          <span className="text-xs px-2 py-0.5 bg-primary text-primary-foreground rounded-full">
-                            {link.badge}
-                          </span>
-                        )}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
