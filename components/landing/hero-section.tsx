@@ -17,7 +17,7 @@ export function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % words.length);
-    }, 2500);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -89,7 +89,7 @@ export function HeroSection() {
                         animationDelay: `${i * 50}ms`,
                       }}
                     >
-                      {char}
+                      {char === " " ? "\u00A0" : char}
                     </span>
                   ))}
                 </span>

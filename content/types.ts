@@ -89,12 +89,35 @@ export type Metric = {
   detail?: string;
 };
 
-export type CodeExample = {
+/**
+ * One audience the site speaks to, shown as a tab.
+ *
+ * docs/positioning.md names a single buyer at "roughly 10 to 500 people", but
+ * every concrete detail under it describes a 20 to 100 person company. A two
+ * person startup has no manual process to automate and no board to convince,
+ * and a three hundred person company has both. Splitting them is what this
+ * type exists for.
+ */
+export type AudienceSegment = {
+  id: string;
+  /** Tab label. */
   label: string;
-  code: string;
+  /** Company size this segment covers, shown beside the tabs. */
+  headcount: string;
+  /** The situation, in the buyer's words rather than ours. */
+  situation: string;
+  /**
+   * Worked specifics, rendered as a quote rather than a spec sheet.
+   *
+   * One row per segment should set `emphasis`. That value renders large in the
+   * display face and becomes the card's focal point, so it belongs on the fact
+   * that does the most selling.
+   */
+  rows: { label: string; value: string; emphasis?: boolean }[];
 };
 
-export type DeveloperFeature = {
+/** Something true for every segment, so it sits outside the tabs. */
+export type Assurance = {
   title: string;
   description: string;
 };

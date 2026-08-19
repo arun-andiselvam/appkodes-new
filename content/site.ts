@@ -39,11 +39,37 @@ export const navLinks: NavLink[] = [
 ];
 
 /**
- * Industries cycled by the hero headline. Deliberately four, not the full
- * seven in the Industries menu: the headline rotates on a 2.5s cycle, so a
- * longer list means the highest-value segments may never appear on screen.
+ * What the hero headline cycles through.
+ *
+ * These stopped being a subset of the Industries menu on 19 August 2026. Two
+ * of them are not industries at all. B2B and B2C are business models that cut
+ * across every sector, and "your business" is nobody's industry. The list
+ * answers who the sentence is for rather than which markets we serve, so the
+ * Industries menu below stays the real taxonomy and this does not.
+ *
+ * "Your business" earns the last slot. A rotating list of sectors quietly
+ * excludes everyone it does not name, and most of this audience runs something
+ * that fits no label on the page. Ending on the catch all turns the rotation
+ * from a filter into an invitation.
+ *
+ * B2B and B2C, not "B2B Business". The headline already supplies the noun, so
+ * the longer form reads as "AI automation for B2B Business".
+ *
+ * The cost is dwell time. Eight words at the old 2.5s cycle ran twenty seconds
+ * end to end, long enough that most visitors would leave before their own
+ * segment appeared. The interval in hero-section.tsx drops to 2s to hold the
+ * full cycle near sixteen. Adding a ninth word means revisiting that again.
  */
-export const heroWords: string[] = ["healthcare", "finance", "retail", "logistics"];
+export const heroWords: string[] = [
+  "healthcare",
+  "finance",
+  "retail",
+  "logistics",
+  "media",
+  "B2B",
+  "B2C",
+  "your business",
+];
 
 export const heroCopy = {
   headline: "AI automation for",

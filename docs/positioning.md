@@ -39,6 +39,37 @@ This decision was made on 18 August 2026 and it overrides the earlier enterprise
 framing. Any copy that says "enterprise", "CIO", "procurement" or
 "transformation programme" is wrong and should be rewritten.
 
+### One range, four buyers
+
+Added 19 August 2026. "10 to 500 people" was written as a single segment and it
+is not one. Every concrete detail underneath it describes a company of roughly
+20 to 100. One person decides and there is no board, which is true at 20 and
+false at 300. There is no IT department, rarely true at 300. No budget line for
+open ended discovery, and a 300 person company has budget lines.
+
+So the range is claimed and only its middle is served. Four segments instead.
+
+| Segment | Size | What they lack | Fear that rules |
+| --- | --- | --- | --- |
+| Startup | 2 to 20 | The product itself | Cost, and speed |
+| Growing SMB | 20 to 100 | Anyone who owns the systems | Nobody understands it, downtime |
+| Established mid size | 100 to 500 | A pilot that reached production | Another dead pilot |
+| Existing product client | any | AI in what they already bought | Lock in |
+
+A startup has no manual process worth automating and no legacy system to move,
+which flips the catalogue of ready made bases from an embarrassment in the
+footer into the fastest route to a launch. The mid size buyer has usually had
+an AI pilot die already, so fear four is not a worry to them but a memory.
+
+The fourth row is warm pipeline that nobody had written down. Those clients
+bought an Appkodes product, so we know the codebase because we wrote it. No
+competitor can say that. Treating them purely as a legacy line of business
+leaves the one unfair advantage in the business unused.
+
+Segments are cut by size, not by industry. Industry changes the example. Size
+changes the offer, since it decides who signs, how fast, and whether there is
+a system to work on at all.
+
 ### What this buyer fears
 
 1. Cost that is not predictable. There is no budget line for open ended discovery.
@@ -72,10 +103,28 @@ Healthcare, Financial Services, Retail and eCommerce, Logistics and Mobility,
 Manufacturing and Supply Chain, Media and Entertainment, Real Estate and
 Hospitality.
 
-The hero headline rotates only four of these: healthcare, finance, retail,
-logistics. The headline cycles every 2.5 seconds, so a longer list means the
-best segments never appear on screen. The full seven belong in the Industries
-menu.
+The hero rotation stopped being a subset of this list on 19 August 2026. It
+runs healthcare, finance, retail, logistics, media, B2B, B2C and "your
+business". Two of those are not industries. B2B and B2C are business models
+that cut across every sector, and "your business" is nobody's industry.
+
+So the two lists answer different questions now. This one is the taxonomy and
+belongs in the Industries menu. The hero list answers who the sentence is for.
+
+**"Your business" earns the last slot.** A rotating list of sectors quietly
+excludes everyone it does not name, and most of this audience runs something
+that fits no label on the page. Ending on the catch all turns the rotation from
+a filter into an invitation.
+
+B2B and B2C, not "B2B Business". The headline supplies the noun already, so the
+longer form reads as "AI automation for B2B Business".
+
+**The cost is dwell time, and it is real.** Eight words at the old 2.5 second
+cycle ran twenty seconds end to end, long enough that most visitors leave
+before their own segment appears. The interval drops to 2 seconds, which holds
+the full cycle near sixteen. A ninth word means solving this again, probably by
+cutting rather than speeding up, since the reveal animation stops reading as
+deliberate below about 1.5 seconds.
 
 ## The offer
 
@@ -331,7 +380,18 @@ content on any site. It reads "You decide what the model sees" now, which names
 the control the buyer actually holds and stays true whether the model runs on
 our hardware or theirs.
 
-The chip row carries commitments rather than credentials. The label above it is
+**Layout.** This was a left and right split, which worked at four cards and
+broke at six. The left column ran out at the chip row while the right kept
+going for another four hundred pixels, ending the section on a large empty
+rectangle. Sticky left would have hidden that and still left six items stacked
+in a narrow column with the section running past a thousand pixels tall.
+Security content has to scan fast, so the header sits on top and the cards run
+three across in two rows. The imbalance cannot return whatever the card count
+does next.
+
+The chip row carries commitments rather than credentials, and it now closes the
+section under the cards rather than sitting beside the headline. Statement,
+then proof, then the part that goes in the contract. The label above it is
 load bearing. Five short tags in a security section read as badges unless
 something says otherwise, and that misreading is the entire reason the old row
 had to go.
@@ -341,11 +401,62 @@ back. A real badge beats every paragraph in this section. Worth asking whether
 one is worth pursuing, since a healthcare or finance buyer will ask, and
 "we describe our process" only carries a conversation so far.
 
+### Who we work with (was "For developers")
+
+The section sold an SDK. `npm install @appkodes/sdk`, an API key, a deploy
+call, all under "Built by devs. For devs." The package does not exist and this
+buyer often has no developers at all. Both links went to `#`.
+
+The tabbed panel stays because the interaction is the best on the site. What it
+holds is now one tab per segment, answering the question the visitor arrived
+with, which is whether we have done this for somebody their size.
+
+The left column carries what does not change with size and the right panel
+carries what does. Each line in the left grid answers one of the five fears, in
+the order this document ranks them.
+
+Files moved with the meaning. `content/developers.ts` is `content/audiences.ts`
+and the component matches. The section id went from `#developers` to
+`#audiences`, and nothing linked to the old one.
+
+**All four segments are written.** Four weeks to live in the startup tab
+revives the promise appkodes.com made for years, a product in a month, which
+this document already calls closer to this audience than the enterprise pitch
+was.
+
+Time to live reads 4, 6 and 8 weeks across the first three tabs. In order it
+says the obviously true thing, that a bigger business takes longer, and it
+keeps the six week average in the results section honest instead of quietly
+contradicting it. Worth preserving when those figures are replaced with real
+ones.
+
+The emphasised row moves with the segment rather than staying on the clock.
+Startup and growing business lead on time because speed is what those buyers
+lack. Established leads on "Production", echoing the fear named one row above
+it, since speed is not what that buyer is short of.
+
+**The fourth tab changes a decision this document made.** Above, the catalogue
+is sent to the footer, and that is still right for the catalogue. It was wrong
+for the customers. Over a thousand of them bought something we wrote, which
+makes discovery a cost every competitor carries and we do not. Three weeks to
+live undercuts every other tab for that reason alone.
+
+Worth deciding on purpose: this puts an existing customer path into a section
+whose job is winning new ones. The counter argument is that it belongs on its
+own page or in the footer beside the catalogue. It sits here for now because a
+tab costs nothing and the segment was otherwise invisible.
+
+**No link out yet.** The panel would naturally end on a next step, but the CTA
+section still reads "Join thousands of teams" and "Start free, scale
+infinitely". Pointing a founder at that is worse than no link, so the CTA gets
+rewritten first.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
   possibilities." and shows a fake SDK code sample.
 - Replace fictional testimonials with real clients.
+- Rewrite the CTA section, which still sells a free SaaS signup.
 - Confirm whether any certification is held, or worth pursuing.
 - Supply the four real outcome figures for the Results section.
 - Replace the pricing tiers with engagement models.
