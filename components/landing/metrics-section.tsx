@@ -46,17 +46,25 @@ function AnimatedCounter({
     return () => cancelAnimationFrame(frame);
   }, [end, inView]);
 
+  // A percent sign sets tight against its numeral. A word like "hrs" needs
+  // the space, so the gap belongs on the suffix rather than on the flex.
+  const tightSuffix = suffix === "%";
+
   return (
     <div
       ref={ref}
-      className="flex items-baseline gap-2 font-display tracking-tight tabular-nums text-5xl lg:text-6xl"
+      className="flex items-baseline font-display tracking-tight tabular-nums text-5xl lg:text-6xl"
     >
       <span>
         {prefix}
         {count.toLocaleString()}
       </span>
       {suffix ? (
-        <span className="text-xl lg:text-2xl text-muted-foreground">{suffix}</span>
+        <span
+          className={`text-xl lg:text-2xl text-muted-foreground ${tightSuffix ? "" : "ml-2"}`}
+        >
+          {suffix}
+        </span>
       ) : null}
     </div>
   );

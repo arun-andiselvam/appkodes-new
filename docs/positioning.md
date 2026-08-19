@@ -191,10 +191,19 @@ claim on the page. One tile also said 184 countries served, a scroll below the
 track record section saying 50+.
 
 The section counts outcomes now, which is the version this document already
-argued for. Four figures on four different axes: hours returned each week,
-weeks to a costed plan, months to payback, and how many automations are still
-running a year on. That last one exists to answer the fear that an AI project
-dies at proof of concept.
+argued for. Four figures on four different axes: businesses automated, hours
+handed back each week, weeks from first call to live, and the percentage cut
+from what the process cost. Together they answer how many, how much, how long
+and what it costs after.
+
+The before figure sits in the detail line of the hours tile rather than in a
+tile of its own. A saving and the thing it was saved from are one comparison,
+and giving it two of four slots would have pushed the money off the row.
+
+The client count here is the AI subset, so it is a smaller and later number
+than the 1000+ on the rest of the site. That is the honest way round. Appkodes
+has 15 years of delivery and rather less than that of AI work, and blurring
+the two is already forbidden above.
 
 Reusing 2000+, 1000+ and 50+ here was the obvious cheap fix and it is the wrong
 one. The hero ticker spends all four verified figures and the track record
@@ -205,12 +214,19 @@ The nav link above this section read "Case Studies" and pointed at `#studio`.
 It now reads "Results" and points at `#results`. Real case studies get their
 own section once there is client work cleared to name.
 
-**Blocking before launch.** Three of the four figures are drafts.
+**Blocking before launch.** All four figures are drafts.
 
-- 38 hours a week returned, 5 months to payback and 90% still running are all
-  invented. They need the real averages from delivered automations.
-- Only "2 weeks to a costed plan" is backed, and it comes from the process in
-  `content/how-it-works.ts` rather than from measurement.
+- 40 businesses, 38 hours from 52, 6 weeks to live and 42% cut are invented.
+  Every one needs a real figure out of delivery records.
+- An earlier draft had one sourced number, two weeks to a costed plan, taken
+  from the process in `content/how-it-works.ts`. Time to go live replaced it on
+  19 August 2026 because it answers a better question. The trade is that the
+  section now carries nothing sourced at all.
+
+The drafts are arithmetically consistent and the real figures should stay that
+way. 38 hours saved out of 52 is 73% of the labour, while the money saved reads
+lower at 42% because tooling and our fee sit inside that number. Someone will
+check.
 
 The rule from the track record panel applies here without change. Publishing an
 invented average repeats what the template did when it put "98% faster
@@ -221,7 +237,7 @@ deployment" next to Stripe.
 - Rewrite the process section. It still says "Three steps. Infinite
   possibilities." and shows a fake SDK code sample.
 - Replace fictional testimonials with real clients.
-- Supply the three real outcome figures for the Results section.
+- Supply the four real outcome figures for the Results section.
 - Replace the pricing tiers with engagement models.
 - Build the Industries section and the dropdown navigation once destination
   pages exist.
