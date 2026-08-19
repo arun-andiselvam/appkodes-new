@@ -59,9 +59,20 @@ import type { TestimonialSlide } from "./types";
  *
  * The titles on the channel are written for search and do not belong on a
  * page. One reads "Positive client review for our Amazon Clone product -
- * Appkdoes Fantacy", misspelling the company. Captions below say what the clip
- * is, and no speaker is named because the channel does not name them. Guessing
- * one is exactly what this file was cleaned of.
+ * Appkdoes Fantacy", misspelling the company. Captions say what the clip is,
+ * and no speaker is named because the channel does not name them.
+ *
+ * A first pass captioned one of these "Seven figures of trade, and the team
+ * behind it". That number was invented outright. Nothing on the channel, the
+ * thumbnail or the description supports it, and it was the same fabrication
+ * this file exists to have removed. Every line below now traces to the video
+ * description on the channel, with the marketing adjectives dropped.
+ *
+ * The descriptions name which product each client bought, which is the one
+ * genuinely useful fact the channel carries. Two are Joysale, a Letgo style
+ * marketplace, one is Fantacy for Amazon style retail and one is Airfinch for
+ * Airbnb style rentals. The Airfinch client left the same review on GoodFirms
+ * first, which the channel says outright.
  *
  * !! ALL FOUR ARE ABOUT CATALOGUE PRODUCTS !!
  *
@@ -76,28 +87,36 @@ export const testimonialSlides: TestimonialSlide[] = [
     kind: "video",
     id: "video-joysale",
     youtubeId: "XG2Lz8Sj6hY",
-    title: "Seven figures of trade, and the team behind it",
+    title: "A Joysale client on the product and the service",
+    description:
+      "He runs a marketplace built on Joysale, our Letgo style product. The clip is his own account of working with us.",
     poster: "/testimonials/yt-XG2Lz8Sj6hY.jpg",
   },
   {
     kind: "video",
-    id: "video-marketplace",
+    id: "video-fantacy",
     youtubeId: "ZaTmxoCxKO8",
-    title: "A marketplace client on how the build went",
+    title: "A Fantacy client on the build",
+    description:
+      "Fantacy is our Amazon style retail product. He goes through what was built and how the work ran.",
     poster: "/testimonials/yt-ZaTmxoCxKO8.jpg",
   },
   {
     kind: "video",
-    id: "video-rentals",
+    id: "video-airfinch",
     youtubeId: "2zfgzGZCpF8",
-    title: "A rentals client on working with the team",
+    title: "An Airfinch client, filmed after his written review",
+    description:
+      "Airfinch is our Airbnb style rentals product. He had already left the same review on GoodFirms before recording this.",
     poster: "/testimonials/yt-2zfgzGZCpF8.jpg",
   },
   {
     kind: "video",
-    id: "video-support",
+    id: "video-joysale-support",
     youtubeId: "14MBwxh8H3I",
-    title: "What the support actually looks like",
+    title: "A second Joysale client on the same product",
+    description:
+      "Another marketplace running on Joysale. Worth watching beside the first, since the two bought the same thing.",
     poster: "/testimonials/yt-14MBwxh8H3I.jpg",
   },
   {

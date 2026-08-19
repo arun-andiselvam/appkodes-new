@@ -11,9 +11,9 @@ import { awards } from "@/content/recognition";
  * belong to somebody else's brand, while these four are the content of the
  * section and their colour is part of being recognisable.
  *
- * The artwork is dark on transparent, so it needs a light plate under it to
- * survive dark mode. A tinted card does that and doubles as the thing that
- * separates one badge from the next.
+ * The artwork is transparent PNG and stays that way in both themes. A white
+ * plate was tried under it for dark mode and printed four grey rectangles
+ * across the section, which was worse than the contrast it was solving.
  */
 export function RecognitionSection() {
   const [sectionRef, isVisible] = useInView<HTMLElement>();
@@ -68,13 +68,18 @@ export function RecognitionSection() {
                 style={{ transitionDelay: `${index * 90}ms` }}
               >
                 {/*
-                  The artwork is transparent, so nothing sits behind it in
-                  light mode. Dark mode is the exception: these badges are dark
-                  navy and red, and on a dark page they would read as smudges.
-                  The plate only appears there, and the box keeps its size in
-                  both so the grid does not shift between themes.
+                  Nothing sits behind the artwork in either theme. A white
+                  plate was tried for dark mode and it was worse than the
+                  problem, printing four grey rectangles across the section.
+                  The transparent PNGs are the point.
+
+                  Contrast was measured rather than guessed. Against #0a1229
+                  the badges average between 3.5:1 and 6.7:1, so they read
+                  fine. Only the darkest navy outlines fall away into the
+                  background, which costs a little edge definition and looks
+                  deliberate rather than broken.
                 */}
-                <span className="w-full flex items-center justify-center rounded-sm py-4 px-3 dark:bg-white/90">
+                <span className="w-full flex items-center justify-center py-4 px-3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={award.logo}

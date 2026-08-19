@@ -264,10 +264,19 @@ function SlideCard({ slide }: { slide: TestimonialSlide }) {
         <VideoDialog slide={slide} />
         <figcaption className="p-6 lg:p-8 flex-1 flex flex-col">
           {/* Same slot the reviews use for Trustpilot, so the two read as a pair. */}
-          <SourceMark source="youtube" className="mb-4" />
-          <p className="text-lg leading-snug">{slide.title}</p>
+          <SourceMark source="youtube" className="mb-5" />
+          {/*
+            Set at the same size and colour as a review body rather than a
+            heading. The two card types sit next to each other in one rail, and
+            a larger caption made the videos read as a different component
+            wedged into the same row.
+          */}
+          <p className="leading-relaxed text-foreground/80">{slide.title}</p>
+          {slide.description && (
+            <p className="mt-3 leading-relaxed text-muted-foreground">{slide.description}</p>
+          )}
           {slide.speaker && (
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-auto pt-6 text-sm text-muted-foreground">
               {[slide.speaker, slide.role].filter(Boolean).join(", ")}
             </p>
           )}
@@ -333,16 +342,44 @@ export function TestimonialsSection() {
    * the reorder lands immediately after. The section sits well below the fold,
    * so it has always happened before anyone scrolls to it.
    *
-   * Videos are shuffled in with the reviews rather than pinned to the front.
-   * They surface anywhere in the run, which is the point: a visitor who only
-   * reads the first few cards should still meet one sometimes, and the four
-   * are not so buried that the mix stops working.
+   * Videos shuffle in with the reviews rather than sitting pinned at the
+   * front, so a visitor who reads only the first few cards still meets one
+   * some of the time.
+   *
+   * The first slot is the exception and always holds a review. A video opening
+   * the section leads with a thumbnail and a play button, which asks for a
+   * click before it has given the reader anything. A review is readable where
+   * it sits, so the section starts by being useful and the videos are found
+   * rather than demanded.
    */
   const [slides, setSlides] = useState<TestimonialSlide[]>(testimonialSlides);
 
   useEffect(() => {
-    setSlides(shuffled(testimonialSlides));
+    const order = shuffled(testimonialSlides);
+    const firstReview = order.findIndex((slide) => slide.kind === "review");
+    if (firstReview > 0) {
+      [order[0], order[firstReview]] = [order[firstReview], order[0]];
+    }
+    setSlides(order);
   }, []);
+
+  /*
+   * Put the rail back to the start once the new order has actually rendered.
+   *
+   * Resetting inside the shuffle effect was too early. setSlides is not
+   * applied synchronously, so that call landed on the old DOM and the browser
+   * then moved the scroll anyway: reordering children of a snap container
+   * makes it anchor to whichever card was in view, which leaves the rail
+   * somewhere in the middle with cards to the left the reader never saw.
+   *
+   * Keying this on slides runs it after the reorder is on screen, and the
+   * behaviour is instant rather than smooth so nobody watches it travel back.
+   */
+  useEffect(() => {
+    // scrollTo fires a scroll event, which the rail's onScroll turns into a
+    // syncEdges call, so the arrow disabled states follow without help here.
+    trackRef.current?.scrollTo({ left: 0, behavior: "instant" });
+  }, [slides]);
 
   const videoCount = slides.filter((slide) => slide.kind === "video").length;
   const reviewCount = slides.length - videoCount;
@@ -456,7 +493,7 @@ export function TestimonialsSection() {
       <div
         ref={trackRef}
         onScroll={syncEdges}
-        className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-px-6 lg:scroll-px-12 px-6 lg:px-12 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-6 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scroll-px-6 lg:scroll-px-12 px-6 lg:px-12 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, index) => (
           <div

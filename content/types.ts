@@ -66,6 +66,8 @@ export type TestimonialSlide =
       youtubeId: string;
       /** Caption on the card and the accessible name of the player. */
       title: string;
+      /** What the clip is, taken from the channel rather than invented. */
+      description?: string;
       /**
        * Who is speaking. Optional because the clips are on the channel without
        * the speaker named anywhere, and a name nobody can confirm is the thing
@@ -146,6 +148,14 @@ export type AudienceSegment = {
 export type Assurance = {
   title: string;
   description: string;
+};
+
+/** A place where the team and a client were photographed together. */
+export type MeetingPlace = {
+  /** City or country, as the company labels it. */
+  location: string;
+  /** Path under /public. */
+  image: string;
 };
 
 /** A badge awarded by somebody outside the company. */

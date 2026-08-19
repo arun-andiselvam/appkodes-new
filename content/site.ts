@@ -98,3 +98,42 @@ export const industries: string[] = [
   "Media & Entertainment",
   "Real Estate & Hospitality",
 ];
+
+/**
+ * The closing section.
+ *
+ * It read "Ready to build something great?" over "Join thousands of teams
+ * shipping faster with Appkodes. Start free, scale infinitely.", with buttons
+ * for "Start building free" and "Talk to sales", and "No credit card
+ * required" underneath. Every line of that sells a SaaS subscription. There is
+ * nothing to sign up for, no free tier, and the thousands of teams were never
+ * counted.
+ *
+ * The headline was also a rhetorical question, which the voice rules ban
+ * outright, and questions are the weakest way to close.
+ *
+ * It now picks up the section immediately above it. That one ends on
+ * photographs of clients and the team around a table under "Not every meeting
+ * happens on a screen", so the close offers the same two options back and
+ * lets the reader take whichever is easier. Landing on a fresh idea after
+ * those pictures wasted the warmest moment on the page.
+ *
+ * The offer underneath is still the one in content/how-it-works.ts, so the
+ * page ends on the same first step the process section describes rather than
+ * inventing a new one. Two weeks, a price named up front, and a plan that is
+ * yours either way answers the first and fifth fears in docs/positioning.md.
+ *
+ * "Talk to sales" is gone for the same reason "enterprise" is. This buyer is
+ * one person who decides, and there is no sales team between them and the
+ * people who build.
+ */
+export const ctaCopy = {
+  eyebrow: "Next step",
+  headline: "A table or a call.",
+  headlineAccent: "Either one works.",
+  description:
+    "Near one of our offices, lunch is easy to arrange. If you are not, a call does the same job. Either way the first step is two weeks at a price named before anything starts. You keep the plan whether or not we build it.",
+  primaryCta: "Book an automation review",
+  secondaryCta: "See how we work",
+  secondaryHref: "#how-it-works",
+} as const;

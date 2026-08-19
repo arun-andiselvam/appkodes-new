@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useInView } from "@/hooks/use-in-view";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { AnimatedTetrahedron } from "./animated-tetrahedron";
+import { ctaCopy } from "@/content/site";
 
 export function CtaSection() {
   const [sectionRef, isVisible] = useInView<HTMLDivElement>({ threshold: 0.2 });
@@ -18,10 +18,16 @@ export function CtaSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="contact" ref={sectionRef} className="relative pt-12 lg:pt-16 pb-20 lg:pb-24 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        {/*
+          The border was border-foreground at full strength, ten times the
+          weight of every other panel on the page, all of which sit at /10. A
+          fifth keeps this box reading as the closer without shouting at the
+          sections above it.
+        */}
         <div
-          className={`relative border border-foreground transition-all duration-1000 ${
+          className={`relative border border-foreground/20 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
           onMouseMove={handleMouseMove}
@@ -34,46 +40,53 @@ export function CtaSection() {
             }}
           />
           
-          <div className="relative z-10 px-8 lg:px-16 py-16 lg:py-24">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-              {/* Left content */}
-              <div className="flex-1">
-                <h2 className="text-4xl lg:text-7xl font-display tracking-tight mb-8 leading-[0.95]">
-                  Ready to build
+          {/*
+            The 500 pixel tetrahedron that used to sit on the right is gone,
+            and the box closed up rather than leaving a hole where it was. The
+            buttons take that side instead, so the panel is wide and short
+            instead of wide and half empty, and the whole close now fits on one
+            screen with the photographs above it.
+          */}
+          <div className="relative z-10 px-8 lg:px-12 py-12 lg:py-14">
+            <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 lg:items-end">
+              <div className="max-w-2xl">
+                <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-5">
+                  <span className="w-8 h-px bg-foreground/30" />
+                  {ctaCopy.eyebrow}
+                </span>
+                {/*
+                  Was lg:text-7xl, the largest type on the page after the hero.
+                  At 6xl it matches every other section heading and the panel
+                  stops needing the height.
+                */}
+                <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-6 leading-[0.95]">
+                  {ctaCopy.headline}
                   <br />
-                  something great?
+                  <span className="text-muted-foreground">{ctaCopy.headlineAccent}</span>
                 </h2>
 
-                <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
-                  Join thousands of teams shipping faster with Appkodes. 
-                  Start free, scale infinitely.
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-start gap-4">
-                  <Button
-                    size="lg"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
-                  >
-                    Start building free
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
-                  >
-                    Talk to sales
-                  </Button>
-                </div>
-
-                <p className="text-sm text-muted-foreground mt-8 font-mono">
-                  No credit card required
+                <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
+                  {ctaCopy.description}
                 </p>
               </div>
 
-              {/* Right animation */}
-              <div className="hidden lg:flex items-center justify-center w-[500px] h-[500px] -mr-16">
-                <AnimatedTetrahedron />
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-4 shrink-0">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
+                >
+                  {ctaCopy.primaryCta}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                {/* Points somewhere real, unlike the buttons it replaces. */}
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+                >
+                  <a href={ctaCopy.secondaryHref}>{ctaCopy.secondaryCta}</a>
+                </Button>
               </div>
             </div>
           </div>

@@ -597,6 +597,67 @@ rather than leaving the reader to spot it. They are directory awards rather
 than juried prizes, which is the right weight to give the section. A recent
 badge, or one naming the automation work, would be worth more than all four.
 
+### In person (new)
+
+Sits between the awards and the closing call. A visitor who reaches the bottom
+of this page has met nobody: every section above is type, hairlines and logos,
+which suits the argument and leaves the company feeling like a website. Four
+photographs of clients and the team at a table fix that in the one place it
+counts, immediately before asking for the meeting.
+
+The pictures come from appkodes.com and cover four of the five delivery
+locations this document lists. India is the one without a photograph, so the
+copy says "five countries" and shows four rather than implying the set is
+complete.
+
+**The claim is who you meet, not who travels.** These are places Appkodes
+already has people, so the paragraph promises that the person across the table
+is usually the one who builds it. That is the same promise as the "One person
+to call" assurance in content/audiences.ts, and the two are meant to agree.
+
+An earlier draft opened with "four are below", which made the reader count
+photographs, and closed by insisting the pictures were not stock, a defence
+nobody had asked for. Both spent the paragraph on the section instead of on the
+client.
+
+**Layout is constrained by the source.** appkodes.com publishes these at 286 by
+218 and nothing larger exists, checked rather than assumed. Any collage built
+around one big hero image would enlarge a 286 pixel photograph past 600 and
+look it, so the pictures stay near native size and the variation comes from
+staggered column offsets instead. A flat four across row was tried first and
+read as a contact sheet.
+
+### The closing call
+
+It read "Ready to build something great?" over "Join thousands of teams
+shipping faster with Appkodes. Start free, scale infinitely.", with buttons for
+"Start building free" and "Talk to sales" and "No credit card required"
+underneath. Every line sold a SaaS subscription that does not exist, the
+headline was a rhetorical question the voice rules ban, and both buttons went
+to `#`.
+
+It now answers the section above it. Those photographs end on "Not every
+meeting happens on a screen", so the close offers the same two options back and
+lets the reader take whichever is easier. Landing on a fresh idea after those
+pictures wasted the warmest moment on the page.
+
+The offer underneath is the one in content/how-it-works.ts, so the page ends on
+the same first step the process section opens with rather than inventing a new
+one. "Talk to sales" is gone for the same reason "enterprise" is.
+
+The section had no id, which is why nothing on the page could link to it. It is
+`#contact` now, so the audiences panel can finally point somewhere.
+
+**Compacted.** The 500 pixel tetrahedron is deleted rather than hidden, and its
+component file went with it since the closing call was its only user. The
+buttons took that side, so the panel is wide and short instead of wide and half
+empty. The heading dropped from 7xl to 6xl and matches every other section.
+
+The border was `border-foreground` at full strength, the only one on the site.
+Every other panel sits at /10, so this one was ten times heavier than anything
+near it. It is /20 now, a step above the standard so the closer still reads as
+a destination.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
