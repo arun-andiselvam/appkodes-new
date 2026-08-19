@@ -43,13 +43,49 @@ export type Plan = {
   popular: boolean;
 };
 
-export type Testimonial = {
-  quote: string;
-  author: string;
-  role: string;
-  company: string;
-  metric: string;
-};
+/**
+ * One card in the testimonials slider.
+ *
+ * Reviews and client videos share the slider, so they share a type. A video
+ * can then sit between two reviews rather than being penned into its own row,
+ * and the order in the array is the order on screen.
+ */
+export type TestimonialSlide =
+  | {
+      kind: "review";
+      id: string;
+      /** The reviewer's own display name on Trustpilot. */
+      name: string;
+      /** ISO country code, shown beside the date. */
+      country: string;
+      /** Month and year, e.g. "Apr 2025". */
+      date: string;
+      /** Their words, cut only at a sentence boundary and never reworded. */
+      text: string;
+      /**
+       * Path under /public. Downloaded rather than hotlinked, which keeps
+       * img-src closed and survives Trustpilot moving their CDN. Absent where
+       * the reviewer has no picture, and initials show instead.
+       */
+      photo?: string;
+    }
+  | {
+      kind: "video";
+      id: string;
+      /** YouTube id, the part after v= or youtu.be/. */
+      youtubeId: string;
+      /** Caption on the card and the accessible name of the player. */
+      title: string;
+      /**
+       * Who is speaking. Optional because the clips are on the channel without
+       * the speaker named anywhere, and a name nobody can confirm is the thing
+       * this section had to be cleaned of once already.
+       */
+      speaker?: string;
+      role?: string;
+      /** Path under /public, never a YouTube thumbnail URL. */
+      poster: string;
+    };
 
 export type Integration = {
   name: string;

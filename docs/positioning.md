@@ -451,11 +451,113 @@ section still reads "Join thousands of teams" and "Start free, scale
 infinitely". Pointing a founder at that is worse than no link, so the CTA gets
 rewritten first.
 
+### What people say (testimonials)
+
+The section carried four invented quotes. Sarah Chen at Meridian Labs, Marcus
+Webb at Flux Systems, Elena Rodriguez at Beacon AI, James Liu at Prism
+Analytics. None of those people exist, they praised deployment pipelines and
+99.99% uptime, and one carried a fabricated uptime figure beside a fabricated
+name. Same failure as the SOC 2 badge and the Stripe stat.
+
+**What the public record says.** Read off the profiles on 19 August 2026.
+
+- Trustpilot: 4.4 out of 5 from 29 reviews, rated Excellent. 20 reviews are
+  reachable, of which 17 are five star and 3 are one star. Business unit id
+  `5fec4eaf01d2f90001ab4386`.
+- Clutch: 2.5 out of 5 from 2 reviews.
+
+Every positive review is about the service relationship. Seven years across
+four projects, three years of responsive support, a healthcare app launched
+quickly. All three negatives are about catalogue scripts, complaining they are
+outdated and charge extra for basic features. The public record argues for the
+repositioning rather than against it, and it is another reason to keep the
+catalogue away from this part of the site.
+
+**Sixteen reviews are on the page, in a slider.** Names, dates and photographs
+are the reviewers' own. Long reviews are cut at a sentence boundary rather than
+mid thought and nothing is reworded. Trustpilot's own titles are dropped, since
+it builds them from the opening words and half arrive truncated mid sentence.
+
+**The page says outright that we chose them.** An earlier draft claimed we
+could not pick which reviews appeared, which stopped being true the moment they
+were filtered to five star. Copy now reads that we did choose, next to a score
+that counts all 29 and a link to the lot. Admitting the pick beside an
+uncurated number is both true and the stronger claim, and a curated wall
+passing itself off as the whole record is the failure this section already
+shipped once.
+
+**The embed was abandoned.** A TrustBox was built first and rendered empty, its
+own logo and no reviews. Its main.js merges search and hash, so the URL was not
+the problem. Three causes remain and none can be tested from outside the
+account: review carousels are generally a paid feature, TrustBoxes check the
+referring domain against registered ones, and the templateId could not be
+validated because every id returns 200 off a generic shell. The rating is
+printed with the date it was checked instead, which needs re-checking whenever
+the site is touched.
+
+**Photographs are downloaded** into public/testimonials rather than hotlinked.
+That keeps img-src closed, survives Trustpilot moving their CDN, and means the
+page makes no third party request. Eight of the sixteen have one and the rest
+fall back to initials.
+
+**Trustpilot green is the one colour on the page that is not ours.** Stars and
+the wordmark carry it and nothing else does. Rendering their ratings in our
+blue would dress somebody else's data as our own design, when the argument of
+the section is that these numbers came from elsewhere. Worth a look at
+Trustpilot's brand guidelines before launch, since they have rules about
+recreating their star graphics.
+
+**Country flags sit on the corner of each portrait**, built from regional
+indicator letters rather than a sprite. Sixteen reviews span twelve countries,
+which is reach worth seeing rather than reading as another grey code. Windows
+Chrome ships no flag glyphs and renders the letters instead, which is a fair
+fallback.
+
+**Clutch stays off the site** while it reads 2.5 from two reviews. Raising it is
+a business task, not a website one.
+
+**Four client videos lead the slider.** They share the array with the reviews
+through a union type, and they sit first because a client on camera outranks
+anything in text.
+
+Nothing loads from YouTube until two deliberate clicks. The card opens a
+dialog, which still shows only a local still, and the iframe mounts on the play
+press inside it. That is the first moment we know somebody wants the video
+rather than a closer look at the card. Four autoloading embeds would pull
+several megabytes of player code onto a page that ships under one. Verified on
+the served page: no iframes and no requests to i.ytimg.com in the initial HTML.
+
+Thumbnails are downloaded like the portraits. Three are true 16:9, the fourth
+only publishes a 4:3 still and gets cropped to fit.
+
+**Captions are ours.** The titles on the channel are written for search and one
+misspells the company, reading "Positive client review for our Amazon Clone
+product - Appkdoes Fantacy". No speaker is named on any of the four because the
+channel does not name them, and inventing one is what this section had to be
+cleaned of.
+
+**All four are about catalogue products.** Joysale, the Amazon clone and the
+Airbnb clone. They prove Appkodes delivers and say nothing about the automation
+practice the rest of the page sells. Filming one automation client would be
+worth more than all four.
+
+**Every card reorders on every load** so the eleventh is read as often as the
+second. Twenty cards in a slider means most visitors see the first four and
+stop. The shuffle runs in an effect rather than during render, because
+randomising while rendering makes the server and client disagree and React
+throws a hydration mismatch. First paint uses the authored order, matching the
+server exactly, and the reorder lands before anyone scrolls down.
+
+Videos shuffle in with the reviews rather than sitting pinned at the front, so
+a visitor who reads only the first few cards still meets one some of the time.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
   possibilities." and shows a fake SDK code sample.
-- Replace fictional testimonials with real clients.
+- Name the speakers in the four client videos, or leave them unnamed.
+- Film a client of the automation practice. All four videos sell the catalogue.
+- Re-check the Trustpilot rating and date, or get a TrustBox that renders.
 - Rewrite the CTA section, which still sells a free SaaS signup.
 - Confirm whether any certification is held, or worth pursuing.
 - Supply the four real outcome figures for the Results section.

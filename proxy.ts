@@ -30,7 +30,14 @@ export default function proxy(request: NextRequest) {
     `img-src 'self' data: blob:`,
     `connect-src 'self' https://vitals.vercel-insights.com${isDev ? " ws: http://localhost:*" : ""}`,
     `frame-ancestors 'none'`,
-    `frame-src 'none'`,
+    // Client videos are the only thing this page frames. The host is the
+    // no-cookie one and the iframe is not mounted until a visitor presses
+    // play, so nothing reaches Google on load.
+    //
+    // widget.trustpilot.com was allowed here while a TrustBox was embedded.
+    // That embed rendered empty and was replaced by a plain link, so the
+    // permission went with it. See docs/positioning.md if it comes back.
+    `frame-src https://www.youtube-nocookie.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,
