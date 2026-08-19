@@ -260,3 +260,36 @@ export const trustpilotSnapshot = {
   checked: "19 August 2026",
   profileUrl: "https://www.trustpilot.com/review/appkodes.com",
 } as const;
+
+/**
+ * Real clients, restored.
+ *
+ * The template shipped a row under "Trusted by forward-thinking teams" listing
+ * Meridian Labs, Flux Systems, Beacon AI, Prism Analytics, Nova Tech, Quantum
+ * Corp, Atlas Digital and Vertex Labs. The first four are where the invented
+ * quotes came from and the other four appeared nowhere else. It went out with
+ * the fake testimonials on 19 August 2026, since asserting that eight
+ * companies which do not exist are clients is the thing this file is cleaned
+ * of.
+ *
+ * These six are the logos appkodes.com already publishes, so they are cleared
+ * by the company itself rather than by us. Files are the full size originals
+ * from the media library, not the 175 pixel carousel thumbnails, and they are
+ * copied into public/clients so the page depends on nothing at appkodes.com
+ * staying put.
+ *
+ * All six are dark artwork on transparent backgrounds, checked rather than
+ * assumed, which is why the row inverts in dark mode instead of disappearing.
+ *
+ * "Forward-thinking" is not coming back. docs/positioning.md bans the
+ * buzzwords, and a label that says what the row is beats one that flatters the
+ * reader.
+ */
+export const clientLogos = [
+  { name: "Bring the Noise", logo: "/clients/bring_the_noise.webp" },
+  { name: "ByChat", logo: "/clients/bychat.webp" },
+  { name: "Chosen", logo: "/clients/chosen.webp" },
+  { name: "Handy Feet", logo: "/clients/handy_feet.webp" },
+  { name: "Stuffill", logo: "/clients/stuffill.webp" },
+  { name: "VRA Health", logo: "/clients/vra_health.webp" },
+] as const;

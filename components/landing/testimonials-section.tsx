@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { useInView } from "@/hooks/use-in-view";
 import type { TestimonialSlide } from "@/content/types";
-import { testimonialSlides, trustpilotSnapshot } from "@/content/testimonials";
+import { clientLogos, testimonialSlides, trustpilotSnapshot } from "@/content/testimonials";
 
 /**
  * The poster, with a play button over it. Never the player.
@@ -500,6 +500,37 @@ export function TestimonialsSection() {
         <span className="ml-2 text-sm font-mono text-muted-foreground">
           {reviewCount} of {trustpilotSnapshot.reviewCount} reviews, plus {videoCount} videos
         </span>
+      </div>
+
+      {/* Client logo band */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mt-16 lg:mt-20 pt-12 border-t border-foreground/10">
+        <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase text-center">
+          Businesses we have built for
+        </p>
+      </div>
+
+      {/*
+        Two copies because the keyframe travels -50%, with the trailing gap
+        inside each set rather than on the flex parent. A gap on the parent
+        makes the halves unequal and the row jumps every loop, which is the
+        same bug the integrations marquees had.
+      */}
+      <div className="mt-10 flex overflow-hidden">
+        {[0, 1].map((setIndex) => (
+          <div key={setIndex} className="flex items-center gap-16 pr-16 shrink-0 marquee">
+            {clientLogos.map((client) => (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                key={`${client.name}-${setIndex}`}
+                src={client.logo}
+                alt={client.name}
+                loading="lazy"
+                aria-hidden={setIndex === 1}
+                className="h-8 lg:h-10 w-auto shrink-0 grayscale opacity-60 hover:opacity-100 transition-opacity duration-300 dark:invert"
+              />
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );
