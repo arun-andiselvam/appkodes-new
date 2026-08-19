@@ -54,6 +54,14 @@ export type Testimonial = {
 export type Integration = {
   name: string;
   category: string;
+  /**
+   * simple-icons export name, e.g. "siClaude".
+   *
+   * Optional on purpose. Some entries are capabilities rather than companies,
+   * and a few brands have had their marks pulled from the icon set. Anything
+   * without one falls back to a monogram, never to another brand's logo.
+   */
+  icon?: string;
 };
 
 export type DeliveryHub = {

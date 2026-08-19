@@ -232,6 +232,77 @@ The rule from the track record panel applies here without change. Publishing an
 invented average repeats what the template did when it put "98% faster
 deployment" next to Stripe.
 
+### What we build with (was "Integrations")
+
+The template listed twelve SaaS logos under "Works with everything you already
+use" and "200+ pre-built integrations". Both are product claims from a company
+that sells connectors. Appkodes sells the build, so the section says what the
+work is made of instead.
+
+One list used to be rendered twice, the second copy reversed, which meant the
+two rows carried no extra information. They hold different lists now. The top
+row is the models. The bottom row is the stack they get wired into, which is
+the half that decides whether an automation survives contact with a real
+business. Someone who can read the second row could hire another firm to keep
+it running, and saying so out loud is how this section answers the lock in
+fear without arguing about it.
+
+**Model families, never version numbers.** A page naming "GPT-5" or "Claude
+Opus 5" dates itself the week those are superseded, and a stale version number
+on a services site reads worse than no number. Families move slowly enough to
+publish. The category beside each name carries the job rather than a taxonomy,
+because a founder with no IT department gets more from "documents nobody wants
+to read" than from "LLM".
+
+A third row names the build tooling, and it is a different question from the
+other two. Everything in the stack row keeps running in the client's business
+after we leave. Nothing in the build row does, so mixing them would blur the
+one distinction the stack row exists to draw.
+
+That row is half AI coding tools and half the checks around them, which is
+deliberate. Coding assistants listed on their own invite the reader to ask what
+they are paying for, since the same tools sit two clicks away from anybody with
+a browser. Set beside the tests and the error tracking, the row says something
+the visitor cannot do at home. We build at that speed and we catch what the
+machine gets wrong. It also carries the 6 weeks claimed in the results section,
+because a buyer who doubts the number can look at the row and see where the
+time went.
+
+Tools sold to people who would rather build than hire are left off on purpose.
+Naming them argues the visitor should go away and do this themselves.
+
+**Logos.** Marks come from the `simple-icons` package, bundled rather than
+pulled from a CDN, so nothing on the page depends on somebody else's server
+staying up. They render in the current text colour instead of brand colour.
+Two dozen palettes across three rows would fight everything else on the page,
+and one tone keeps the name doing the reading while the mark works as texture.
+Dark mode then needs no second set of files.
+
+Twenty four of the thirty two entries have a mark. The other eight fall back to
+a lettered box at the same size. They never borrow another company's logo,
+which matters most for GPT and Whisper, since both are OpenAI and a shared mark
+would read as one product.
+
+Worth knowing why four of those eight are missing. OpenAI, AWS, Twilio and
+Playwright have had their icons pulled from the set, which happens when a brand
+owner asks or the licence is unclear. Those companies restrict third party use
+of their marks more actively than most.
+
+**Trademark, needs a decision.** Showing vendor logos can read as a partnership
+that does not exist. Naming tools you work with is ordinary practice and a
+weaker claim than the client logos this document already bans, so the bar is
+lower here. It is still a call somebody should make on purpose. Dropping to
+names only costs nothing but the texture.
+
+**Confirm before launch.** The three rows are a claim about what Appkodes has
+worked with. Anything not actually delivered has to come off. A short honest
+row beats a long one that invites a question nobody can answer.
+
+**Known mismatch.** The Industries nav link still points at `#integrations`,
+which is this section. It was already wrong when the section listed SaaS logos
+and it is worse now that the section names models. Either the Industries
+section gets built or that link needs somewhere else to go.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
@@ -240,5 +311,6 @@ deployment" next to Stripe.
 - Supply the four real outcome figures for the Results section.
 - Replace the pricing tiers with engagement models.
 - Build the Industries section and the dropdown navigation once destination
-  pages exist.
+  pages exist. The nav link points at the models section in the meantime.
+- Confirm the model, stack and build tool lists against work actually delivered.
 - Decide what fills the empty right side of the hero.
