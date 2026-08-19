@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView } from "@/hooks/use-in-view";
-import { securityFeatures, certifications } from "@/content/security";
+import { securityFeatures, commitments, commitmentsLabel } from "@/content/security";
 
 export function SecuritySection() {
     const [sectionRef, isVisible] = useInView<HTMLElement>();
@@ -19,30 +19,47 @@ export function SecuritySection() {
               <span className="w-8 h-px bg-foreground/30" />
               Security
             </span>
+            {/*
+              "Trust is non-negotiable" is a sentence any company could run
+              above any content. This one names the control the buyer actually
+              holds, and it stays true whether the model runs on our hardware
+              or theirs.
+            */}
             <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-8">
-              Trust is
+              You decide what
               <br />
-              non-negotiable.
+              the model sees.
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed mb-12">
-              Your data is the part you cannot replace. We treat security as
-              delivery work from the first sprint, never as a checklist someone
-              signs off once the build is already finished.
+              Most AI projects hand your data to somebody else. We start from what the
+              work actually needs to see. Sometimes that is nothing at all, because the
+              model runs on a machine you already own.
             </p>
 
-            {/* Certifications */}
-            <div className="flex flex-wrap gap-3">
-              {certifications.map((cert, index) => (
-                <span
-                  key={cert}
-                  className={`px-4 py-2 border border-foreground/10 text-sm font-mono transition-all duration-500 ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  }`}
-                  style={{ transitionDelay: `${index * 50 + 200}ms` }}
-                >
-                  {cert}
-                </span>
-              ))}
+            {/*
+              This row used to read SOC 2, ISO 27001, HIPAA, GDPR, CCPA. None of
+              it was ours to claim. The label is load bearing now: five short
+              tags in a security section read as badges unless something says
+              otherwise, and that misreading is the whole reason the old row had
+              to go.
+            */}
+            <div>
+              <span className="block text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">
+                {commitmentsLabel}
+              </span>
+              <div className="flex flex-wrap gap-3">
+                {commitments.map((commitment, index) => (
+                  <span
+                    key={commitment}
+                    className={`px-4 py-2 border border-foreground/10 text-sm font-mono transition-all duration-500 ${
+                      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                    }`}
+                    style={{ transitionDelay: `${index * 50 + 200}ms` }}
+                  >
+                    {commitment}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 

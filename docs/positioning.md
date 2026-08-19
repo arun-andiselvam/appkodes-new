@@ -303,11 +303,50 @@ which is this section. It was already wrong when the section listed SaaS logos
 and it is worse now that the section names models. Either the Industries
 section gets built or that link needs somewhere else to go.
 
+### Security
+
+**The template shipped claims that were not safe to publish.** Four cards and a
+chip row asserted SOC 2 Type II with "independently audited security controls",
+"full compliance" with GDPR and HIPAA, plus badges for ISO 27001 and CCPA. The
+claims discipline above already banned all of it.
+
+This was a worse problem than the fabricated Stripe stat, and the difference is
+worth naming. A SOC 2 claim is not marketing language that a reader discounts.
+Either an auditor issued a report or nobody did, and a healthcare buyer is
+entitled to act on the answer. Removing it was not optional.
+
+The section describes process instead, which is what this document asks for.
+Every line on the page is something Appkodes can make true by deciding to, with
+no auditor involved.
+
+Six cards, ordered the way an SMB buyer asks. The first two cover where the
+data goes, which is the question that kills AI projects before they start, and
+the answer leans on the open weight models already named in the models row. The
+middle two cover what happens when the automation gets something wrong, because
+one day it will. The last two are about us, since the client is handing a
+supplier access to live systems.
+
+The headline was "Trust is non-negotiable", a sentence that could sit above any
+content on any site. It reads "You decide what the model sees" now, which names
+the control the buyer actually holds and stays true whether the model runs on
+our hardware or theirs.
+
+The chip row carries commitments rather than credentials. The label above it is
+load bearing. Five short tags in a security section read as badges unless
+something says otherwise, and that misreading is the entire reason the old row
+had to go.
+
+**Open question.** If Appkodes holds any certification, say so and it goes
+back. A real badge beats every paragraph in this section. Worth asking whether
+one is worth pursuing, since a healthcare or finance buyer will ask, and
+"we describe our process" only carries a conversation so far.
+
 ## Still to do
 
 - Rewrite the process section. It still says "Three steps. Infinite
   possibilities." and shows a fake SDK code sample.
 - Replace fictional testimonials with real clients.
+- Confirm whether any certification is held, or worth pursuing.
 - Supply the four real outcome figures for the Results section.
 - Replace the pricing tiers with engagement models.
 - Build the Industries section and the dropdown navigation once destination
