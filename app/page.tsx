@@ -8,7 +8,7 @@ import { IntegrationsSection } from "@/components/landing/integrations-section";
 import { SecuritySection } from "@/components/landing/security-section";
 import { AudiencesSection } from "@/components/landing/audiences-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
-import { PricingSection } from "@/components/landing/pricing-section";
+import { RecognitionSection } from "@/components/landing/recognition-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { FooterSection } from "@/components/landing/footer-section";
 
@@ -25,7 +25,7 @@ export default function Home() {
       <SecuritySection />
       <AudiencesSection />
       <TestimonialsSection />
-      <PricingSection />
+      <RecognitionSection />
       <CtaSection />
       <FooterSection />
     </main>

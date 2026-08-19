@@ -1,10 +1,12 @@
 import type { SocialLink } from "./types";
 
 export const footerLinks = {
+  // "Pricing" pointed at #pricing, a section removed on 19 August 2026 along
+  // with its $0 and $29 tiers. Nothing replaced the anchor, so the link went
+  // with it rather than scrolling nowhere.
   Product: [
     { name: "Features", href: "#features" },
     { name: "How it works", href: "#how-it-works" },
-    { name: "Pricing", href: "#pricing" },
     { name: "Integrations", href: "#integrations" },
   ],
   Developers: [

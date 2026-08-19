@@ -541,6 +541,20 @@ Airbnb clone. They prove Appkodes delivers and say nothing about the automation
 practice the rest of the page sells. Filming one automation client would be
 worth more than all four.
 
+**The client logo band is back, with real logos.** The template ran a row
+under "Trusted by forward-thinking teams" naming Meridian Labs, Flux Systems,
+Beacon AI, Prism Analytics and four others. The first four are where the
+invented quotes came from and the rest appeared nowhere. It went out with the
+fake testimonials.
+
+Six logos replace them, taken from the carousel appkodes.com already publishes,
+so they are cleared by the company rather than by us. The full size originals
+were used rather than the 175 pixel carousel thumbnails. All six are dark
+artwork on transparent backgrounds, measured rather than assumed, which is why
+the row inverts in dark mode instead of disappearing. The label reads
+"Businesses we have built for", since "forward-thinking" is on the banned list
+and flatters the reader rather than describing the row.
+
 **Every card reorders on every load** so the eleventh is read as often as the
 second. Twenty cards in a slider means most visitors see the first four and
 stop. The shuffle runs in an effect rather than during render, because
@@ -550,6 +564,38 @@ server exactly, and the reorder lands before anyone scrolls down.
 
 Videos shuffle in with the reviews rather than sitting pinned at the front, so
 a visitor who reads only the first few cards still meets one some of the time.
+
+### Recognition (replaced Pricing)
+
+Pricing shipped three SaaS subscription tiers: $0 Starter, $29 Pro and a custom
+Enterprise, with features like "1GB storage" and "Up to 3 projects" under
+"Start free and scale as you grow". This document had already called those
+tiers wrong for a services business, and "enterprise" is banned outright. The
+section was removed on 19 August 2026, along with the footer link pointing at
+its anchor.
+
+**The engagement models now have nowhere to go.** This document says the
+pricing slot becomes Fixed Price, Hire Our Developer and Onsite Development.
+That plan is unbuilt and the slot is taken, so either they get their own
+section or the decision is dropped on purpose.
+
+Four industry awards fill the space instead: TopDevelopers, AppFutura,
+SoftwareWorld and ITFirms. They come from appkodes.com, so they are the
+company's own published claims. The source was one 1274 pixel strip, split into
+four images so the row wraps on a phone rather than shrinking into an
+unreadable band, and so each badge carries its own alt text.
+
+**No year is shown, and that is deliberate.** A first version printed 2023
+against all four. Only two earn it. TopDevelopers and ITFirms have 2023 set
+into their artwork, so the badge says it for itself. The other two print no
+year and 2023 was inferred from the strip landing on appkodes.com in March
+2024. Inferring a date and printing it as fact is the habit this site has been
+cleaned of, so the field is gone until real dates turn up.
+
+**All four are about app development, not automation**, and the copy says so
+rather than leaving the reader to spot it. They are directory awards rather
+than juried prizes, which is the right weight to give the section. A recent
+badge, or one naming the automation work, would be worth more than all four.
 
 ## Still to do
 
@@ -561,7 +607,8 @@ a visitor who reads only the first few cards still meets one some of the time.
 - Rewrite the CTA section, which still sells a free SaaS signup.
 - Confirm whether any certification is held, or worth pursuing.
 - Supply the four real outcome figures for the Results section.
-- Replace the pricing tiers with engagement models.
+- Supply real award years, or leave the badges undated.
+- Decide where the three engagement models live. Pricing is gone.
 - Build the Industries section and the dropdown navigation once destination
   pages exist. The nav link points at the models section in the meantime.
 - Confirm the model, stack and build tool lists against work actually delivered.

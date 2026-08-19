@@ -33,16 +33,6 @@ export type Step = {
   output: string;
 };
 
-export type Plan = {
-  name: string;
-  description: string;
-  /** null renders as "Custom" — the enterprise tier has no list price. */
-  price: { monthly: number | null; annual: number | null };
-  features: string[];
-  cta: string;
-  popular: boolean;
-};
-
 /**
  * One card in the testimonials slider.
  *
@@ -156,6 +146,16 @@ export type AudienceSegment = {
 export type Assurance = {
   title: string;
   description: string;
+};
+
+/** A badge awarded by somebody outside the company. */
+export type Award = {
+  /** Who gave it. */
+  name: string;
+  /** What it was given for. */
+  title: string;
+  /** Path under /public. */
+  logo: string;
 };
 
 export type SocialLink = {
