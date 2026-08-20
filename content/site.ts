@@ -14,23 +14,26 @@ export const site = {
    * The Hitasoft wordmark, replacing the Appkodes one on 20 August 2026.
    *
    * width and height are the asset's real pixels rather than a display size.
-   * Both places that render it size it in CSS (`h-8 w-auto`), so these numbers
+   * Both places that render it set the height in CSS - `h-7` in the header,
+   * `h-6` once it shrinks on scroll, `h-8` in the footer - so these numbers
    * only ever serve as the aspect ratio Next reserves space with, and a wrong
    * ratio is what makes a logo jump on load.
    *
-   * The file is derived from public/hitasoft-logo-c.png, which arrived as RGB
-   * with no alpha channel: the mark was composited on opaque white. The header
-   * is transparent until it is scrolled and the footer is the page background,
-   * so that white would have shown as a slab, glaringly so in dark mode. The
-   * .webp is the same artwork with the white keyed out and the transparent
-   * margin cropped off, 1662x432 down to 1623x392. That margin was dead space
-   * inside the box `h-8` sizes, which made the mark render smaller than the
-   * number asked for.
+   * The .webp is public/hitasoft-logo-c.png with its white background keyed
+   * out and the resulting transparent margin cropped off, 831x216 down to
+   * 818x167. The source does carry an alpha channel, but it only covers an
+   * outer border: 42 per cent of the file is opaque white sitting behind and
+   * between the letters, which rendered as a slab on the page background.
+   * Trusting that alpha and skipping the key is exactly the bug to avoid.
+   *
+   * That source is small for a logo, so: at `h-7` the mark draws 137 by 28,
+   * which the 818 by 167 asset still covers at 3x. Much beyond `h-12` would
+   * start to soften it.
    */
   logo: {
     src: "/hitasoft-logo.webp",
-    width: 1623,
-    height: 392,
+    width: 818,
+    height: 167,
     alt: "Hitasoft",
   },
   // A proof point rather than a label: the headline already says what we do,

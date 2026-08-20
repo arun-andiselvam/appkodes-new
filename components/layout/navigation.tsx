@@ -50,7 +50,7 @@ export function Navigation() {
               width={site.logo.width}
               height={site.logo.height}
               priority
-              className={`w-auto transition-all duration-500 ${isScrolled ? "h-8" : "h-10"}`}
+              className={`w-auto transition-all duration-500 ${isScrolled ? "h-6" : "h-7"}`}
             />
           </Link>
 
