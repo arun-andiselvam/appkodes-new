@@ -86,21 +86,43 @@
     -webkit-text-fill-color: transparent;
   }
   
+  /*
+   * Both keyframes travel a full -100%, and the class goes on each identical
+   * set rather than on a parent wrapping them. A percentage in a
+   * transform resolves against the element's own width, so -100% is exactly
+   * one set: when the first set has walked its own width off to the left, the
+   * second is sitting precisely where the first began, and the reset to 0 is
+   * invisible.
+   *
+   * It was -50%, which is only correct when the animated element is a single
+   * parent holding both sets and carrying no gap of its own. Nothing here was
+   * built that way. The three integration rows and the client logo band put
+   * the class on each set, so they were sliding half a set and snapping. The
+   * hero was worse: its parent was the animated element and flex had sized it
+   * to the viewport, so -50% was 720px of a 1440px box, a distance with no
+   * relationship to the content at all.
+   *
+   * Durations doubled with the distance when that happened, so the fix
+   * changed no speeds; these are a fifth quicker than that on top, which is
+   * a deliberate change rather than a leftover. Every row shares these two
+   * numbers but holds a different width of content, so the wider rows travel
+   * faster and no two ever look locked together.
+   */
   .marquee {
-    animation: marquee 30s linear infinite;
+    animation: marquee 48s linear infinite;
   }
   
   .marquee-reverse {
-    animation: marquee-reverse 25s linear infinite;
+    animation: marquee-reverse 40s linear infinite;
   }
 
   @keyframes marquee {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    100% { transform: translateX(-100%); }
   }
   
   @keyframes marquee-reverse {
-    0% { transform: translateX(-50%); }
+    0% { transform: translateX(-100%); }
     100% { transform: translateX(0); }
   }
   

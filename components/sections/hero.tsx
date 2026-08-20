@@ -146,11 +146,34 @@ export function HeroSection() {
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="flex gap-16 marquee whitespace-nowrap">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex gap-16">
+        {/*
+          Identical sets, each carrying the animation and its own trailing gap
+          as pr-16. The gap used to sit on a flex parent that was itself the
+          animated element, which made the halves unequal and left flex sizing
+          that parent to the viewport rather than to its content, so the row
+          restarted from zero on every loop instead of running on. See the
+          note above @keyframes marquee in globals.css.
+
+          Four sets rather than two because of how far the row travels. Each
+          set is about 1370px wide and the keyframe moves it its own width, so
+          at the end of a cycle the content spans (N-1) sets to the right of
+          the origin. Two sets leave the last 68px of a 1440px viewport empty
+          just before the loop resets - a gap that is exactly as visible as
+          the jump this replaces. The rule is N >= viewport / set + 1; four
+          covers displays up to about 4100px, which takes in 4K.
+
+          Every set after the first is aria-hidden: it is the same four
+          figures again, and a screen reader should hear them once.
+        */}
+        <div className="flex overflow-hidden">
+          {[0, 1, 2, 3].map((setIndex) => (
+            <div
+              key={setIndex}
+              aria-hidden={setIndex > 0}
+              className="flex gap-16 pr-16 shrink-0 marquee whitespace-nowrap"
+            >
               {heroStats.map((stat) => (
-                <div key={`${stat.value}-${i}`} className="flex items-baseline gap-4">
+                <div key={`${stat.value}-${setIndex}`} className="flex items-baseline gap-4">
                   <span className="text-4xl lg:text-5xl font-display">{stat.value}</span>
                   <span className="text-sm text-muted-foreground">{stat.label}</span>
                 </div>
