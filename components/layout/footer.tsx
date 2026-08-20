@@ -28,7 +28,7 @@ export function Footer() {
                   alt={site.logo.alt}
                   width={site.logo.width}
                   height={site.logo.height}
-                  className="h-8 w-auto dark:invert dark:hue-rotate-180"
+                  className="h-10 w-auto"
                 />
               </Link>
 

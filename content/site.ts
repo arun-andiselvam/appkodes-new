@@ -10,11 +10,28 @@ export const site = {
    * NEXT_PUBLIC_SITE_URL on preview deployments to point them at themselves.
    */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://appkodes.com",
+  /**
+   * The Hitasoft wordmark, replacing the Appkodes one on 20 August 2026.
+   *
+   * width and height are the asset's real pixels rather than a display size.
+   * Both places that render it size it in CSS (`h-8 w-auto`), so these numbers
+   * only ever serve as the aspect ratio Next reserves space with, and a wrong
+   * ratio is what makes a logo jump on load.
+   *
+   * The file is derived from public/hitasoft-logo-c.png, which arrived as RGB
+   * with no alpha channel: the mark was composited on opaque white. The header
+   * is transparent until it is scrolled and the footer is the page background,
+   * so that white would have shown as a slab, glaringly so in dark mode. The
+   * .webp is the same artwork with the white keyed out and the transparent
+   * margin cropped off, 1662x432 down to 1623x392. That margin was dead space
+   * inside the box `h-8` sizes, which made the mark render smaller than the
+   * number asked for.
+   */
   logo: {
-    src: "/appkodes-logo.webp",
-    width: 256,
-    height: 40,
-    alt: "Appkodes",
+    src: "/hitasoft-logo.webp",
+    width: 1623,
+    height: 392,
+    alt: "Hitasoft",
   },
   // A proof point rather than a label: the headline already says what we do,
   // so this slot carries evidence the reader can weigh. Both figures are from
