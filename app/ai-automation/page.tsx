@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
-import { FeaturesSection } from "@/components/landing/features-section";
-import { IntegrationsSection } from "@/components/landing/integrations-section";
-import { SecuritySection } from "@/components/landing/security-section";
-import { CtaSection } from "@/components/landing/cta-section";
+import { pageMetadata } from "@/lib/seo";
+import { FeaturesSection } from "@/components/sections/features";
+import { IntegrationsSection } from "@/components/sections/integrations";
+import { SecuritySection } from "@/components/sections/security";
+import { CtaSection } from "@/components/sections/cta";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "AI Automation",
   description:
     "What we automate, the models and stack we build with, and how your data is handled.",
-};
+  path: "/ai-automation",
+});
 
 /**
  * What we do, in full.

@@ -257,6 +257,30 @@
     }
   }
 
+  /*
+   * The process panel. These were a <style jsx> block inside the section until
+   * its markup moved into the shared Section and Container primitives, which
+   * put three of its elements outside styled-jsx's scope. The keyframes were
+   * never scoped in the first place, so this is where they always belonged.
+   */
+  .code-line-reveal {
+    opacity: 0;
+    transform: translateX(-8px);
+    animation: code-line-reveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes code-line-reveal {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes step-progress {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+
   .noise-overlay {
     position: relative;
   }

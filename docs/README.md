@@ -4,6 +4,7 @@ Reference material for the Appkodes site. Code lives in the repository root.
 
 | File | What it covers |
 | --- | --- |
+| [structure.md](./structure.md) | Where code lives, how to add a page, how to write a section. Read this before adding either. |
 | [positioning.md](./positioning.md) | Who we sell to, the offer, proof points that are safe to publish, voice rules and claims discipline. Read this before writing any copy. |
 | [humanizer-skill.md](./humanizer-skill.md) | The editing pass every published sentence has to survive. Sentence rhythm, banned words, no dashes. |
 | [design-system.md](./design-system.md) | The "Kinetic Modular" visual system. Colour tokens, type scale, spacing, component rules. |

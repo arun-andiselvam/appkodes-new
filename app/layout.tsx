@@ -4,8 +4,8 @@ import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
-import { Navigation } from '@/components/landing/navigation'
-import { FooterSection } from '@/components/landing/footer-section'
+import { Navigation } from '@/components/layout/navigation'
+import { Footer } from '@/components/layout/footer'
 import { site } from '@/content/site'
 import './globals.css'
 
@@ -34,6 +34,9 @@ export const dynamic = 'force-dynamic'
 
 // Brand facts come from content/site.ts so the name is defined in one place.
 export const metadata: Metadata = {
+  // Canonical URLs and Open Graph tags have to be absolute. Setting the base
+  // here lets every page write its own as a plain path. See lib/seo.ts.
+  metadataBase: new URL(site.url),
   // A template so each route supplies its own name and the brand is appended
   // once, rather than every page repeating the company name by hand.
   title: {
@@ -41,6 +44,16 @@ export const metadata: Metadata = {
     template: `%s - ${site.name}`,
   },
   description: site.description,
+  // Defaults for anything a page does not override. Pages set their own title,
+  // description and URL through pageMetadata; these carry the rest.
+  openGraph: {
+    siteName: site.name,
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export default async function RootLayout({
@@ -71,7 +84,7 @@ export default async function RootLayout({
           <div className="relative min-h-screen overflow-x-hidden noise-overlay">
             <Navigation />
             {children}
-            <FooterSection />
+            <Footer />
           </div>
         </ThemeProvider>
         <Analytics />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "./use-reduced-motion";
 
 type UseInViewOptions = {
   /** Fraction of the element that must be visible before firing. */
@@ -24,18 +25,13 @@ export function useInView<T extends HTMLElement = HTMLElement>({
 }: UseInViewOptions = {}) {
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
-
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setInView(true);
-      return;
-    }
+    // Nothing to observe for a visitor who has asked for reduced motion: the
+    // content is revealed below regardless of where the page is scrolled to.
+    if (!element || prefersReducedMotion) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -51,7 +47,7 @@ export function useInView<T extends HTMLElement = HTMLElement>({
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [threshold, rootMargin, once]);
+  }, [threshold, rootMargin, once, prefersReducedMotion]);
 
-  return [ref, inView] as const;
+  return [ref, inView || prefersReducedMotion] as const;
 }

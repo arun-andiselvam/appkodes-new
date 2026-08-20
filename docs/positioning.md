@@ -627,6 +627,26 @@ look it, so the pictures stay near native size and the variation comes from
 staggered column offsets instead. A flat four across row was tried first and
 read as a contact sheet.
 
+### The hero paragraph
+
+**Changed 20 August 2026.** It read "Your systems keep running while we change
+them. We have spent 15 years moving businesses from paper to software, and AI
+is the next chapter."
+
+The first sentence answered the wrong buyer's fear. Downtime is third on the
+list above, and "zero downtime cutover" is the enterprise column of the framing
+table. A 40 person company does worry about it, but not before it has decided
+whether to bother with AI at all, and the hero is where that decision starts.
+
+The second sentence repeated `site.eyebrow`, which renders directly above it
+and already reads "15 years, 1000+ businesses served". The hero spent its only
+paragraph on a figure the reader had just met.
+
+It leads on the fourth fear now, another AI project that dies at proof of
+concept. That fear is specific to AI rather than to software work in general,
+which is what this page sells, and a buyer arrives holding it rather than
+developing it later.
+
 ### The closing call
 
 It read "Ready to build something great?" over "Join thousands of teams
@@ -636,14 +656,24 @@ underneath. Every line sold a SaaS subscription that does not exist, the
 headline was a rhetorical question the voice rules ban, and both buttons went
 to `#`.
 
-It now answers the section above it. Those photographs end on "Not every
-meeting happens on a screen", so the close offers the same two options back and
-lets the reader take whichever is easier. Landing on a fresh idea after those
-pictures wasted the warmest moment on the page.
+**Rewritten 20 August 2026.** It had answered the section above it. The
+photographs end on "Not every meeting happens on a screen", so the close
+offered the same two options back, over the offer from content/how-it-works.ts
+said a second time. Both halves were repeats. The reader met two weeks and a
+costed plan twice inside one scroll, three times on /how-we-work, and the
+venue question three times in a row on the home page.
 
-The offer underneath is the one in content/how-it-works.ts, so the page ends on
-the same first step the process section opens with rather than inventing a new
-one. "Talk to sales" is gone for the same reason "enterprise" is.
+The close carries the argument now. Everything above it says what we do, how
+the engagement runs and who says it worked. None of it says why the work is
+worth paying for, which is that manual process is already being paid for in
+salary and costs more than software doing the same thing. That belongs at the
+bottom, where the reader is weighing money rather than venue.
+
+No figures in that paragraph. Every number in content/metrics.ts is a draft,
+so a percentage or an hours count there would be invented. The claim is the
+shape of the saving, not its size.
+
+"Talk to sales" is gone for the same reason "enterprise" is.
 
 The section had no id, which is why nothing on the page could link to it. It is
 `#contact` now, so the audiences panel can finally point somewhere.

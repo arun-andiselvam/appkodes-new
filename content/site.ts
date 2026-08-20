@@ -3,6 +3,13 @@ import type { NavLink } from "./types";
 /** Brand-level facts referenced across the whole site. */
 export const site = {
   name: "Appkodes",
+  /**
+   * Absolute origin, needed for canonical URLs, Open Graph tags, the sitemap
+   * and robots.txt. Every one of those has to be absolute, so guessing it per
+   * file is how a staging URL ends up in production metadata. Set
+   * NEXT_PUBLIC_SITE_URL on preview deployments to point them at themselves.
+   */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://appkodes.com",
   logo: {
     src: "/appkodes-logo.webp",
     width: 256,
@@ -41,6 +48,20 @@ export const navLinks: NavLink[] = [
   { name: "Results", href: "/results" },
 ];
 
+/**
+ * Where the site's two recurring calls to action point.
+ *
+ * Named here because the same two appear in the header, the hero, the mobile
+ * menu and the closing panel, and three of those were plain buttons with no
+ * destination at all. "#contact" is the closing panel, which every page ends
+ * with. Swap it for a booking link when there is one and every control on the
+ * site follows.
+ */
+export const actions = {
+  book: "#contact",
+  caseStudies: "/results",
+} as const;
+
 export const heroWords: string[] = [
   "healthcare",
   "finance",
@@ -55,8 +76,30 @@ export const heroWords: string[] = [
 export const heroCopy = {
   headline: "AI automation for",
   headlinePrefix: "",
+  /*
+   * Changed on 20 August 2026.
+   *
+   * It read "Your systems keep running while we change them. We have spent 15
+   * years moving businesses from paper to software, and AI is the next
+   * chapter." Two problems with it.
+   *
+   * The first sentence answered a fear that belongs to a different buyer.
+   * docs/positioning.md lists downtime third, and the enterprise column of the
+   * framing table is where "zero downtime cutover" sits. A 40 person company
+   * worries about it, but not before it has decided whether to bother with AI
+   * at all, and the hero is where that decision starts.
+   *
+   * The second sentence repeated site.eyebrow, which renders directly above it
+   * and already says "15 years, 1000+ businesses served". The hero spent its
+   * only paragraph on a figure the reader had just met.
+   *
+   * It leads on the fourth fear now: another AI project that dies at proof of
+   * concept. That one is specific to AI rather than to software work in
+   * general, which is what this page is selling, and it is the fear a buyer
+   * arrives with rather than one they develop later.
+   */
   description:
-    "Your systems keep running while we change them. We have spent 15 years moving businesses from paper to software, and AI is the next chapter.",
+    "Most AI projects never get past a demo. We build the ones that end up in daily use, which is a different job from building something impressive.",
   primaryCta: "Book an automation review",
   secondaryCta: "See case studies",
 } as const;
@@ -83,37 +126,41 @@ export const industries: string[] = [
 /**
  * The closing section.
  *
- * It read "Ready to build something great?" over "Join thousands of teams
- * shipping faster with Appkodes. Start free, scale infinitely.", with buttons
- * for "Start building free" and "Talk to sales", and "No credit card
- * required" underneath. Every line of that sells a SaaS subscription. There is
- * nothing to sign up for, no free tier, and the thousands of teams were never
- * counted.
+ * Rewritten on 20 August 2026. It had been the offer from
+ * content/how-it-works.ts said a second time, which docs/positioning.md
+ * recorded as deliberate: end on the same first step the process section
+ * opens with rather than invent a new one. On the page that reads as the
+ * reader being told about two weeks and a costed plan twice inside one scroll,
+ * and on /how-we-work it is the third time.
  *
- * The headline was also a rhetorical question, which the voice rules ban
- * outright, and questions are the weakest way to close.
+ * So the close now carries the argument rather than the mechanics. The reader
+ * has seen what we do, how the engagement runs and who says it worked. What
+ * the page never says out loud is why any of it is worth paying for, which is
+ * that work done by hand is already being paid for and costs more than
+ * software doing the same thing.
  *
- * It now picks up the section immediately above it. That one ends on
- * photographs of clients and the team around a table under "Not every meeting
- * happens on a screen", so the close offers the same two options back and
- * lets the reader take whichever is easier. Landing on a fresh idea after
- * those pictures wasted the warmest moment on the page.
+ * !! NO FIGURES HERE ON PURPOSE !!
  *
- * The offer underneath is still the one in content/how-it-works.ts, so the
- * page ends on the same first step the process section describes rather than
- * inventing a new one. Two weeks, a price named up front, and a plan that is
- * yours either way answers the first and fifth fears in docs/positioning.md.
+ * Every number in content/metrics.ts is a draft rather than a measurement, so
+ * a percentage or an hours count in this paragraph would be invented. The
+ * claim is the shape of the saving, not its size. See docs/positioning.md,
+ * claims discipline.
  *
- * "Talk to sales" is gone for the same reason "enterprise" is. This buyer is
- * one person who decides, and there is no sales team between them and the
- * people who build.
+ * The headline gives up the callback to the photographs above it. "A table or
+ * a call. Either one works." picked up the meetings section, which was worth
+ * doing while the paragraph underneath had nothing else to say. It also meant
+ * three sentences in a row about where a meeting happens. What the buyer is
+ * weighing at the bottom of the page is money, not venue.
+ *
+ * "Talk to sales" stays gone. This buyer is one person who decides, and there
+ * is no sales team between them and the people who build.
  */
 export const ctaCopy = {
   eyebrow: "Next step",
-  headline: "A table or a call.",
-  headlineAccent: "Either one works.",
+  headline: "Your team was not hired",
+  headlineAccent: "to do what software does.",
   description:
-    "Near one of our offices, lunch is easy to arrange. If you are not, a call does the same job. Either way the first step is two weeks at a price named before anything starts. You keep the plan whether or not we build it.",
+    "The repeat work is already sitting on your payroll. Software doing it instead costs less every month, which is the figure whoever holds the budget asks for.",
   primaryCta: "Book an automation review",
   secondaryCta: "See how we work",
   secondaryHref: "/how-we-work",

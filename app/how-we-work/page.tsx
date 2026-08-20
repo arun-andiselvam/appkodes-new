@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
-import { HowItWorksSection } from "@/components/landing/how-it-works-section";
-import { AudiencesSection } from "@/components/landing/audiences-section";
-import { SecuritySection } from "@/components/landing/security-section";
-import { CtaSection } from "@/components/landing/cta-section";
+import { pageMetadata } from "@/lib/seo";
+import { HowItWorksSection } from "@/components/sections/how-it-works";
+import { AudiencesSection } from "@/components/sections/audiences";
+import { SecuritySection } from "@/components/sections/security";
+import { CtaSection } from "@/components/sections/cta";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "How we work",
   description:
     "The engagement in three steps, what it looks like at your size, and what we commit to in writing.",
-};
+  path: "/how-we-work",
+});
 
 /**
  * The engagement.
