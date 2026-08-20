@@ -201,7 +201,7 @@ export function MeetingsSection() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={place.image}
-                    alt={`The Appkodes team meeting a client in ${place.location}`}
+                    alt={`The Hitasoft team meeting a client in ${place.location}`}
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

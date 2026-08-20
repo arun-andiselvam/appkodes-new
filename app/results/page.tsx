@@ -9,7 +9,7 @@ import { CtaSection } from "@/components/sections/cta";
 export const metadata = pageMetadata({
   title: "Results",
   description:
-    "What the work returns, fifteen years of delivery behind it, and what clients say without us editing it.",
+    "What the work returns, eighteen years of delivery behind it, and what clients say without us editing it.",
   path: "/results",
 });
 

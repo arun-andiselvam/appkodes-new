@@ -16,7 +16,7 @@ site should imply self-serve signup, seats or subscriptions.
 
 Verified facts from appkodes.com, safe to use as proof:
 
-- 15 years of delivery
+- 18 years of delivery
 - 1000+ clients worldwide. appkodes.com also shows 280 under "happy clients
   globally", but 1000+ is the figure to publish, confirmed 18 August 2026.
 - 2000+ projects delivered
@@ -183,7 +183,7 @@ Never publish a claim the company cannot back.
 - Do not attach client logos or numbers to companies that are not clients. The
   original template shipped fake claims like "98% faster deployment, STRIPE".
   Those are removed and must not return.
-- Do not claim 15 years of AI work. The 15 years covers legacy to digital
+- Do not claim 18 years of AI work. The 18 years covers legacy to digital
   migration. AI is the current chapter of that practice.
 
 ## Decisions already made
@@ -251,7 +251,7 @@ and giving it two of four slots would have pushed the money off the row.
 
 The client count here is the AI subset, so it is a smaller and later number
 than the 1000+ on the rest of the site. That is the honest way round. Appkodes
-has 15 years of delivery and rather less than that of AI work, and blurring
+has 18 years of delivery and rather less than that of AI work, and blurring
 the two is already forbidden above.
 
 Reusing 2000+, 1000+ and 50+ here was the obvious cheap fix and it is the wrong
@@ -630,7 +630,7 @@ read as a contact sheet.
 ### The hero paragraph
 
 **Changed 20 August 2026.** It read "Your systems keep running while we change
-them. We have spent 15 years moving businesses from paper to software, and AI
+them. We have spent 18 years moving businesses from paper to software, and AI
 is the next chapter."
 
 The first sentence answered the wrong buyer's fear. Downtime is third on the
@@ -639,7 +639,7 @@ table. A 40 person company does worry about it, but not before it has decided
 whether to bother with AI at all, and the hero is where that decision starts.
 
 The second sentence repeated `site.eyebrow`, which renders directly above it
-and already reads "15 years, 1000+ businesses served". The hero spent its only
+and already reads "18 years, 1000+ businesses served". The hero spent its only
 paragraph on a figure the reader had just met.
 
 It leads on the fourth fear now, another AI project that dies at proof of

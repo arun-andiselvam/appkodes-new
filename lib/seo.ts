@@ -24,7 +24,7 @@ export function pageMetadata({
   /** Route path, leading slash, e.g. "/how-we-work". "/" for the home page. */
   path: string;
   /**
-   * Skip the "%s - Appkodes" template and use `title` verbatim. The home page
+   * Skip the "%s - Hitasoft" template and use `title` verbatim. The home page
    * needs this: it leads with the company name rather than trailing it.
    */
   absoluteTitle?: boolean;

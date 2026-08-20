@@ -20,7 +20,7 @@ import type { Metric } from "./types";
  * Repeating the 2000+ / 1000+ / 50+ figures a third time would add no proof,
  * since the hero ticker and the track record section already spend them. The
  * client count here is the AI subset and is a smaller, later number. That is
- * the honest way round. Appkodes has 15 years of delivery and rather less than
+ * the honest way round. Appkodes has 18 years of delivery and rather less than
  * that of AI work, and docs/positioning.md forbids blurring the two.
  *
  * !! ALL FOUR NUMBERS ARE DRAFTS, NOT MEASUREMENTS !!

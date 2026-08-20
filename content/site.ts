@@ -2,7 +2,7 @@ import type { NavLink } from "./types";
 
 /** Brand-level facts referenced across the whole site. */
 export const site = {
-  name: "Appkodes",
+  name: "Hitasoft",
   /**
    * Absolute origin, needed for canonical URLs, Open Graph tags, the sitemap
    * and robots.txt. Every one of those has to be absolute, so guessing it per
@@ -39,7 +39,7 @@ export const site = {
   // A proof point rather than a label: the headline already says what we do,
   // so this slot carries evidence the reader can weigh. Both figures are from
   // appkodes.com and are safe to publish. See docs/positioning.md.
-  eyebrow: "15 years, 1000+ businesses served",
+  eyebrow: "18 years, 1000+ businesses served",
   description:
     "We put AI into the systems you already run, or build the replacement, so your team spends less time on work software should be doing.",
 } as const;
@@ -110,7 +110,7 @@ export const heroCopy = {
    * at all, and the hero is where that decision starts.
    *
    * The second sentence repeated site.eyebrow, which renders directly above it
-   * and already says "15 years, 1000+ businesses served". The hero spent its
+   * and already says "18 years, 1000+ businesses served". The hero spent its
    * only paragraph on a figure the reader had just met.
    *
    * It leads on the fourth fear now: another AI project that dies at proof of
@@ -126,7 +126,7 @@ export const heroCopy = {
 
 /** Stats ticker under the hero. Real figures from appkodes.com. */
 export const heroStats = [
-  { value: "15 years", label: "of delivery experience" },
+  { value: "18 years", label: "of delivery experience" },
   { value: "1000+", label: "clients worldwide" },
   { value: "2000+", label: "projects delivered" },
   { value: "50+", label: "countries delivered to" },
