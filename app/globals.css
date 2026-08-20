@@ -1,125 +1,18 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+/*
+ * Every colour the site uses. Kept out of this file so a rebrand is one edit
+ * in one place; see the header of app/brand.css for how it is laid out.
+ * Nothing below defines a colour of its own. It has to sit up here with the
+ * other imports: @import is only valid before the first rule.
+ */
+@import './brand.css';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  color-scheme: light;
-
-  /* --- DESIGN.md "Kinetic Modular" -------------------------------------- */
-  /* Brand anchors. #0052CC is the Trustworthy Blue the design doc names as   */
-  /* the palette anchor; it is also the closest token to the logo's own       */
-  /* #0066FF while clearing WCAG AA on white, which #0066FF does not.         */
-  --brand-blue: #0052cc;
-  --brand-blue-strong: #003d9b;
-  --brand-orange: #ff8b00;
-  --brand-success: #36b37e;
-
-  --background: #faf9ff;
-  --foreground: #091e42;
-  --card: #ffffff;
-  --card-foreground: #091e42;
-  --popover: #ffffff;
-  --popover-foreground: #091e42;
-  --primary: #0052cc;
-  --primary-foreground: #ffffff;
-  /* shadcn's "secondary" is the neutral button surface, not the brand's
-     orange accent. Orange stays opt-in via --brand-orange so it cannot leak
-     into every secondary control. */
-  --secondary: #f4f5f7;
-  --secondary-foreground: #091e42;
-  --muted: #f1f3ff;
-  --muted-foreground: #434654;
-  --accent: #e9edff;
-  --accent-foreground: #003d9b;
-  --destructive: #ba1a1a;
-  --destructive-foreground: #ffffff;
-  --border: #dfe1e6;
-  --input: #dfe1e6;
-  --ring: #0052cc;
-  --chart-1: #0052cc;
-  --chart-2: #0c56d0;
-  --chart-3: #4c8dff;
-  --chart-4: #ff8b00;
-  --chart-5: #36b37e;
+  /* Not a colour, so it stays behind while the palette lives in brand.css. */
   --radius: 0.25rem;
-  /* Cursor spotlight in the CTA section. */
-  --spotlight: rgb(0 82 204 / 0.14);
-  /*
-   * Emphasis panel (the inverted "process" section). Defined explicitly for
-   * each theme rather than derived from --foreground: deriving it flips the
-   * panel to white in dark mode, which is exactly the wrong result. In dark
-   * mode it becomes a raised dark surface instead.
-   */
-  --emphasis: #091e42;
-  --emphasis-foreground: #faf9ff;
-  /*
-   * Accent used on the emphasis panel. The panel is dark in both themes, so
-   * this stays the same brighter blue in each. --primary is #0052CC in light
-   * mode, which only reaches 2.41:1 on the navy and is unreadable there.
-   */
-  --emphasis-accent: #4c8dff;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #091e42;
-  --sidebar-primary: #0052cc;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e9edff;
-  --sidebar-accent-foreground: #003d9b;
-  --sidebar-border: #dfe1e6;
-  --sidebar-ring: #0052cc;
-}
-
-/*
- * Dark counterpart. DESIGN.md only specifies the light scheme, so this is
- * derived from its own Material-style inverse tokens: inverse-primary
- * (#b2c5ff) becomes the primary fill, on-primary-fixed (#001848) the text on
- * it, and inverse-on-surface (#edf0ff) the body colour. Every pair below is
- * checked against WCAG AA.
- */
-.dark {
-  color-scheme: dark;
-
-  --brand-blue: #b2c5ff;
-  --brand-blue-strong: #dae2ff;
-  --brand-orange: #ffb77e;
-  --brand-success: #6ee7b7;
-
-  --background: #0a1229;
-  --foreground: #edf0ff;
-  --card: #121b36;
-  --card-foreground: #edf0ff;
-  --popover: #121b36;
-  --popover-foreground: #edf0ff;
-  --primary: #b2c5ff;
-  --primary-foreground: #001848;
-  --secondary: #1b2440;
-  --secondary-foreground: #edf0ff;
-  --muted: #1b2440;
-  --muted-foreground: #b4bcd4;
-  --accent: #222d4d;
-  --accent-foreground: #dae2ff;
-  --destructive: #ff8a80;
-  --destructive-foreground: #2b0000;
-  --border: #2a3455;
-  --input: #2a3455;
-  --ring: #b2c5ff;
-  --chart-1: #b2c5ff;
-  --chart-2: #8fb0ff;
-  --chart-3: #6d97ff;
-  --chart-4: #ffb77e;
-  --chart-5: #6ee7b7;
-  --spotlight: rgb(178 197 255 / 0.12);
-  --emphasis: #17223f;
-  --emphasis-foreground: #edf0ff;
-  --emphasis-accent: #4c8dff;
-  --sidebar: #121b36;
-  --sidebar-foreground: #edf0ff;
-  --sidebar-primary: #b2c5ff;
-  --sidebar-primary-foreground: #001848;
-  --sidebar-accent: #222d4d;
-  --sidebar-accent-foreground: #dae2ff;
-  --sidebar-border: #2a3455;
-  --sidebar-ring: #b2c5ff;
 }
 
 @theme inline {
@@ -150,7 +43,7 @@
   --color-emphasis-accent: var(--emphasis-accent);
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-strong: var(--brand-blue-strong);
-  --color-brand-orange: var(--brand-orange);
+  --color-brand-red: var(--brand-red);
   --color-brand-success: var(--brand-success);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);

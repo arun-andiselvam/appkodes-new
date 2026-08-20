@@ -1,55 +1,55 @@
 ---
 name: Kinetic Modular
 colors:
-  surface: '#faf9ff'
-  surface-dim: '#ccdaff'
-  surface-bright: '#faf9ff'
+  surface: '#fafcfd'
+  surface-dim: '#ccf1ff'
+  surface-bright: '#fafcfd'
   surface-container-lowest: '#ffffff'
-  surface-container-low: '#f1f3ff'
-  surface-container: '#e9edff'
-  surface-container-high: '#e1e8ff'
-  surface-container-highest: '#d8e2ff'
-  on-surface: '#051a3e'
-  on-surface-variant: '#434654'
-  inverse-surface: '#1d3054'
-  inverse-on-surface: '#edf0ff'
-  outline: '#737685'
-  outline-variant: '#c3c6d6'
-  surface-tint: '#0c56d0'
-  primary: '#003d9b'
+  surface-container-low: '#f1fbff'
+  surface-container: '#e9f9ff'
+  surface-container-high: '#e1f7ff'
+  surface-container-highest: '#d8f5ff'
+  on-surface: '#0d323f'
+  on-surface-variant: '#4d595e'
+  inverse-surface: '#152c35'
+  inverse-on-surface: '#e3f2f7'
+  outline: '#738085'
+  outline-variant: '#c3d1d6'
+  surface-tint: '#146f90'
+  primary: '#0f556f'
   on-primary: '#ffffff'
-  primary-container: '#0052cc'
-  on-primary-container: '#c4d2ff'
-  inverse-primary: '#b2c5ff'
-  secondary: '#914d00'
+  primary-container: '#146f90'
+  on-primary-container: '#c4efff'
+  inverse-primary: '#8bcce4'
+  secondary: '#911000'
   on-secondary: '#ffffff'
-  secondary-container: '#fe8a00'
-  on-secondary-container: '#613100'
-  tertiary: '#7b2600'
+  secondary-container: '#df2c16'
+  on-secondary-container: '#610b00'
+  tertiary: '#7b0e00'
   on-tertiary: '#ffffff'
-  tertiary-container: '#a33500'
-  on-tertiary-container: '#ffc6b2'
-  error: '#ba1a1a'
+  tertiary-container: '#a31200'
+  on-tertiary-container: '#ffbab2'
+  error: '#a51221'
   on-error: '#ffffff'
-  error-container: '#ffdad6'
-  on-error-container: '#93000a'
-  primary-fixed: '#dae2ff'
-  primary-fixed-dim: '#b2c5ff'
-  on-primary-fixed: '#001848'
-  on-primary-fixed-variant: '#0040a2'
-  secondary-fixed: '#ffdcc3'
-  secondary-fixed-dim: '#ffb77e'
-  on-secondary-fixed: '#2f1500'
-  on-secondary-fixed-variant: '#6e3900'
-  tertiary-fixed: '#ffdbcf'
-  tertiary-fixed-dim: '#ffb59b'
-  on-tertiary-fixed: '#380d00'
-  on-tertiary-fixed-variant: '#812800'
-  background: '#faf9ff'
-  on-background: '#051a3e'
-  surface-variant: '#d8e2ff'
-  surface-alt: '#F4F5F7'
-  border-subtle: '#DFE1E6'
+  error-container: '#ffd6dd'
+  on-error-container: '#930019'
+  primary-fixed: '#daf5ff'
+  primary-fixed-dim: '#8bcce4'
+  on-primary-fixed: '#003548'
+  on-primary-fixed-variant: '#0077a2'
+  secondary-fixed: '#ffcac3'
+  secondary-fixed-dim: '#ff8c7e'
+  on-secondary-fixed: '#2f0500'
+  on-secondary-fixed-variant: '#6e0c00'
+  tertiary-fixed: '#ffd4cf'
+  tertiary-fixed-dim: '#ffa69b'
+  on-tertiary-fixed: '#380600'
+  on-tertiary-fixed-variant: '#810e00'
+  background: '#fafcfd'
+  on-background: '#0d323f'
+  surface-variant: '#d8f5ff'
+  surface-alt: '#f4f6f7'
+  border-subtle: '#DDE4E6'
   success-green: '#36B37E'
 typography:
   display-lg:
@@ -119,7 +119,9 @@ The visual style is **Minimalist and Tech-Forward**, leaning into a "Modular Gri
 
 ## Colors
 
-The palette is anchored by **Trustworthy Blue (#0052CC)**, used for primary actions and structural branding to evoke stability and corporate readiness. **Innovative Orange (#FF8B00)** serves as a high-energy kinetic accent, reserved for secondary actions, "New" indicators, and moments of conversion that signify entrepreneurial "spark."
+The palette is anchored by **Hitasoft Blue (#146F90)**, used for primary actions and structural branding to evoke stability and corporate readiness. **Hitasoft Red (#DF2C16)** serves as a high-energy kinetic accent, reserved for secondary actions, "New" indicators, and moments of conversion that signify entrepreneurial "spark."
+
+Both are the wordmark's own colours walked down in lightness until they clear WCAG AA. The mark is #1782A9 and #EA402B, which are 4.18:1 and 3.81:1 on the surface and so cannot carry text or a filled button. The logo file keeps the pure colours; only the UI tokens are darkened. Error red is pushed to #A51221, deeper and bluer than the accent, so a destructive control is not mistaken for a brand one."
 
 The neutral scale uses a deep navy-tinted charcoal (#091E42) for text to maintain a softer, more sophisticated contrast than pure black. Backgrounds should primarily be clean white, with light grey (#F4F5F7) used to define modular zones and containers.
 
@@ -159,7 +161,7 @@ This geometric precision reinforces the "modular" concept, where components look
 ## Components
 
 ### Buttons
-Primary buttons use a solid Blue (#0052CC) fill with white text. Secondary buttons use an Orange (#FF8B00) outline with orange text to represent "Innovation" without overpowering the hierarchy. All buttons have a 4px corner radius and use `label-md` typography.
+Primary buttons use a solid Blue (#146F90) fill with white text. Secondary buttons use a Red (#DF2C16) outline with red text to represent "Innovation" without overpowering the hierarchy. All buttons have a 4px corner radius and use `label-md` typography.
 
 ### Input Fields
 Inputs are defined by a 1px border (#DFE1E6). On focus, the border transitions to Primary Blue with a 2px "inner glow" of light blue. Labels are always positioned above the field using `label-sm`.

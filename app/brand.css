@@ -1,0 +1,201 @@
+/*
+ * Brand colour, in one file.
+ *
+ * Everything the site is coloured with lives here, so a rebrand is an edit to
+ * this file rather than a search across the stylesheet. app/globals.css
+ * imports it and keeps typography, the base layer and the utilities; it holds
+ * no colour of its own.
+ *
+ * The file is written as three steps, and a change should be made at the
+ * earliest step that can carry it:
+ *
+ *   1. THE MARK      the logo's own colours, quoted exactly, never used for
+ *                    text or fills
+ *   2. THE ANCHORS   those colours walked down in lightness until they clear
+ *                    WCAG AA, plus the tints derived from them
+ *   3. THE ROLES     shadcn's semantic tokens, aliased to the anchors with
+ *                    var() wherever they are the same colour
+ *
+ * Change the anchors and every role that references them follows. The tints
+ * at step 2 carry the recipe that produced them, so they can be regenerated
+ * for a new hue rather than guessed at.
+ *
+ * Every foreground/background pair below was checked against WCAG AA when the
+ * palette moved to Hitasoft on 20 August 2026. If you change an anchor, check
+ * the pairs again - the tightest has less than 0.1 of headroom.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* --- 1. The mark ------------------------------------------------------ */
+  /*
+   * public/hitasoft-logo.webp, sampled. Neither clears AA on the surface -
+   * the blue is 4.18:1 and the red 3.81:1 - so neither is ever used for text
+   * or as a button fill. They appear in the logo, and as chart-2, where a
+   * data series is a large enough mark to carry them.
+   */
+  --mark-blue: #1782a9;
+  --mark-red: #ea402b;
+
+  /* --- 2. The anchors --------------------------------------------------- */
+  /*
+   * The mark's hues - 196deg and 6.6deg - held, saturation held, lightness
+   * walked down until each clears AA on --background. This is the same move
+   * the Appkodes palette made when it took the logo's #0066FF to #0052CC.
+   *
+   *   --brand-blue         5.51:1 as text, 5.67:1 white on it
+   *   --brand-blue-strong  8.01:1 as text
+   *   --brand-red          4.53:1 as text, 4.66:1 white on it
+   */
+  --brand-blue: #146f90;
+  /*
+   * The same colour as channels, for the places that need it at an alpha.
+   * It has to be written twice because --brand-blue is read as a hex by
+   * components/backgrounds/dot-matrix.tsx; keep the two in step. Deriving the
+   * alpha from --brand-blue with a colour function instead makes Lightning
+   * CSS emit an @supports block whose fallback is the colour at full
+   * opacity, which is worse than the duplication.
+   */
+  --brand-blue-rgb: 20 111 144;
+  --brand-blue-strong: #0f556f;
+  --brand-blue-bright: #5abee2; /* 196deg, L 62%, for dark grounds only */
+  --brand-red: #df2c16;
+  --brand-success: #36b37e; /* semantic, not brand: unchanged by a rebrand */
+
+  /* Surfaces, all 196deg at descending lightness. */
+  --surface: #fafcfd; /* L 98.5% S 40% */
+  --surface-tint: #f2f8fb; /* L 96.5% S 50% */
+  --surface-accent: #e3f2f7; /* L 93%   S 55% */
+  --surface-line: #dde4e6; /* L 88.5% S 16% */
+  --surface-ink: #0d323f; /* L 15%   S 65% */
+  --surface-ink-muted: #4d595e; /* 7.02:1 on --surface */
+  --surface-deep: #0b242d; /* the inverted panel, L 11% S 62% */
+
+  /*
+   * Error red, pushed deeper and bluer than --brand-red. With a vermilion
+   * accent in the palette, a destructive colour sitting a few degrees away
+   * from it is a control nobody can read the intent of at a glance.
+   */
+  --danger: #a51221;
+
+  /* --- 3. The roles ----------------------------------------------------- */
+  --background: var(--surface);
+  --foreground: var(--surface-ink);
+  --card: #ffffff;
+  --card-foreground: var(--surface-ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--surface-ink);
+  --primary: var(--brand-blue);
+  --primary-foreground: #ffffff;
+  /* shadcn's "secondary" is the neutral button surface, not the brand's
+     accent. The red stays opt-in via --brand-red so it cannot leak into
+     every secondary control. */
+  --secondary: #f3f6f7;
+  --secondary-foreground: var(--surface-ink);
+  --muted: var(--surface-tint);
+  --muted-foreground: var(--surface-ink-muted);
+  --accent: var(--surface-accent);
+  --accent-foreground: var(--brand-blue-strong);
+  --destructive: var(--danger);
+  --destructive-foreground: #ffffff;
+  --border: var(--surface-line);
+  --input: var(--surface-line);
+  --ring: var(--brand-blue);
+  --chart-1: var(--brand-blue);
+  --chart-2: var(--mark-blue);
+  --chart-3: var(--brand-blue-bright);
+  --chart-4: var(--brand-red);
+  --chart-5: var(--brand-success);
+  /* Cursor spotlight in the CTA section. */
+  --spotlight: rgb(var(--brand-blue-rgb) / 0.14);
+  /*
+   * Emphasis panel (the inverted "process" section). Defined explicitly for
+   * each theme rather than derived from --foreground: deriving it flips the
+   * panel to white in dark mode, which is exactly the wrong result. In dark
+   * mode it becomes a raised dark surface instead.
+   */
+  --emphasis: var(--surface-deep);
+  --emphasis-foreground: var(--surface);
+  /*
+   * Accent used on the emphasis panel. The panel is dark in both themes, so
+   * this stays the same brighter teal in each. --primary is #146F90 in light
+   * mode, which only reaches 2.06:1 on the panel and is unreadable there.
+   */
+  --emphasis-accent: var(--brand-blue-bright);
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--surface-ink);
+  --sidebar-primary: var(--brand-blue);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--surface-accent);
+  --sidebar-accent-foreground: var(--brand-blue-strong);
+  --sidebar-border: var(--surface-line);
+  --sidebar-ring: var(--brand-blue);
+}
+
+/*
+ * Dark counterpart, on the same 196deg teal. A saturated mid teal cannot
+ * carry a dark theme - #146F90 is 1.8:1 on this background - so the roles
+ * invert: a light teal becomes the fill and a near-black teal the text on it.
+ * The mark keeps its own colours in both themes and is not redefined here.
+ */
+.dark {
+  color-scheme: dark;
+
+  /* --- 2. The anchors --------------------------------------------------- */
+  --brand-blue: #8bcce4; /* 9.55:1 on --background */
+  --brand-blue-rgb: 139 204 228;
+  --brand-blue-strong: #cee9f3;
+  --brand-red: #f4887b; /* 6.97:1 on --background */
+  --brand-success: #6ee7b7; /* lifted for the dark ground */
+
+  --surface: #0e1f25; /* 196deg, L 10% */
+  --surface-tint: #1d343d; /* L 17.5% */
+  --surface-accent: #244049; /* L 21.5% */
+  --surface-line: #2e4a55; /* L 25.5% */
+  --surface-ink: #e3f2f7; /* 14.75:1 on --surface */
+  --surface-ink-muted: #bbcdd3; /* 10.30:1 on --surface */
+  --surface-raised: #152c35; /* cards, popovers and the emphasis panel */
+  --surface-deepest: #032430; /* text on a light teal fill, 9.13:1 */
+
+  --danger: #f58994;
+  --danger-ink: #39050a; /* 7.41:1 on --danger */
+
+  /* --- 3. The roles ----------------------------------------------------- */
+  --background: var(--surface);
+  --foreground: var(--surface-ink);
+  --card: var(--surface-raised);
+  --card-foreground: var(--surface-ink);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--surface-ink);
+  --primary: var(--brand-blue);
+  --primary-foreground: var(--surface-deepest);
+  --secondary: var(--surface-tint);
+  --secondary-foreground: var(--surface-ink);
+  --muted: var(--surface-tint);
+  --muted-foreground: var(--surface-ink-muted);
+  --accent: var(--surface-accent);
+  --accent-foreground: var(--brand-blue-strong);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-ink);
+  --border: var(--surface-line);
+  --input: var(--surface-line);
+  --ring: var(--brand-blue);
+  --chart-1: var(--brand-blue);
+  --chart-2: var(--brand-blue-bright);
+  --chart-3: #2f9dc4;
+  --chart-4: var(--brand-red);
+  --chart-5: var(--brand-success);
+  --spotlight: rgb(var(--brand-blue-rgb) / 0.12);
+  --emphasis: var(--surface-raised);
+  --emphasis-foreground: var(--surface-ink);
+  --emphasis-accent: var(--brand-blue-bright);
+  --sidebar: var(--surface-raised);
+  --sidebar-foreground: var(--surface-ink);
+  --sidebar-primary: var(--brand-blue);
+  --sidebar-primary-foreground: var(--surface-deepest);
+  --sidebar-accent: var(--surface-accent);
+  --sidebar-accent-foreground: var(--brand-blue-strong);
+  --sidebar-border: var(--surface-line);
+  --sidebar-ring: var(--brand-blue);
+}

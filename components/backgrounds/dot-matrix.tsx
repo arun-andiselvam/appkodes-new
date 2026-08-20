@@ -35,7 +35,7 @@ export function DotMatrix({
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const fadeRef = useRef(1);
   const fadeTargetRef = useRef(1);
-  const accentRef = useRef("0, 82, 204");
+  const accentRef = useRef("20, 111, 144");
 
   useEffect(() => {
     const v = getComputedStyle(document.documentElement).getPropertyValue("--brand-blue").trim().replace("#", "");

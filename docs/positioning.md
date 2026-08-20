@@ -188,7 +188,7 @@ Never publish a claim the company cannot back.
 
 ## Decisions already made
 
-- Brand colour is #0052CC, taken from design-system.md and matched against the logo.
+- Brand colour is #146F90, taken from design-system.md. It is the Hitasoft wordmark's own #1782A9 darkened until it clears WCAG AA; the accent #DF2C16 is the mark's #EA402B given the same treatment.
 - Fonts stay Instrument Sans and Instrument Serif. The Montserrat and Inter
   swap from design-system.md was tried and reverted on 18 August 2026.
 - Products move out of the primary navigation into the footer.
