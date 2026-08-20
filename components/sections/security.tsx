@@ -50,10 +50,18 @@ export function SecuritySection() {
             <br />
             the model sees.
           </SectionTitle>
+          {/*
+            The third sentence used to read "because the model runs on a
+            machine you already own", which said the same thing as the "model
+            can run on your server" card three inches below it. It also left
+            out the other half of the answer. Client hardware is one option and
+            a model we host is the other, and the second one is the answer for
+            a buyer who has no server to put anything on.
+          */}
           <p className="text-xl text-muted-foreground leading-relaxed">
             Most AI projects hand your data to somebody else. We start from what the
-            work actually needs to see. Sometimes that is nothing at all, because the
-            model runs on a machine you already own.
+            work actually needs to see. Sometimes that is nothing at all, because we
+            host a model of our own, set up around what your data allows.
           </p>
         </div>
 
