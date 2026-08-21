@@ -18,7 +18,7 @@ export function ThemeToggle({ className = "", compact = false }: ThemeToggleProp
   const mounted = useHydrated();
 
   const size = compact ? "h-8 w-8" : "h-10 w-10";
-  const base = `${size} inline-flex items-center justify-center rounded-full border border-foreground/20 text-foreground/70 transition-all duration-300 hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background`;
+  const base = `${size} inline-flex items-center justify-center rounded-full border border-foreground/20 text-foreground/70 transition-all duration-300 hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none`;
 
   if (!mounted) {
     return <div className={`${size} ${className}`} aria-hidden="true" />;

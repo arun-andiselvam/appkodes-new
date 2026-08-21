@@ -9,11 +9,16 @@ import type { MeetingPlace } from "./types";
  * exactly why the section earns a place before the closing call: a buyer who
  * has read this far has met no one.
  *
- * The four are locations Appkodes already has people in. docs/positioning.md
- * lists the delivery presence as India, Indonesia, Dubai, Vietnam and Sharjah,
- * so these are four of the five and India is the one without a photograph.
- * That matters for the copy. The claim is that clients sit down with the team
- * in their own region, not that somebody boards a plane for every meeting.
+ * !! THESE ARE CLIENT LOCATIONS. THERE IS NO OFFICE IN ANY OF THEM !!
+ *
+ * This used to read "locations Appkodes already has people in", resting on a
+ * delivery presence line in docs/positioning.md. The client corrected that on
+ * 21 August 2026 and the doc is fixed at source. Clients are in these places
+ * and the team has flown out to meet them, which is exactly what the
+ * photographs show and the only claim any copy may make from them.
+ *
+ * positioning.md names five and four have a photograph, India being the one
+ * without.
  *
  * The doc also warns that naming a covering office turns the reach claim into
  * an offshore delivery claim. Photographs avoid that trap on their own. Nobody

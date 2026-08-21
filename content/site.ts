@@ -1,5 +1,3 @@
-import type { NavLink } from "./types";
-
 /** Brand-level facts referenced across the whole site. */
 export const site = {
   name: "Hitasoft",
@@ -45,41 +43,39 @@ export const site = {
 } as const;
 
 /**
- * Primary navigation.
+ * Primary navigation moved to content/navigation.ts on 20 August 2026.
  *
- * These became routes on 19 August 2026, when the site stopped being one long
- * page. Anchors only worked while every section shared a document, and a menu
- * that scrolls cannot show a visitor where they are or let them link a
- * colleague to one part of the pitch.
+ * It was a flat `navLinks` array of three routes and it lived here, next to
+ * the brand facts, because three links need no file of their own. The silo in
+ * docs/hitasoft_ai_architecture_strategy.md is a tree: five menu items, two of
+ * which own six child pages between them, plus the breadcrumb trail that walks
+ * back up it. That is a structure rather than a list, so it has its own file
+ * and its own types.
  *
- * Ordered for the SMB and startup buyer: what we do, then how the engagement
- * runs, then the proof. The ready-made product catalogue stays in the footer.
- * Someone choosing an automation partner should not meet a clone script in the
- * main menu.
- *
- * Industries is deliberately absent. It pointed at `#integrations` for months,
- * a section about models and tooling, and there is no industries content to
- * route to yet. A missing item beats one that lies about where it goes. It
- * comes back when there is something real behind it.
+ * Import `mainNav` from content/navigation.ts. Nothing should re-add a link
+ * array here; two lists of routes disagree with each other within a week.
  */
-export const navLinks: NavLink[] = [
-  { name: "AI Automation", href: "/ai-automation" },
-  { name: "How we work", href: "/how-we-work" },
-  { name: "Results", href: "/results" },
-];
 
 /**
  * Where the site's two recurring calls to action point.
  *
- * Named here because the same two appear in the header, the hero, the mobile
- * menu and the closing panel, and three of those were plain buttons with no
- * destination at all. "#contact" is the closing panel, which every page ends
- * with. Swap it for a booking link when there is one and every control on the
- * site follows.
+ * Named here because the same two appear in the header, the hero, every silo
+ * landing page and the closing panel.
+ *
+ * `book` was "#contact", an anchor to the closing panel, because a booking
+ * page did not exist. One does now. An anchor also broke quietly on any page
+ * that happened not to render the closing panel, and a menu item called
+ * Contact that scrolls a bit rather than going somewhere is the kind of thing
+ * a visitor stops trusting. The panel keeps its id, so "/#contact" still
+ * works if anything wants the old behaviour.
+ *
+ * `caseStudies` moved under Resources on 20 August 2026, when case studies
+ * stopped being a menu item of its own. Everything pointing at the proof reads
+ * it from here, so the move was one line.
  */
 export const actions = {
-  book: "#contact",
-  caseStudies: "/results",
+  book: "/contact",
+  caseStudies: "/resources/case-studies",
 } as const;
 
 export const heroWords: string[] = [
@@ -174,13 +170,29 @@ export const industries: string[] = [
  *
  * "Talk to sales" stays gone. This buyer is one person who decides, and there
  * is no sales team between them and the people who build.
+ *
+ * Rewritten again on 21 August 2026, because the client read it back and could
+ * not tell what it meant.
+ *
+ * It said "Your team was not hired to do what software does", with a paragraph
+ * about payroll and "the figure whoever holds the budget asks for". Two faults.
+ * The headline was a riddle: the reader has to work out what software does,
+ * then work out which of their own staff are doing it, before the sentence
+ * lands. And the paragraph promised a figure without ever giving one, which is
+ * the worst of both. It reads as evasive rather than disciplined.
+ *
+ * The version below names the work instead. Data entry, repeat tickets, numbers
+ * carried between systems. A reader recognises their own week in that list in
+ * about a second, and nobody has to decode anything. The last line draws the
+ * boundary, which is the reassurance this buyer actually needs: their people
+ * are not being replaced, the dull half of the job is.
  */
 export const ctaCopy = {
   eyebrow: "Next step",
-  headline: "Your team was not hired",
-  headlineAccent: "to do what software does.",
+  headline: "Let AI do the repetitive",
+  headlineAccent: " half of the job.",
   description:
-    "The repeat work is already sitting on your payroll. Software doing it instead costs less every month, which is the figure whoever holds the budget asks for.",
+    "Data entry, answering the same tickets, chasing numbers between systems. We automate the parts that repeat. Your team keeps the parts that need judgement.",
   primaryCta: "Book an automation review",
   secondaryCta: "See how we work",
   secondaryHref: "/how-we-work",

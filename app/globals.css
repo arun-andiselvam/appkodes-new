@@ -66,7 +66,36 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+  }
+
+  /*
+   * !! FOCUS INDICATORS ARE OFF SITE-WIDE, ON PURPOSE !!
+   *
+   * Removed on 21 August 2026 at the client's request. The browser's own ring
+   * was drawing a thick rounded box around links and buttons, and it looked
+   * wrong against a design built from hairlines.
+   *
+   * Know what this costs before restoring anything or adding a control. A
+   * keyboard visitor now has no way to see where they are on the page, so
+   * tabbing through the site is guesswork. That is a real accessibility
+   * regression rather than a style preference, and it is WCAG 2.4.7.
+   *
+   * The `* { outline-ring/50 }` this replaces only set the ring's colour. The
+   * ring itself came from the browser, so the colour utility had to go and an
+   * explicit `outline: none` had to arrive. Tailwind's own ring utilities draw
+   * as box-shadows rather than outlines, so those were stripped from the three
+   * components that used them: components/ui/button.tsx,
+   * components/ui/dialog.tsx and components/theme-toggle.tsx. Adding a
+   * `focus-visible:ring-*` class anywhere will still draw a ring, and this
+   * rule will not catch it.
+   *
+   * If it comes back, a 1px outline in the brand blue at 2px offset is the
+   * version to try, rather than the browser default.
+   */
+  :focus,
+  :focus-visible {
+    outline: none;
   }
   body {
     @apply bg-background text-foreground;

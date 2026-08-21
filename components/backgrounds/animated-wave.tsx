@@ -28,6 +28,39 @@ export function AnimatedWave() {
 
     resize();
     window.addEventListener("resize", resize);
+    // The footer grows with its own content, so a window resize isn't the only
+    // thing that changes our size — watch the element itself.
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    /*
+     * The footer sits at the bottom of every page, so without these guards
+     * this loop repaints ~1500 glyphs a frame forever, including the entire
+     * time the footer is scrolled out of view. fillText is main-thread work,
+     * so that competes with scrolling for no visible benefit. DotMatrix has
+     * carried the same three guards from the start; this one was missing them.
+     */
+    let visible = true;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting;
+        if (visible && !frameRef.current && !document.hidden) render();
+      },
+      { threshold: 0 },
+    );
+    io.observe(canvas);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = 0;
+      } else if (visible && !frameRef.current) {
+        render();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
     const render = () => {
       const rect = canvas.getBoundingClientRect();
@@ -62,6 +95,13 @@ export function AnimatedWave() {
       }
 
       time += 0.03;
+
+      // One painted frame for a reduced-motion visitor, and none at all while
+      // the footer is off-screen or the tab is in the background.
+      if (reduced || !visible || document.hidden) {
+        frameRef.current = 0;
+        return;
+      }
       frameRef.current = requestAnimationFrame(render);
     };
 
@@ -69,6 +109,9 @@ export function AnimatedWave() {
 
     return () => {
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      ro.disconnect();
+      io.disconnect();
       cancelAnimationFrame(frameRef.current);
     };
     // Refs are stable for the life of the component, and the render loop reads

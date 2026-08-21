@@ -168,13 +168,22 @@ export function MeetingsSection() {
             somewhere they cannot reach. It is the same promise as the "One
             person to call" line in content/audiences.ts, so the two agree.
 
-            Five countries is backed by the delivery presence in
-            docs/positioning.md. "Usually" is doing honest work in the second
-            sentence and should stay.
+            !! "WE KEEP PEOPLE IN FIVE COUNTRIES" WAS WRONG TWICE OVER !!
+
+            It rested on the delivery presence line in docs/positioning.md,
+            which the client corrected on 21 August 2026. There is no office
+            and nobody kept anywhere. The five are places where clients are and
+            where the team has met them, which is exactly what these
+            photographs show and all this paragraph now claims.
+
+            The count was wrong as well. Dubai and Sharjah are both in the UAE,
+            so five locations spans four countries.
+
+            "Usually" is doing honest work in the second sentence and stays.
           */}
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Nobody here hands you to an account manager. We keep people in five
-            countries, so the person across the table is usually the one who builds it.
+            Nobody here hands you to an account manager. We travel to our
+            clients, so the person across the table is usually the one who builds it.
             These photographs are some of those meetings.
           </p>
         </div>

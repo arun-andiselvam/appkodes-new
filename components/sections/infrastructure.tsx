@@ -36,10 +36,18 @@ export function InfrastructureSection() {
               <br />
               Shipping software is not.
             </SectionTitle>
+            {/*
+              "built by five offices across Asia and the Middle East" stood
+              here and it was false. There is no office in any of the five
+              places this site names. Confirmed by the client on 21 August
+              2026, and the verified facts list in docs/positioning.md is
+              corrected at source. They are places where clients sit and where
+              the team has met them.
+            */}
             <p className="text-xl text-muted-foreground leading-relaxed mb-12">
               This is not our first change of technology. Our software runs in
-              more than 50 countries, built by five offices across Asia and the
-              Middle East. The people who shipped that work will build yours.
+              more than 50 countries, for clients across Asia and the Middle
+              East. The people who shipped that work will build yours.
             </p>
 
             {/* Stats */}

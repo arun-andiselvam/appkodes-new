@@ -5,7 +5,7 @@ import { useHydrated } from "@/hooks/use-hydrated";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { DotMatrix } from "@/components/backgrounds/dot-matrix";
+import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { actions, heroWords as words, heroStats, heroCopy, site } from "@/content/site";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -26,37 +26,8 @@ export function HeroSection() {
 
   return (
     <Section spacing="none" className="min-h-screen flex flex-col justify-center overflow-hidden">
-      {/* Dot matrix background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <DotMatrix />
-      </div>
-      
-      {/* Subtle grid lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={`h-${i}`}
-            className="absolute h-px bg-foreground/10"
-            style={{
-              top: `${12.5 * (i + 1)}%`,
-              left: 0,
-              right: 0,
-            }}
-          />
-        ))}
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={`v-${i}`}
-            className="absolute w-px bg-foreground/10"
-            style={{
-              left: `${8.33 * (i + 1)}%`,
-              top: 0,
-              bottom: 0,
-            }}
-          />
-        ))}
-      </div>
-      
+      <HeroBackdrop />
+
       <Container className="relative z-10 pt-24 pb-40 lg:pt-28 lg:pb-56">
         {/* Eyebrow */}
         <div 

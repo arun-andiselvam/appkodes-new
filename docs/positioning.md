@@ -20,8 +20,24 @@ Verified facts from appkodes.com, safe to use as proof:
 - 1000+ clients worldwide. appkodes.com also shows 280 under "happy clients
   globally", but 1000+ is the figure to publish, confirmed 18 August 2026.
 - 2000+ projects delivered
-- Delivery presence in India, Indonesia, Dubai, Vietnam and Sharjah
+- Clients in India, Indonesia, Dubai, Vietnam and Sharjah, met face to face
 - Engagement models offered: Fixed Price, Hire Our Developer, Onsite Development
+
+**The clients line used to read "Delivery presence in" those five places, and
+that was wrong.** Corrected 21 August 2026 by the client. There is no office in
+any of them. What is true is that clients are there and the team has sat down
+with them, which is what the photographs in `content/meetings.ts` show.
+
+Presence is not premises, and neither one is a client. Copy anywhere on the
+site may say we have clients in these places and that we meet them in person.
+It may not say offices, delivery centres, hubs, or that we keep people there.
+Note also that Dubai and Sharjah are both in the UAE, so this is five locations
+across four countries and never "five countries".
+
+This one line had already propagated into four pieces of published copy before
+anybody caught it: the service page reach section, the home page track record
+paragraph, the in person section, and a comment justifying the `areaServed`
+list on the Service schema. Every one of them upgraded it on the way through.
 
 Existing catalogue of ready made products (Uber, Airbnb, TikTok style scripts)
 still sells, but it stays in the footer. A buyer evaluating a migration partner

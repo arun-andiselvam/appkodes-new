@@ -3,7 +3,7 @@ import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
-import { navLinks } from "@/content/site";
+import { mainNav } from "@/content/navigation";
 
 /**
  * The 404.
@@ -31,7 +31,7 @@ export default function NotFound() {
           </p>
 
           <nav className="flex flex-wrap gap-x-8 gap-y-3">
-            {[{ name: "Home", href: "/" }, ...navLinks].map((link) => (
+            {[{ name: "Home", href: "/" }, ...mainNav].map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

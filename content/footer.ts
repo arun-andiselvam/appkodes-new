@@ -28,14 +28,32 @@ import type { SocialLink } from "./types";
  * have a page yet. docs/positioning.md also wants the ready-made product
  * catalogue down here rather than in the main menu, which needs its own group
  * once somebody decides which products to list.
+ *
+ * Rebuilt again on 20 August 2026 for the silo. The two groups are not the
+ * main menu repeated. Services lists all five silo parents flat, since
+ * somebody who has read to the bottom of a page already knows which one they
+ * want and should not have to open a menu to reach it. Company collects
+ * everything that is not a service.
+ *
+ * How we work and Case studies both live one level down in the header, inside
+ * the Services and Resources panels. This is the only place either is reachable
+ * from every page without opening something.
  */
 export const footerLinks = {
-  Site: [
-    { name: "AI Automation", href: "/ai-automation" },
-    { name: "How we work", href: "/how-we-work" },
-    { name: "Results", href: "/results" },
+  Services: [
+    { name: "AI Integration", href: "/services/ai-software-integration" },
+    { name: "Workflow Automation", href: "/services/ai-workflow-automation" },
+    { name: "AI MVP Development", href: "/services/custom-ai-mvp-development" },
+    { name: "Data & Analytics", href: "/services/ai-data-predictive-analytics" },
+    { name: "Custom Models & Voice", href: "/services/custom-ai-models-voice" },
   ],
-  Talk: [{ name: "Book an automation review", href: "/#contact" }],
+  Company: [
+    { name: "Industries", href: "/industries" },
+    { name: "How we work", href: "/how-we-work" },
+    { name: "Case studies", href: "/resources/case-studies" },
+    { name: "Resources", href: "/resources" },
+    { name: "Contact", href: "/contact" },
+  ],
 };
 
 /**

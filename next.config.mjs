@@ -16,6 +16,31 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
 
+  /**
+   * Routes that moved when the site was siloed on 20 August 2026.
+   *
+   * All permanent, so 308 rather than 307. A temporary redirect on a page that
+   * is never coming back leaves the old URL competing with the new one in the
+   * index for months.
+   *
+   * /ai-automation goes to the services hub rather than into one of the five
+   * silos. The page held capabilities, tooling and data handling, which is now
+   * spread across all of them. Pointing it at any single silo would strand
+   * everyone who arrived for one of the others.
+   *
+   * /case-studies is here for completeness rather than for traffic. It existed
+   * for about an hour on a development branch before case studies moved under
+   * Resources, so nothing has ever linked to it. The redirect costs one line
+   * and removes the question.
+   */
+  async redirects() {
+    return [
+      { source: '/ai-automation', destination: '/services', permanent: true },
+      { source: '/results', destination: '/resources/case-studies', permanent: true },
+      { source: '/case-studies', destination: '/resources/case-studies', permanent: true },
+    ]
+  },
+
   async headers() {
     return [
       {

@@ -172,3 +172,222 @@ export type SocialLink = {
   name: string;
   href: string;
 };
+
+/**
+ * One entry in the header's mega-menu panel.
+ *
+ * A group is a silo parent: it has its own page, a line saying what the silo
+ * covers, and the child pages that sit under it. `children` is optional
+ * because the Industries panel groups nothing - each industry is its own top
+ * level page - and a group with no children renders as a single card. That
+ * keeps both panels on one renderer instead of two that drift apart.
+ */
+export type NavGroup = {
+  name: string;
+  href: string;
+  /** One line under the name. Written for a buyer scanning, not for a crawler. */
+  blurb: string;
+  children?: { name: string; href: string; blurb: string }[];
+};
+
+/**
+ * One item in the main menu.
+ *
+ * `panel` present means the item opens a mega-menu and its `href` is the silo
+ * parent, which is still a real page a visitor can land on. Absent means a
+ * plain link. Nothing here is allowed a `#` destination; see content/footer.ts
+ * for why that rule exists.
+ */
+export type NavItem = {
+  name: string;
+  href: string;
+  panel?: {
+    groups: NavGroup[];
+    /** The strip along the bottom of the panel, for the "see everything" link. */
+    footer?: { name: string; href: string };
+  };
+};
+
+/**
+ * A landing page built to the conversion blueprint in
+ * docs/hitasoft_ai_architecture_strategy.md, section 4.
+ *
+ * Problem, solution, process, then the call to action. The blueprint also asks
+ * for an ROI block, and this type gives it `outcomes` rather than numbers on
+ * purpose: docs/positioning.md forbids publishing a figure nobody has
+ * measured, and every percentage in a draft service page would be invented.
+ * Outcomes state the shape of the return, which is claimable today. Swap in
+ * measured figures when there are some.
+ */
+export type ServicePage = {
+  /** Last segment of the URL, joined to the parent by the route file. */
+  slug: string;
+  /** H1, and the menu label if it differs. */
+  title: string;
+  /** Small label above the H1. */
+  eyebrow: string;
+  /** The sentence under the H1. */
+  lede: string;
+  /** <title> and meta description. */
+  metaTitle: string;
+  metaDescription: string;
+  /** Step 1 of the blueprint: the friction, and what it costs to leave alone. */
+  problem: { heading: string; body: string; points: string[] };
+  /** Step 2: what we build, in the words a non-technical founder would use. */
+  solution: { heading: string; body: string; points: string[] };
+  /** Step 4: what changes afterwards. No invented figures. See above. */
+  outcomes: string[];
+};
+
+/**
+ * A service landing page, the long form.
+ *
+ * ServicePage above is the shared silo blueprint: problem, solution, outcomes,
+ * eleven routes drawing the same four blocks. This is the richer shape set out
+ * in docs/service-page-architecture.md, for the pages that have to rank on
+ * their own rather than pass equity down a silo. It adds a hero with its own
+ * proof, named capabilities, a dated process, a stack list and an FAQ.
+ *
+ * A page keeps its ServicePage entry as well. The silo still needs the short
+ * form for the parent's card and the breadcrumb trail.
+ *
+ * Every figure quoted here has to be one the company can back. See the claims
+ * discipline in docs/positioning.md, and note that the regional project splits
+ * in content/infrastructure.ts are draft data and stay out of published copy.
+ */
+export type ServiceLanding = {
+  /** Route path, leading slash. Keys the record and builds the canonical URL. */
+  path: string;
+  metaTitle: string;
+  metaDescription: string;
+  hero: {
+    eyebrow: string;
+    /** The H1. Two sentences is fine; the second one earns the first. */
+    title: string;
+    lede: string;
+    /** Short proof under the call to action. Backed claims only. */
+    badges: string[];
+  };
+  /**
+   * The friction, and what leaving it alone costs.
+   *
+   * `points` are titled rather than bare strings, which is the one place this
+   * type diverges from ServicePage above. A silo child can carry three short
+   * lines because the page around them is short. A page built to rank has to
+   * say what each symptom costs, and a one line bullet has nowhere to put
+   * that. They render as cards in the same vocabulary the home page uses for
+   * its capability grid.
+   */
+  problem: {
+    heading: string;
+    body: string;
+    points: { title: string; body: string }[];
+  };
+  capabilities: {
+    heading: string;
+    items: { title: string; body: string }[];
+  };
+  process: {
+    heading: string;
+    /** `when` carries the week, so the heading does not have to promise one. */
+    steps: { when: string; title: string; body: string }[];
+  };
+  /**
+   * Where the work is built, and where it ends up running.
+   *
+   * !! `clientLocations` IS WHERE THE CLIENTS ARE, NOT WHERE WE ARE !!
+   *
+   * The field was called `offices` for about an hour on 21 August 2026, under
+   * a heading reading "Built in five offices". The company has no office in
+   * any of them. They are places where clients sit and where the team has met
+   * them face to face, confirmed by the client that day, and the name says so
+   * now because a vaguer one is what let the claim drift in the first place.
+   *
+   * Anything rendering this list has to label it as client locations. See the
+   * corrected verified facts list in docs/positioning.md.
+   *
+   * They are displayed rather than written into the paragraph, because five
+   * place names inside a sentence is an inline list of five where
+   * docs/positioning.md allows two.
+   *
+   * `points` carry a label each. Three checkmarked lines with nothing naming
+   * them made the reader work out what they had in common. The labels are the
+   * questions a buyer actually arrives with, so the block reads as a spec
+   * rather than as three assurances that happened to be grouped.
+   */
+  reach: {
+    heading: string;
+    body: string;
+    clientLocations: string[];
+    points: { label: string; body: string }[];
+  };
+  /**
+   * What the integration is built from and plugs into.
+   *
+   * Items are `Integration`, the same shape the home page marquee uses, rather
+   * than bare strings. That buys three things. The mark renders from the
+   * shared map in components/ui/brand-mark.tsx, the category line says what
+   * each entry is for instead of leaving a buyer with no IT department to
+   * guess, and anything listed here can be lifted straight from
+   * content/integrations.ts without being retyped and quietly reworded.
+   *
+   * Nothing may appear here that is not already vetted in
+   * content/integrations.ts. That file carries a confirm before launch warning
+   * because the list is a claim about what has actually been delivered, and a
+   * service page is the last place to widen it.
+   */
+  stack: {
+    heading: string;
+    body: string;
+    groups: { label: string; items: Integration[] }[];
+  };
+  /**
+   * One paragraph defining the service in plain terms, for the machines.
+   *
+   * Added 21 August 2026 from the GEO blueprint. An answer engine quoting this
+   * page needs a self-contained definition it can lift without the surrounding
+   * layout, and a hero headline is too short to serve as one. This is also the
+   * `description` on the Service schema, so the prose and the structured data
+   * cannot say different things.
+   *
+   * The heading is not decoration. Shipped without one, the paragraph sat at
+   * display size under the hero with nothing above it and read as an orphan.
+   */
+  summary: { heading: string; body: string };
+  /**
+   * Rebuild against integration, side by side.
+   *
+   * Answer engines synthesise comparison tables readily, which is why the
+   * blueprint asks for one. Every cell is a characterisation rather than a
+   * statistic. The version that came in quoted "$50,000+" and "6 to 12
+   * months", and neither figure is one the company can back.
+   */
+  comparison: {
+    heading: string;
+    body: string;
+    /** Column headings, rebuild first. */
+    columns: [string, string];
+    rows: { label: string; rebuild: string; integration: string }[];
+  };
+  faqs: { question: string; answer: string }[];
+  /**
+   * The architecture diagram beside the hero headline.
+   *
+   * Optional: a service page without one just gets a wider headline column.
+   *
+   * Rows run top to bottom, and the component wires them into a hierarchy: the
+   * single node on the first row feeds the pair below it, and the right hand
+   * node of each pair feeds the row under that. Pairs are also joined across.
+   * The shape is fixed because the diagram describes one architecture, not any
+   * architecture.
+   *
+   * `tone` is the story, not decoration. Brand blue is what the client already
+   * owns and accent red is what the integration adds, so the split down the
+   * diagram says which half of it is new work.
+   */
+  diagram?: {
+    /** Read in place of the shapes by anything that cannot see them. */
+    caption: string;
+    rows: { label: string; sub?: string; tone: "brand" | "accent" }[][];
+  };
+};
