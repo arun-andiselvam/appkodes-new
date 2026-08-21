@@ -127,19 +127,32 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
       {/*
         The definition, as a pull quote across the full width.
 
-        The service page sets this as a narrow title beside a paragraph. Here
-        it is the paragraph alone at display size with the heading reduced to
-        an eyebrow, because on an industry page this block is the claim to
-        know the trade and it should read as a statement rather than as a
-        labelled field. It is also the Service schema's description, emitted by
-        the route, so the prose and the structured data cannot drift.
+        Title left, passage right, which is the service page's treatment for
+        this block and is deliberately shared. Asked for on 21 August 2026.
+
+        This one section matching is not the thing that made the two pages look
+        alike. That was six sections in a row matching, and the hero above this
+        and everything below it now differ. A definition block is a definition
+        block, and the narrow label beside the passage is the clearest way to
+        set one, so both pages use it.
+
+        !! IT HAD NO HEADING AT ALL FOR A WHILE !!
+
+        Shipped first with the title demoted to an eyebrow, which looked fine
+        and was wrong. Every other section on the page opens with an h2, so
+        this one was a hole in the outline, and it is the block a crawler is
+        most likely to lift: it doubles as the Service schema's description,
+        emitted by the route. A quoted passage with nothing naming it is worth
+        less to an answer engine than the same passage under a heading.
       */}
       <Section spacing="tight" className="border-t border-foreground/10">
         <Container>
-          <Eyebrow className="mb-8">{page.summary.heading}</Eyebrow>
-          <p className="max-w-5xl font-display text-2xl lg:text-3xl leading-[1.4] tracking-tight text-foreground/90">
-            {page.summary.body}
-          </p>
+          <div className="grid lg:grid-cols-[minmax(0,20rem)_1fr] gap-10 lg:gap-20">
+            <SectionTitle>{page.summary.heading}</SectionTitle>
+            <p className="text-xl lg:text-2xl leading-relaxed text-foreground/80">
+              {page.summary.body}
+            </p>
+          </div>
         </Container>
       </Section>
 

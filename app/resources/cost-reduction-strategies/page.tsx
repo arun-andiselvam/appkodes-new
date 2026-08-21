@@ -1,22 +1,7 @@
-import { pageMetadata } from "@/lib/seo";
-import { ResourceCategoryPage } from "@/components/sections/resource-category";
-import { CtaSection } from "@/components/sections/cta";
-import { resourceCategories } from "@/content/resources";
+import { resourceCategoryRoute } from "@/lib/resource-category-route";
 
-const path = "/resources/cost-reduction-strategies";
-const category = resourceCategories[path];
+/* Page one. Copy lives in content/resources.ts, posts come from lib/posts.ts. */
+const route = resourceCategoryRoute("/resources/cost-reduction-strategies");
 
-export const metadata = pageMetadata({
-  title: category.metaTitle,
-  description: category.metaDescription,
-  path,
-});
-
-export default function Page() {
-  return (
-    <main>
-      <ResourceCategoryPage path={path} category={category} />
-      <CtaSection />
-    </main>
-  );
-}
+export const metadata = route.metadata;
+export default route.Page;

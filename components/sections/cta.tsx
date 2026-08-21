@@ -142,13 +142,55 @@ export function CtaSection() {
                 new artwork is wider than tall where the old was taller than
                 wide, so it sits shorter at the same width.
               */}
+              {/*
+                !! TWO FILES, BECAUSE THE ARTWORK WAS DRAWN FOR WHITE PAPER !!
+
+                The badge is dark navy line work on transparency. Measured
+                against the two grounds it actually sits on:
+
+                  on #ffffff  median 5.89:1, 12.5% of the art below 3:1
+                  on #0e1f25  median 2.87:1, 53.3% of the art below 3:1
+
+                So in dark mode over half of it, the ribbon edges and the words
+                YEARS OF EXCELLENCE worst of all, sank into the background.
+
+                The dark file is the same artwork with its HSV value lifted by
+                a gamma of 2.4. Hue and saturation are untouched, so it is the
+                same blue rather than a washed out one, and it measures median
+                4.66:1 with 2.9% below 3:1. A CSS filter was the cheaper fix
+                and was not used: brightness() scales linearly and clips the
+                highlights that are already near white, where a gamma curve
+                lifts the shadows and leaves them alone.
+
+                Swapped by class rather than by a <picture> media query,
+                because the theme is a manual toggle. app/layout.tsx sets
+                attribute="class", so prefers-color-scheme would ignore
+                somebody choosing light while their system is dark.
+
+                Both files are in the markup and both are below the fold, so
+                next/image lazy loads them.
+
+                Both also carry the real alt text, and that is not a duplicate.
+                `hidden` is display:none, which takes an element out of the
+                accessibility tree, so exactly one of these is ever announced.
+                The first version of this put alt="" and aria-hidden on the
+                dark copy, which left the badge with no accessible name at all
+                for anybody reading the site in dark mode.
+              */}
               <div className="shrink-0 flex justify-center lg:mr-6">
                 <Image
                   src="/18-years-of-excellence.webp"
                   alt="Eighteen years of excellence"
                   width={692}
                   height={604}
-                  className="w-48 sm:w-60 lg:w-72 h-auto"
+                  className="w-48 sm:w-60 lg:w-72 h-auto dark:hidden"
+                />
+                <Image
+                  src="/18-years-of-excellence-dark.webp"
+                  alt="Eighteen years of excellence"
+                  width={692}
+                  height={604}
+                  className="hidden w-48 sm:w-60 lg:w-72 h-auto dark:block"
                 />
               </div>
             </div>

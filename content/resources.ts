@@ -24,6 +24,29 @@ export type ResourceCategory = {
   lede: string;
   metaTitle: string;
   metaDescription: string;
+  /**
+   * The passage that makes this a hub rather than an archive.
+   *
+   * !! A CATEGORY PAGE THAT ONLY LISTS POSTS RANKS FOR NOTHING !!
+   *
+   * Added 21 August 2026. A list of links gives an answer engine nothing to
+   * quote, and gives Google no reason to rank /resources/integration-guides
+   * for "AI integration guides", because every post under it is a better
+   * match for its own narrower query. The category gets outranked by its own
+   * children.
+   *
+   * So the page answers its own question first, in a passage that stands up
+   * with none of the page around it, and lists the posts underneath. Same
+   * reasoning as the summary block on the service and industry pages.
+   *
+   * This copy is real and stays whether there are posts or not, which is what
+   * makes the category a finished page today rather than a placeholder.
+   */
+  pillar: {
+    heading: string;
+    body: string;
+    points: { title: string; body: string }[];
+  };
   /** Working titles of the pieces being written. Not links, because they do not exist. */
   planned: string[];
   /** Where to go in the meantime. Every one is a real page. */
@@ -38,6 +61,24 @@ export const resourceCategories: Record<string, ResourceCategory> = {
     metaTitle: "AI Integration Guides",
     metaDescription:
       "Guides on integrating an LLM into existing software, from API setup and wrappers through to private deployment and data handling.",
+    pillar: {
+      heading: "What an integration guide has to answer",
+      body: "A model going into software that already exists is mostly not a modelling problem at all. It is a question of which endpoint to call and what happens to the data on the way. These guides work through those questions in the order they come up in a real project.",
+      points: [
+        {
+          title: "Which endpoint",
+          body: "The choice is a hosted API or an open weight model on hardware you own. It gets decided by where the data is allowed to sit, not by benchmark scores.",
+        },
+        {
+          title: "What happens to the data",
+          body: "Where the data goes, and who can read the logs once it has been there. Both get settled before anybody writes code, because retrofitting them means doing the integration twice.",
+        },
+        {
+          title: "Who holds it afterwards",
+          body: "Somebody holds the keys and the middleware after the work is finished, and it should be you. A guide that will not say where those end up is describing a dependency instead.",
+        },
+      ],
+    },
     planned: [
       "What it actually takes to add AI to software you already run",
       "API integration or a private model, and how to tell which you need",
@@ -69,6 +110,24 @@ export const resourceCategories: Record<string, ResourceCategory> = {
     metaTitle: "AI Cost Reduction Strategies",
     metaDescription:
       "How to find the repeat work in your operations, what automating it returns, and how to keep model spend from growing with your usage.",
+    pillar: {
+      heading: "Where the money actually is",
+      body: "Most automation savings are already on the payroll, in work somebody does by hand every week. The second cost is the model bill, which is small at the start and grows with usage in a way nobody plans for. These pieces cover finding the first and containing the second.",
+      points: [
+        {
+          title: "Find the work first",
+          body: "Automation pays back against a task somebody already does, so that task has to be measured first. A week of counting beats a quarter of guessing.",
+        },
+        {
+          title: "Pick the one that pays soonest",
+          body: "A queue and a pile of paperwork are both automatable, and they do not pay back at the same speed. The one with the clearest rules usually goes first.",
+        },
+        {
+          title: "Keep the bill flat",
+          body: "Model spend grows with usage unless somebody designs against it. Smaller models and caching are the usual levers, and most companies never pull either one.",
+        },
+      ],
+    },
     planned: [
       "How to find the manual work that is already on your payroll",
       "Automate the queue or automate the paperwork, and which pays back sooner",
