@@ -385,9 +385,163 @@ export type ServiceLanding = {
    * owns and accent red is what the integration adds, so the split down the
    * diagram says which half of it is new work.
    */
-  diagram?: {
-    /** Read in place of the shapes by anything that cannot see them. */
+  diagram?: ArchitectureDiagram;
+};
+
+/**
+ * The architecture drawn beside a hero headline.
+ *
+ * Lifted out of ServiceLanding on 21 August 2026 when the industry pages
+ * wanted one too. Rendered by components/backgrounds/integration-diagram.tsx.
+ *
+ * Rows run top to bottom, and the component wires them into a hierarchy: the
+ * single node on the first row feeds the pair below it, and the right hand
+ * node of each pair feeds the row under that. Pairs are also joined across.
+ * The shape is fixed because the component draws one architecture, not any
+ * architecture.
+ *
+ * `tone` is the story, not decoration. Brand blue is what the client already
+ * owns and accent red is what the integration adds, so the split down the
+ * diagram says which half of it is new work.
+ */
+export type ArchitectureDiagram = {
+  /** Read in place of the shapes by anything that cannot see them. */
+  caption: string;
+  rows: { label: string; sub?: string; tone: "brand" | "accent" }[][];
+};
+
+/**
+ * An industry landing page, the long form.
+ *
+ * Built to docs/industry-page-architecture.md. It is a sibling of
+ * ServiceLanding rather than a reuse of it, because the two argue differently.
+ * A service page has to beat a rebuild, so it carries a process and a
+ * comparison table. An industry page has to prove we understand a trade, so it
+ * carries sector use cases, the compliance answer that trade asks first, and
+ * the software that trade already runs.
+ *
+ * A page here keeps its content/industries.ts entry, exactly as the service
+ * landings keep theirs. The short form still feeds the menu card and the
+ * breadcrumb trail.
+ *
+ * Every claims rule from docs/positioning.md applies, and the brief for this
+ * page breaks several of them. See the notes in content/industry-landings.ts.
+ */
+export type IndustryLanding = {
+  /** Route path, leading slash. Keys the record and builds the canonical URL. */
+  path: string;
+  metaTitle: string;
+  metaDescription: string;
+  /** Sector this page speaks to, for the Service schema's audience. */
+  audience: string;
+  hero: {
+    eyebrow: string;
+    title: string;
+    lede: string;
+    /** Short proof under the call to action. Backed claims only. */
+    badges: string[];
+    /** Label on the primary button, since an industry page names its own audit. */
+    cta: string;
+  };
+  /** The quotable definition, and the Service schema's description. */
+  summary: { heading: string; body: string };
+  /** The bottleneck this trade already recognises. */
+  problem: { heading: string; body: string; points: { title: string; body: string }[] };
+  /**
+   * What we build for it, in that trade's own vocabulary.
+   *
+   * Full width rows rather than three cards, which is one of the things that
+   * separates this page from a service page. A row has space for specifics, so
+   * each one carries `detail`: short fragments naming what the integration
+   * actually does, which thirty words in a third width card had no room for.
+   */
+  useCases: {
+    heading: string;
+    items: { title: string; body: string; detail: string[] }[];
+  };
+  /**
+   * The pipeline for one job in this trade, end to end.
+   *
+   * !! ONE STEP HAS TO BE A PERSON !!
+   *
+   * The whole point of the section is that it names where a human still sits.
+   * docs/industry-page-architecture.md asks for copy reading "without human
+   * intervention" and "instantly resolving tickets", and this section is the
+   * answer to why that was not published. A buyer who has had a pilot die
+   * already, which docs/positioning.md says the mid size buyer has, does not
+   * believe a pipeline with nobody in it.
+   *
+   * Step bodies run under ten words on purpose. They are captions on a
+   * diagram, not prose, and the 11 to 14 word band the voice rules forbid is
+   * very easy to land in when a caption is allowed to grow.
+   */
+  workflow: {
+    heading: string;
+    body: string;
+    steps: { label: string; body: string; human?: boolean }[];
+  };
+  /**
+   * The compliance answer, which an industry page cannot skip.
+   *
+   * Icons are lucide, imported in the content file the way content/security.ts
+   * already does it. Every line has to be something the company can do by
+   * deciding to do it, with no auditor involved. That file explains why.
+   */
+  security: {
+    heading: string;
+    body: string;
+    items: { icon: LucideIcon; title: string; body: string }[];
+  };
+  /**
+   * The software this trade already runs, for entity clustering.
+   *
+   * Same Integration shape and same shared mark map as the service page stack.
+   * The framing matters: this is what clients bring us, not a list of
+   * integrations we are claiming to have delivered.
+   */
+  ecosystem: {
+    heading: string;
+    body: string;
+    /**
+     * One flat list, because this renders as a marquee rather than a grid.
+     *
+     * It was grouped under four labels, the same shape the service page stack
+     * uses. Grouping is what a static grid needs and a scrolling row has no
+     * use for, and reusing that shape was part of why the two pages looked
+     * identical. The card carries the name and what the tool is for, which is
+     * the whole meaning the group labels were adding.
+     *
+     * Keep it above about ten entries. The set is rendered twice to loop, so a
+     * short list visibly repeats itself inside one screen.
+     */
+    items: Integration[];
+  };
+  faqs: { question: string; answer: string }[];
+  /**
+   * The hero visual.
+   *
+   * Not an ArchitectureDiagram. That component is the service page's
+   * signature, and relabelling its boxes gave the industry page the same
+   * opening as the page it is meant to be distinct from. This is a ledger
+   * instead: the trade's own document, with the categories a model assigned
+   * and one row held back for a person.
+   *
+   * The rows are an illustration of a screen, not a client's books. They are
+   * written to look like nobody's real data on purpose.
+   */
+  ledger: {
+    /** Read in place of the panel by anything that cannot see it. */
     caption: string;
-    rows: { label: string; sub?: string; tone: "brand" | "accent" }[][];
+    /** Header on the panel. */
+    label: string;
+    rows: {
+      date: string;
+      description: string;
+      amount: string;
+      category: string;
+      /** Held for review rather than posted. Exactly one row should set this. */
+      flagged?: boolean;
+    }[];
+    footnote: string;
   };
 };

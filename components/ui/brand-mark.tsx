@@ -3,6 +3,10 @@ import {
   siPython, siTypescript, siLaravel, siReact, siPostgresql, siRedis,
   siN8n, siModelcontextprotocol, siDocker, siFlutter, siStripe,
   siCursor, siGithubcopilot, siV0, siVercel, siGithubactions, siSentry,
+  // Added 21 August 2026 for the fintech industry page's ecosystem section.
+  // Plaid and Salesforce are not in simple-icons, so they fall back to a
+  // monogram like OpenAI does.
+  siQuickbooks, siXero, siMysql,
 } from "simple-icons";
 
 /**
@@ -26,6 +30,7 @@ const BRAND_PATHS: Record<string, string> = Object.fromEntries(
     ["siDocker", siDocker], ["siFlutter", siFlutter], ["siStripe", siStripe],
     ["siCursor", siCursor], ["siGithubcopilot", siGithubcopilot], ["siV0", siV0],
     ["siVercel", siVercel], ["siGithubactions", siGithubactions], ["siSentry", siSentry],
+    ["siQuickbooks", siQuickbooks], ["siXero", siXero], ["siMysql", siMysql],
   ].map(([key, icon]) => [key as string, (icon as { path: string }).path]),
 );
 

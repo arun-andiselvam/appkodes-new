@@ -7,6 +7,9 @@ import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { BrandMark } from "@/components/ui/brand-mark";
+// Lifted out of this file on 21 August 2026, so the industry pages draw the
+// same row. See components/sections/card-row.tsx.
+import { CardRow } from "@/components/sections/card-row";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { IntegrationDiagram } from "@/components/backgrounds/integration-diagram";
 import { childrenOf } from "@/content/navigation";
@@ -29,46 +32,6 @@ import type { ServiceLanding } from "@/content/types";
  * pointer rests on that menu, so a parent that did not link down would leave
  * the silo a level short of the internal linking it exists for.
  */
-/**
- * Three numbered cards across, used by the problem and capability sections.
- *
- * The card itself is the home page's, reused rather than reinvented: rounded,
- * one hairline border, no shadow, and the border going primary on hover. See
- * components/sections/features.tsx.
- *
- * It lives here as one component because two sections now draw it. Written out
- * twice they would drift, and the pair being identical is the whole point of
- * the change that created this.
- *
- * Writing the copy is half the job. The bodies have to be held within a few
- * words of each other or the row reads as broken rather than as a set, which
- * is exactly what the capability section looked like when one card carried
- * seventeen words beside another carrying twenty five.
- */
-function CardRow({ items }: { items: { title: string; body: string }[] }) {
-  return (
-    <ul className="mt-12 grid md:grid-cols-3 gap-4 lg:gap-6">
-      {items.map((item, i) => (
-        <li
-          key={item.title}
-          className="rounded-lg border border-border bg-card p-6 lg:p-8 transition-colors duration-300 hover:border-primary"
-        >
-          {/*
-            Numbered from the index rather than from the content, so a card
-            cannot be reordered into carrying the wrong number. Same padStart
-            the process section uses further down.
-          */}
-          <span className="font-mono text-sm text-muted-foreground">
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          <h3 className="mt-4 font-display text-2xl tracking-tight">{item.title}</h3>
-          <p className="mt-3 text-muted-foreground leading-relaxed">{item.body}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
   const children = childrenOf(page.path);
 

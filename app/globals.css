@@ -154,7 +154,24 @@
     0% { transform: translateX(-100%); }
     100% { transform: translateX(0); }
   }
-  
+
+  /*
+    Content that moves on its own has to honour the setting asking it not to.
+    Added 21 August 2026 with the industry page's ecosystem row, which was the
+    second marquee on the site and the point where this stopped being something
+    one component could own.
+
+    Stopping the animation is a correct resting state in both directions. Each
+    set is rendered twice side by side, so at translateX(0) the first copy
+    fills the row and the second sits off to the right.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee,
+    .marquee-reverse {
+      animation: none;
+    }
+  }
+
   .line-reveal {
     clip-path: inset(0 100% 0 0);
     animation: line-reveal 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;

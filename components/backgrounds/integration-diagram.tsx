@@ -1,9 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
-import type { ServiceLanding } from "@/content/types";
+// Was NonNullable<ServiceLanding["diagram"]>, which tied this component to one
+// page type. The industry pages draw the same diagram, so the shape is its own
+// type now. See ArchitectureDiagram in content/types.ts.
+import type { ArchitectureDiagram } from "@/content/types";
 
-type Diagram = NonNullable<ServiceLanding["diagram"]>;
+type Diagram = ArchitectureDiagram;
 
 /**
  * The architecture, drawn in CSS 3D rather than on a canvas.
