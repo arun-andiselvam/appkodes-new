@@ -143,24 +143,32 @@ export function CtaSection() {
                 wide, so it sits shorter at the same width.
               */}
               {/*
-                !! TWO FILES, BECAUSE THE ARTWORK WAS DRAWN FOR WHITE PAPER !!
+                !! TWO FILES, BECAUSE ONE PIECE OF ARTWORK CANNOT DO BOTH !!
 
-                The badge is dark navy line work on transparency. Measured
-                against the two grounds it actually sits on:
+                The light file is dark navy line work drawn for white paper,
+                and in dark mode the ribbon edges and the words YEARS OF
+                EXCELLENCE sank into the background.
 
-                  on #ffffff  median 5.89:1, 12.5% of the art below 3:1
-                  on #0e1f25  median 2.87:1, 53.3% of the art below 3:1
+                The dark file is a separate piece of artwork supplied by the
+                client on 22 August 2026, drawn for a dark ground. It is used
+                exactly as delivered. The only change is that its transparent
+                margin was cropped off, which moves no visible pixel and makes
+                it render at the same size as the light file: its content box
+                is 407 by 355, an aspect of 1.1465 against the light file's
+                1.1457, so the two are the same framing.
 
-                So in dark mode over half of it, the ribbon edges and the words
-                YEARS OF EXCELLENCE worst of all, sank into the background.
+                !! DO NOT TRY TO GENERATE ONE FROM THE OTHER !!
 
-                The dark file is the same artwork with its HSV value lifted by
-                a gamma of 2.4. Hue and saturation are untouched, so it is the
-                same blue rather than a washed out one, and it measures median
-                4.66:1 with 2.9% below 3:1. A CSS filter was the cheaper fix
-                and was not used: brightness() scales linearly and clips the
-                highlights that are already near white, where a gamma curve
-                lifts the shadows and leaves them alone.
+                That was tried first, lifting the light artwork's HSV value by
+                a gamma curve, and it was rejected on sight. Worth recording
+                why the measurements said it was fine: contrast ratios were
+                computed against the page background for every pixel, which
+                counts pixels sitting on top of other artwork, and then again
+                for silhouette edge pixels only, which counts the dark outline
+                this badge has around its laurel and ribbon by design. Both
+                numbers were confident and both were wrong. A multi tone
+                illustration is not text on a background, and it does not
+                submit to a contrast ratio.
 
                 Swapped by class rather than by a <picture> media query,
                 because the theme is a manual toggle. app/layout.tsx sets
@@ -186,10 +194,10 @@ export function CtaSection() {
                   className="w-48 sm:w-60 lg:w-72 h-auto dark:hidden"
                 />
                 <Image
-                  src="/18-years-of-excellence-dark.webp"
+                  src="/18-years-of-excellence-dark.png"
                   alt="Eighteen years of excellence"
-                  width={692}
-                  height={604}
+                  width={407}
+                  height={355}
                   className="hidden w-48 sm:w-60 lg:w-72 h-auto dark:block"
                 />
               </div>
