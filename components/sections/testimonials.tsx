@@ -328,7 +328,16 @@ function shuffled<T>(items: T[]): T[] {
   return out;
 }
 
-export function TestimonialsSection() {
+export function TestimonialsSection({
+  /**
+   * Whether to close with the client logo band.
+   *
+   * Off on /resources/case-studies, which shows the same six marks in its own
+   * row near the top. On everywhere else, and on the home page in particular,
+   * where this is the only place they appear.
+   */
+  showClients = true,
+}: { showClients?: boolean } = {}) {
   const [sectionRef, isVisible] = useInView<HTMLElement>();
   const trackRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
@@ -547,36 +556,52 @@ export function TestimonialsSection() {
         </span>
       </Container>
 
-      {/* Client logo band */}
-      <Container className="mt-16 lg:mt-20 pt-12 border-t border-foreground/10">
-        <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase text-center">
-          Businesses we have built for
-        </p>
-      </Container>
-
       {/*
-        Two copies because the keyframe travels -50%, with the trailing gap
-        inside each set rather than on the flex parent. A gap on the parent
-        makes the halves unequal and the row jumps every loop, which is the
-        same bug the integrations marquees had.
+        Client logo band.
+
+        !! THE CASE STUDIES PAGE SHOWS THESE MARKS ABOVE, SO IT TURNS THIS OFF !!
+
+        The same six logos ran twice on /resources/case-studies once that page
+        gained its own client row at the top, which read as a mistake rather
+        than as emphasis. The band is not deleted because the home page has no
+        other client row and this is the only place those marks appear there.
+
+        So it is a prop rather than a removal. Default on, off where something
+        above has already shown them.
       */}
-      <div className="mt-10 flex overflow-hidden">
-        {[0, 1].map((setIndex) => (
-          <div key={setIndex} className="flex items-center gap-16 pr-16 shrink-0 marquee">
-            {clientLogos.map((client) => (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                key={`${client.name}-${setIndex}`}
-                src={client.logo}
-                alt={client.name}
-                loading="lazy"
-                aria-hidden={setIndex === 1}
-                className="h-8 lg:h-10 w-auto shrink-0 grayscale opacity-60 hover:opacity-100 transition-opacity duration-300 dark:invert"
-              />
+      {showClients && (
+        <>
+          <Container className="mt-16 lg:mt-20 pt-12 border-t border-foreground/10">
+            <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase text-center">
+              Businesses we have built for
+            </p>
+          </Container>
+
+          {/*
+            Two copies because the keyframe travels -50%, with the trailing gap
+            inside each set rather than on the flex parent. A gap on the parent
+            makes the halves unequal and the row jumps every loop, which is the
+            same bug the integrations marquees had.
+          */}
+          <div className="mt-10 flex overflow-hidden">
+            {[0, 1].map((setIndex) => (
+              <div key={setIndex} className="flex items-center gap-16 pr-16 shrink-0 marquee">
+                {clientLogos.map((client) => (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    key={`${client.name}-${setIndex}`}
+                    src={client.logo}
+                    alt={client.name}
+                    loading="lazy"
+                    aria-hidden={setIndex === 1}
+                    className="h-8 lg:h-10 w-auto shrink-0 grayscale opacity-60 hover:opacity-100 transition-opacity duration-300 dark:invert"
+                  />
+                ))}
+              </div>
             ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </Section>
   );
 }

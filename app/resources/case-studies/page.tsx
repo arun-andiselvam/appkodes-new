@@ -1,12 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
-import { Section } from "@/components/primitives/section";
-import { Container } from "@/components/primitives/container";
-import { Eyebrow } from "@/components/primitives/eyebrow";
-import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { CaseStudiesIndex } from "@/components/sections/case-studies-index";
 import { MetricsSection } from "@/components/sections/metrics";
 import { InfrastructureSection } from "@/components/sections/infrastructure";
 import { TestimonialsSection } from "@/components/sections/testimonials";
-import { RecognitionSection } from "@/components/sections/recognition";
 import { MeetingsSection } from "@/components/sections/meetings";
 import { CtaSection } from "@/components/sections/cta";
 
@@ -25,38 +21,32 @@ export const metadata = pageMetadata({
  * a menu item of its own, and a reader who wants proof is at the same stage as
  * one who wants a guide. Both old URLs redirect; see next.config.mjs.
  *
- * Numbers first, then the track record that makes them plausible, then people
- * who are not us saying so. Recognition and the meeting photographs close it,
- * because a badge and a face are the two things a table of figures cannot do.
+ * Rebuilt 21 August 2026 against a supplied reference. The written studies now
+ * lead, under a row of real client marks, and what was already here follows:
+ * the numbers, the track record that makes them plausible, then people who are
+ * not us saying so. The meeting photographs close it, because a face is the
+ * one thing a table of figures cannot do.
  *
- * !! NOT YET WHAT THE NAME PROMISES !!
+ * !! THE SECTIONS BELOW THE INDEX ARE THE ONLY PART CURRENTLY BACKED !!
  *
- * A case studies page should carry named engagements. A problem, what was
- * built, what changed. There are none written up, so this is the proof the
- * site already had under a better URL. Write the first three and they go above
- * the metrics, not below them.
+ * The studies above them are invented placeholders behind a flag. See the
+ * warnings in lib/case-studies.ts. Turn that flag off and the index says so in
+ * one line, and these sections carry the page on their own, which is what they
+ * did before and can do again.
  */
 export default function CaseStudiesPage() {
   return (
     <main>
-      <Section spacing="none" className="pt-32 lg:pt-40 pb-4">
-        <Container>
-          <Breadcrumbs path="/resources/case-studies" />
-          <Eyebrow className="mb-6">Case studies</Eyebrow>
-          <h1 className="text-5xl lg:text-7xl font-display tracking-tight leading-[0.95] max-w-4xl">
-            What the work returned.
-          </h1>
-          <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-            Eighteen years of delivery, the figures behind it, and clients
-            saying so in their own words rather than ours.
-          </p>
-        </Container>
-      </Section>
-
+      <CaseStudiesIndex path="/resources/case-studies" />
       <MetricsSection />
       <InfrastructureSection />
-      <TestimonialsSection />
-      <RecognitionSection />
+      {/* The client marks already run in CaseStudiesIndex above, so the band
+          this section normally closes with is turned off here. */}
+      <TestimonialsSection showClients={false} />
+      {/* RecognitionSection was here and came out on 21 August 2026. The
+          awards are a claim about us, and this page is meant to be a claim
+          about the work. It still runs on the home page, which is the right
+          place for a badge. */}
       <MeetingsSection />
       <CtaSection />
     </main>

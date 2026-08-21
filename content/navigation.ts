@@ -314,21 +314,3 @@ export function childrenOf(href: string) {
   }
   return [];
 }
-
-/**
- * The groups sitting directly under a top level item.
- *
- * childrenOf above answers "what is under this group". This answers "what is
- * beside it", which is what a blog category page needs in order to offer the
- * reader the other categories. Added 21 August 2026 for the resources pages.
- *
- * Reading it off the menu tree rather than listing the categories again inside
- * a component means a category added to the menu shows up on every category
- * page, without anybody having to remember to add it in two places.
- */
-export function groupsUnder(href: string) {
-  for (const item of mainNav) {
-    if (item.href === href) return item.panel?.groups ?? [];
-  }
-  return [];
-}

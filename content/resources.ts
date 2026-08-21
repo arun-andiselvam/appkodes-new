@@ -61,21 +61,34 @@ export const resourceCategories: Record<string, ResourceCategory> = {
     metaTitle: "AI Integration Guides",
     metaDescription:
       "Guides on integrating an LLM into existing software, from API setup and wrappers through to private deployment and data handling.",
+    /*
+     * !! ANSWER THE READER, DO NOT DESCRIBE THE CATEGORY !!
+     *
+     * This read "What an integration guide has to answer", and it closed with
+     * "These guides work through those questions in the order they come up".
+     * Both were writing about the guides rather than being useful to somebody
+     * who came to learn about AI integration. A section explaining what a good
+     * article contains is navel gazing, and a reader can tell.
+     *
+     * The substance underneath was fine and is kept. Only the framing changed,
+     * from a specification for an article into the answers themselves.
+     * Corrected 21 August 2026.
+     */
     pillar: {
-      heading: "What an integration guide has to answer",
-      body: "A model going into software that already exists is mostly not a modelling problem at all. It is a question of which endpoint to call and what happens to the data on the way. These guides work through those questions in the order they come up in a real project.",
+      heading: "What an AI integration actually turns on",
+      body: "A model going into software that already exists is mostly not a modelling problem at all. The endpoint you call and the place your data is allowed to sit decide more than the model choice ever does.",
       points: [
         {
           title: "Which endpoint",
-          body: "The choice is a hosted API or an open weight model on hardware you own. It gets decided by where the data is allowed to sit, not by benchmark scores.",
+          body: "A hosted API is faster to ship and an open weight model on your own hardware keeps the data in the building. Where the data is allowed to sit decides it, and benchmark scores rarely come into it.",
         },
         {
           title: "What happens to the data",
-          body: "Where the data goes, and who can read the logs once it has been there. Both get settled before anybody writes code, because retrofitting them means doing the integration twice.",
+          body: "Retention switched off on a hosted endpoint is what keeps your inputs out of training sets. Residency and who can read the logs get settled before anybody writes code, because retrofitting them means building twice.",
         },
         {
           title: "Who holds it afterwards",
-          body: "Somebody holds the keys and the middleware after the work is finished, and it should be you. A guide that will not say where those end up is describing a dependency instead.",
+          body: "The keys and the middleware should end up with you rather than with the agency. An integration nobody but the agency can change is a dependency wearing a different name.",
         },
       ],
     },
@@ -112,7 +125,10 @@ export const resourceCategories: Record<string, ResourceCategory> = {
       "How to find the repeat work in your operations, what automating it returns, and how to keep model spend from growing with your usage.",
     pillar: {
       heading: "Where the money actually is",
-      body: "Most automation savings are already on the payroll, in work somebody does by hand every week. The second cost is the model bill, which is small at the start and grows with usage in a way nobody plans for. These pieces cover finding the first and containing the second.",
+      // Closed with "These pieces cover finding the first and containing the
+      // second", which described the category instead of answering anything.
+      // Same correction as the integration guides pillar above.
+      body: "Most automation savings are already on the payroll, in work somebody does by hand every week. The second cost runs the other way. A model bill starts small and grows with usage in a way nobody plans for.",
       points: [
         {
           title: "Find the work first",

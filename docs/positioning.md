@@ -22,6 +22,17 @@ Verified facts from appkodes.com, safe to use as proof:
 - 2000+ projects delivered
 - Clients in India, Indonesia, Dubai, Vietnam and Sharjah, met face to face
 - Engagement models offered: Fixed Price, Hire Our Developer, Onsite Development
+- **One office, in Madurai.** Door No 9/1, Karthick Center, Kamala First
+  Street, Chinna Chockikulam, Madurai 625002, Tamil Nadu, India. Read off
+  hitasoft.com/contact on 21 August 2026, where it appears both as text and in
+  a ProfessionalService JSON-LD block with matching geo coordinates.
+- Contact: info@hitasoft.com, +91 77080 06989, landline +91 452 4371112. Same
+  source, cross checked against the meta description and the Organization
+  JSON-LD.
+
+  Note that "+91 98765 43210" and "your@email.com" also appear in that page's
+  HTML. Both are `placeholder` attributes on its own form and neither is a
+  contact detail. 98765 43210 is the standard dummy Indian mobile.
 
 **The clients line used to read "Delivery presence in" those five places, and
 that was wrong.** Corrected 21 August 2026 by the client. There is no office in
@@ -33,6 +44,11 @@ site may say we have clients in these places and that we meet them in person.
 It may not say offices, delivery centres, hubs, or that we keep people there.
 Note also that Dubai and Sharjah are both in the UAE, so this is five locations
 across four countries and never "five countries".
+
+**One office does exist, and it is in Madurai.** Confirmed 21 August 2026 from
+the address published above. That refines this correction rather than undoing
+it: the company has a single office, and the other four places are where
+clients are. "Our office in Madurai" is true. "Five offices" never was.
 
 This one line had already propagated into four pieces of published copy before
 anybody caught it: the service page reach section, the home page track record

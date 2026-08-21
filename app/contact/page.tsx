@@ -2,11 +2,12 @@ import { pageMetadata } from "@/lib/seo";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
+import { SectionTitle } from "@/components/primitives/section-title";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
+import { ContactForm } from "@/components/sections/contact-form";
 import { HowItWorksSection } from "@/components/sections/how-it-works";
 import { MeetingsSection } from "@/components/sections/meetings";
-import { CtaSection } from "@/components/sections/cta";
-import { meetingPlaces } from "@/content/meetings";
+import { channels, contactCopy, contactFaqs } from "@/content/contact";
 
 export const metadata = pageMetadata({
   title: "Contact",
@@ -16,20 +17,25 @@ export const metadata = pageMetadata({
 });
 
 /**
- * The end of the menu.
+ * The end of the menu, and the end of every call to action.
  *
- * !! THIS PAGE HAS NO CONTACT DETAILS !!
+ * `actions.book` in content/site.ts is "/contact", so this page is where the
+ * whole site converts. It was copy and no way to respond to it. It now has a
+ * form, built to the reference supplied on 21 August 2026: argument on the
+ * left, form on the right, questions underneath.
  *
- * There is no email address, phone number or form anywhere in this repository,
- * so there is none on this page. Inventing one would be worse than the gap.
- * What the page has instead is the thing a visitor actually wants at this
- * point, which is to know what happens if they get in touch, and where the
- * people are.
+ * !! THERE IS STILL NO EMAIL ADDRESS OR PHONE NUMBER !!
  *
- * A form needs a destination that survives the CSP in proxy.ts, where
- * `form-action` is 'self'. That means a route handler here rather than a third
- * party embed. Add the address and the form together; the route and the menu
- * entry are already in place.
+ * `channels` in content/contact.ts is empty because nobody has supplied one,
+ * and the block renders only when it is filled. An invented address on the
+ * page every CTA points at would be the worst placement available for one.
+ *
+ * !! NO CtaSection ON THIS PAGE !!
+ *
+ * It used to close with one, and every button in it points at actions.book,
+ * which is this page. A call to action linking to the page you are already on
+ * is a dead control. HowItWorks and the meeting photographs close it instead:
+ * what happens after you write, and the people you would be writing to.
  */
 export default function ContactPage() {
   return (
@@ -37,49 +43,107 @@ export default function ContactPage() {
       <Section spacing="none" className="pt-32 lg:pt-40 pb-16 lg:pb-20">
         <Container>
           <Breadcrumbs path="/contact" />
-          <Eyebrow className="mb-6">Contact</Eyebrow>
-          <h1 className="text-5xl lg:text-7xl font-display tracking-tight leading-[0.95] max-w-4xl">
-            One conversation, then a plan.
-          </h1>
-          <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-            The first step is a review rather than a proposal. Two weeks with
-            your systems, then a costed plan and the risks written down. You
-            keep it whatever you decide.
-          </p>
 
-          {/*
-            Where clients are, taken from the photographs further down. It
-            answers the timezone question a buyer outside India asks before
-            they book anything, and it says it with places we have pictures of.
+          <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <Eyebrow className="mb-6">{contactCopy.eyebrow}</Eyebrow>
+              <h1 className="text-5xl lg:text-6xl font-display tracking-tight leading-[0.98]">
+                {contactCopy.title}
+              </h1>
+              <p className="mt-8 text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-xl">
+                {contactCopy.lede}
+              </p>
 
-            The label is the whole point and must not be loosened. "We meet
-            clients in" is true. "Where we are" is not, because there is no
-            office in any of them. This page had it right while four other
-            places had it wrong. See docs/positioning.md, corrected at source
-            on 21 August 2026.
-          */}
-          <dl className="mt-12 flex flex-wrap gap-x-12 gap-y-6">
-            <div>
-              <dt className="text-sm font-mono text-muted-foreground">
-                We meet clients in
-              </dt>
-              <dd className="mt-2 text-lg">
-                {meetingPlaces.map((place) => place.location).join(", ")}
-              </dd>
+              {/*
+                Renders nothing at all while `channels` is empty, rather than
+                showing labels with blanks beside them. See content/contact.ts.
+              */}
+              {channels.length > 0 && (
+                <dl className="mt-12 space-y-6 border-t border-foreground/10 pt-8">
+                  {channels.map((channel) => (
+                    <div key={channel.label}>
+                      <dt className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                        {channel.label}
+                      </dt>
+                      <dd className="mt-1.5 text-lg">
+                        {channel.href ? (
+                          <a
+                            href={channel.href}
+                            className="underline decoration-foreground/20 underline-offset-4 transition-colors hover:decoration-foreground"
+                          >
+                            {channel.value}
+                          </a>
+                        ) : (
+                          channel.value
+                        )}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+
+              {/*
+                !! NOTHING ELSE GOES IN THIS SPACE !!
+
+                Two blocks have been here and both came out on 21 August 2026.
+
+                First "We meet clients in", listing the five places. That list
+                already runs on the home page, the case studies page and every
+                long form page's reach section, and a fourth appearance told a
+                reader nothing.
+
+                Then "We work in / English and Tamil" and "Delivering since /
+                2008" as a replacement. Also cut. The tenure is on the hero
+                badges of two other pages already, and neither line was
+                something somebody wants at the moment they are deciding
+                whether to write.
+
+                The channels above answer where and how to reach us. The form
+                is to the right. Anything added here competes with one of them.
+              */}
             </div>
-            <div>
-              <dt className="text-sm font-mono text-muted-foreground">
-                Delivering since
-              </dt>
-              <dd className="mt-2 text-lg">2008</dd>
-            </div>
-          </dl>
+
+            <ContactForm />
+          </div>
+        </Container>
+      </Section>
+
+      {/*
+        The questions somebody has before they fill a form in. Two across, the
+        same native <details> pattern the service and industry pages use, with
+        rules drawn per item so nothing carries across the column gap.
+      */}
+      <Section spacing="tight" className="border-t border-foreground/10">
+        <Container>
+          <SectionTitle>Before you write</SectionTitle>
+          <div className="mt-12 grid md:grid-cols-2 gap-x-12 lg:gap-x-16">
+            {contactFaqs.map((faq, i) => (
+              <details
+                key={faq.question}
+                className={`group border-b border-foreground/10 ${
+                  i === 0 ? "border-t" : i === 1 ? "md:border-t" : ""
+                }`}
+              >
+                <summary className="flex cursor-pointer items-start justify-between gap-6 py-6 list-none [&::-webkit-details-marker]:hidden">
+                  <h3 className="font-display text-xl tracking-tight">{faq.question}</h3>
+                  <span
+                    aria-hidden
+                    className="mt-1 shrink-0 text-2xl leading-none text-muted-foreground transition-transform group-open:rotate-45"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="pb-6 pr-6 text-muted-foreground leading-relaxed">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </Container>
       </Section>
 
       <HowItWorksSection />
       <MeetingsSection />
-      <CtaSection />
     </main>
   );
 }

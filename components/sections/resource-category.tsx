@@ -6,7 +6,6 @@ import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { groupsUnder } from "@/content/navigation";
 import { Pagination } from "@/components/ui/pagination";
 import { pageOfPostsIn, type Post } from "@/lib/posts";
 import type { ResourceCategory } from "@/content/resources";
@@ -48,7 +47,6 @@ export async function ResourceCategoryPage({
   pageNumber?: number;
 }) {
   const { posts, total, totalPages } = await pageOfPostsIn(path, pageNumber);
-  const siblings = groupsUnder("/resources");
 
   return (
     <>
@@ -66,46 +64,24 @@ export async function ResourceCategoryPage({
       </Section>
 
       {/*
-        The other categories, which is a thing every blog has and this page did
-        not. Read off the menu tree by groupsUnder, so a category added to the
-        menu appears here without being listed twice.
+        !! THERE WAS A CATEGORY TAB ROW HERE AND IT WAS REDUNDANT !!
 
-        The current one is marked with aria-current and is not a link, because
-        a link to the page you are on is a dead control.
+        Added 21 August 2026 on the reasoning that every blog has one, removed
+        the same day. The argument did not survive looking at the page.
+
+        The Resources mega-menu already links all three categories from every
+        page on the site, so the tabs gave a crawler nothing it did not
+        already have, and the internal linking case for them was empty. What
+        was left was a second orientation device sitting directly under the
+        breadcrumb, which had already told the reader where they were.
+
+        If lateral movement between categories is wanted back, the place for it
+        is beside "Read next" at the foot of the page, not stacked on the
+        breadcrumb.
       */}
-      <Section spacing="none" className="pb-12 lg:pb-16">
-        <Container>
-          <nav aria-label="Resource categories">
-            <ul className="flex flex-wrap gap-x-2 gap-y-2 border-y border-foreground/10 py-4">
-              {siblings.map((sibling) => {
-                const current = sibling.href === path;
-                return (
-                  <li key={sibling.href}>
-                    {current ? (
-                      <span
-                        aria-current="page"
-                        className="inline-block border border-foreground/25 bg-foreground/[0.04] px-4 py-1.5 font-mono text-xs uppercase tracking-widest"
-                      >
-                        {sibling.name}
-                      </span>
-                    ) : (
-                      <Link
-                        href={sibling.href}
-                        className="inline-block border border-transparent px-4 py-1.5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:border-foreground/15 hover:text-foreground"
-                      >
-                        {sibling.name}
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </Container>
-      </Section>
 
       {/* The posts. The reason anybody opened this page. */}
-      <Section spacing="none" className="pb-20 lg:pb-28">
+      <Section spacing="none" className="pt-4 pb-20 lg:pb-28">
         <Container>
           {posts.length > 0 ? (
             <>
