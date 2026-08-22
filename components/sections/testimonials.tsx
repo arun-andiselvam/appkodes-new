@@ -510,7 +510,45 @@ export function TestimonialsSection({
       <div
         ref={trackRef}
         onScroll={syncEdges}
-        className="flex gap-6 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scroll-px-6 lg:scroll-px-12 px-6 lg:px-12 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        /*
+          !! THIS RAIL MUST NOT BE IN THE WHEEL PATH ON A POINTER DEVICE !!
+
+          It was swallowing vertical page scroll whole. Reported twice, and
+          measured on 22 August 2026 by dispatching twelve wheel events of
+          deltaY 60 carrying the small deltaX drift a real two finger swipe
+          has, over the rail and then over ordinary copy:
+
+            over the carousel          0px of 720 delivered to the page
+            over ordinary page copy  720px of 720
+
+          The page simply stopped. An earlier investigation looked for jank and
+          found none, which was the wrong thing to measure: a captured gesture
+          is not a dropped frame, it is the page correctly rendering the same
+          position over and over.
+
+          Every property was then toggled live and re-measured.
+          `overscroll-behavior-x` was the trap, and both of its non default
+          values trap equally:
+
+            contain  0px    none  0px    auto  240px
+
+          Chrome latches a gesture to the horizontally scrollable element the
+          moment it sees any deltaX. `auto` at least lets the rest chain out
+          once the rail hits its end, which is why 240 of 720 got through, but
+          a reader still feels the page stall while the cards run to the edge.
+
+          So the rail leaves the wheel path entirely where the problem exists.
+          overflow-x hidden delivers the full 720px, and the arrows still work:
+          scrollBy on an overflow hidden element moves it exactly as before,
+          verified at 0 to 400 with 4049px of scrollable width. Nothing about
+          the buttons, the snap points or the edge detection changes.
+
+          Touch keeps native scrolling, because that is the only way to move
+          the rail on a phone and because touch does its own axis locking
+          properly, so nothing traps there. `contain` rides along with it to
+          stop a horizontal swipe triggering browser back navigation.
+        */
+        className="flex gap-6 overflow-x-hidden [@media(hover:none)]:overflow-x-auto [@media(hover:none)]:overscroll-x-contain snap-x snap-mandatory scroll-px-6 lg:scroll-px-12 px-6 lg:px-12 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, index) => (
           <div
