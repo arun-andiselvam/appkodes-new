@@ -79,7 +79,7 @@ export const samplePosts: Post[] = [
       { kind: "h2", text: "Open weight, on your own hardware" },
       { kind: "p", text: "An open weight model on a server you control never sends a record out of the building. It costs more to run and more to maintain, and for regulated work it is often the only version that gets signed off." },
     ],
-    sendsTo: "/services/ai-software-integration/custom-ai-api-integration",
+    sendsTo: "/services/custom-ai-api-integration",
   },
   {
     slug: "questions-to-settle-about-your-data",
@@ -109,7 +109,7 @@ export const samplePosts: Post[] = [
       },
       { kind: "p", text: "None of these is a technical question. They are policy questions that a technical decision then has to obey, and retrofitting any of them means doing the integration a second time." },
     ],
-    sendsTo: "/services/ai-software-integration/secure-ai-compliance-architecture",
+    sendsTo: "/services/secure-ai-compliance-architecture",
   },
   {
     slug: "connecting-a-legacy-crm-to-a-model",
@@ -155,7 +155,7 @@ export const samplePosts: Post[] = [
       { kind: "p", text: "Text gets turned into numbers, and anything that means something similar ends up sitting near it. A question asked in plain words lands near the records that answer it, even when they share none of the same words." },
       { kind: "p", text: "You may not need a separate one. PostgreSQL does this with an extension, and for most companies that is a smaller change than adding another system to run." },
     ],
-    sendsTo: "/services/ai-data-predictive-analytics/data-engineering-vector-databases",
+    sendsTo: "/services/data-engineering-vector-databases",
   },
   {
     slug: "who-owns-the-integration-afterwards",
@@ -235,7 +235,7 @@ export const samplePosts: Post[] = [
         kind: "p",
         text: "Paperwork has a shape. An invoice has a supplier and a set of line items, and every invoice has them somewhere. A model reading one is doing extraction, which is a solved problem with a measurable error rate.",
         links: [
-          { phrase: "doing extraction", href: "/services/ai-workflow-automation/document-processing-ocr" },
+          { phrase: "doing extraction", href: "/services/document-processing-ocr" },
         ],
       },
       {
@@ -288,7 +288,7 @@ export const samplePosts: Post[] = [
           "For document work, about a fortnight of real traffic. That is long enough to see the error rate settle and short enough that nobody has committed to a second phase on a guess.",
       },
     ],
-    sendsTo: "/services/ai-workflow-automation/document-processing-ocr",
+    sendsTo: "/services/document-processing-ocr",
   },
   {
     slug: "keeping-model-spend-flat",
@@ -318,7 +318,7 @@ export const samplePosts: Post[] = [
       },
       { kind: "p", text: "None of these needs a rewrite. They are routing decisions, and the time to make them is before the bill is large enough to notice." },
     ],
-    sendsTo: "/services/custom-ai-models-voice/private-llm-fine-tuning",
+    sendsTo: "/services/private-llm-fine-tuning",
   },
   {
     slug: "what-an-automation-audit-should-produce",

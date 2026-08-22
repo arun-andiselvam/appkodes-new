@@ -34,53 +34,53 @@ Each page below lists the terms it is written to rank for. These are on-page tar
 > URL carries, and the child keeps the specific one. Any page built from that
 > brief needs the same check before it ships.
 
-*   **Custom AI API & Software Integration** — `/services/ai-software-integration/custom-ai-api-integration`
+*   **Custom AI API & Software Integration** — `/services/custom-ai-api-integration`
     `custom AI API integration`, `AI wrapper development for startups`, `integrate LLM into existing software`
-*   **Secure AI & Compliance Architecture** — `/services/ai-software-integration/secure-ai-compliance-architecture`
+*   **Secure AI & Compliance Architecture** — `/services/secure-ai-compliance-architecture`
     `secure AI integration services`, `private LLM deployment for business`, `compliant AI app development`, `data safety AI consulting`
 
 ### Silo 2: Workflow Automation — `/services/ai-workflow-automation`
 *Hand the repeat work to software.*
 `AI workflow automation`, `autonomous workflow automation for SMBs`
 
-*   **Autonomous AI Agents** — `/services/ai-workflow-automation/autonomous-ai-agents`
+*   **Autonomous AI Agents** — `/services/autonomous-ai-agents`
     `custom AI agent development`, `multi-agent systems for business`
-*   **Customer Support & Engagement** — `/services/ai-workflow-automation/customer-support-ai`
+*   **Customer Support & Engagement** — `/services/customer-support-ai`
     `AI customer support automation`, `custom AI chatbot development for SMBs`, `RAG chatbot integration`, `automated ticketing system setup`
-*   **Document Processing & OCR** — `/services/ai-workflow-automation/document-processing-ocr`
+*   **Document Processing & OCR** — `/services/document-processing-ocr`
     `intelligent document processing`, `custom OCR development`, `automated invoice data extraction`
-*   **Financial & Data Automation** — `/services/ai-workflow-automation/financial-data-automation`
+*   **Financial & Data Automation** — `/services/financial-data-automation`
     `fintech AI automation services`, `automated expense tracking integration`, `AI ledger management development`, `financial data automation for SMBs`
 
 ### Silo 3: AI MVP Development — `/services/custom-ai-mvp-development`
 *For founders with a product to prove rather than a system to upgrade.*
 `custom AI MVP development`, `affordable AI startup development`
 
-*   **Rapid AI Prototyping** — `/services/custom-ai-mvp-development/rapid-ai-prototyping`
+*   **Rapid AI Prototyping** — `/services/rapid-ai-prototyping`
     `low cost AI prototype development`, `AI proof of concept for startups`
-*   **Fintech & SaaS AI MVP** — `/services/custom-ai-mvp-development/fintech-saas-ai-mvp`
+*   **Fintech & SaaS AI MVP** — `/services/fintech-saas-ai-mvp`
     `build an AI SaaS MVP`, `custom AI fintech MVP development`
-*   **Smart Inventory & Retail MVP** — `/services/custom-ai-mvp-development/smart-inventory-retail-mvp`
+*   **Smart Inventory & Retail MVP** — `/services/smart-inventory-retail-mvp`
     `AI inventory management development`, `predictive inventory AI for SMBs`, `smart stock tracking integration`
 
 ### Silo 4: Data & Predictive Analytics — `/services/ai-data-predictive-analytics`
 *Your own history, turned into a forecast the business acts on.*
 `predictive analytics for SMBs`, `AI data analytics services`
 
-*   **Predictive Analytics & BI** — `/services/ai-data-predictive-analytics/predictive-analytics-bi`
+*   **Predictive Analytics & BI** — `/services/predictive-analytics-bi`
     `custom predictive modelling services`, `AI sales forecasting`, `churn prediction development`
-*   **Data Engineering & Vector Databases** — `/services/ai-data-predictive-analytics/data-engineering-vector-databases`
+*   **Data Engineering & Vector Databases** — `/services/data-engineering-vector-databases`
     `vector database integration`, `RAG data pipeline setup`, `AI data engineering services`
-*   **Computer Vision & Quality Control** — `/services/ai-data-predictive-analytics/computer-vision-quality-control`
+*   **Computer Vision & Quality Control** — `/services/computer-vision-quality-control`
     `custom image recognition development`, `AI visual quality control`, `defect detection AI`
 
 ### Silo 5: Custom Models & Voice — `/services/custom-ai-models-voice`
 *Your own model, hosted where you choose, answering in your own voice.*
 `custom AI model development`, `private AI model deployment`
 
-*   **Private LLM Fine-Tuning** — `/services/custom-ai-models-voice/private-llm-fine-tuning`
+*   **Private LLM Fine-Tuning** — `/services/private-llm-fine-tuning`
     `LLM fine-tuning services`, `private AI model deployment`, `reduce cloud AI API costs`
-*   **AI Voice & Telephony** — `/services/custom-ai-models-voice/ai-voice-telephony-automation`
+*   **AI Voice & Telephony** — `/services/ai-voice-telephony-automation`
     `AI voice agent integration`, `custom voice AI for small business`, `AI phone answering automation`
 
 ### Silo 6: Industries / Use Cases — `/industries`

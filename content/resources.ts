@@ -100,17 +100,17 @@ export const resourceCategories: Record<string, ResourceCategory> = {
     sends: [
       {
         name: "Custom AI API & Software Integration",
-        href: "/services/ai-software-integration/custom-ai-api-integration",
+        href: "/services/custom-ai-api-integration",
         blurb: "The service these guides describe.",
       },
       {
         name: "Secure AI & Compliance Architecture",
-        href: "/services/ai-software-integration/secure-ai-compliance-architecture",
+        href: "/services/secure-ai-compliance-architecture",
         blurb: "For work where the data cannot leave your control.",
       },
       {
         name: "Data Engineering & Vector Databases",
-        href: "/services/ai-data-predictive-analytics/data-engineering-vector-databases",
+        href: "/services/data-engineering-vector-databases",
         blurb: "What has to be true of your data first.",
       },
     ],
@@ -157,7 +157,7 @@ export const resourceCategories: Record<string, ResourceCategory> = {
       },
       {
         name: "Private LLM Fine-Tuning",
-        href: "/services/custom-ai-models-voice/private-llm-fine-tuning",
+        href: "/services/private-llm-fine-tuning",
         blurb: "Where the monthly API bill goes to die.",
       },
       {

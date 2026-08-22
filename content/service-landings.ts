@@ -541,8 +541,8 @@ export const serviceLandings: Record<string, ServiceLanding> = {
    * company has handled. Nothing in the repo backs the latter. If it has been
    * handled, that is a much stronger line and it should be added.
    */
-  "/services/ai-software-integration/custom-ai-api-integration": {
-    path: "/services/ai-software-integration/custom-ai-api-integration",
+  "/services/custom-ai-api-integration": {
+    path: "/services/custom-ai-api-integration",
     /*
      * 39 characters, so 50 with the brand appended. See the budget in
      * docs/seo-standards.md. The old title was "Custom AI API Integration & AI
@@ -832,7 +832,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
    *
    * !! THE URL IS NOT THE ONE IN THE BLUEPRINT !!
    *
-   * It asks for /services/ai-software-integration/secure-ai-compliance. The
+   * It asks for /services/secure-ai-compliance. The
    * page already exists at secure-ai-compliance-architecture, which is the URL
    * in the navigation, the sitemap and the strategy doc. Third time this has
    * come up, and the answer is the same: publishing the shorter one would open
@@ -873,17 +873,47 @@ export const serviceLandings: Record<string, ServiceLanding> = {
    * communities meta description. It has to come out when that page is built
    * out, or the two compete again.
    */
-  "/services/ai-software-integration/secure-ai-compliance-architecture": {
-    path: "/services/ai-software-integration/secure-ai-compliance-architecture",
+  "/services/secure-ai-compliance-architecture": {
+    path: "/services/secure-ai-compliance-architecture",
     metaTitle: "Secure AI Integration & Compliance",
     serviceType: "secure AI integration",
     metaDescription:
       "Secure AI integration services with retention switched off and private LLM deployment. Your records stay on infrastructure you control. Book a review.",
 
     hero: {
-      eyebrow: "AI integration",
-      title: "Add the AI. Keep the data.",
-      lede: "Every AI project stalls at the same question. We answer it in writing, and we do it before a model reads a record.",
+      /*
+       * The eyebrow carries the primary term, changed 22 August 2026.
+       *
+       * All three pages in this silo read "AI integration" here, which told a
+       * reader who had just clicked down from the parent nothing about where
+       * they had landed. It also left "secure AI integration" sitting in the
+       * metaTitle and nowhere in the copy above the fold.
+       */
+      eyebrow: "Secure AI integration",
+      /*
+       * Rewritten 22 August 2026. It read "Add the AI. Keep the data."
+       *
+       * Two faults. The parent H1 is "Rebuild nothing. Add AI to the software
+       * you already run", so both pages in one silo opened on the same verb
+       * and the child read as a restatement of it. And "keep the data" is the
+       * abstraction rather than the promise. This buyer is not weighing data
+       * custody in general, they are weighing the one fear the first FAQ on
+       * this page answers: does the provider hold on to what we send it.
+       *
+       * So the H1 answers that instead. "Does not keep it" is the claim the
+       * retention badge and the diagram's "Nothing kept" already make, in the
+       * wording the FAQ uses.
+       *
+       * Stays off the beats used below it. The fork between private and
+       * hosted belongs to the diagram, and "before a model reads a record" to
+       * the lede.
+       */
+      title: "The model reads the record. It does not keep it.",
+      /*
+       * The old lede named a question and never said what it was. This names
+       * it. Seventeen words then ten, so the pair alternates.
+       */
+      lede: "Every AI project stalls on the same worry, which is where your data actually ends up. We answer that in writing before a model reads anything.",
       badges: ["Retention off by default", "Private deployment available"],
     },
 
@@ -1125,6 +1155,339 @@ export const serviceLandings: Record<string, ServiceLanding> = {
         question: "What happens to the documentation if we do not go ahead?",
         answer:
           "You keep it. Week one produces the field list and the residency decisions. They are useful to whoever builds this, whether that turns out to be us or somebody else.",
+      },
+    ],
+  },
+
+  /*
+   * Silo 2's parent, built 22 August 2026 from a blueprint the client brought.
+   * Fourth page on this template.
+   *
+   * Three things in that blueprint were not taken.
+   *
+   * !! THE SLUG STAYS /services/ai-workflow-automation !!
+   *
+   * The blueprint asked for /services/workflow-automation. Four child pages
+   * already sit under the longer path, and it is what content/navigation.ts,
+   * the breadcrumb trail and docs/hitasoft_ai_architecture_strategy.md all
+   * carry. Dropping "ai-" would move five URLs to buy nothing.
+   *
+   * !! THIS PAGE DOES NOT TARGET "custom AI agent development" !!
+   *
+   * The blueprint listed it as a secondary here. It is the primary keyword of
+   * /services/autonomous-ai-agents, which is a child of
+   * this page. This is the same collision the integration silo already shipped
+   * once and had to unpick, so it is being caught before the build rather than
+   * after. The parent takes the category term its own URL carries. The
+   * strategy doc's own secondary for this path, "autonomous workflow
+   * automation for SMBs", goes in that slot instead. See rule one in
+   * docs/seo-standards.md.
+   *
+   * The blueprint's second use case was smart inventory and retail, which
+   * belongs to two other pages and would have bled a third page's keyword into
+   * this one. Replaced with a multi-step agent scenario, so the four use cases
+   * now map one to one onto the four children.
+   */
+  "/services/ai-workflow-automation": {
+    path: "/services/ai-workflow-automation",
+    /*
+     * 40 characters, so 51 rendered. The blueprint proposed "AI Workflow &
+     * Operational Automation Services | Hitasoft", which appends a second
+     * brand name to the one app/layout.tsx already adds, and splits the
+     * primary phrase in half with "& Operational" so it no longer matches.
+     */
+    metaTitle: "AI Workflow Automation Services for SMBs",
+    serviceType: "AI workflow automation",
+    metaDescription:
+      "Your team retypes what a system already knows. We build AI workflow automation services that take the support queue and the invoices off them. Book a review.",
+
+    hero: {
+      /*
+       * Carries the primary term, because the H1 below cannot without going
+       * limp. Same solution as the compliance page in this silo's sibling.
+       */
+      eyebrow: "AI workflow automation",
+      /*
+       * The blueprint's headline read "We find the hours your team is losing.
+       * Then we automate them." Kept, with the referent fixed. You do not
+       * automate hours, you automate the work that eats them.
+       */
+      title: "We find the hours your team loses. Then we automate the work.",
+      lede: "Your team was not hired to move numbers between screens. We automate that work inside the systems you already run, and nobody has to manage a technology project.",
+      /*
+       * Both are backed. The costed plan in week two is the engagement shape
+       * in content/how-it-works.ts, and running inside current systems is the
+       * whole positioning. No figures, per docs/positioning.md.
+       */
+      badges: ["Costed plan in week two", "Runs inside your current systems"],
+    },
+
+    /*
+     * The GEO direct answer block, and the Service schema description. The
+     * blueprint's version ran to three sentences over the length limit and
+     * closed on "significantly reducing operational overhead", which asserts
+     * a saving with no figure behind it. This says what the thing is.
+     */
+    summary: {
+      heading: "What AI workflow automation is",
+      body: "AI workflow automation puts software in charge of the repeat jobs a business currently does by hand. An agent reads the document and writes the result back. The work runs across the tools a company already owns, which is why support triage and invoice entry are the usual first candidates.",
+    },
+
+    problem: {
+      heading: "The work nobody put on a roadmap",
+      body: "Every growing company accumulates jobs that exist because two systems do not talk to each other. Somebody copies a number off one screen into another. It sits on your payroll every month and nobody has ever put a number against it.",
+      points: [
+        {
+          title: "The queue that never empties",
+          body: "The same questions arrive every week, and a person answers each one of them by hand. Volume grows and the only lever is hiring.",
+        },
+        {
+          title: "Numbers retyped between systems",
+          body: "One system holds the figure and another needs it. Somebody moves it by hand, and one typo becomes a reconciliation problem that surfaces weeks later.",
+        },
+        {
+          title: "Jobs that stall when one person is away",
+          body: "Multi-step work lives in somebody's head rather than in software. The whole process stops the week they take leave, and nobody else knows the running order.",
+        },
+      ],
+    },
+
+    /* The four children, in the order the silo lists them. */
+    capabilities: {
+      heading: "What our automation services cover",
+      items: [
+        {
+          title: "Autonomous AI agents",
+          body: "An agent runs the job end to end. It decides the next step from what it finds rather than following a fixed script.",
+        },
+        {
+          title: "Intelligent customer support",
+          body: "A model answers from your own ticket history and documentation. Anything it cannot settle is routed to a person, and the context travels with it.",
+        },
+        {
+          title: "Document processing and OCR",
+          body: "Invoices and receipts arrive as PDFs and photographs. A vision model reads them, then writes structured rows straight into the database you already use.",
+        },
+        {
+          title: "Financial and data automation",
+          body: "Transactions are categorised as they arrive and the ledger updates itself without anybody opening a spreadsheet. Month end reconciliation stops being a person's job.",
+        },
+      ],
+    },
+
+    /*
+     * The blueprint headed this "Human Labor against AI Automation" and asked
+     * for speed in hours against seconds, and cost as salary against micro
+     * cents per API call. Both are figures the company has not measured, and
+     * docs/positioning.md is explicit that the claim is the shape of the
+     * saving rather than its size. Every cell here is a characterisation.
+     *
+     * The framing also changed. Comparing people to software invites the
+     * reading that this is a redundancy exercise, which is not what the silo
+     * sells. The columns compare two ways of doing one job.
+     */
+    comparison: {
+      heading: "By hand against automated",
+      body: "This compares two ways of doing the same work, and it is not a comparison of people against software. Your team keeps the work that needs judgement.",
+      columns: ["By hand", "Automated"],
+      rows: [
+        {
+          label: "When it happens",
+          values: ["Work waits until somebody is free", "Runs the moment the task arrives"],
+        },
+        {
+          label: "Consistency",
+          values: ["Accuracy drops through a long shift", "The same rules applied every time"],
+        },
+        {
+          label: "Scale",
+          values: ["More volume means another hire", "Volume rises without a new seat"],
+        },
+        {
+          label: "What it costs",
+          values: ["A salary, paid whether the queue is full or empty", "Charged per job the software actually runs"],
+        },
+        {
+          label: "Exceptions",
+          values: ["Everything looks fine until somebody checks", "Anything unclear is flagged to a person"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "What automation actually looks like",
+      body: "Four jobs, in the systems they actually happen in. Each one has a page of its own, and the section above links to all four.",
+      items: [
+        {
+          system: "Your ledger",
+          title: "Transactions categorised as they land",
+          body: "Raw transaction data arrives and is sorted into categories without a person opening a spreadsheet. Balances across several users recalculate themselves as the entries change.",
+        },
+        {
+          system: "Your inbox",
+          title: "Invoices read and filed",
+          body: "A vendor sends a PDF and a vision model pulls the fields out of it. The finished row lands in your database, and not a single line item was retyped by hand.",
+        },
+        {
+          system: "Your help desk",
+          title: "Tier one answered from your own history",
+          body: "An agent reads past tickets and your documentation, then answers the questions it has seen before. Everything else reaches a person with the thread already summarised.",
+        },
+        {
+          system: "Across your tools",
+          title: "A multi-step job that runs itself",
+          body: "A new order has to touch your CRM and your billing before it is done. An agent walks that whole sequence and stops only when a number does not match.",
+        },
+      ],
+    },
+
+    /* Straight from content/how-it-works.ts, so the page and the process page
+     * cannot drift apart. The blueprint's "2-day technical audit" was close:
+     * the two days are real and sit inside week one, and the ranked plan lands
+     * at the end of week two rather than after the two days. */
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We watch the work",
+          body: "We spend two days sitting with your team, following the jobs that still happen by hand. Every step gets a cost put against it.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names what to automate first, and what each of those saves every month. You decide whether any of it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "We build it and keep it running",
+          body: "The first automation goes live in the software you already run, with nothing else moved. The same engineer stays with it through to handover.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where the work runs",
+      body: "The automation runs against the systems you already have. The same engineer stays with the work, from that first week right through to the handover.",
+      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
+      points: [
+        {
+          label: "Runs where your data is",
+          body: "Hosted or inside your own network. That is decided before a line is written.",
+        },
+        {
+          label: "A person on the exceptions",
+          body: "Anything the agent cannot settle is routed to a person.",
+        },
+        {
+          label: "Written down either way",
+          body: "The process map from week one is yours to keep.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the automations are built from",
+      body: "We fit the automation into the systems you already run. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "Models that read and decide",
+          items: [
+            { name: "Claude", category: "Reasoning over your own records", icon: "siClaude" },
+            { name: "GPT", category: "Drafting and classification" },
+            { name: "Vision models", category: "Reading scans and photographs" },
+          ],
+        },
+        {
+          label: "Where the steps are wired",
+          items: [
+            { name: "n8n", category: "The workflow runner", icon: "siN" },
+            { name: "MCP", category: "How an agent reaches your tools", icon: "siModelcontextprotocol" },
+            { name: "Python", category: "The steps that need real code", icon: "siPython" },
+          ],
+        },
+        {
+          label: "Where the results land",
+          items: [
+            { name: "PostgreSQL", category: "Records and reporting", icon: "siPostgresql" },
+            { name: "Redis", category: "Queues and rate limits", icon: "siRedis" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * !! DO NOT REACH FOR THE CHAIN AGAIN !!
+     *
+     * This was one node feeding one node feeding a fork, which is the exact
+     * skeleton the API page and the compliance page already use. Three pages
+     * running "something arrives, something processes it, it forks, your thing
+     * updates" with nothing changed but the labels reads as a template rather
+     * than as three architectures. Rebuilt 22 August 2026.
+     *
+     * The shape now argues something the chain could not. Workflow automation
+     * is not a single entry pipeline. Work arrives from wherever it already
+     * arrives, which is the point of automating it, so the diagram opens on a
+     * pair instead of on one box. None of the other three do.
+     *
+     * That makes it fan in, then fan out, then join. The connectors compute
+     * every gap from where the nodes actually sit, so this needed no component
+     * change. The chain was a choice, not a constraint.
+     *
+     * Tones follow the rule on ArchitectureDiagram: brand is what the client
+     * already owns and accent is what we add. The triggers and the systems are
+     * theirs, and only the middle two rows are new work.
+     */
+    diagram: {
+      caption:
+        "Work arrives by email or by form. One agent picks it up, handles most of it straight through and sends anything unclear to a person. Your systems are updated either way.",
+      align: "sequence",
+      numbered: true,
+      rows: [
+        [
+          { label: "An email arrives", sub: "Invoice or request", tone: "brand" },
+          { label: "A form is filled", sub: "Or a webhook fires", tone: "brand" },
+        ],
+        [{ label: "The agent", sub: "Reads and decides", tone: "accent" }],
+        [
+          { label: "Handled", sub: "Straight through", tone: "accent" },
+          { label: "Sent to a person", sub: "The exceptions", tone: "accent" },
+        ],
+        [{ label: "Your systems", sub: "Updated either way", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "How do you decide which processes to automate first?",
+        answer:
+          "Week one is two days sitting with your team, following the jobs that currently happen by hand and putting a cost against each step. At the end of week two you get a plan that ranks them, cheapest and fastest first. You decide what goes ahead.",
+      },
+      {
+        question: "Does this mean replacing our current software stack?",
+        answer:
+          "No. The agents work across the tools your team already opens every morning, reading from one and writing into another. Nothing is migrated and nothing is retired.",
+      },
+      {
+        question: "What happens when an agent cannot solve a task?",
+        answer:
+          "It stops and hands the task to a person, with everything it already worked out attached. That fallback is designed in from the start rather than added after the first bad week, and the routing rules are yours to set.",
+      },
+      {
+        question: "Can this replace manual data entry with AI?",
+        answer:
+          "That is the most common first job. A vision model reads the invoice or the form, and the fields land as structured rows in your database. A person reviews anything the model flags as unclear.",
+      },
+      {
+        question: "What is automated AI task execution?",
+        answer:
+          "It means software carries out a whole multi-step job without a person driving each step. The agent reads the input, decides the next step and writes the result back into your system. Autonomous workflow automation for SMBs usually starts with one job rather than the whole department.",
+      },
+      {
+        question: "Do we need an IT team to run this?",
+        answer:
+          "No, and most of the businesses we build for do not have an IT team at all. We run it after handover, and the same engineer who built it stays with it.",
       },
     ],
   },

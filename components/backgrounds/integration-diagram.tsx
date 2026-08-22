@@ -120,8 +120,20 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
       node,
       x: row.length === 2 ? i * COL : sequence ? centreX : COL,
       y: r * ROW,
-      /* Reading order, for the step numbers. Derived, never stored. */
-      rank: diagram.rows.slice(0, r).reduce((n, prev) => n + prev.length, 0) + i + 1,
+      /*
+       * The step number, derived and never stored.
+       *
+       * One number per row, not per node, so a row of two shares a number.
+       * That matters wherever a pair is a fork: the two nodes are routes a
+       * record takes instead of each other, and counting them 03 then 04 read
+       * as one step following the other. On the compliance page that inverted
+       * the argument, which is that classification decides which of the two a
+       * record goes to. Sharing the number reads as one stage, two ways.
+       *
+       * Changed 22 August 2026. Every other diagram is rows of one, where
+       * this is identical to counting nodes.
+       */
+      rank: r + 1,
     })),
   );
 

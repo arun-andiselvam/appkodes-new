@@ -7,7 +7,7 @@ import { serviceLandingRoute } from "@/lib/service-landing-route";
  * integration services", which is the term docs/hitasoft_ai_architecture_
  * strategy.md assigns it, and neither the parent nor its sibling touches it.
  *
- * The blueprint asks for /services/ai-software-integration/secure-ai-compliance.
+ * The blueprint asks for /services/secure-ai-compliance.
  * This page already existed at the longer slug, in the navigation, the sitemap
  * and the strategy doc, so the long form upgraded the URL in place rather than
  * opening a second page to compete with the first.
@@ -18,7 +18,7 @@ import { serviceLandingRoute } from "@/lib/service-landing-route";
  * breadcrumb trail still read from it.
  */
 const route = serviceLandingRoute(
-  "/services/ai-software-integration/secure-ai-compliance-architecture",
+  "/services/secure-ai-compliance-architecture",
 );
 
 export const metadata = route.metadata;

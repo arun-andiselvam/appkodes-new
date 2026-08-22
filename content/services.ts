@@ -57,7 +57,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-software-integration/custom-ai-api-integration": {
+  "/services/custom-ai-api-integration": {
     slug: "custom-ai-api-integration",
     title: "Custom AI API & software integration",
     eyebrow: "AI Integration",
@@ -92,7 +92,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-software-integration/secure-ai-compliance-architecture": {
+  "/services/secure-ai-compliance-architecture": {
     slug: "secure-ai-compliance-architecture",
     title: "Secure AI & compliance architecture",
     eyebrow: "AI Integration",
@@ -162,7 +162,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-workflow-automation/autonomous-ai-agents": {
+  "/services/autonomous-ai-agents": {
     slug: "autonomous-ai-agents",
     title: "Autonomous AI agents",
     eyebrow: "Workflow Automation",
@@ -196,7 +196,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-workflow-automation/customer-support-ai": {
+  "/services/customer-support-ai": {
     slug: "customer-support-ai",
     title: "Intelligent customer support",
     eyebrow: "Workflow Automation",
@@ -230,7 +230,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-workflow-automation/document-processing-ocr": {
+  "/services/document-processing-ocr": {
     slug: "document-processing-ocr",
     title: "Document processing & OCR",
     eyebrow: "Workflow Automation",
@@ -265,7 +265,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-workflow-automation/financial-data-automation": {
+  "/services/financial-data-automation": {
     slug: "financial-data-automation",
     title: "Financial & data workflow automation",
     eyebrow: "Workflow Automation",
@@ -336,7 +336,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/custom-ai-mvp-development/rapid-ai-prototyping": {
+  "/services/rapid-ai-prototyping": {
     slug: "rapid-ai-prototyping",
     title: "Rapid AI prototyping",
     eyebrow: "AI MVP Development",
@@ -370,7 +370,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/custom-ai-mvp-development/fintech-saas-ai-mvp": {
+  "/services/fintech-saas-ai-mvp": {
     slug: "fintech-saas-ai-mvp",
     title: "Fintech & SaaS AI MVP",
     eyebrow: "AI MVP Development",
@@ -404,7 +404,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/custom-ai-mvp-development/smart-inventory-retail-mvp": {
+  "/services/smart-inventory-retail-mvp": {
     slug: "smart-inventory-retail-mvp",
     title: "Smart inventory & retail MVP",
     eyebrow: "AI MVP Development",
@@ -473,7 +473,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-data-predictive-analytics/predictive-analytics-bi": {
+  "/services/predictive-analytics-bi": {
     slug: "predictive-analytics-bi",
     title: "Predictive analytics & business intelligence",
     eyebrow: "Data & Analytics",
@@ -507,7 +507,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-data-predictive-analytics/data-engineering-vector-databases": {
+  "/services/data-engineering-vector-databases": {
     slug: "data-engineering-vector-databases",
     title: "Data engineering & vector databases",
     eyebrow: "Data & Analytics",
@@ -541,7 +541,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/ai-data-predictive-analytics/computer-vision-quality-control": {
+  "/services/computer-vision-quality-control": {
     slug: "computer-vision-quality-control",
     title: "Computer vision & quality control",
     eyebrow: "Data & Analytics",
@@ -610,7 +610,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/custom-ai-models-voice/private-llm-fine-tuning": {
+  "/services/private-llm-fine-tuning": {
     slug: "private-llm-fine-tuning",
     title: "Private LLM fine-tuning",
     eyebrow: "Custom Models & Voice",
@@ -644,7 +644,7 @@ export const servicePages: Record<string, ServicePage> = {
     ],
   },
 
-  "/services/custom-ai-models-voice/ai-voice-telephony-automation": {
+  "/services/ai-voice-telephony-automation": {
     slug: "ai-voice-telephony-automation",
     title: "AI voice & telephony automation",
     eyebrow: "Custom Models & Voice",

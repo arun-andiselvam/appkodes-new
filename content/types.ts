@@ -447,6 +447,21 @@ export type ServiceLanding = {
  * `tone` is the story, not decoration. Brand blue is what the client already
  * owns and accent red is what the integration adds, so the split down the
  * diagram says which half of it is new work.
+ *
+ * !! EVERY PAGE DRAWS ITS OWN ARCHITECTURE, NOT THE HOUSE SHAPE !!
+ *
+ * Three pages independently arrived at the same skeleton: one node, feeding
+ * one node, feeding a fork, joining into one. Read side by side on 22 August
+ * 2026 they were the same picture with the labels swapped, which is how a
+ * reader works out they are on a template. Rows of one and rows of two can be
+ * arranged more than one way, and the connectors compute every gap from where
+ * the nodes actually sit, so a different topology costs nothing.
+ *
+ * Before writing one, check the diagrams that already ship. If the new page's
+ * shape matches one of them, either the architecture genuinely is the same, in
+ * which case say so in the copy and drop the diagram, or the shape has not
+ * been thought about yet. Opening on a pair rather than on a single node is
+ * usually enough to tell a fan in apart from a pipeline.
  */
 export type ArchitectureDiagram = {
   /** Read in place of the shapes by anything that cannot see them. */

@@ -18,7 +18,7 @@ import { serviceLandingRoute } from "@/lib/service-landing-route";
  * still read from it.
  */
 const route = serviceLandingRoute(
-  "/services/ai-software-integration/custom-ai-api-integration",
+  "/services/custom-ai-api-integration",
 );
 
 export const metadata = route.metadata;

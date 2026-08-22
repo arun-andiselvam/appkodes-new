@@ -84,7 +84,7 @@ export const sampleCaseStudies: CaseStudy[] = [
       name: "Dr Niamh Carroll",
       role: "Clinical Lead, Meridian Clinics",
     },
-    sendsTo: "/services/ai-software-integration/secure-ai-compliance-architecture",
+    sendsTo: "/services/secure-ai-compliance-architecture",
   },
   {
     slug: "larkfield-retail",
@@ -106,7 +106,7 @@ export const sampleCaseStudies: CaseStudy[] = [
       "Nothing was replaced. We indexed the order history into a vector store beside the existing database and put a search box into the screen the team already opens. Results carry the record they came from, so an answer can always be checked rather than trusted.",
     outcome:
       "A question that used to go to one person now goes to the software. The original system is untouched, which mattered to a business that had been told twice before that it needed replacing.",
-    sendsTo: "/services/ai-data-predictive-analytics/data-engineering-vector-databases",
+    sendsTo: "/services/data-engineering-vector-databases",
   },
   {
     slug: "cassio-finance",

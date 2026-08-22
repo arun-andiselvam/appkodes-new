@@ -41,12 +41,12 @@ export const mainNav: NavItem[] = [
           children: [
             {
               name: "Custom AI API & Software Integration",
-              href: "/services/ai-software-integration/custom-ai-api-integration",
+              href: "/services/custom-ai-api-integration",
               blurb: "A model wired into the codebase your business runs on.",
             },
             {
               name: "Secure AI & Compliance Architecture",
-              href: "/services/ai-software-integration/secure-ai-compliance-architecture",
+              href: "/services/secure-ai-compliance-architecture",
               blurb: "Private deployment for data that cannot leave your control.",
             },
           ],
@@ -59,22 +59,22 @@ export const mainNav: NavItem[] = [
           children: [
             {
               name: "Autonomous AI Agents",
-              href: "/services/ai-workflow-automation/autonomous-ai-agents",
+              href: "/services/autonomous-ai-agents",
               blurb: "Multi-step jobs run across your tools without a person driving.",
             },
             {
               name: "Customer Support & Engagement",
-              href: "/services/ai-workflow-automation/customer-support-ai",
+              href: "/services/customer-support-ai",
               blurb: "Agents that answer from your own tickets and documentation.",
             },
             {
               name: "Document Processing & OCR",
-              href: "/services/ai-workflow-automation/document-processing-ocr",
+              href: "/services/document-processing-ocr",
               blurb: "Invoices, contracts and receipts turned into database records.",
             },
             {
               name: "Financial & Data Automation",
-              href: "/services/ai-workflow-automation/financial-data-automation",
+              href: "/services/financial-data-automation",
               blurb: "Ledgers, expenses and reconciliation handled as they happen.",
             },
           ],
@@ -87,17 +87,17 @@ export const mainNav: NavItem[] = [
           children: [
             {
               name: "Rapid AI Prototyping",
-              href: "/services/custom-ai-mvp-development/rapid-ai-prototyping",
+              href: "/services/rapid-ai-prototyping",
               blurb: "A working proof of concept before anybody funds the real build.",
             },
             {
               name: "Fintech & SaaS AI MVP",
-              href: "/services/custom-ai-mvp-development/fintech-saas-ai-mvp",
+              href: "/services/fintech-saas-ai-mvp",
               blurb: "An end-to-end product with AI in it from the first release.",
             },
             {
               name: "Smart Inventory & Retail MVP",
-              href: "/services/custom-ai-mvp-development/smart-inventory-retail-mvp",
+              href: "/services/smart-inventory-retail-mvp",
               blurb: "Stock tracking that forecasts instead of counting backwards.",
             },
           ],
@@ -110,17 +110,17 @@ export const mainNav: NavItem[] = [
           children: [
             {
               name: "Predictive Analytics & BI",
-              href: "/services/ai-data-predictive-analytics/predictive-analytics-bi",
+              href: "/services/predictive-analytics-bi",
               blurb: "Sales, churn and pricing predicted from what already happened.",
             },
             {
               name: "Data Engineering & Vector Databases",
-              href: "/services/ai-data-predictive-analytics/data-engineering-vector-databases",
+              href: "/services/data-engineering-vector-databases",
               blurb: "Messy company data cleaned so AI queries it without inventing.",
             },
             {
               name: "Computer Vision & Quality Control",
-              href: "/services/ai-data-predictive-analytics/computer-vision-quality-control",
+              href: "/services/computer-vision-quality-control",
               blurb: "Visual inspection and cataloguing done by a model, not an eye.",
             },
           ],
@@ -133,12 +133,12 @@ export const mainNav: NavItem[] = [
           children: [
             {
               name: "Private LLM Fine-Tuning",
-              href: "/services/custom-ai-models-voice/private-llm-fine-tuning",
+              href: "/services/private-llm-fine-tuning",
               blurb: "Open models trained on your data and hosted off the meter.",
             },
             {
               name: "AI Voice & Telephony",
-              href: "/services/custom-ai-models-voice/ai-voice-telephony-automation",
+              href: "/services/ai-voice-telephony-automation",
               blurb: "Calls answered, qualified and booked at any hour.",
             },
           ],

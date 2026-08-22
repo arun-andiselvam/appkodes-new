@@ -15,7 +15,7 @@ import type { NavItem } from "@/content/types";
  * Is this menu item the branch of the site the visitor is standing in?
  *
  * Exact match is not enough once the site is siloed. Somebody reading
- * /services/ai-workflow-automation/customer-support-ai is three levels inside
+ * /services/customer-support-ai is three levels inside
  * Services, and a menu that marks nothing has stopped telling them where they
  * are. Prefix match, with the boundary checked, so /servicesomething could
  * never light up Services.

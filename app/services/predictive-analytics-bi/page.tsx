@@ -1,7 +1,7 @@
 import { siloRoute } from "@/lib/silo-route";
 
 /* Copy and metadata live in content/. See lib/silo-route.tsx. */
-const route = siloRoute("/services/ai-data-predictive-analytics/data-engineering-vector-databases");
+const route = siloRoute("/services/predictive-analytics-bi");
 
 export const metadata = route.metadata;
 export default route.Page;

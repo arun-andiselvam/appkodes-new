@@ -20,7 +20,7 @@ Every page declares a primary keyword and it belongs to that page alone.
 
 **A parent never targets its child's phrase.** This has already gone wrong
 once. `/services/ai-software-integration` and its child
-`/services/ai-software-integration/custom-ai-api-integration` both carried
+`/services/custom-ai-api-integration` both carried
 "Custom AI API Integration" in their titles, so the two competed and the parent
 was set to outrank the page it exists to feed. Corrected 21 August 2026: the
 parent owns the category term its own URL carries, and the child keeps the
@@ -156,8 +156,9 @@ of content at two URLs is the thing paging must not create.
 | Page | Primary keyword | Title (chars) |
 | --- | --- | --- |
 | `/services/ai-software-integration` | `AI software integration` | AI Software Integration \| Add AI to Existing Apps (49) |
-| `/services/ai-software-integration/custom-ai-api-integration` | `custom AI API integration` | Custom AI API Integration & AI Wrappers (39) |
-| `/services/ai-software-integration/secure-ai-compliance-architecture` | `secure AI integration services` | Secure AI Integration & Compliance (34) |
+| `/services/custom-ai-api-integration` | `custom AI API integration` | Custom AI API Integration & AI Wrappers (39) |
+| `/services/secure-ai-compliance-architecture` | `secure AI integration services` | Secure AI Integration & Compliance (34) |
+| `/services/ai-workflow-automation` | `AI workflow automation services` | AI Workflow Automation Services for SMBs (40) |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | AI Automation for Fintech SMBs (30) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |
