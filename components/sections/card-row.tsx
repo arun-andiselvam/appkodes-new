@@ -1,5 +1,5 @@
 /**
- * Three numbered cards across.
+ * Numbered cards, in a column count that divides the row evenly.
  *
  * Used by the problem and capability sections on the service page and by the
  * bottleneck and use case sections on the industry pages. It lived inside
@@ -13,6 +13,22 @@
  * own card would put two card shapes in front of the same visitor on one
  * visit.
  *
+ * !! THE COLUMN COUNT FOLLOWS THE ITEM COUNT !!
+ *
+ * It was three columns whatever it was handed. The workflow automation page is
+ * the first with four capabilities, one per child in its silo, and the fourth
+ * card sat alone on a second row beside two empty cells. Four silo children is
+ * a normal number, so this was going to recur across the pages still to build
+ * rather than being one page's problem. Fixed 22 August 2026.
+ *
+ * Four goes to two by two rather than to a single row of four. Four across
+ * puts a thirty word body in a column narrow enough to run seven lines, and
+ * the section reads as a rail of tall thin slots. Two by two keeps the card
+ * close to the proportion the three column rows already set.
+ *
+ * Five or more still falls back to three, which orphans again. Nothing passes
+ * five today, and the honest fix then is fewer items rather than more columns.
+ *
  * !! WRITING THE COPY IS HALF THE JOB !!
  *
  * The bodies have to be held within a few words of each other or the row reads
@@ -20,9 +36,16 @@
  * seventeen words beside twenty five and left the first card visibly half
  * empty. Around thirty words each is the working target.
  */
+const COLUMNS: Record<number, string> = {
+  1: "",
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-3",
+  4: "sm:grid-cols-2",
+};
+
 export function CardRow({ items }: { items: { title: string; body: string }[] }) {
   return (
-    <ul className="mt-12 grid md:grid-cols-3 gap-4 lg:gap-6">
+    <ul className={`mt-12 grid gap-4 lg:gap-6 ${COLUMNS[items.length] ?? "md:grid-cols-3"}`}>
       {items.map((item, i) => (
         <li
           key={item.title}

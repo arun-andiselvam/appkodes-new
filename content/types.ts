@@ -309,20 +309,18 @@ export type ServiceLanding = {
   /**
    * Where the work is built, and where it ends up running.
    *
-   * !! `clientLocations` IS WHERE THE CLIENTS ARE, NOT WHERE WE ARE !!
+   * !! DO NOT PUT THE COUNTRY LIST BACK !!
    *
-   * The field was called `offices` for about an hour on 21 August 2026, under
-   * a heading reading "Built in five offices". The company has no office in
-   * any of them. They are places where clients sit and where the team has met
-   * them face to face, confirmed by the client that day, and the name says so
-   * now because a vaguer one is what let the claim drift in the first place.
+   * This carried `clientLocations`, a list of five countries rendered under a
+   * "Clients met in person" heading. Removed from the type and from every
+   * service page on 22 August 2026 at the client's request.
    *
-   * Anything rendering this list has to label it as client locations. See the
-   * corrected verified facts list in docs/positioning.md.
-   *
-   * They are displayed rather than written into the paragraph, because five
-   * place names inside a sentence is an inline list of five where
-   * docs/positioning.md allows two.
+   * It is worth knowing why the field was so carefully named, in case somebody
+   * is tempted to reintroduce the idea. It was called `offices` for about an
+   * hour on 21 August 2026, under a heading reading "Built in five offices",
+   * and the company has no office in any of them. The corrected facts, one
+   * office in Madurai, are in docs/positioning.md. Any future attempt to say
+   * something about geography on these pages starts by reading that.
    *
    * `points` carry a label each. Three checkmarked lines with nothing naming
    * them made the reader work out what they had in common. The labels are the
@@ -332,7 +330,6 @@ export type ServiceLanding = {
   reach: {
     heading: string;
     body: string;
-    clientLocations: string[];
     points: { label: string; body: string }[];
   };
   /**
@@ -479,14 +476,12 @@ export type ArchitectureDiagram = {
    * Defaults to cascade, which is what the parent service page draws.
    */
   align?: "cascade" | "sequence";
-  /**
-   * Number the nodes in reading order.
-   *
-   * For a diagram that is a sequence rather than a structure. Numbers are
-   * derived from position rather than stored, so inserting a row cannot leave
-   * one disagreeing with where it sits.
+  /*
+   * There was a `numbered` flag here that put 01 through 04 above each label.
+   * Removed 22 August 2026 at the client's request. Do not reintroduce it
+   * without asking: the request covered every diagram on the site, not one
+   * page's.
    */
-  numbered?: boolean;
   rows: { label: string; sub?: string; tone: "brand" | "accent" }[][];
 };
 

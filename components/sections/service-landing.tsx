@@ -395,25 +395,15 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
           </dl>
 
           {/*
-            Where the clients are. A real list rather than chips, so a crawler
-            reading this page for a location signal finds five list items
-            instead of five unrelated spans.
+            A "Clients met in person" row of country chips sat here, reading
+            off reach.clientLocations. Removed 22 August 2026 at the client's
+            request, from every service page at once.
+
+            The field is gone from ServiceLanding as well, so this cannot come
+            back by somebody filling in a property that still exists. Where the
+            company actually is, one office in Madurai, stays recorded in
+            docs/positioning.md, which is where that belongs.
           */}
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <h3 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-              Clients met in person
-            </h3>
-            <ul className="flex flex-wrap gap-2">
-              {page.reach.clientLocations.map((location) => (
-                <li
-                  key={location}
-                  className="border border-foreground/15 px-3 py-1 text-sm"
-                >
-                  {location}
-                </li>
-              ))}
-            </ul>
-          </div>
         </Container>
       </Section>
 
@@ -439,7 +429,29 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
             {page.stack.body}
           </p>
-          <dl className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-foreground/10 border border-foreground/10">
+          {/*
+            Columns follow the group count, changed 22 August 2026.
+
+            It was four columns whatever it was handed. The two newest pages
+            carry three groups, and the fourth cell rendered as a bare grey
+            rectangle. That is worse here than an empty cell usually is: the
+            hairlines are a gap-px trick where the container background shows
+            through between cells, so a slot with nothing in it is not white
+            space, it is a visible block of the divider colour.
+
+            Three goes straight to md:grid-cols-3 rather than through a two
+            column step, because three items in two columns orphans the third
+            at that breakpoint and moves the problem instead of fixing it.
+          */}
+          <dl
+            className={`mt-12 grid gap-px bg-foreground/10 border border-foreground/10 ${
+              page.stack.groups.length === 3
+                ? "md:grid-cols-3"
+                : page.stack.groups.length === 2
+                  ? "sm:grid-cols-2"
+                  : "sm:grid-cols-2 lg:grid-cols-4"
+            }`}
+          >
             {page.stack.groups.map((group) => (
               <div key={group.label} className="bg-background p-6 lg:p-8">
                 <dt className="font-mono text-xs tracking-widest text-muted-foreground uppercase">

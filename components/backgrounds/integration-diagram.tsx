@@ -120,28 +120,28 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
       node,
       x: row.length === 2 ? i * COL : sequence ? centreX : COL,
       y: r * ROW,
-      /*
-       * The step number, derived and never stored.
-       *
-       * One number per row, not per node, so a row of two shares a number.
-       * That matters wherever a pair is a fork: the two nodes are routes a
-       * record takes instead of each other, and counting them 03 then 04 read
-       * as one step following the other. On the compliance page that inverted
-       * the argument, which is that classification decides which of the two a
-       * record goes to. Sharing the number reads as one stage, two ways.
-       *
-       * Changed 22 August 2026. Every other diagram is rows of one, where
-       * this is identical to counting nodes.
-       */
-      rank: r + 1,
+      /* Only used to stagger the entrance, so a row lands after the one above. */
+      row: r,
     })),
   );
 
   const planeW = COL + SLAB.w;
   const planeH = (diagram.rows.length - 1) * ROW + SLAB.h;
 
+  /*
+   * The fade lives on the figure and nowhere deeper.
+   *
+   * !! NEVER PUT opacity ON A preserve-3d ELEMENT IN THIS FILE !!
+   *
+   * Opacity below 1 is a grouping property, so whatever carries it is forced
+   * to transform-style: flat. Tried first on the node wrapper, which flattened
+   * the seven stacked plates into one rectangle and cost every slab its
+   * thickness. The figure sits outside both the perspective and the 3D chain,
+   * so fading it composites the finished render rather than collapsing it.
+   * Same reason the connectors get no opacity of their own.
+   */
   return (
-    <figure className="hidden lg:block select-none">
+    <figure className="hidden lg:block select-none diagram-in">
       {/*
         The caption is the text alternative. Hidden from sighted readers, who
         have the diagram, and from nothing else.
@@ -188,18 +188,30 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
         >
           <Connectors rows={diagram.rows} sequence={sequence} />
 
-          {placed.map(({ node, x, y, rank }) => {
+          {placed.map(({ node, x, y, row }) => {
             const tone = TONES[node.tone];
             return (
               <div
                 key={node.label}
-                className="absolute"
+                /*
+                  The slab drops onto the plane rather than appearing on it.
+                  See .diagram-node in app/globals.css. This wrapper carries no
+                  transform of its own, which is why the entrance can animate
+                  one without disturbing the isometric projection above.
+                */
+                className="absolute diagram-node"
                 style={{
                   left: x,
                   top: y,
                   width: SLAB.w,
                   height: SLAB.h,
                   transformStyle: "preserve-3d",
+                  /*
+                    Staggered by row, not by node, so a pair lands together.
+                    They are two routes out of one step and arriving one after
+                    the other would imply an order that is not there.
+                  */
+                  animationDelay: `${row * 110}ms`,
                 }}
               >
                 {/*
@@ -254,21 +266,20 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
                     lightest.
                   */}
                   {/*
-                    The step number, on a sequence only.
+                    A small mono step number sat above the label here, 01
+                    through 04, switched on by a `numbered` flag.
 
-                    It is what makes the assembly read as an order of events
-                    rather than as a stack of parts. Derived from position, so
-                    a row inserted later cannot leave a number disagreeing with
-                    where it sits.
+                    Removed 22 August 2026 at the client's request, from every
+                    diagram at once. The flag and the rank it read are gone
+                    too, rather than being set false on six entries, because a
+                    prop nothing passes is a prop somebody turns back on by
+                    accident.
+
+                    The connectors already say what order things happen in,
+                    which is what the numbers were doing. A fork is the one
+                    case they said something extra, and that argument is now
+                    carried by the caption instead.
                   */}
-                  {diagram.numbered && (
-                    <span
-                      className="mb-1.5 block font-mono text-[11px] leading-none text-white/70 tabular-nums"
-                      style={{ textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" }}
-                    >
-                      {String(rank).padStart(2, "0")}
-                    </span>
-                  )}
                   <span
                     className="block text-[16px] font-bold leading-tight text-white"
                     style={{ textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" }}
@@ -375,8 +386,18 @@ function Connectors({
     }
   }
 
+  /*
+   * No entrance animation on this wrapper. It is preserve-3d and every bar
+   * inside sits at translateZ(6px) so the rules pass over the plane and under
+   * the slabs. Fading it would flatten that group to Z zero and the rules
+   * would surface in front of the glow. It comes in with the figure instead.
+   */
   return (
-    <div aria-hidden className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
+    <div
+      aria-hidden
+      className="absolute inset-0"
+      style={{ transformStyle: "preserve-3d" }}
+    >
       {bars.map((bar, i) => (
         <span
           key={i}

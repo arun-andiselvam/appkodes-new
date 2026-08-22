@@ -293,7 +293,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     reach: {
       heading: "Deployed where your data is allowed to live",
       body: "Your integration runs where your own rules say it can, not where it happens to suit us. Clients meet the engineers who do the work rather than an account manager relaying it.",
-      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
       points: [
         {
           label: "Where it runs",
@@ -689,7 +688,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     reach: {
       heading: "Where the calls actually go",
       body: "The endpoint you call decides where your data sits, and that choice is made before anything is built. The same engineer stays with it, from the first call right through to the handover.",
-      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
       points: [
         {
           label: "Where it runs",
@@ -758,7 +756,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      * A sequence, not a structure, drawn with the same isometric slabs the
      * parent uses so the two pages share one visual language.
      *
-     * !! align AND numbered ARE WHAT KEEP IT FROM BEING THE PARENT AGAIN !!
+     * !! THE ARRANGEMENT IS WHAT KEEPS IT FROM BEING THE PARENT AGAIN !!
      *
      * This page opened with the parent's diagram carrying different words:
      * same 1-2-2 arrangement, same tone split, same component. Two pages a
@@ -766,8 +764,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      *
      * The rows are now the order a request travels, 1-1-2-1, which no
      * hierarchy can be. `sequence` centres the lone steps so the pair can
-     * rejoin into one, and `numbered` says out loud that these happen in
-     * order.
+     * rejoin into one.
      *
      * It also says the two things the old arrangement could not. The cache is
      * checked before the model rather than beside it, and the last step is the
@@ -778,7 +775,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       caption:
         "A request reaches the wrapper, which checks a cache before calling a model API. The model then calls back into your own functions, and your rules decide what happens.",
       align: "sequence",
-      numbered: true,
       rows: [
         [{ label: "A request", sub: "From your app", tone: "brand" }],
         [{ label: "The wrapper", sub: "Holds the keys", tone: "accent" }],
@@ -1047,7 +1043,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     reach: {
       heading: "Where a record is allowed to sit",
       body: "Residency is a decision rather than a default, and it is made before anything is built. The same engineer stays with it, from that first decision right through to the handover.",
-      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
       points: [
         {
           label: "Hosted, retention off",
@@ -1113,7 +1108,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       caption:
         "A record is classified first. Sensitive data goes to a model inside your own network and everything else to a hosted endpoint with retention off. Both are written to a log you keep.",
       align: "sequence",
-      numbered: true,
       rows: [
         [{ label: "A record", sub: "From your system", tone: "brand" }],
         [{ label: "Classified", sub: "Decided in week one", tone: "accent" }],
@@ -1369,7 +1363,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     reach: {
       heading: "Where the work runs",
       body: "The automation runs against the systems you already have. The same engineer stays with the work, from that first week right through to the handover.",
-      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
       points: [
         {
           label: "Runs where your data is",
@@ -1443,7 +1436,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       caption:
         "Work arrives by email or by form. One agent picks it up, handles most of it straight through and sends anything unclear to a person. Your systems are updated either way.",
       align: "sequence",
-      numbered: true,
       rows: [
         [
           { label: "An email arrives", sub: "Invoice or request", tone: "brand" },
@@ -1488,6 +1480,892 @@ export const serviceLandings: Record<string, ServiceLanding> = {
         question: "Do we need an IT team to run this?",
         answer:
           "No, and most of the businesses we build for do not have an IT team at all. We run it after handover, and the same engineer who built it stays with it.",
+      },
+    ],
+  },
+
+  /*
+   * The first silo child built after its own parent, 22 August 2026, and the
+   * sixth page on this template.
+   *
+   * The brief arrived cleaner than the last two. Its slug already matched the
+   * flattened path, and its primary keyword is the one this page was always
+   * assigned, which is the phrase the parent was deliberately kept off.
+   *
+   * Two things in it were changed.
+   *
+   * !! "autonomous workflow automation" IS THE PARENT'S, NOT THIS PAGE'S !!
+   *
+   * The brief listed it as a secondary here. The parent at
+   * /services/ai-workflow-automation carries "autonomous workflow automation
+   * for SMBs" and says it verbatim in its last FAQ. Bare and qualified are the
+   * same phrase to a search engine, so this page takes "autonomous AI agents"
+   * instead, which is what its own URL and its own definition block are about.
+   *
+   * !! CrewAI AND AutoGen ARE NOT ON THE VETTED LIST !!
+   *
+   * They are not in content/integrations.ts, which carries a confirm before
+   * launch warning because that list is a claim about what has actually been
+   * delivered. They are, however, already published in the short form entry
+   * for this exact path in content/services.ts, so the claim predates this
+   * page and is not being introduced here.
+   *
+   * The split: the prose keeps them, because deleting a capability claim the
+   * company already makes about itself is not a call this page gets to make.
+   * The stack block does not, because that renders from the vetted list. Both
+   * need confirming before launch, alongside the integrations rows.
+   */
+  "/services/autonomous-ai-agents": {
+    path: "/services/autonomous-ai-agents",
+    /*
+     * 49 characters, the whole budget. The brief proposed "Custom AI Agent
+     * Development | Multi-Agent Automation" at 52, which renders at 63 and is
+     * cut mid word. "Systems" for "Automation" buys the three characters and
+     * moves the tail closer to the secondary term.
+     */
+    metaTitle: "Custom AI Agent Development | Multi-Agent Systems",
+    serviceType: "custom AI agent development",
+    metaDescription:
+      "Stop prompting and start delegating. Custom AI agent development for multi-step work, with agents that call your own APIs and pause for approval. Book a review.",
+
+    hero: {
+      eyebrow: "Autonomous AI agents",
+      /*
+       * The brief's angle, kept whole: the shift from talking to AI to
+       * delegating to it. Its own headline was "Replace Cross-App Manual Work
+       * with Autonomous AI Agents", which is the keyword with a verb in front
+       * and says nothing a chatbot vendor could not also say.
+       *
+       * This states the distinction the comparison table then proves, which is
+       * the argument the whole page rests on.
+       */
+      title: "Stop talking to the AI. Start handing it the job.",
+      lede: "A chatbot waits to be asked and then answers. An agent is given a goal, works out the steps and carries them out in the systems you already run.",
+      /* Both are design decisions rather than measurements. */
+      badges: ["Pauses before it spends money", "Runs on your own APIs"],
+    },
+
+    summary: {
+      heading: "What autonomous AI agents are",
+      body: "An autonomous AI agent is software that takes a goal rather than a prompt, then plans the steps and carries them out. It calls the tools it needs, checks what came back and decides what to do next. Several agents can split one job between them, which is what separates custom AI agent development from putting a chat window on a website.",
+    },
+
+    problem: {
+      heading: "A chat window was never the point",
+      body: "Most of the AI a business has tried so far answers a question and then stops there. Somebody still has to open the other four systems and then do the actual work by hand. The answer arrives faster and the job takes exactly as long as it did before.",
+      points: [
+        {
+          title: "The answer is not the work",
+          body: "A model tells your team what the refund policy says. Somebody still opens the billing system and issues it.",
+        },
+        {
+          title: "One prompt, one step",
+          body: "Anything that takes six steps takes six prompts, each typed by a person who has to know what the next one is.",
+        },
+        {
+          title: "Nobody trusts it with anything that matters",
+          body: "Without a place to stop and ask, an agent either gets nothing important to do or it gets something important and nobody sleeps.",
+        },
+      ],
+    },
+
+    /*
+     * The brief headed this "The Frameworks Behind the Automation" and named
+     * CrewAI and AutoGen in an H3. The heading is about capability now, with
+     * the frameworks named in the body where they read as an example rather
+     * than as the section's subject. See the note above this entry.
+     */
+    capabilities: {
+      heading: "What makes an agent an agent",
+      items: [
+        {
+          title: "Multi-agent orchestration",
+          body: "One agent plans and others carry out the steps, using frameworks such as CrewAI and AutoGen. Each one is given a narrow remit, and that narrowness is what keeps the whole thing reviewable.",
+        },
+        {
+          title: "API tool calling",
+          body: "The agent reaches into your systems through the APIs they already expose to everything else. It reads what came back and decides the next step from that rather than from a script.",
+        },
+        {
+          title: "Human in the loop",
+          body: "High risk actions stop and wait for a person. You decide which actions go on that list, and moving money is on it by default.",
+        },
+      ],
+    },
+
+    /*
+     * A different axis from the parent's, which compares by hand against
+     * automated. This one separates two things a buyer has already been sold
+     * and cannot tell apart, which is the job of a comparison on a child page.
+     */
+    comparison: {
+      heading: "A chatbot against an agent",
+      body: "Both are built on the same models. What separates them is whether the thing can act.",
+      columns: ["A chatbot", "An agent"],
+      rows: [
+        {
+          label: "What it does",
+          values: ["Answers the question asked", "Carries out the job given"],
+        },
+        {
+          label: "Reaching your systems",
+          values: ["None, it only produces text", "Calls the APIs you already have"],
+        },
+        {
+          label: "Multi-step work",
+          values: ["One prompt gets one answer", "Plans the steps and works through them"],
+        },
+        {
+          label: "What starts it",
+          values: ["A person typing", "A schedule or an event in your system"],
+        },
+        {
+          label: "When it is unsure",
+          values: ["Answers anyway", "Stops and asks a named person"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Multi-agent workflows in action",
+      body: "Three jobs where one agent would not be enough. In each of them the work is split, and the handover between agents is the part that makes it work.",
+      items: [
+        {
+          system: "Your expense ledger",
+          title: "Three agents on one receipt",
+          body: "One agent reads the receipt and pulls the figures out. A second decides the category, a third works out who owes what, and the reconciliation lands in your database.",
+        },
+        {
+          system: "Your stock system",
+          title: "A purchase order drafted for approval",
+          body: "An agent watches how fast things are selling and compares that against what is on the shelf. It drafts the order when a gap is coming and waits for a person to sign it off.",
+        },
+        {
+          system: "Your content pipeline",
+          title: "Research handed down a chain",
+          body: "One agent gathers what people are searching for and a second groups it into topics. A third turns the topics into outlines.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We watch the work",
+          body: "We spend two days sitting with your team, following the jobs that cross several systems. Every step gets a cost put against it.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names which job an agent should take first, and what that saves every month. You decide whether any of it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "We build it and keep it running",
+          body: "The first agent goes live with a narrow remit and a person on the approvals. The remit widens once it has earned it.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What an agent is allowed to do",
+      body: "An agent's remit is a decision you make. It is written down before anything is built, and it is widened later only on purpose.",
+      points: [
+        {
+          label: "Which systems it can touch",
+          body: "Named APIs, and nothing it was not given.",
+        },
+        {
+          label: "Where it has to stop",
+          body: "Any action on the approval list waits for a person.",
+        },
+        {
+          label: "What it leaves behind",
+          body: "Every step an agent took is readable afterwards.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the agents are built from",
+      body: "We fit the agents around the systems you already run. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "The models that plan",
+          items: [
+            { name: "Claude", category: "Reasoning across several steps", icon: "siClaude" },
+            { name: "GPT", category: "Drafting and classification" },
+            { name: "Llama", category: "Runs inside your own network", icon: "siMeta" },
+          ],
+        },
+        {
+          label: "How they reach your tools",
+          items: [
+            { name: "MCP", category: "One way into your systems", icon: "siModelcontextprotocol" },
+            { name: "Python", category: "The steps that need real code", icon: "siPython" },
+            { name: "n8n", category: "Triggers and scheduling", icon: "siN" },
+          ],
+        },
+        {
+          label: "What they run against",
+          items: [
+            { name: "PostgreSQL", category: "Records and reporting", icon: "siPostgresql" },
+            { name: "Stripe", category: "Payments, behind an approval", icon: "siStripe" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * A new shape, per the rule on ArchitectureDiagram in content/types.ts.
+     * The four diagrams already shipped run 1-2-2, 1-1-2-1, 1-1-2-1 and
+     * 2-1-2-1. This is 1-2-2-1 and none of them is.
+     *
+     * The middle pair is the thing this page argues. An agent reads and acts
+     * in the same breath, which is exactly what the chatbot in the comparison
+     * table cannot do, so the two run side by side rather than in sequence.
+     *
+     * The escalation node is brand rather than accent. The person it stops for
+     * is the client's, and the colour break is where the work hands back.
+     */
+    diagram: {
+      caption:
+        "A goal arrives. The agent reads your data and calls your APIs, then either checks its own work or stops and asks a person. The result is written back into your system.",
+      align: "sequence",
+      rows: [
+        [{ label: "A goal", sub: "Not a prompt", tone: "brand" }],
+        [
+          { label: "Reads the data", sub: "Yours, in place", tone: "accent" },
+          { label: "Calls your APIs", sub: "Tool use", tone: "accent" },
+        ],
+        [
+          { label: "Checks its own work", sub: "Then carries on", tone: "accent" },
+          { label: "Asks a person", sub: "High risk actions", tone: "brand" },
+        ],
+        [{ label: "Written back", sub: "Into your system", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Can AI agents work with the software we already use?",
+        answer:
+          "If it has an API, an agent can reach it. That covers the obvious ones like Stripe and it covers the dashboard somebody built for you years ago. Where there is no API we look at what the system does expose before proposing anything.",
+      },
+      {
+        question: "What happens if an autonomous agent makes a mistake?",
+        answer:
+          "The design assumes it will. High risk actions stop before they happen and wait for a named person to approve them, and moving money is on that list by default. Every step is logged, so a wrong decision is something you can find rather than something you infer from the result.",
+      },
+      {
+        question: "How much does it cost to run multi-agent workflows?",
+        answer:
+          "It is charged per job rather than per seat. Cost is kept down two ways. The cheap steps get a smaller model, and open weight models can be hosted on your own hardware where the volume justifies it. We put real numbers against your jobs in week two.",
+      },
+      {
+        question: "What are multi-agent AI solutions for business?",
+        answer:
+          "Several agents with narrow remits, splitting one job between them. One of them plans, another calls the tools, and a third checks what came back. Narrow remits are what make the work reviewable, and they are why a multi-agent system usually beats one agent asked to do everything.",
+      },
+      {
+        question: "Do you do CrewAI agent development?",
+        answer:
+          "Yes, and AutoGen. The framework is picked from what the job needs rather than from what we used last time. The agents still reach your systems through the same APIs.",
+      },
+      {
+        question: "How is this different from workflow automation?",
+        answer:
+          "Workflow automation runs a path somebody has already mapped out. An agent is given the goal and works the path out for itself, which is worth paying for when the steps change with the input.",
+      },
+    ],
+  },
+
+  /*
+   * The second child of the workflow silo, 22 August 2026, seventh page on the
+   * template.
+   *
+   * Four things in the brief were declined.
+   *
+   * !! THERE IS NO 70% !!
+   *
+   * The proposed meta description opened "Resolve 70% of customer inquiries
+   * instantly". No resolution rate has been measured, and every number in
+   * content/metrics.ts is still marked a draft. It is the same shape as the
+   * "38 hours saved per week" and "Deployed in 50+ Countries" figures earlier
+   * briefs asked for and did not get. The description leads on the symptom
+   * instead, which needs no figure to land.
+   *
+   * !! ZENDESK AND INTERCOM ARE NOT NAMED !!
+   *
+   * The brief put them in an H3. Neither appears anywhere in this repo, so
+   * unlike CrewAI on the agents page this would be a delivery claim being
+   * introduced rather than one carried forward. content/integrations.ts is
+   * explicit that the list has to match what has actually been delivered. The
+   * capability is described instead, as the help desk your team already
+   * answers in. Name them once somebody confirms a build.
+   *
+   * "Seamless Human Handoff" was an H3 too, and "seamless" is on the banned
+   * list in docs/positioning.md.
+   *
+   * The comparison asked for setup time as months against days. Days
+   * contradicts content/how-it-works.ts, which puts a costed plan at the end
+   * of week two. That row compares what the two are built out of instead,
+   * which makes the same point without inventing a duration.
+   */
+  "/services/customer-support-ai": {
+    path: "/services/customer-support-ai",
+    /*
+     * 43 characters. The brief appended "| Hitasoft" to a title that
+     * app/layout.tsx already suffixes, which renders the brand twice at 65 and
+     * truncates.
+     */
+    metaTitle: "AI Customer Support Automation & RAG Agents",
+    serviceType: "AI customer support automation",
+    metaDescription:
+      "Your team answers the same questions every week. AI customer support automation that reads your own docs and tickets, and escalates the rest. Book a review.",
+
+    hero: {
+      eyebrow: "AI customer support automation",
+      /*
+       * The brief's headline was "Resolve the Same 20 Questions. Without Human
+       * Intervention." The twenty is arbitrary, and "without human
+       * intervention" is the thing a support buyer is afraid of rather than
+       * the thing they want. This keeps the repetition, which is the real
+       * pain, and puts their team on the sympathetic side of it.
+       */
+      title: "Your team knows the answer. They have typed it nine times today.",
+      lede: "Most support tickets are a question somebody already answered. An agent that can read your documentation and your closed tickets answers it again, in the words your team would use.",
+      badges: ["Answers only from your own docs", "Escalates rather than guesses"],
+    },
+
+    summary: {
+      heading: "What RAG powered support is",
+      body: "AI customer support automation uses retrieval augmented generation, which means the model is given your own material to answer from rather than answering from memory. Your documentation and your closed tickets are indexed so they can be searched by meaning. The agent finds the passage that applies and answers from it, then hands over anything it cannot find.",
+    },
+
+    problem: {
+      heading: "The same twenty questions, forever",
+      body: "Support volume rises with customers, and most of that rise is the same handful of questions. The hard tickets are the ones worth a person, and they sit in a queue behind password resets. Your best support person spends the morning on questions your own documentation already answers in full.",
+      points: [
+        {
+          title: "Tier one eats the day",
+          body: "Billing questions arrive faster than anybody clears them. The interesting tickets wait behind them.",
+        },
+        {
+          title: "The answer already exists",
+          body: "It is in the documentation, or in a ticket. Nobody finds either one under time pressure.",
+        },
+        {
+          title: "The old bot made it worse",
+          body: "A decision tree that never had the answer taught your customers to hunt for the button that reaches a person.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "How we build support agents that work",
+      items: [
+        {
+          title: "Your knowledge, indexed",
+          body: "Documentation and closed tickets are chunked, then embedded into a vector database your team controls. Search then runs on meaning rather than on the words a customer happened to type.",
+        },
+        {
+          title: "Wherever your customers already are",
+          body: "The agent sits in the help desk your team already answers in, reached through its API. Your customers never learn a new place to ask.",
+        },
+        {
+          title: "A handover that carries context",
+          body: "Anything outside the documentation goes to a person. What the customer asked and what the agent found travel with it, so nobody starts again.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "An old chatbot against a RAG agent",
+      body: "Most buyers have been sold the first one already. What separates them is what the thing is allowed to answer from in the first place.",
+      columns: ["A scripted bot", "A RAG agent"],
+      rows: [
+        {
+          label: "How it finds an answer",
+          values: ["A decision tree somebody drew", "Searches your documents by meaning"],
+        },
+        {
+          label: "What it is built from",
+          values: ["Conversation flows written by hand", "The documentation you already have"],
+        },
+        {
+          label: "What it gives back",
+          values: ["A link to a help article", "The passage that answers the question"],
+        },
+        {
+          label: "When the docs change",
+          values: ["Somebody rewrites the flow", "The index is rebuilt and it follows"],
+        },
+        {
+          label: "When it does not know",
+          values: ["Guesses, or loops", "Says so, and fetches a person"],
+        },
+      ],
+    },
+
+    /*
+     * The first use case is the company's own customer base, the script buyers
+     * in the fourth segment of docs/positioning.md, so it is the one example
+     * here that is not hypothetical.
+     *
+     * The third says nothing about medical compliance. Walking somebody
+     * through a microphone permission is support. Handling patient data is a
+     * claim this page does not make, and positioning.md line 212 is why.
+     */
+    scenarios: {
+      heading: "Support automation in practice",
+      body: "Three places where the questions repeat. In each of them the agent is reading something the business had already written down.",
+      items: [
+        {
+          system: "Your product documentation",
+          title: "Buyers configuring a script they bought",
+          body: "A buyer with no developer asks how to point the app at their own domain. The agent finds that step in the deployment guide and answers with it, rather than linking to the whole page.",
+        },
+        {
+          system: "Your app's help panel",
+          title: "Billing questions inside a ledger app",
+          body: "Somebody asks why an expense split the way it did. The agent explains the rule from your own documentation, and the engineering team never sees the ticket at all.",
+        },
+        {
+          system: "Your community platform",
+          title: "Permissions and setup on a live video app",
+          body: "A user cannot get their microphone working. The agent walks them through the permission their device is asking for, inside the app, while they wait.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We read what you already have",
+          body: "Two days with your team, and a look at the tickets you closed last quarter. The repeat questions sort themselves into a list.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan says which questions an agent should take first, and what that clears off the queue. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It goes live on a narrow set",
+          body: "The agent starts on the questions it answers best. The set widens as the answers hold up.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What the agent is allowed to say",
+      body: "The boundary is the whole point of this architecture. An agent that can only answer from your own material is an agent that cannot invent a refund policy.",
+      points: [
+        {
+          label: "Answers from your material only",
+          body: "If it is not in your documentation or your tickets, it is not an answer.",
+        },
+        {
+          label: "Escalates instead of guessing",
+          body: "Not knowing is a routing decision rather than a failure.",
+        },
+        {
+          label: "Every answer is traceable",
+          body: "You can see which passage an answer came from.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the support agent is built from",
+      body: "We fit the agent around the help desk you run. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "The models that answer",
+          items: [
+            { name: "Claude", category: "Answering from your own material", icon: "siClaude" },
+            { name: "GPT", category: "Drafting and classification" },
+            { name: "Embeddings", category: "Turning your docs into search" },
+          ],
+        },
+        {
+          label: "Where your knowledge sits",
+          items: [
+            { name: "pgvector", category: "Your documents, made searchable" },
+            { name: "PostgreSQL", category: "Tickets and reporting", icon: "siPostgresql" },
+            { name: "Redis", category: "Queues and rate limits", icon: "siRedis" },
+          ],
+        },
+        {
+          label: "How it reaches your desk",
+          items: [
+            { name: "MCP", category: "One way into your systems", icon: "siModelcontextprotocol" },
+            { name: "Python", category: "Indexing and evaluation", icon: "siPython" },
+            { name: "n8n", category: "Triggers and routing", icon: "siN" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Sixth shape, and the rule on ArchitectureDiagram says it has to be one
+     * the others do not use. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1
+     * and 1-2-2-1. This is 1-2-1-2.
+     *
+     * The pair on the second row is the argument. Retrieval reads two sources
+     * at once and both of them belong to the client, which is why they are
+     * brand rather than accent, and why the one red box is the single step we
+     * add to material they already had.
+     *
+     * It is also the first that ends on a pair instead of resolving into one
+     * node. Support does not converge. Either the customer has an answer or a
+     * person has the ticket.
+     */
+    diagram: {
+      caption:
+        "A question arrives. The agent searches your documentation and your closed tickets, then builds an answer from what it found. It replies, or it passes the ticket to a person.",
+      align: "sequence",
+      rows: [
+        [{ label: "A question", sub: "From your customer", tone: "brand" }],
+        [
+          { label: "Your documentation", sub: "Searched by meaning", tone: "brand" },
+          { label: "Closed tickets", sub: "How you answered before", tone: "brand" },
+        ],
+        [{ label: "The answer", sub: "Built from what it found", tone: "accent" }],
+        [
+          { label: "Replied", sub: "In your own words", tone: "accent" },
+          { label: "Passed to a person", sub: "With the context", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Can the AI use our existing ticket history?",
+        answer:
+          "It is usually the most valuable thing you have. Closed tickets are cleaned, structured and indexed, which teaches the agent how your team actually phrases an answer and how the awkward cases were settled. Whatever help desk you run, the work is the same as long as it has an API to export from.",
+      },
+      {
+        question: "Will the AI make things up or hallucinate?",
+        answer:
+          "It is confined to your own material. Retrieval augmented generation hands the model the passages that matched and tells it to answer from those. An answer that is not somewhere in your documentation is not one that it can give. Where nothing matches, it escalates rather than filling the gap.",
+      },
+      {
+        question: "Does it handle customers writing in other languages?",
+        answer:
+          "Yes. The model reads a question in whatever language it arrives in and answers in that same language. Your documentation only had to be written once. Test it on your own material first.",
+      },
+      {
+        question: "What is RAG chatbot integration?",
+        answer:
+          "It puts a retrieval step in front of the model. The customer's question searches your indexed documents first, and only the passages that come back are given to the model to answer from. That one retrieval step is the whole difference between a support agent and an ordinary chatbot.",
+      },
+      {
+        question: "Do you do automated ticketing system setup as well?",
+        answer:
+          "Yes, and it is usually the same project. Routing rules, priorities and the question of what an agent may close all get decided in week two. An agent answering well into a queue nobody has organised does not help very much.",
+      },
+      {
+        question: "How is this different from custom AI chatbot development?",
+        answer:
+          "A chatbot is judged on the conversation, and this one is judged on whether the ticket closed. Most of the build is not the chat window. It is getting your documentation and your ticket history into a shape the model can search.",
+      },
+    ],
+  },
+
+  /*
+   * Third child of the workflow silo, 22 August 2026, eighth page on the
+   * template.
+   *
+   * This brief broke three rules the repo had already written down, all of
+   * them in one section.
+   *
+   * !! NO MODEL VERSION NUMBERS !!
+   *
+   * An H3 read "Vision-Capable LLM Extraction (GPT-4o, Claude 3.5)".
+   * content/integrations.ts line 17 is explicit: model families, never version
+   * numbers, because a version dates the page the week it is superseded. The
+   * page says vision models and names the families.
+   *
+   * !! NOT "enterprise" !!
+   *
+   * The third FAQ asked to "reiterate Zero Data Retention enterprise
+   * standards". docs/positioning.md line 64 rules the word out for this buyer
+   * entirely, and the decision on 18 August 2026 overrides the earlier
+   * framing. Retention off is a real thing we configure, so the answer keeps
+   * the substance and drops the word.
+   *
+   * "Seamless output" was in the second FAQ. Banned list.
+   *
+   * The primary keyword is the brief's rather than the strategy doc's. That
+   * file assigns "intelligent document processing" to this path, and the brief
+   * moved it to a secondary in favour of "AI document processing automation".
+   * Both are here verbatim, the second in the definition block, and neither
+   * belongs to another page.
+   *
+   * The third use case was "Legal & Regulatory Document Auditing". Indexing
+   * dates and parties out of an agreement is document extraction and this page
+   * does that. Auditing a contract for regulatory compliance is a different
+   * profession and not one anybody here has claimed. The scenario keeps the
+   * extraction and drops the audit.
+   */
+  "/services/document-processing-ocr": {
+    path: "/services/document-processing-ocr",
+    /*
+     * 39 characters. The brief's version appended "| Hitasoft" to a title
+     * app/layout.tsx already suffixes, and it dropped "Automation", which is
+     * the word that makes the primary keyword match rather than stem.
+     */
+    metaTitle: "AI Document Processing Automation & OCR",
+    serviceType: "AI document processing automation",
+    metaDescription:
+      "Nobody should retype an invoice. AI document processing automation reads your PDFs and scans, then writes structured rows to your database. Book a review.",
+
+    hero: {
+      eyebrow: "AI document processing",
+      /*
+       * The brief's H1 was "Turn Unstructured Documents into Structured
+       * Database Records. Automatically." Every word of that is a category
+       * term. This says the same thing as one concrete object moving through
+       * one transformation, which is what the reader actually has on their
+       * desk.
+       */
+      title: "The invoice arrives as a photograph. It leaves as a database row.",
+      lede: "Somebody in your office is reading a number off a PDF and typing it into a system. A vision model can read the same document and write the fields where they belong.",
+      badges: ["Reads photographs, not just PDFs", "Flags what it is unsure of"],
+    },
+
+    summary: {
+      heading: "What intelligent document processing is",
+      body: "Intelligent document processing, often shortened to IDP, reads a document the way a person does and writes what it finds into a system. A vision model looks at the whole page rather than matching a stored template, so a supplier changing their invoice layout does not break anything. The output is structured rows or JSON, rather than the wall of recovered text older tools produced.",
+    },
+
+    problem: {
+      heading: "The typing nobody costed",
+      body: "Documents arrive in whatever shape the sender chose. Somebody opens each one, finds four or five numbers on it, and types them into your system. It is slow, it is where the errors come from, and it scales only by hiring.",
+      points: [
+        {
+          title: "Every supplier has their own layout",
+          body: "The total sits in a different place on each invoice. A person absorbs that instantly.",
+        },
+        {
+          title: "The errors surface much later",
+          body: "A digit typed wrong reads as a normal number. It becomes a reconciliation problem a month later, when nobody remembers which document it came off.",
+        },
+        {
+          title: "The backlog only ever grows",
+          body: "Paperwork arrives faster on a busy week, which is exactly the week nobody has an afternoon to sit and key it in.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "Beyond template based OCR",
+      items: [
+        {
+          title: "Whatever shape it arrives in",
+          body: "A PDF, or a photograph somebody took on a phone. The same pipeline handles all of them, because the model is reading the page rather than matching a layout.",
+        },
+        {
+          title: "Vision models, not character matching",
+          body: "Claude and GPT read a document with its structure intact, so a total is understood as a total. Older OCR returned characters and left the meaning to you.",
+        },
+        {
+          title: "Straight into your database",
+          body: "Fields land as rows in PostgreSQL or MySQL, or go out as JSON to whatever system wants them. Nothing waits in a folder for somebody to process.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "Template OCR against AI document processing",
+      body: "Most businesses tried OCR once and gave up on it. The tool was doing something narrower than the job.",
+      columns: ["Template OCR", "AI document processing"],
+      rows: [
+        {
+          label: "A layout it has not seen",
+          values: ["Fails, or returns the wrong field", "Reads it from context like a person"],
+        },
+        {
+          label: "A new supplier",
+          values: ["Somebody maps a new template", "Nothing to configure"],
+        },
+        {
+          label: "Photographs and poor scans",
+          values: ["Garbled characters", "Recovers most of it from context"],
+        },
+        {
+          label: "What comes out",
+          values: ["A dump of plain text", "Named fields, ready for a database"],
+        },
+        {
+          label: "When it is unsure",
+          values: ["Returns it wrong, silently", "Flags the field and asks"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Document automation in practice",
+      body: "Three places where paper turns into data. In each of them the document was already arriving and somebody was already typing it.",
+      items: [
+        {
+          system: "Your expense ledger",
+          title: "A receipt photographed on a phone",
+          body: "Somebody photographs the receipt on the way out. The vision model reads the total and the tax, and the expense lands in the shared ledger already categorised.",
+        },
+        {
+          system: "Your stock records",
+          title: "Line items off a delivery note",
+          body: "A supplier's delivery note arrives as a scan. Item codes and unit prices come off it as rows, and nobody checks them against the order by eye.",
+        },
+        {
+          system: "Your contract archive",
+          title: "Dates and parties out of an agreement",
+          body: "Signed agreements arrive as PDFs and go straight into a folder that nobody can search. The dates and the party names are extracted and indexed, so a renewal is findable.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We look at your actual documents",
+          body: "Two days with your team, and a stack of the paperwork you actually receive each week. The awkward ones matter more than the tidy ones.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan says which document types to take first, and what that saves every month. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It runs on one document type",
+          body: "The first pipeline goes live on one document type. Others follow once the extraction holds up on real post.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where your documents go",
+      body: "A document is more sensitive than most data a business holds, because it carries everything at once. Where it is processed is decided before anything is built.",
+      points: [
+        {
+          label: "Hosted, retention off",
+          body: "The usual route. Documents are processed and nothing is kept.",
+        },
+        {
+          label: "Or inside your own network",
+          body: "An open weight vision model on your own hardware.",
+        },
+        {
+          label: "Uncertainty is visible",
+          body: "Low confidence fields are flagged rather than quietly filled in.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the pipeline is built from",
+      body: "We fit the extraction into the systems you already run. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "The models that read",
+          items: [
+            { name: "Vision models", category: "Reading scans and photographs" },
+            { name: "Claude", category: "Understanding a page's structure", icon: "siClaude" },
+            { name: "GPT", category: "Extraction and classification" },
+          ],
+        },
+        {
+          label: "Where the fields land",
+          items: [
+            { name: "PostgreSQL", category: "Records and reporting", icon: "siPostgresql" },
+            { name: "MySQL", category: "If that is what you run", icon: "siMysql" },
+            { name: "pgvector", category: "Finding a document again later" },
+          ],
+        },
+        {
+          label: "How it runs",
+          items: [
+            { name: "Python", category: "Extraction and checking", icon: "siPython" },
+            { name: "n8n", category: "What happens when post arrives", icon: "siN" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Seventh shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1, 1-2-2-1
+     * and 1-2-1-2. This is 2-1-1-2, the first that opens and closes on a pair.
+     *
+     * Which is the argument. Documents arrive in more than one shape and leave
+     * to more than one place, and the narrow part in the middle is the point:
+     * one pipeline, whatever came in. Only the middle two rows are accent,
+     * because the post and the database were both already yours.
+     */
+    diagram: {
+      caption:
+        "Documents arrive as PDFs and as photographs. One vision model reads whichever it is, the fields are checked for confidence, and they land in your database or go to a person.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "A PDF", sub: "From a supplier", tone: "brand" },
+          { label: "A photograph", sub: "Taken on a phone", tone: "brand" },
+        ],
+        [{ label: "Read by a vision model", sub: "The whole page", tone: "accent" }],
+        [{ label: "Fields checked", sub: "How sure is it", tone: "accent" }],
+        [
+          { label: "Your database", sub: "Rows, not text", tone: "brand" },
+          { label: "Flagged for a person", sub: "The unsure ones", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "How does it handle blurry scans or handwriting?",
+        answer:
+          "Better than older tools, because it reads the context rather than the letter shapes alone. A vision model that can see the whole page infers a smudged digit from the arithmetic around it, the way a person would. Anything it is unsure of gets flagged rather than guessed.",
+      },
+      {
+        question: "What format does the extracted data come out in?",
+        answer:
+          "Whatever your systems take. Rows in PostgreSQL or MySQL, or JSON over an API. The shape is agreed in week two, because it is easier to match your schema than to make you match ours.",
+      },
+      {
+        question: "Are our documents stored on somebody else's servers?",
+        answer:
+          "Not if you do not want them to be. The usual route is a hosted model with retention switched off, so documents are processed and nothing is kept. Where the paperwork cannot leave your network at all, an open weight vision model runs on your own hardware instead.",
+      },
+      {
+        question: "What is intelligent document processing IDP?",
+        answer:
+          "It is reading a document with a model that understands layout, then writing what it found into a system. The IDP part is what separates it from plain OCR, which returns the text and then stops. One of them gives you characters, and the other gives you a field with a name on it.",
+      },
+      {
+        question: "Do you do custom OCR AI development?",
+        answer:
+          "That is what this service is. The build is a pipeline around a vision model rather than a licence for somebody's OCR product. That is why it fits the documents you actually receive.",
+      },
+      {
+        question: "Do you do automated invoice extraction AI?",
+        answer:
+          "It is the most common first job on this service. Invoices repeat, they carry numbers somebody is retyping, and every supplier formats them differently, which is exactly where a template based tool falls over.",
+      },
+      {
+        question: "Do we need to change how documents reach us?",
+        answer:
+          "No. Post keeps arriving in the inbox it already arrives in, and the pipeline reads from there. Changing how your suppliers send things is a project of its own and not one worth running first.",
       },
     ],
   },

@@ -159,6 +159,9 @@ of content at two URLs is the thing paging must not create.
 | `/services/custom-ai-api-integration` | `custom AI API integration` | Custom AI API Integration & AI Wrappers (39) |
 | `/services/secure-ai-compliance-architecture` | `secure AI integration services` | Secure AI Integration & Compliance (34) |
 | `/services/ai-workflow-automation` | `AI workflow automation services` | AI Workflow Automation Services for SMBs (40) |
+| `/services/autonomous-ai-agents` | `custom AI agent development` | Custom AI Agent Development \| Multi-Agent Systems (49) |
+| `/services/customer-support-ai` | `AI customer support automation` | AI Customer Support Automation & RAG Agents (43) |
+| `/services/document-processing-ocr` | `AI document processing automation` | AI Document Processing Automation & OCR (39) |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | AI Automation for Fintech SMBs (30) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |

@@ -180,7 +180,75 @@
   @keyframes line-reveal {
     to { clip-path: inset(0 0 0 0); }
   }
-  
+
+  /*
+    The isometric diagram settling onto its plane.
+
+    Added 22 August 2026. The assembly used to appear finished on first paint,
+    which read as a static image dropped into the page rather than as a
+    diagram of something that happens in an order.
+
+    Slabs drop along the plane's own Z rather than down the screen. The parent
+    is preserve-3d and the node wrapper carries no transform of its own, so
+    translateZ moves each slab along the axis the assembly is already tilted
+    on, and it settles into the projection instead of sliding across it.
+
+    The stagger is set per row in the component rather than here, because the
+    delay has to follow the shape of each diagram.
+  */
+  /*
+    !! THE FADE GOES ON THE FIGURE, THE MOVE GOES ON THE SLABS !!
+
+    Opacity below 1 is a grouping property, so any element carrying it is
+    forced to transform-style: flat. The first version faded each slab, which
+    collapsed the seven plates that give it thickness and left flat
+    rectangles. The figure sits outside the perspective, so fading it
+    composites the finished 3D render rather than flattening it.
+
+    Nothing inside the perspective may animate opacity. Slabs animate
+    transform only, which preserve-3d is built for.
+  */
+  .diagram-in {
+    opacity: 0;
+    animation: diagram-in 700ms ease-out forwards;
+  }
+
+  @keyframes diagram-in {
+    to { opacity: 1; }
+  }
+
+  /*
+    Slabs drop along the plane's own Z rather than down the screen. The node
+    wrapper carries no transform of its own, so translateZ moves each one
+    along the axis the assembly is already tilted on and it settles into the
+    projection instead of sliding across it.
+
+    The stagger is set per row in the component rather than here, because the
+    delay has to follow the shape of each diagram.
+  */
+  .diagram-node {
+    animation: diagram-node-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes diagram-node-in {
+    from { transform: translateZ(52px); }
+    to { transform: translateZ(0); }
+  }
+
+  /*
+    Reduced motion gets the finished diagram rather than a slower one. The
+    resting state is the whole assembly in place, which is what both of these
+    animate towards anyway.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    .diagram-in,
+    .diagram-node {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .hover-lift {
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }

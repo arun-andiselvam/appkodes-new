@@ -55,9 +55,9 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/services/custom-ai-api-integration` | `custom AI API integration` | long form | 50 | 154 | Service + FAQ | 11 | 2,677 | **Done** |
 | `/services/secure-ai-compliance-architecture` | `secure AI integration services` | long form | 45 | 150 | Service + FAQ | 11 | 2,741 | **Done** |
 | `/services/ai-workflow-automation` | `AI workflow automation services` | long form | 51 | 157 | Service + FAQ | 12 | 2,725 | **Done** |
-| `/services/autonomous-ai-agents` | `custom AI agent development` | blueprint | 38 | **139** | Breadcrumb only | 5 | 867 | Blueprint |
-| `/services/customer-support-ai` | `AI customer support automation` | blueprint | 41 | **139** | Breadcrumb only | 5 | 861 | Blueprint |
-| `/services/document-processing-ocr` | `intelligent document processing` | blueprint | 58 | **143** | Breadcrumb only | 5 | 870 | Blueprint |
+| `/services/autonomous-ai-agents` | `custom AI agent development` | long form | 60 | 160 | Service + FAQ | 11 | 2,651 | **Done** |
+| `/services/customer-support-ai` | `AI customer support automation` | long form | 54 | 156 | Service + FAQ | 11 | 2,660 | **Done** |
+| `/services/document-processing-ocr` | `AI document processing automation` | long form | 50 | 154 | Service + FAQ | 11 | 2,673 | **Done** |
 | `/services/financial-data-automation` | `fintech AI automation services` | blueprint | 45 | **148** | Breadcrumb only | 5 | 858 | Blueprint |
 | `/services/custom-ai-mvp-development` | `custom AI MVP development` | blueprint | 36 | **147** | Breadcrumb only | 6 | 941 | Blueprint |
 | `/services/rapid-ai-prototyping` | `low cost AI prototype development` | blueprint | 50 | **135** | Breadcrumb only | 5 | 874 | Blueprint |
@@ -77,8 +77,8 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/industries/edtech-and-learning` | `AI integration for e-learning platforms` | blueprint | 53 | 150 | Breadcrumb only | 5 | 889 | Blueprint |
 | `/industries/marketing-and-adtech` | `AI automation for marketing agencies` | blueprint | 44 | **145** | Breadcrumb only | 5 | 882 | Blueprint |
 
-**Totals.** 30 pages. 5 done, 5 live and awaiting an SEO pass, 20 on the
-blueprint. One title over 60. Twenty-two descriptions outside 150 to 160.
+**Totals.** 30 pages. 8 done, 5 live and awaiting an SEO pass, 17 on the
+blueprint. One title over 60. Nineteen descriptions outside 150 to 160.
 
 ---
 
@@ -98,9 +98,9 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | `/services/custom-ai-api-integration` | `AI wrapper development for startups`, `integrate LLM into existing software` |
 | `/services/secure-ai-compliance-architecture` | `private LLM deployment for business`, `compliant AI app development`, `data safety AI consulting` |
 | `/services/ai-workflow-automation` | `autonomous workflow automation for SMBs`, `automated AI task execution`, `replace manual data entry with AI` |
-| `/services/autonomous-ai-agents` | `multi-agent systems for business` |
+| `/services/autonomous-ai-agents` | `multi-agent AI solutions for business`, `autonomous AI agents`, `CrewAI agent development` |
 | `/services/customer-support-ai` | `custom AI chatbot development for SMBs`, `RAG chatbot integration`, `automated ticketing system setup` |
-| `/services/document-processing-ocr` | `custom OCR development`, `automated invoice data extraction` |
+| `/services/document-processing-ocr` | `custom OCR AI development`, `automated invoice extraction AI`, `intelligent document processing` |
 | `/services/financial-data-automation` | `automated expense tracking integration`, `AI ledger management development`, `financial data automation for SMBs` |
 | `/services/custom-ai-mvp-development` | `affordable AI startup development` |
 | `/services/rapid-ai-prototyping` | `AI proof of concept for startups` |
