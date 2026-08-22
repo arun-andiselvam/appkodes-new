@@ -1,9 +1,5 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useInView } from "@/hooks/use-in-view";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { actions, ctaCopy } from "@/content/site";
@@ -11,49 +7,26 @@ import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
+import { CtaPanel } from "@/components/sections/cta-panel";
 
+/**
+ * The closing panel, on every page.
+ *
+ * !! THIS FILE IS A SERVER COMPONENT AND MUST STAY ONE !!
+ *
+ * It was a client component until 22 August 2026, for a scroll fade and a
+ * cursor gradient. Both are decorative, both now live in CtaPanel, and
+ * everything below is static markup that used to ship as JavaScript on every
+ * page of the site.
+ *
+ * Adding a hook or a handler here would pull all of it back. Put the
+ * interactive bit in CtaPanel instead.
+ */
 export function CtaSection() {
-  const [sectionRef, isVisible] = useInView<HTMLDivElement>({ threshold: 0.2 });
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
-  };
-
   return (
-    <Section id="contact" ref={sectionRef} spacing="none" className="pt-12 lg:pt-16 pb-20 lg:pb-24 overflow-hidden">
+    <Section id="contact" spacing="none" className="pt-12 lg:pt-16 pb-20 lg:pb-24 overflow-hidden">
       <Container>
-        {/*
-          The border was border-foreground at full strength, ten times the
-          weight of every other panel on the page, all of which sit at /10. A
-          fifth keeps this box reading as the closer without shouting at the
-          sections above it.
-        */}
-        <div
-          className={`relative border border-foreground/20 transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-          onMouseMove={handleMouseMove}
-        >
-          {/* Spotlight effect */}
-          <div 
-            className="absolute inset-0 opacity-10 pointer-events-none transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, var(--spotlight), transparent 40%)`
-            }}
-          />
-          
-          {/*
-            The 500 pixel tetrahedron that used to sit on the right is gone,
-            and the box closed up rather than leaving a hole where it was. The
-            buttons take that side instead, so the panel is wide and short
-            instead of wide and half empty, and the whole close now fits on one
-            screen with the photographs above it.
-          */}
-          <div className="relative z-10 px-8 lg:px-12 py-12 lg:py-14">
+        <CtaPanel>
             {/*
               Two columns, and only one of them holds anything to read. The
               buttons moved across to sit under the paragraph they belong to,
@@ -202,17 +175,7 @@ export function CtaSection() {
                 />
               </div>
             </div>
-          </div>
-
-          {/*
-            One corner rule, not two. The pair used to sit diagonally opposite
-            each other, and the top right of them now lands underneath the
-            badge. Two devices fighting for the same corner reads as a mistake,
-            and the badge is the heavier of the two, so the rule gives way and
-            the bottom left one carries the diagonal on its own.
-          */}
-          <div className="absolute bottom-0 left-0 w-32 h-32 border-t border-r border-foreground/10" />
-        </div>
+        </CtaPanel>
       </Container>
     </Section>
   );

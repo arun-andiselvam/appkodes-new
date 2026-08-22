@@ -1,15 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Play, Star } from "lucide-react";
+import dynamic from "next/dynamic";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { siTrustpilot, siYoutube } from "simple-icons";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { VideoPoster } from "@/components/sections/video-poster";
 import { useInView } from "@/hooks/use-in-view";
 import type { TestimonialSlide } from "@/content/types";
 import { clientLogos, testimonialSlides, trustpilotSnapshot } from "@/content/testimonials";
@@ -17,52 +12,6 @@ import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
-
-/**
- * The poster, with a play button over it. Never the player.
- *
- * Used on the card and again inside the dialog, so the two look identical and
- * the second click lands where the eye already is.
- */
-function VideoPoster({
-  poster,
-  title,
-  onPlay,
-  size = "card",
-}: {
-  poster: string;
-  title: string;
-  onPlay: () => void;
-  size?: "card" | "dialog";
-}) {
-  const button = size === "dialog" ? "w-20 h-20" : "w-14 h-14";
-  const icon = size === "dialog" ? "w-7 h-7" : "w-5 h-5";
-
-  return (
-    <button
-      type="button"
-      onClick={onPlay}
-      className="group relative block w-full aspect-video overflow-hidden bg-foreground/5"
-      aria-label={`Play: ${title}`}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={poster}
-        alt=""
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      <span className="absolute inset-0 bg-foreground/20 group-hover:bg-foreground/10 transition-colors" />
-      <span className="absolute inset-0 flex items-center justify-center">
-        <span
-          className={`${button} rounded-full bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
-        >
-          <Play className={`${icon} translate-x-0.5`} />
-        </span>
-      </span>
-    </button>
-  );
-}
 
 /**
  * Two clicks before a single byte of YouTube is fetched.
@@ -78,69 +27,48 @@ function VideoPoster({
  * backdrop press. Unmounting on close disposes of the iframe, so a closed
  * dialog is not a video still playing behind the page.
  */
+const VideoModal = dynamic(
+  () => import("@/components/sections/video-modal").then((m) => m.VideoModal),
+  {
+    /*
+     * ssr false because a modal nobody has opened has nothing to render on the
+     * server, and prerendering it would put the markup back in the HTML this
+     * split exists to keep out of it.
+     */
+    ssr: false,
+  },
+);
+
+/**
+ * A video card: the poster always, the lightbox only once it is wanted.
+ *
+ * !! DO NOT IMPORT VideoModal STATICALLY !!
+ *
+ * @radix-ui/react-dialog is the largest piece of application code on this site
+ * after the framework. Measured on 22 August 2026 it sat in a 34KB chunk of a
+ * 204KB page, downloaded by everyone loading the home page, any service page
+ * or the case studies index, so that the few who press play get a modal.
+ *
+ * The poster is the visible part and stays. The dialog arrives on the click
+ * that asks for it. A static import here undoes all of that silently, because
+ * nothing about the page looks any different when it happens.
+ */
 function VideoDialog({
   slide,
 }: {
   slide: Extract<TestimonialSlide, { kind: "video" }>;
 }) {
   const [open, setOpen] = useState(false);
-  const [playing, setPlaying] = useState(false);
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        setOpen(next);
-        // Reset so reopening shows the poster again rather than resuming.
-        if (!next) setPlaying(false);
-      }}
-    >
-      {/*
-        No DialogTrigger. It would need asChild to wrap this button, which means
-        forwarding refs and props through VideoPoster just to end up setting the
-        same state this component already owns. Calling setOpen directly keeps
-        one poster component for both the card and the dialog, so they cannot
-        drift apart.
-      */}
-      <VideoPoster poster={slide.poster} title={slide.title} onPlay={() => setOpen(true)} />
-
-      <DialogContent
-        showCloseButton
-        className="max-w-4xl w-[calc(100vw-2rem)] p-0 gap-0 border-foreground/10 bg-background"
-      >
-        <DialogHeader className="px-6 pt-6 pb-4 text-left">
-          <DialogTitle className="text-xl font-display tracking-tight">{slide.title}</DialogTitle>
-          <DialogDescription className="sr-only">
-            Client testimonial video, played from YouTube.
-          </DialogDescription>
-        </DialogHeader>
-
-        {playing ? (
-          <div className="relative aspect-video bg-foreground/5">
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube-nocookie.com/embed/${slide.youtubeId}?autoplay=1&rel=0`}
-              title={slide.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        ) : (
-          <VideoPoster
-            poster={slide.poster}
-            title={slide.title}
-            size="dialog"
-            onPlay={() => setPlaying(true)}
-          />
-        )}
-
-        <p className="px-6 py-4 text-sm text-muted-foreground">
-          {playing
-            ? "Playing from youtube-nocookie.com."
-            : "Nothing loads from YouTube until you press play."}
-        </p>
-      </DialogContent>
-    </Dialog>
+    <>
+      <VideoPoster
+        poster={slide.poster}
+        title={slide.title}
+        onPlay={() => setOpen(true)}
+      />
+      {open && <VideoModal slide={slide} onClose={() => setOpen(false)} />}
+    </>
   );
 }
 

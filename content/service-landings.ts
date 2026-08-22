@@ -78,6 +78,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      * would disagree with is a wasted word in 160 characters.
      */
     metaTitle: "AI Software Integration | Add AI to Existing Apps",
+    serviceType: "AI software integration",
     metaDescription:
       "Rebuild nothing. AI software integration that adds LLM APIs and custom AI wrappers to the software and legacy systems you already run. Book a review.",
 

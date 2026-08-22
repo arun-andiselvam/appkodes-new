@@ -260,6 +260,20 @@ export type ServiceLanding = {
   path: string;
   metaTitle: string;
   metaDescription: string;
+  /**
+   * The service, named plainly. Feeds both `name` and `serviceType` on the
+   * Service schema.
+   *
+   * !! NOT THE TITLE TAG !!
+   *
+   * The schema used to read metaTitle, which was survivable while that read
+   * "AI Software Integration Services" and became nonsense once the title was
+   * written to its character budget. "AI Software Integration | Add AI to
+   * Existing Apps" is a search result, pipe and all, and not the name of a
+   * service. Keep this the bare phrase, lower case, matching the page's
+   * primary keyword in docs/seo-standards.md.
+   */
+  serviceType: string;
   hero: {
     eyebrow: string;
     /** The H1. Two sentences is fine; the second one earns the first. */

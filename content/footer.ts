@@ -57,11 +57,28 @@ export const footerLinks = {
 };
 
 /**
- * !! EMPTY UNTIL REAL ACCOUNTS ARE SUPPLIED !!
+ * The company's own profiles.
  *
- * The template listed Twitter, GitHub and LinkedIn, all pointing at `#`. The
- * footer renders nothing while this array is empty, which is the honest state.
- * A GitHub link is questionable for this company in any case, since the buyer
- * in docs/positioning.md often has no developers at all.
+ * The template listed Twitter, GitHub and LinkedIn all pointing at `#`, and
+ * this array stayed empty until real accounts were supplied. They now are: all
+ * four were read on 22 August 2026 from the `sameAs` array in the Organization
+ * schema hitasoft.com publishes about itself, which is the company naming its
+ * own profiles rather than anybody guessing at URLs.
+ *
+ * !! THIS LIST IS ALSO THE sameAs ON THE ORGANIZATION SCHEMA !!
+ *
+ * app/layout.tsx reads it. `sameAs` is how a search engine ties this site to
+ * those profiles and resolves them into one entity, so a wrong URL here is
+ * worse than a missing one: it claims a relationship to an account that is not
+ * ours.
+ *
+ * No GitHub, and not because one does not exist. It is questionable for this
+ * company either way, since the buyer in docs/positioning.md often has no
+ * developers at all.
  */
-export const socialLinks: SocialLink[] = [];
+export const socialLinks: SocialLink[] = [
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/hitasoft" },
+  { name: "YouTube", href: "https://www.youtube.com/@hitasoft" },
+  { name: "Instagram", href: "https://www.instagram.com/hitasoft_technology_solutions/" },
+  { name: "Facebook", href: "https://www.facebook.com/hitasoft/" },
+];

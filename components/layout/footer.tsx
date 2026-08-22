@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatedWave } from "@/components/backgrounds/animated-wave";
@@ -8,6 +6,20 @@ import { footerLinks, socialLinks } from "@/content/footer";
 import { site } from "@/content/site";
 import { Container } from "@/components/primitives/container";
 
+/**
+ * !! DO NOT PUT "use client" BACK AT THE TOP OF THIS FILE !!
+ *
+ * It was there until 22 August 2026, and nothing in here ever needed it. There
+ * is no state, no effect and no event handler. The footer is links and type.
+ *
+ * It was presumably added because AnimatedWave below is a client component,
+ * and that is not how the boundary works. A server component can render a
+ * client one, and only the client one crosses. Marking the parent instead
+ * dragged the whole footer into the JavaScript bundle of every page on the
+ * site, for nothing.
+ *
+ * AnimatedWave keeps its own directive, which is the right place for it.
+ */
 export function Footer() {
   return (
     <footer className="relative border-t border-foreground/10">

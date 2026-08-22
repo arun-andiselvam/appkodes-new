@@ -63,19 +63,48 @@ export function serviceLandingRoute(path: string) {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: page.metaTitle,
+    /*
+     * !! name IS THE SERVICE, NOT THE TITLE TAG !!
+     *
+     * This read page.metaTitle, which was fine while that happened to be "AI
+     * Software Integration Services" and became nonsense the moment the title
+     * was written to its character budget: "AI Software Integration | Add AI
+     * to Existing Apps" is a search result, pipe and all, not the name of
+     * anything. Fixed 22 August 2026.
+     *
+     * `serviceType` was also hardcoded to this one page's phrase, so every
+     * service page built from this route would have claimed to be AI software
+     * integration. Both now read the same field from the content.
+     */
+    name: page.serviceType,
     description: page.summary.body,
-    serviceType: "AI software integration",
+    serviceType: page.serviceType,
     url: `${site.url}${path}`,
+    /*
+     * A reference rather than a copy. The Organization itself is defined once
+     * in app/layout.tsx, on every page, and repeating its details here would
+     * be a second definition to keep in step. Name and url are enough to point
+     * at it.
+     */
     provider: {
       "@type": "Organization",
       name: site.name,
       url: site.url,
-      foundingDate: "2008",
     },
-    areaServed: ["IN", "ID", "AE", "VN"].map((code) => ({
+    /*
+     * Named, not coded. These were `identifier: "IN"`, which is valid schema
+     * and is a generic identifier field rather than the country's name.
+     * Anything reading this wants to know it is India.
+     */
+    areaServed: [
+      { code: "IN", name: "India" },
+      { code: "ID", name: "Indonesia" },
+      { code: "AE", name: "United Arab Emirates" },
+      { code: "VN", name: "Vietnam" },
+    ].map((country) => ({
       "@type": "Country",
-      identifier: code,
+      name: country.name,
+      identifier: country.code,
     })),
   };
 
