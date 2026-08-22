@@ -402,7 +402,16 @@ export type ServiceLanding = {
     body: string;
     /** Column headings, rebuild first. */
     columns: [string, string];
-    rows: { label: string; rebuild: string; integration: string }[];
+    /**
+     * One row. `values` lines up with `columns`, left then right.
+     *
+     * These keys were `rebuild` and `integration`, named for the only
+     * comparison that existed at the time. The child page compares training a
+     * model against calling an API, where a field called `rebuild` holding
+     * "months of data work" is a lie waiting for an editor. Renamed 22 August
+     * 2026.
+     */
+    rows: { label: string; values: [string, string] }[];
   };
   faqs: { question: string; answer: string }[];
   /**
@@ -442,6 +451,27 @@ export type ServiceLanding = {
 export type ArchitectureDiagram = {
   /** Read in place of the shapes by anything that cannot see them. */
   caption: string;
+  /**
+   * How a lone node sits against a pair.
+   *
+   * `cascade` puts it in the right hand column, which is what a hierarchy
+   * wants: the interface above the layer it talks to, stepping down.
+   *
+   * `sequence` centres it, which is what an order of events wants, and it is
+   * the only arrangement in which a pair can rejoin into one step without the
+   * rule doubling back on itself.
+   *
+   * Defaults to cascade, which is what the parent service page draws.
+   */
+  align?: "cascade" | "sequence";
+  /**
+   * Number the nodes in reading order.
+   *
+   * For a diagram that is a sequence rather than a structure. Numbers are
+   * derived from position rather than stored, so inserting a row cannot leave
+   * one disagreeing with where it sits.
+   */
+  numbered?: boolean;
   rows: { label: string; sub?: string; tone: "brand" | "accent" }[][];
 };
 

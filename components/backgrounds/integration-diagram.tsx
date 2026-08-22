@@ -104,17 +104,24 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
   };
 
   /*
-   * Rows carry one node or two. A single node sits in the right hand column,
-   * which is what puts the interface above the layer it talks to and gives
-   * the assembly the cascade the reference has.
+   * Where every node sits, in flat coordinates.
+   *
+   * A row of two always fills both columns. A lone node depends on `align`: a
+   * hierarchy cascades it into the right hand column, which puts the interface
+   * above the layer it talks to. A sequence centres it, which is the only
+   * arrangement where a pair can rejoin into one step without the rule
+   * doubling back on itself.
    */
+  const sequence = diagram.align === "sequence";
+  const centreX = (COL + SLAB.w) / 2 - SLAB.w / 2;
+
   const placed = diagram.rows.flatMap((row, r) =>
     row.map((node, i) => ({
       node,
-      x: (row.length === 1 ? 1 : i) * COL,
+      x: row.length === 2 ? i * COL : sequence ? centreX : COL,
       y: r * ROW,
-      row: r,
-      col: row.length === 1 ? 1 : i,
+      /* Reading order, for the step numbers. Derived, never stored. */
+      rank: diagram.rows.slice(0, r).reduce((n, prev) => n + prev.length, 0) + i + 1,
     })),
   );
 
@@ -167,9 +174,9 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
             transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
-          <Connectors rows={diagram.rows} />
+          <Connectors rows={diagram.rows} sequence={sequence} />
 
-          {placed.map(({ node, x, y }) => {
+          {placed.map(({ node, x, y, rank }) => {
             const tone = TONES[node.tone];
             return (
               <div
@@ -234,6 +241,22 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
                     the letterforms where the slab beneath them is at its
                     lightest.
                   */}
+                  {/*
+                    The step number, on a sequence only.
+
+                    It is what makes the assembly read as an order of events
+                    rather than as a stack of parts. Derived from position, so
+                    a row inserted later cannot leave a number disagreeing with
+                    where it sits.
+                  */}
+                  {diagram.numbered && (
+                    <span
+                      className="mb-1.5 block font-mono text-[11px] leading-none text-white/70 tabular-nums"
+                      style={{ textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" }}
+                    >
+                      {String(rank).padStart(2, "0")}
+                    </span>
+                  )}
                   <span
                     className="block text-[16px] font-bold leading-tight text-white"
                     style={{ textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" }}
@@ -267,16 +290,37 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
  * translateZ, so they pass underneath and the slabs read as sitting on top of
  * their own connections.
  *
- * The shape is fixed because the component draws one architecture: the single
- * node on row one feeds the pair below, the right hand node of that pair is
- * what reaches the row under it, and the pair is joined across. That is what
- * the architecture actually does, since the integration layer is what talks to
- * the model and the database rather than the backend.
+ * !! FOUR TRANSITIONS, NOT ONE !!
+ *
+ * It handled exactly one case for a long time, a lone node feeding a pair, and
+ * assumed every row below was a pair. That was all a hierarchy needed. A
+ * sequence needs the other three: a straight drop between two lone steps, and
+ * a pair rejoining into one, and it needs the pair's exit point to be the
+ * midpoint between them rather than the right hand node.
+ *
+ * So each gap is computed from where the nodes actually are rather than from
+ * an assumption about the shape. Adding a row cannot now produce a rule
+ * pointing at empty plane.
  */
-function Connectors({ rows }: { rows: Diagram["rows"] }) {
+function Connectors({
+  rows,
+  sequence,
+}: {
+  rows: Diagram["rows"];
+  sequence: boolean;
+}) {
   const midCol0 = SLAB.w / 2;
   const midCol1 = COL + SLAB.w / 2;
+  const centre = (COL + SLAB.w) / 2;
   const T = 5;
+
+  /** Where a row's rule leaves it, going down. */
+  const exitX = (row: Diagram["rows"][number]) =>
+    row.length === 1 ? (sequence ? centre : midCol1) : sequence ? centre : midCol1;
+
+  /** Where a row's rule arrives, coming in. */
+  const entryX = (row: Diagram["rows"][number]) =>
+    row.length === 2 ? [midCol0, midCol1] : [sequence ? centre : midCol1];
 
   const bars: { left: number; top: number; width: number; height: number }[] = [];
 
@@ -285,24 +329,38 @@ function Connectors({ rows }: { rows: Diagram["rows"] }) {
     const below = r * ROW;
     const mid = above + (below - above) / 2;
 
-    // Down out of the feeding node, which is always the right hand column.
-    bars.push({ left: midCol1 - T / 2, top: above, width: T, height: mid - above + T });
+    const from = exitX(rows[r - 1]);
+    const to = entryX(rows[r]);
 
-    if (rows[r].length === 2) {
-      // Across, then down into each of the pair.
+    if (rows[r - 1].length === 2) {
+      // A pair rejoining: two stems up to the bus, then one down.
+      bars.push({ left: midCol0 - T / 2, top: above, width: T, height: mid - above + T });
+      bars.push({ left: midCol1 - T / 2, top: above, width: T, height: mid - above + T });
       bars.push({ left: midCol0, top: mid, width: midCol1 - midCol0, height: T });
-      bars.push({ left: midCol0 - T / 2, top: mid, width: T, height: below - mid });
-      bars.push({ left: midCol1 - T / 2, top: mid, width: T, height: below - mid });
     } else {
-      bars.push({ left: midCol1 - T / 2, top: mid, width: T, height: below - mid });
+      bars.push({ left: from - T / 2, top: above, width: T, height: mid - above + T });
+    }
+
+    if (to.length === 2) {
+      // Forking: a bus across the pair, then a drop into each.
+      bars.push({ left: midCol0, top: mid, width: midCol1 - midCol0, height: T });
+      for (const x of to) bars.push({ left: x - T / 2, top: mid, width: T, height: below - mid });
+    } else {
+      bars.push({ left: to[0] - T / 2, top: mid, width: T, height: below - mid });
     }
   }
 
-  // The across-the-pair link on the middle row, backend to integration layer.
-  const pairRow = rows.findIndex((row) => row.length === 2);
-  if (pairRow > -1) {
-    const y = pairRow * ROW + SLAB.h / 2;
-    bars.push({ left: SLAB.w, top: y - T / 2, width: SLAB.colGap, height: T });
+  /*
+   * The across-the-pair link, backend to integration layer. A hierarchy only.
+   * In a sequence the two are alternatives rather than neighbours that talk,
+   * and joining them would draw a relationship that is not there.
+   */
+  if (!sequence) {
+    const pairRow = rows.findIndex((row) => row.length === 2);
+    if (pairRow > -1) {
+      const y = pairRow * ROW + SLAB.h / 2;
+      bars.push({ left: SLAB.w, top: y - T / 2, width: SLAB.colGap, height: T });
+    }
   }
 
   return (

@@ -417,20 +417,17 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       rows: [
         {
           label: "Time to live",
-          rebuild: "Months, then a migration",
-          integration: "Three weeks, audit to live",
+          values: ["Months, then a migration", "Three weeks, audit to live"],
         },
         {
           // Was "Your codebase", which assumes the buyer owns source code. A
           // company running a bought CRM owns systems, not a repository.
           label: "Your systems",
-          rebuild: "Replaced outright",
-          integration: "Left alone, bridged by middleware",
+          values: ["Replaced outright", "Left alone, bridged by middleware"],
         },
         {
           label: "Your team",
-          rebuild: "Retrained on a new system",
-          integration: "Same screens on Monday",
+          values: ["Retrained on a new system", "Same screens on Monday"],
         },
         {
           // Added 21 August 2026. positioning.md names "no internal IT
@@ -438,18 +435,15 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           // with something nobody in house understands. The table answered
           // neither until this row.
           label: "Who runs it after",
-          rebuild: "Somebody you have to hire",
-          integration: "We do, and the handover is written down",
+          values: ["Somebody you have to hire", "We do, and the handover is written down"],
         },
         {
           label: "Data handling",
-          rebuild: "Security designed again from scratch",
-          integration: "Retention off, private hosting where needed",
+          values: ["Security designed again from scratch", "Retention off, private hosting where needed"],
         },
         {
           label: "If it underperforms",
-          rebuild: "You live with it",
-          integration: "The layer comes back out",
+          values: ["You live with it", "The layer comes back out"],
         },
       ],
     },
@@ -510,6 +504,322 @@ export const serviceLandings: Record<string, ServiceLanding> = {
         question: "How does the cost compare to building from scratch?",
         answer:
           "Integration costs less than a rebuild, because your frontend and your database stay as they are. You pay for the middleware and the API work. The audit puts a number on it before you commit.",
+      },
+    ],
+  },
+
+  /*
+   * The child page, built 22 August 2026 from an outline the client brought.
+   *
+   * !! IT OWNS "custom AI API integration" AND THE PARENT DOES NOT !!
+   *
+   * That split is the whole reason both pages exist. docs/seo-standards.md
+   * rule one, and the correction that produced it: the two pages carried the
+   * same phrase in their titles and were set to compete.
+   *
+   * Nothing here reuses the parent's beats. "Rebuild nothing" is the parent's
+   * H1, "Your software works, it just does not think yet" its problem heading,
+   * "Deployed where your data is allowed to live" its reach heading. A child
+   * echoing its parent reads as one page served twice.
+   *
+   * !! THREE THINGS IN THE OUTLINE WERE NOT WRITTEN AS ASKED !!
+   *
+   * "Plug Powerful LLMs Directly Into Your Current Codebase" was the proposed
+   * H1. "Powerful" is the unarguable adjective positioning.md strips, and
+   * "codebase" is developer language for a buyer that document describes as an
+   * operations lead with no IT department.
+   *
+   * The medical consultation use case was to promise "strict compliance with
+   * Google Play's Data safety and security policies". positioning.md line 213
+   * forbids naming a compliance standard until the company confirms it holds
+   * one, and this site was cleaned of exactly that once. It is written as what
+   * gets configured, retention off or a model on hardware the client owns, and
+   * never as a guarantee.
+   *
+   * "Google Play Console rejections" is written as the risk a rebuild carries,
+   * which is true of any established app, rather than as something this
+   * company has handled. Nothing in the repo backs the latter. If it has been
+   * handled, that is a much stronger line and it should be added.
+   */
+  "/services/ai-software-integration/custom-ai-api-integration": {
+    path: "/services/ai-software-integration/custom-ai-api-integration",
+    /*
+     * 39 characters, so 50 with the brand appended. See the budget in
+     * docs/seo-standards.md. The old title was "Custom AI API Integration & AI
+     * Wrapper Development" at 50, which rendered at 61 and was cut.
+     */
+    metaTitle: "Custom AI API Integration & AI Wrappers",
+    serviceType: "custom AI API integration",
+    metaDescription:
+      "Custom AI API integration for software you already run. We wire OpenAI and Claude in, hold the keys server side, and keep token spend flat. Book a review.",
+
+    hero: {
+      eyebrow: "AI integration",
+      title: "Your software already has an API. That is where the AI goes.",
+      lede: "We wire OpenAI or Claude into the endpoints your system already exposes, and nothing else moves. Nobody in house holds an API key.",
+      // Both are things the company does by deciding to, which is the test
+      // content/security.ts sets for anything in this position. No figures.
+      badges: ["Keys never leave the server", "Retention off by default"],
+    },
+
+    summary: {
+      heading: "What this service is",
+      body: "Custom AI API integration connects a hosted model to software that already exists, through the API that software already exposes. A wrapper sits in front of your own logic and calls it, so the model asks and your rules answer. Keys stay on the server, and the integration can be removed without touching the system underneath.",
+    },
+
+    problem: {
+      heading: "The demo works. The integration is the hard part.",
+      body: "Anyone can call an API once. A live product is where it gets difficult. Keys leak, and a model that times out can take a whole screen down with it. None of that argues for a rewrite.",
+      points: [
+        {
+          title: "Nobody owns the keys",
+          body: "The API key sits in somebody's environment file and the monthly bill goes to whoever set it up. Neither has an owner once that person moves on.",
+        },
+        {
+          title: "The bill grows on its own",
+          body: "Every request goes to the largest model, because that is what the demo happened to use. Usage doubles and spend doubles with it. Nobody notices until an invoice says so.",
+        },
+        {
+          title: "A rewrite is not the answer",
+          body: "An established app carries a release process and users who expect it to keep working. A rebuild puts both at risk, and a new store review, to add one feature.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "What custom AI API integration covers",
+      items: [
+        {
+          title: "LLM API integration",
+          body: "We wire OpenAI and Claude in through the framework your system was already built on. Model choice stays a setting rather than a rewrite, so swapping one for the other later costs an afternoon.",
+        },
+        {
+          title: "Custom AI wrappers",
+          body: "A layer in front of your own logic, calling the functions your system already exposes. The model reads what somebody asked for, and your own rules decide what happens next.",
+        },
+        {
+          title: "Cost and rate control",
+          body: "Small models take the easy work, and the large one takes only what needs it. Caching and a hard ceiling on spend are built in rather than added after the first surprise.",
+        },
+      ],
+    },
+
+    /*
+     * Four live systems, each with an API and a job behind it.
+     *
+     * Fintech leads on the client's instruction, and it earns the position:
+     * /industries/fintech-and-finance is the only one of the four whose
+     * industry page is built to full depth, so it is the only one whose link
+     * goes somewhere substantial. The others are short form until their own
+     * roll-out.
+     */
+    scenarios: {
+      heading: "Four systems, four API integrations",
+      body: "Each of these is a live application with an API and a job the model does behind it.",
+      items: [
+        {
+          system: "Fintech",
+          title: "Shared expenses that settle themselves",
+          body: "A household budget or a trip splits a bill between several people, and every entry moves what each of them owes. The API recalculates those balances as transactions arrive.",
+        },
+        {
+          system: "Retail",
+          title: "Stock that says when it will run out",
+          body: "An electronics inventory system already knows what sold and what is still on the shelf. An endpoint over that history predicts the stockouts and flags the lines whose valuation has drifted.",
+        },
+        {
+          system: "Consulting",
+          title: "Transcripts that never leave your control",
+          body: "A live video consultation produces a transcript worth summarising and too sensitive to send anywhere. It goes through an endpoint with retention switched off, or a model on hardware you own.",
+        },
+        {
+          system: "Communities",
+          title: "A feed that moderates itself first",
+          body: "A closed community generates more posts than anybody reads. The API reads each one against your own rules and sends a person only what it could not decide.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "Three weeks, first call to live",
+      steps: [
+        {
+          when: "Week one",
+          title: "Endpoints and keys",
+          body: "We read what your system already exposes and pick the calls the wrapper will make. Keys move to the server, and a spend ceiling goes on before anything else runs.",
+        },
+        {
+          when: "Week two",
+          title: "Wiring and rate limits",
+          body: "The wrapper goes in, with caching and a fallback for the moment the model is slow. Retention is switched off at the endpoint and then checked.",
+        },
+        {
+          when: "Week three",
+          title: "Tuning and handover",
+          body: "We watch token spend against real traffic and move the cheap work to a smaller model. You finish holding the keys and the prompts, with a record of every decision made.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "Training a model against calling one",
+      body: "Both end with software that does something intelligent. They differ in what you spend to get there and what you are left maintaining.",
+      columns: ["Training a custom model", "Integrating an LLM API"],
+      rows: [
+        { label: "Time to first result", values: ["Months of data work", "Days"] },
+        {
+          label: "What it needs",
+          values: ["Labelled data you may not have", "An endpoint you already expose"],
+        },
+        {
+          label: "Ongoing cost",
+          values: ["Training runs and hosting", "Tokens, and a ceiling on them"],
+        },
+        {
+          label: "When the field moves",
+          values: ["Retrain, or fall behind", "Change one setting"],
+        },
+        {
+          label: "Who maintains it",
+          values: ["Somebody who knows the model", "Whoever holds the keys"],
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where the calls actually go",
+      body: "The endpoint you call decides where your data sits, and that choice is made before anything is built. The same engineer stays with it, from the first call right through to the handover.",
+      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
+      points: [
+        {
+          label: "Where it runs",
+          body: "A hosted endpoint with retention off, or an open weight model on hardware you own.",
+        },
+        {
+          label: "Who holds the keys",
+          body: "You do, in your own account, and from the day the first call goes out.",
+        },
+        {
+          label: "What it costs to stop",
+          body: "Nothing. The wrapper lifts out and nothing underneath it has changed.",
+        },
+      ],
+    },
+
+    /*
+     * Grouped around the call rather than around the stack, which is what
+     * separates this from the parent's version of the section. Every entry is
+     * still copied from content/integrations.ts, names and category lines
+     * both, for the reason set out there.
+     */
+    stack: {
+      heading: "The models and frameworks we use",
+      body: "We fit the AI into the systems you already run. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "Model APIs",
+          items: [
+            { name: "Claude", category: "Documents nobody wants to read", icon: "siClaude" },
+            { name: "GPT", category: "General purpose work" },
+            { name: "Gemini", category: "Long files and video", icon: "siGooglegemini" },
+            { name: "Mistral", category: "Small and cheap to run", icon: "siMistralai" },
+          ],
+        },
+        {
+          label: "What we plug into",
+          items: [
+            { name: "Python", category: "Where the automation lives", icon: "siPython" },
+            { name: "TypeScript", category: "Web and APIs", icon: "siTypescript" },
+            { name: "Laravel", category: "PHP systems you already run", icon: "siLaravel" },
+            { name: "React", category: "Screens your team uses", icon: "siReact" },
+          ],
+        },
+        {
+          label: "Around the calls",
+          items: [
+            { name: "Redis", category: "Queues and caching", icon: "siRedis" },
+            { name: "PostgreSQL", category: "Records and reporting", icon: "siPostgresql" },
+            { name: "pgvector", category: "Your documents, made searchable" },
+            { name: "n8n", category: "Steps joined into a workflow", icon: "siN8n" },
+          ],
+        },
+        {
+          label: "Where it runs",
+          items: [
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+            { name: "AWS", category: "Hosting and storage" },
+            { name: "MCP", category: "Models plugged into your tools", icon: "siModelcontextprotocol" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * A sequence, not a structure, drawn with the same isometric slabs the
+     * parent uses so the two pages share one visual language.
+     *
+     * !! align AND numbered ARE WHAT KEEP IT FROM BEING THE PARENT AGAIN !!
+     *
+     * This page opened with the parent's diagram carrying different words:
+     * same 1-2-2 arrangement, same tone split, same component. Two pages a
+     * visitor reaches from one menu read as one page served twice.
+     *
+     * The rows are now the order a request travels, 1-1-2-1, which no
+     * hierarchy can be. `sequence` centres the lone steps so the pair can
+     * rejoin into one, and `numbered` says out loud that these happen in
+     * order.
+     *
+     * It also says the two things the old arrangement could not. The cache is
+     * checked before the model rather than beside it, and the last step is the
+     * model calling back into the client's own functions, which is the whole
+     * difference between a wrapper and a plain API call.
+     */
+    diagram: {
+      caption:
+        "A request reaches the wrapper, which checks a cache before calling a model API. The model then calls back into your own functions, and your rules decide what happens.",
+      align: "sequence",
+      numbered: true,
+      rows: [
+        [{ label: "A request", sub: "From your app", tone: "brand" }],
+        [{ label: "The wrapper", sub: "Holds the keys", tone: "accent" }],
+        [
+          { label: "Cache", sub: "Checked first", tone: "accent" },
+          { label: "Model API", sub: "OpenAI / Claude", tone: "accent" },
+        ],
+        [{ label: "Your own logic", sub: "Your rules answer", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "What happens to user data pushed through a third-party LLM API?",
+        answer:
+          "It goes to an enterprise endpoint with retention switched off, so your inputs are processed and not kept. Where that is not enough, an open weight model runs on hardware you control and the data never leaves it.",
+      },
+      {
+        question: "How do you keep API costs from growing with usage?",
+        answer:
+          "Three levers, all of them set up during the build rather than after a large invoice. Cheap work goes to a smaller model, repeat questions come from a cache, and a hard ceiling stops spend before it surprises anybody.",
+      },
+      {
+        question: "Can you use Claude and OpenAI in the same integration?",
+        answer:
+          "Yes, and it is usually worth doing. Model choice sits behind the wrapper as a setting. One can handle documents while another answers questions, and either can be swapped without touching your system.",
+      },
+      {
+        question: "Do we have to rebuild the app to add this?",
+        answer:
+          "No. The wrapper calls the API your software already exposes. Your release process and the screens your users know all stay exactly as they are.",
+      },
+      {
+        question: "Who holds the API keys?",
+        answer:
+          "You do. The keys live in your own provider account, and they do so from the first call. They stay server side, never shipped to a browser.",
+      },
+      {
+        question: "What happens when the model is slow or unavailable?",
+        answer:
+          "The wrapper falls back rather than hanging. A timeout returns the answer your system would have given before the integration existed, so a slow model never becomes a broken screen.",
       },
     ],
   },

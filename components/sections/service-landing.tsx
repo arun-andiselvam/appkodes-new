@@ -299,8 +299,8 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
                     <th scope="row" className="py-5 pr-6 align-top font-medium">
                       {row.label}
                     </th>
-                    <td className="py-5 pr-6 align-top text-muted-foreground">{row.rebuild}</td>
-                    <td className="py-5 align-top">{row.integration}</td>
+                    <td className="py-5 pr-6 align-top text-muted-foreground">{row.values[0]}</td>
+                    <td className="py-5 align-top">{row.values[1]}</td>
                   </tr>
                 ))}
               </tbody>
