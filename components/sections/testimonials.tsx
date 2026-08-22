@@ -420,6 +420,66 @@ export function TestimonialsSection({
     return () => window.removeEventListener("resize", syncEdges);
   }, [syncEdges]);
 
+  /*
+   * Route each wheel gesture by the axis the reader meant.
+   *
+   * !! WITHOUT THIS THE RAIL SWALLOWS VERTICAL PAGE SCROLL !!
+   *
+   * Reported twice, and measured on 22 August 2026 by dispatching twelve wheel
+   * events of deltaY 60 carrying the small deltaX drift a real two finger
+   * swipe has, over the rail and then over ordinary copy:
+   *
+   *   over the carousel          0px of 720 delivered to the page
+   *   over ordinary page copy  720px of 720
+   *
+   * The page simply stopped. An earlier investigation looked for jank and
+   * found none, which was the wrong thing to measure: a captured gesture is
+   * not a dropped frame, it is the page correctly rendering the same position
+   * over and over.
+   *
+   * Chrome latches a gesture to a horizontally scrollable element the moment
+   * it sees any deltaX, and every value of overscroll-behavior-x was measured:
+   * contain 0px, none 0px, auto 240px of 720. None of them fixes it, because
+   * the latch is the problem rather than the chaining.
+   *
+   * So the rail decides. A gesture whose deltaX beats its deltaY is somebody
+   * moving the cards, and it is left alone. Anything else is somebody reading
+   * the page, so the default is cancelled and the window is scrolled by hand.
+   *
+   * passive: false is required, since the listener calls preventDefault.
+   *
+   * deltaMode is normalised because a mouse wheel reports lines rather than
+   * pixels in some browsers, and treating 3 lines as 3 pixels would make the
+   * page crawl for anybody not on a trackpad.
+   */
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+
+      event.preventDefault();
+      const unit =
+        event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+
+      /*
+       * "instant", not "auto".
+       *
+       * app/globals.css sets scroll-behavior: smooth on the root, and "auto"
+       * means defer to that. Each wheel event then started a fresh smooth
+       * animation that cancelled the one before it, so the page kept losing
+       * the tail of every scroll: measured at 541px delivered out of 720px of
+       * intent, which is the 75% that costs. "instant" hands the delta over
+       * whole, and a wheel gesture arrives pre-smoothed by the OS anyway.
+       */
+      window.scrollBy({ top: event.deltaY * unit, behavior: "instant" });
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
   const scrollByCard = (direction: 1 | -1) => {
     const el = trackRef.current;
     if (!el) return;
@@ -511,44 +571,22 @@ export function TestimonialsSection({
         ref={trackRef}
         onScroll={syncEdges}
         /*
-          !! THIS RAIL MUST NOT BE IN THE WHEEL PATH ON A POINTER DEVICE !!
+          Horizontal scrolling stays. The vertical capture is handled in the
+          wheel listener above, not by taking this out of the wheel path.
 
-          It was swallowing vertical page scroll whole. Reported twice, and
-          measured on 22 August 2026 by dispatching twelve wheel events of
-          deltaY 60 carrying the small deltaX drift a real two finger swipe
-          has, over the rail and then over ordinary copy:
+          !! DO NOT "FIX" THIS BY SETTING overflow-x TO hidden !!
 
-            over the carousel          0px of 720 delivered to the page
-            over ordinary page copy  720px of 720
+          That was tried on 22 August 2026 and it worked, in the sense that the
+          page scrolled again. It also removed trackpad and mouse wheel
+          horizontal scrolling of the cards, which is the control most people
+          reach for first. The arrows are not a replacement for it.
 
-          The page simply stopped. An earlier investigation looked for jank and
-          found none, which was the wrong thing to measure: a captured gesture
-          is not a dropped frame, it is the page correctly rendering the same
-          position over and over.
-
-          Every property was then toggled live and re-measured.
-          `overscroll-behavior-x` was the trap, and both of its non default
-          values trap equally:
-
-            contain  0px    none  0px    auto  240px
-
-          Chrome latches a gesture to the horizontally scrollable element the
-          moment it sees any deltaX. `auto` at least lets the rest chain out
-          once the rail hits its end, which is why 240 of 720 got through, but
-          a reader still feels the page stall while the cards run to the edge.
-
-          So the rail leaves the wheel path entirely where the problem exists.
-          overflow-x hidden delivers the full 720px, and the arrows still work:
-          scrollBy on an overflow hidden element moves it exactly as before,
-          verified at 0 to 400 with 4049px of scrollable width. Nothing about
-          the buttons, the snap points or the edge detection changes.
-
-          Touch keeps native scrolling, because that is the only way to move
-          the rail on a phone and because touch does its own axis locking
-          properly, so nothing traps there. `contain` rides along with it to
-          stop a horizontal swipe triggering browser back navigation.
+          overscroll-x-contain is safe here now. It stops a horizontal swipe at
+          the end of the rail from triggering browser back navigation, and it
+          can no longer trap the page, because a vertical gesture never reaches
+          the rail's own scrolling at all.
         */
-        className="flex gap-6 overflow-x-hidden [@media(hover:none)]:overflow-x-auto [@media(hover:none)]:overscroll-x-contain snap-x snap-mandatory scroll-px-6 lg:scroll-px-12 px-6 lg:px-12 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-6 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scroll-px-6 lg:scroll-px-12 px-6 lg:px-12 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, index) => (
           <div

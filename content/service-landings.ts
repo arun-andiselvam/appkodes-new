@@ -56,12 +56,30 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      * exists to feed is cannibalisation, so the broad term sits here and the
      * specific one stays below. Changed 21 August 2026.
      */
-    metaTitle: "AI Software Integration Services",
-    // "the SaaS and internal tools you already run" was the brief's phrasing
-    // and it read as a pitch to a SaaS vendor. The buyer runs the software,
-    // they do not sell it. See the audience note on `problem` below.
+    /*
+     * Written to docs/seo-standards.md, which this page is the worked example
+     * for. Both lines are budgeted rather than eyeballed.
+     *
+     * The title is 49 characters, which is the whole budget: app/layout.tsx
+     * appends " - Hitasoft" at 11, and 60 is where Google starts truncating.
+     * A recommendation on 22 August 2026 asked for "AI Software Integration
+     * Services | Add AI to Existing Apps", and that is 58 before the brand and
+     * 69 after it. It would have been cut mid word with the brand lost, so
+     * "Services" came out. The exact primary keyword survives either way, and
+     * "Add AI to Existing Apps" carries the secondary intent and the argument
+     * the H1 makes.
+     *
+     * The description leads with the H1's hook and then spends its length on
+     * the three secondary terms the feature cards own: LLM API integration,
+     * custom AI wrappers, legacy systems. It closes on the action, which the
+     * recommended version dropped.
+     *
+     * "powerful LLMs" was in that version and is not here. An adjective nobody
+     * would disagree with is a wasted word in 160 characters.
+     */
+    metaTitle: "AI Software Integration | Add AI to Existing Apps",
     metaDescription:
-      "Do not rebuild your software. AI software integration that adds models to the systems your company already runs, with no IT team needed. Book a review.",
+      "Rebuild nothing. AI software integration that adds LLM APIs and custom AI wrappers to the software and legacy systems you already run. Book a review.",
 
     hero: {
       eyebrow: "AI integration",
