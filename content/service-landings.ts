@@ -65,7 +65,27 @@ export const serviceLandings: Record<string, ServiceLanding> = {
 
     hero: {
       eyebrow: "AI integration",
-      title: "Add AI to the software you already run.",
+      /*
+       * Two sentences, the short one first, because the differentiator is the
+       * hook and the old H1 buried it.
+       *
+       * It read "Add AI to the software you already run." That is accurate and
+       * it is also what any agency would write. The thing this buyer is
+       * actually weighing is a rebuild somebody has already quoted them for,
+       * and "Rebuild nothing" answers that before they have read a second
+       * line. Changed 22 August 2026.
+       *
+       * The second sentence is the old headline kept whole, so the phrase the
+       * page ranks on is untouched and the opening is not a rewrite of
+       * something that worked.
+       *
+       * Deliberately does not reach for the beats used below it. "Same system
+       * on Monday" belongs to the lede, "your software works, it just does not
+       * think yet" to the problem heading, and "a year you do not have" to the
+       * problem body. An H1 that borrows any of them makes the page read as
+       * one idea repeated four times.
+       */
+      title: "Rebuild nothing. Add AI to the software you already run.",
       lede: "We connect models to the software you run today, through the API it already has. Your team logs into the same system on Monday, and nobody in house has to maintain it.",
       // Both figures are the ones content/site.ts already publishes. The
       // eighteen years covers delivery, not AI, which positioning.md is
