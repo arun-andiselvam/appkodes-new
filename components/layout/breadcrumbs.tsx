@@ -22,8 +22,28 @@ import { site } from "@/content/site";
  * somebody renames a menu item. Deriving both here means a rename in
  * content/navigation.ts moves the two together or neither.
  */
-export function Breadcrumbs({ path }: { path: string }) {
-  const trail = trailFor(path);
+export function Breadcrumbs({
+  path,
+  leaf,
+}: {
+  path: string;
+  /**
+   * A final crumb for a page the navigation tree does not contain.
+   *
+   * Articles are the case. They live under a category that is in the menu, but
+   * the pieces themselves are content rather than structure, and listing every
+   * one in content/navigation.ts would turn the site map into a publishing
+   * queue.
+   *
+   * So an article passes its category as `path` and itself as `leaf`. The
+   * visible trail and the schema still come from one place, which is the whole
+   * point of the note above. The alternative was every article route hand
+   * writing its own BreadcrumbList, and those drift the first time a category
+   * gets renamed.
+   */
+  leaf?: { name: string; href: string };
+}) {
+  const trail = [...trailFor(path), ...(leaf ? [leaf] : [])];
   if (trail.length < 2) return null;
 
   /*
