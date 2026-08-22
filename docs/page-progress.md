@@ -58,11 +58,11 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/services/autonomous-ai-agents` | `custom AI agent development` | long form | 60 | 160 | Service + FAQ | 11 | 2,651 | **Done** |
 | `/services/customer-support-ai` | `AI customer support automation` | long form | 54 | 156 | Service + FAQ | 11 | 2,660 | **Done** |
 | `/services/document-processing-ocr` | `AI document processing automation` | long form | 50 | 154 | Service + FAQ | 11 | 2,673 | **Done** |
-| `/services/financial-data-automation` | `fintech AI automation services` | blueprint | 45 | **148** | Breadcrumb only | 5 | 858 | Blueprint |
-| `/services/custom-ai-mvp-development` | `custom AI MVP development` | blueprint | 36 | **147** | Breadcrumb only | 6 | 941 | Blueprint |
-| `/services/rapid-ai-prototyping` | `low cost AI prototype development` | blueprint | 50 | **135** | Breadcrumb only | 5 | 874 | Blueprint |
-| `/services/fintech-saas-ai-mvp` | `build an AI SaaS MVP` | blueprint | 51 | **133** | Breadcrumb only | 5 | 871 | Blueprint |
-| `/services/smart-inventory-retail-mvp` | `AI inventory management development` | blueprint | 46 | **130** | Breadcrumb only | 5 | 863 | Blueprint |
+| `/services/financial-data-automation` | `financial data automation AI` | long form | 58 | 153 | Service + FAQ | 11 | 2,632 | **Done** |
+| `/services/custom-ai-mvp-development` | `custom AI MVP development` | long form | 50 | 151 | Service + FAQ | 12 | 2,650 | **Done** |
+| `/services/rapid-ai-prototyping` | `rapid AI prototyping services` | long form | 59 | 155 | Service + FAQ | 11 | 2,583 | **Done** |
+| `/services/fintech-saas-ai-mvp` | `fintech AI MVP development` | long form | 54 | 160 | Service + FAQ | 11 | 2,581 | **Done** |
+| `/services/smart-inventory-retail-mvp` | `smart inventory AI MVP` | long form | 52 | 154 | Service + FAQ | 11 | 2,601 | **Done** |
 | `/services/ai-data-predictive-analytics` | `predictive analytics for SMBs` | blueprint | 41 | **141** | Breadcrumb only | 6 | 914 | Blueprint |
 | `/services/predictive-analytics-bi` | `custom predictive modelling services` | blueprint | 40 | **136** | Breadcrumb only | 5 | 854 | Blueprint |
 | `/services/data-engineering-vector-databases` | `vector database integration` | blueprint | 60 | 150 | Breadcrumb only | 5 | 865 | Blueprint |
@@ -77,8 +77,13 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/industries/edtech-and-learning` | `AI integration for e-learning platforms` | blueprint | 53 | 150 | Breadcrumb only | 5 | 889 | Blueprint |
 | `/industries/marketing-and-adtech` | `AI automation for marketing agencies` | blueprint | 44 | **145** | Breadcrumb only | 5 | 882 | Blueprint |
 
-**Totals.** 30 pages. 8 done, 5 live and awaiting an SEO pass, 17 on the
-blueprint. One title over 60. Nineteen descriptions outside 150 to 160.
+**Totals.** 30 pages. 13 done, 5 live and awaiting an SEO pass, 12 on the
+blueprint. One title over 60. Fourteen descriptions outside 150 to 160.
+
+The AI MVP development silo is complete: the parent and all three children.
+So is workflow automation. Two of the five service silos are finished.
+
+The workflow automation silo is complete: the parent and all four children.
 
 ---
 
@@ -101,11 +106,11 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | `/services/autonomous-ai-agents` | `multi-agent AI solutions for business`, `autonomous AI agents`, `CrewAI agent development` |
 | `/services/customer-support-ai` | `custom AI chatbot development for SMBs`, `RAG chatbot integration`, `automated ticketing system setup` |
 | `/services/document-processing-ocr` | `custom OCR AI development`, `automated invoice extraction AI`, `intelligent document processing` |
-| `/services/financial-data-automation` | `automated expense tracking integration`, `AI ledger management development`, `financial data automation for SMBs` |
-| `/services/custom-ai-mvp-development` | `affordable AI startup development` |
-| `/services/rapid-ai-prototyping` | `AI proof of concept for startups` |
-| `/services/fintech-saas-ai-mvp` | `custom AI fintech MVP development` |
-| `/services/smart-inventory-retail-mvp` | `predictive inventory AI for SMBs`, `smart stock tracking integration` |
+| `/services/financial-data-automation` | `AI ledger automation`, `automated expense reconciliation`, `fintech AI integration` |
+| `/services/custom-ai-mvp-development` | `AI MVP development`, `rapid AI app development`, `affordable AI startup development` |
+| `/services/rapid-ai-prototyping` | `proof of concept AI development`, `test AI application ideas`, `low cost AI prototype development` |
+| `/services/fintech-saas-ai-mvp` | `build AI SaaS MVP`, `build AI finance application`, `custom ledger software development` |
+| `/services/smart-inventory-retail-mvp` | `retail inventory management prototype`, `AI stock prediction development`, `custom ERP MVP` |
 | `/services/ai-data-predictive-analytics` | `AI data analytics services` |
 | `/services/predictive-analytics-bi` | `AI sales forecasting`, `churn prediction development` |
 | `/services/data-engineering-vector-databases` | `RAG data pipeline setup`, `AI data engineering services` |
@@ -131,7 +136,7 @@ page is built, not after.
 | Phrase | Claimed by | Decide |
 | --- | --- | --- |
 | `compliant AI app development` | secondary on `secure-ai-compliance-architecture`, secondary on `media-and-communities` | The secure page is built and owns it. Drop it from `content/industries.ts:134` when Media & Communities is written. |
-| `AI inventory management development` | primary on `smart-inventory-retail-mvp`, secondary on `retail-and-inventory` | The MVP page is named for it. The industry page should target the buyer, not the build. |
+| ~~`AI inventory management development`~~ | was primary on `smart-inventory-retail-mvp`, secondary on `retail-and-inventory` | **Resolved 22 August 2026.** The MVP page took `smart inventory AI MVP` when it was built, so the industry page keeps this one. |
 | `private AI model deployment` | secondary on `private-llm-fine-tuning`, secondary on the `custom-ai-models-voice` parent | Parent and child again. The parent should take the category term its URL carries. |
 | `integrate LLM into existing software` | secondary on `custom-ai-api-integration`, secondary on the `ai-software-integration` parent | Both pages are built and both already carry it. Acceptable as a secondary on two pages in one silo, but do not let it reach either title. |
 

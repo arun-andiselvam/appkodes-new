@@ -2369,4 +2369,1452 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       },
     ],
   },
+
+  /*
+   * The fourth and last child of the workflow silo, 22 August 2026, ninth page
+   * on the template. The silo is complete with this one.
+   *
+   * Three things in the brief were changed.
+   *
+   * !! NO 95% THRESHOLD !!
+   *
+   * The third FAQ asked to explain that "anything below a 95% confidence score
+   * is pushed to a human dashboard". The routing is real and it is the right
+   * architecture. The number is not ours to publish: nobody has set it, and
+   * quoting one as though it were a house standard invites a buyer to hold us
+   * to it. The answer describes the threshold as a dial you set, which is what
+   * it actually is.
+   *
+   * !! NOTHING IS FLAWLESS !!
+   *
+   * The brief wanted "Zero Math Errors", "flawless deterministic execution"
+   * and "flawless reconciliation". The underlying argument is sound and it is
+   * the best thing on this page: a model extracts and categorises, and the
+   * arithmetic is handed to ordinary code, which does not approximate. That
+   * survives. The absolutes do not, because a pipeline is more than its
+   * calculator and the first wrong total makes a liar of the word.
+   *
+   * QuickBooks and Xero are named, following the decision already taken on the
+   * fintech industry page. They are not in content/integrations.ts, so they
+   * are worded as where the client's books already live rather than as
+   * integrations we have delivered. Both carry the same confirm before launch
+   * flag as that page's ecosystem row.
+   *
+   * The primary keyword reads "financial data automation AI" in the brief,
+   * which is not a phrase anybody writes in a sentence. The title uses the
+   * natural order and the exact string sits in an FAQ question, where a search
+   * phrasing reads as a search phrasing.
+   */
+  "/services/financial-data-automation": {
+    path: "/services/financial-data-automation",
+    /* 47 characters. The brief's version appended a second brand name. */
+    metaTitle: "AI Financial Data Automation & Ledger Pipelines",
+    serviceType: "financial data automation",
+    metaDescription:
+      "Your finance lead is not paid to retype rows. Financial data automation reads each receipt, sorts it, and leaves all of the maths to code. Book a review.",
+
+    hero: {
+      eyebrow: "Financial data automation",
+      /*
+       * The brief's H1 was "Stop Reconciling Manually. Automate the Financial
+       * Pipeline." Two imperatives and no argument.
+       *
+       * This states the architecture instead, because on a page about money
+       * the architecture is the reassurance. It also answers the first FAQ
+       * before the reader reaches it, which is the one that decides whether
+       * they keep reading at all.
+       */
+      title: "A model reads the receipt. Your code does the arithmetic.",
+      lede: "The part of this that touches money is ordinary code, and code does not approximate. The model is there to read what arrived and decide what it is, which is the part people are slow at.",
+      badges: ["Arithmetic never runs through a model", "Every entry traces to a document"],
+    },
+
+    summary: {
+      heading: "What financial data automation is",
+      body: "Financial data automation moves a transaction from wherever it arrives into your ledger without somebody retyping it. A model reads the receipt or the bank line and decides what the entry is. The arithmetic that follows runs in ordinary code, so totals and splits are calculated rather than predicted.",
+    },
+
+    problem: {
+      heading: "The month end scramble",
+      body: "Finance runs on data that arrives in the wrong shape. Somebody exports a CSV, matches rows against a statement, and fixes what does not line up. It absorbs the last week of every month and it gets worse as volume grows.",
+      points: [
+        {
+          title: "Exports, then matching by eye",
+          body: "A statement in one window, a spreadsheet in the other. Somebody reconciles them line by line.",
+        },
+        {
+          title: "Categories decided twice",
+          body: "The same supplier gets filed two ways by two people. The report that comes out is wrong in a way that nobody downstream can see.",
+        },
+        {
+          title: "A formula nobody has checked",
+          body: "The spreadsheet everything depends on was built by somebody who has since left the company. It works until a row goes in the wrong place.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The architecture of an automated ledger",
+      items: [
+        {
+          title: "Data in, whatever the shape",
+          body: "Bank feeds arrive as structured rows, and receipts arrive as photographs taken on a phone. A vision model handles the second.",
+        },
+        {
+          title: "Categories decided by meaning",
+          body: "A model reads the line and the supplier, then decides what kind of entry it is. It follows how your team categorised the same thing before.",
+        },
+        {
+          title: "Arithmetic in ordinary code",
+          body: "Totals and splits never pass through a model. They run in deterministic code, which is auditable and gives the same answer every time.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A spreadsheet against a pipeline",
+      body: "This compares two ways of getting the same numbers. One of them can be checked afterwards.",
+      columns: ["Spreadsheet reconciliation", "An automated pipeline"],
+      rows: [
+        {
+          label: "Getting data in",
+          values: ["Exported and retyped", "Read from the feed or the receipt"],
+        },
+        {
+          label: "Deciding a category",
+          values: ["Whoever is doing it that day", "The same rule, applied every time"],
+        },
+        {
+          label: "When it happens",
+          values: ["A scramble at month end", "As each transaction lands"],
+        },
+        {
+          label: "Doing the maths",
+          values: ["A formula nobody has audited", "Code that is versioned and tested"],
+        },
+        {
+          label: "An entry that looks odd",
+          values: ["Found later, if at all", "Held back for somebody to confirm"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Financial automation in action",
+      body: "Three jobs where the numbers already exist. Each one splits the same way, with a model doing the reading and code doing the calculating.",
+      items: [
+        {
+          system: "Your shared ledger",
+          title: "One receipt, split across a group",
+          body: "A mixed receipt is photographed after a group meal. The model itemises it and a deterministic calculator works out what each person owes, so the balances settle themselves.",
+        },
+        {
+          system: "Your billing records",
+          title: "Recurring charges that drifted",
+          body: "Subscription charges and reward balances are watched as they post. Anything that does not match what the plan says it should be gets held up before it reaches a customer.",
+        },
+        {
+          system: "Your accounts system",
+          title: "An invoice matched to a payment",
+          body: "A vendor PDF arrives and is read into fields. Those are matched against the bank feed, and the verified transaction is pushed into whichever system your books already live in.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We follow the money by hand",
+          body: "Two days with whoever does the reconciling now. Every manual step gets a cost against it.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names which part of the pipeline to automate first, and what it saves each month. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It runs beside your current process",
+          body: "The pipeline goes live alongside what you do now, so the two can be compared. Nobody switches off the spreadsheet on trust.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where the model is allowed to touch",
+      body: "The split matters more here than anywhere else. A model is good at reading a document and a poor choice for calculating a balance.",
+      points: [
+        {
+          label: "The model reads and sorts",
+          body: "Extraction and categorisation, which is what it is good at.",
+        },
+        {
+          label: "Code does every calculation",
+          body: "Totals and balances run in tested code and nowhere else.",
+        },
+        {
+          label: "You set where it stops",
+          body: "Anything the model is unsure of waits for a person, at a threshold you choose.",
+        },
+      ],
+    },
+
+    /*
+     * !! QuickBooks AND Xero ARE NOT ON THE VETTED LIST !!
+     *
+     * Same position as content/industry-landings.ts takes with its ecosystem
+     * row, and the same wording: these are where a client's books already
+     * live, not integrations being claimed. Confirm before launch, together
+     * with that page's list and content/integrations.ts.
+     */
+    stack: {
+      heading: "What the pipeline is built from",
+      body: "We fit the pipeline around the books you already keep. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "Reading what arrives",
+          items: [
+            { name: "Vision models", category: "Receipts and invoices" },
+            { name: "Claude", category: "Deciding what an entry is", icon: "siClaude" },
+            { name: "Embeddings", category: "Matching a supplier to its history" },
+          ],
+        },
+        {
+          label: "Where the books live",
+          items: [
+            { name: "QuickBooks", category: "If that is what you run", icon: "siQuickbooks" },
+            { name: "Xero", category: "Ledgers and invoicing", icon: "siXero" },
+            { name: "PostgreSQL", category: "Or your own database", icon: "siPostgresql" },
+          ],
+        },
+        {
+          label: "Doing the arithmetic",
+          items: [
+            { name: "Python", category: "Calculations, tested", icon: "siPython" },
+            { name: "Stripe", category: "Payments and billing feeds", icon: "siStripe" },
+            { name: "n8n", category: "What runs when a row lands", icon: "siN" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Eighth shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1, 1-2-2-1,
+     * 1-2-1-2 and 2-1-1-2. This is 1-1-1-2.
+     *
+     * Three singles in a row is the only arrangement that puts the two
+     * processing steps side by side vertically, which is the argument. The
+     * model step and the arithmetic step are adjacent and separate, and their
+     * sub labels say which is which. Any shape that forked earlier would have
+     * buried the one distinction this page is selling.
+     */
+    diagram: {
+      caption:
+        "A transaction arrives from a feed or a receipt. A model decides what it is, ordinary code works out the amounts, and the entry reaches your ledger or waits for a person.",
+      align: "sequence",
+      rows: [
+        [{ label: "A transaction", sub: "Feed or receipt", tone: "brand" }],
+        [{ label: "The model sorts it", sub: "Reads and categorises", tone: "accent" }],
+        [{ label: "Code does the maths", sub: "Deterministic", tone: "accent" }],
+        [
+          { label: "Your ledger", sub: "Updated as it lands", tone: "brand" },
+          { label: "Held for review", sub: "Below your threshold", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Can we trust a model with our money?",
+        answer:
+          "It never gets the chance. The model reads documents and decides categories, and that is the whole of its job. Every total, split and balance is calculated by ordinary code that is versioned and tested, which does not approximate and gives the same answer twice.",
+      },
+      {
+        question: "Do we have to replace our accounting software?",
+        answer:
+          "No. The pipeline sits between what you already run and where the data comes from, pushing verified entries into the system your books live in. Replacing an accounts package is a separate project and rarely the one worth doing first.",
+      },
+      {
+        question: "What happens when it cannot categorise something?",
+        answer:
+          "It stops and asks. Anything the model is not confident about is held for a person to confirm rather than filed on a guess. You decide where that line sits. Most teams set it tight at first, then relax it.",
+      },
+      {
+        question: "What is financial data automation AI?",
+        answer:
+          "It is using a model for the reading and the sorting, and code for everything that touches a number. The AI half handles receipts and bank lines arriving in whatever shape they arrive in. The calculating half stays deterministic on purpose.",
+      },
+      {
+        question: "Do you do AI ledger automation for shared accounts?",
+        answer:
+          "Yes, and shared accounts are exactly where the deterministic half earns its keep every time. Who owes what across a group is arithmetic, and it needs an audit trail behind it. A model is the wrong tool for that and a calculator is the right one.",
+      },
+      {
+        question: "Do you do fintech AI integration?",
+        answer:
+          "Fintech AI integration is exactly what this is. If you ship a financial product yourself, the same split applies, and your own code owns every figure a customer sees.",
+      },
+      {
+        question: "How does automated expense reconciliation actually work?",
+        answer:
+          "Receipts and bank feeds come in through the same pipeline and are matched against each other. What matches is written through. What does not is held with both sides visible, so whoever looks at it can see why in seconds.",
+      },
+    ],
+  },
+
+  /*
+   * Silo 3's parent, 22 August 2026, tenth page on the template. Built from
+   * docs/service-pages.md, which carries all four pages in this silo.
+   *
+   * !! BUILT BEFORE ITS THREE CHILDREN, ON PURPOSE !!
+   *
+   * The four briefs in that file collide with each other in three places, and
+   * the parent is where the terms get settled. Reading them together first is
+   * what caught it.
+   *
+   *   - `build AI SaaS MVP` was a parent secondary. It is the assigned primary
+   *     of /services/fintech-saas-ai-mvp. Dropped here.
+   *   - `AI proof of concept development` was a parent secondary and
+   *     /services/rapid-ai-prototyping carries the same words reordered as
+   *     `proof of concept AI development`. A prototype and a proof of concept
+   *     are the same pitch, so it belongs to that child. Dropped here.
+   *   - `AI MVP development` was a secondary on the prototyping child. It is
+   *     this page's own primary with a word removed, so it stays here and
+   *     comes off the child.
+   *
+   * Every page in this silo has to be checked against this list before it
+   * ships. Rule one in docs/seo-standards.md.
+   *
+   * Three things in the brief were declined.
+   *
+   * !! "6 to 12 months" HAS ALREADY BEEN REJECTED ONCE !!
+   *
+   * The hero focus asked for founders wasting six to twelve months. That is
+   * the same figure the integration page brief asked for as a rebuild
+   * duration, and it was cut then for being a number nobody here has
+   * measured. Cut again. The argument survives without it.
+   *
+   * "Flawless closed testing" and "enterprise API connections" are both on the
+   * banned list in docs/positioning.md. So is promising an app will "breeze
+   * through" a store review, which is an outcome no agency controls.
+   *
+   * !! THE PLAY CONSOLE CLAIMS NEED CONFIRMING BEFORE LAUNCH !!
+   *
+   * The brief leans hard on Data safety forms, closed testing tracks and a
+   * twelve tester beta. The work is described here as work the build accounts
+   * for, never as a track record of approvals, because nobody has confirmed
+   * that an app has shipped through review with an AI feature in it. That
+   * confirmation is outstanding and predates this page.
+   */
+  "/services/custom-ai-mvp-development": {
+    path: "/services/custom-ai-mvp-development",
+    /* 39 characters. The brief appended a second brand name at 50. */
+    metaTitle: "Custom AI MVP Development & Prototyping",
+    serviceType: "custom AI MVP development",
+    metaDescription:
+      "Founders lose months building what nobody asked for. Custom AI MVP development builds the core and lets real use decide what comes next. Book a review.",
+
+    hero: {
+      eyebrow: "Custom AI MVP development",
+      /*
+       * The brief's H1 was "Validate Your AI Application. Before You Burn the
+       * Budget." The shape is right and the second half is a threat rather
+       * than an argument. This states the method instead, which is the thing
+       * a founder is actually deciding between.
+       */
+      title: "Build the part that answers the question. Leave the rest.",
+      lede: "Every feature is a guess until somebody uses it. We build the smallest version that can prove or kill the idea, and the people using it decide what gets built next.",
+      badges: ["Built to hand over", "Runs on infrastructure you keep"],
+    },
+
+    summary: {
+      heading: "What custom AI MVP development is",
+      body: "Custom AI MVP development means building a working slice of a product rather than the whole of it. The idea can then be tested against real use. The slice carries the feature the product stands or falls on, wired to a model API and a backend that will still hold up later. What comes back from a closed group of users decides the rest of the roadmap.",
+    },
+
+    problem: {
+      heading: "The expensive way to find out",
+      body: "A founder with a clear idea builds all of it, then shows it to people. Most of what gets built is never used, and the part that matters arrives too late to change. The money went on the features nobody asked about.",
+      points: [
+        {
+          title: "The roadmap was written before anybody looked",
+          body: "Every item on it was reasonable when it was written. None of it was tested against a real person.",
+        },
+        {
+          title: "The store review is a surprise",
+          body: "Data handling gets designed last. Fixing it then means changing decisions made in month one.",
+        },
+        {
+          title: "A prototype nobody can build on",
+          body: "The quick version gets thrown together and works. Then it turns out to be the thing you have to rip out before you can grow.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The MVP engineering pipeline",
+      items: [
+        {
+          title: "API first, so the model is swappable",
+          body: "The product calls a model through your own layer rather than binding to one provider. Changing which model answers stays a configuration decision later.",
+        },
+        {
+          title: "Infrastructure you do not outgrow",
+          body: "The MVP runs on production hosting. It is smaller rather than different, which is why growing into it does not mean a rebuild.",
+        },
+        {
+          title: "Ready for a closed beta",
+          body: "Data handling and permissions get decided at the start. The first version is built for a closed testing track.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A full build against a lean MVP",
+      body: "Both end with a product. They differ in when you learn whether anybody wants it.",
+      columns: ["Build all of it", "Build the slice"],
+      rows: [
+        {
+          label: "When users see it",
+          values: ["After everything is finished", "While it can still change"],
+        },
+        {
+          label: "What decides the roadmap",
+          values: ["A document written up front", "What the beta group actually did"],
+        },
+        {
+          label: "Money at risk",
+          values: ["Committed before any evidence", "Spent in a stage you can stop"],
+        },
+        {
+          label: "If the idea is wrong",
+          values: ["You find out having paid for all of it", "You find out having paid for one part"],
+        },
+        {
+          label: "What you own after",
+          values: ["A large system to maintain", "A running product and an answer"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "The MVPs we engineer",
+      body: "Three products where the thin slice is obvious. Each has a page of its own.",
+      items: [
+        {
+          system: "A shared ledger product",
+          title: "The maths is the product",
+          body: "Everything depends on the split across a group being right. The MVP proves that calculator with a model reading receipts into it, and leaves everything else out.",
+        },
+        {
+          system: "An inventory tool",
+          title: "One warehouse, running beside the old system",
+          body: "A manager tries stock forecasting on real numbers. The old system keeps running, so nobody has to commit before they have seen it work.",
+        },
+        {
+          system: "A live video or community app",
+          title: "Permissions before features",
+          body: "Media access and data handling get settled first, because they decide whether the app is submittable at all. The feature set stays small until that part holds.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We find the thin slice",
+          body: "Two days on what the product has to prove, not on the whole feature list. Most of what gets discussed will not be built first.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the slice and what it will cost. You decide whether that answer is worth buying.",
+        },
+        {
+          when: "From week 3",
+          title: "It gets built and put in front of people",
+          body: "The slice goes to a closed group. What they do with it decides everything after.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What an MVP is and is not",
+      body: "The word gets used for everything, from a clickable mockup right up to a running business. This is the running kind, built small on purpose rather than built badly to save time.",
+      points: [
+        {
+          label: "It is real software",
+          body: "Real users, real data, and hosting you keep afterwards.",
+        },
+        {
+          label: "It is deliberately narrow",
+          body: "One question, answered properly. The feature list waits.",
+        },
+        {
+          label: "It is yours to continue",
+          body: "The code and the infrastructure hand over.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What an MVP is built from",
+      body: "Nothing exotic, because the point is that it survives. Everything here is what the full product would have used anyway, in a smaller configuration.",
+      groups: [
+        {
+          label: "The model layer",
+          items: [
+            { name: "Claude", category: "The reasoning the product needs", icon: "siClaude" },
+            { name: "GPT", category: "Drafting and classification" },
+            { name: "Embeddings", category: "Search across your own content" },
+          ],
+        },
+        {
+          label: "The product itself",
+          items: [
+            { name: "React", category: "Web interfaces", icon: "siReact" },
+            { name: "Flutter", category: "iOS and Android from one build", icon: "siFlutter" },
+            { name: "Laravel", category: "The backend behind it", icon: "siLaravel" },
+          ],
+        },
+        {
+          label: "What it runs on",
+          items: [
+            { name: "PostgreSQL", category: "Your data, from day one", icon: "siPostgresql" },
+            { name: "AWS", category: "Hosting that grows with it" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Ninth shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1, 1-2-2-1,
+     * 1-2-1-2, 2-1-1-2 and 1-1-1-2. This is 2-2-1-1.
+     *
+     * It is the only one that narrows the whole way down, which is the
+     * argument on this page. Everything you want and everything you can spend
+     * come in at the top, the middle row is the cut, and one answer comes out
+     * of the bottom. A diagram that stayed the same width would have drawn a
+     * process rather than a decision.
+     */
+    diagram: {
+      caption:
+        "Your feature list and your budget both arrive whole. We decide what ships first and what waits, put that in front of a closed group, and their use answers the question.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "The feature list", sub: "Everything you want", tone: "brand" },
+          { label: "The budget", sub: "What you can spend", tone: "brand" },
+        ],
+        [
+          { label: "What ships first", sub: "The thin slice", tone: "accent" },
+          { label: "What waits", sub: "Written down, not built", tone: "accent" },
+        ],
+        [{ label: "A closed beta", sub: "Real people, real use", tone: "accent" }],
+        [{ label: "Your answer", sub: "What to build next", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Will the MVP be ready for the app stores?",
+        answer:
+          "It is built for a closed testing track first, which is where a new product should be. Data handling and permissions are decided early rather than at submission, because that is what a review actually examines. Nobody can promise an approval.",
+      },
+      {
+        question: "Can we scale the MVP or will we rebuild it?",
+        answer:
+          "It runs on the same kind of infrastructure the full product would, in a smaller configuration. What makes an MVP throwaway is usually shortcuts in the data model, so that is the part we do not rush. The features are lean and the foundation is not.",
+      },
+      {
+        question: "How is user privacy handled at the MVP stage?",
+        answer:
+          "The same way it is handled later, because doing it afterwards is the expensive path. Model calls run with retention switched off, so what your first users type is processed and not kept. What you collect gets written down in week two.",
+      },
+      {
+        question: "What does AI MVP development actually include?",
+        answer:
+          "One feature built properly, the backend under it, and enough interface for somebody to use it without being talked through it. It does not include the rest of the roadmap. That is the point of it rather than a limitation.",
+      },
+      {
+        question: "Is rapid AI app development just building it badly?",
+        answer:
+          "It is the opposite, as long as the narrowing happens in scope and never in quality. One feature at production standard beats ten at demo standard. Only the first kind survives a user who comes back the following day to use it again.",
+      },
+      {
+        question: "We are a small startup. Is affordable AI startup development realistic?",
+        answer:
+          "That is who this is for. The cost is bounded because the scope is. The plan you get at the end of week two prices the slice rather than the ambition. You decide before anybody builds.",
+      },
+    ],
+  },
+
+  /*
+   * First child of the MVP silo, 22 August 2026, eleventh page on the
+   * template. Built after its parent so the contested terms were already
+   * settled.
+   *
+   * !! THIS PAGE DOES NOT TARGET "AI MVP development" !!
+   *
+   * The brief listed it as a secondary here. It is the parent's own primary
+   * with one word removed, and the parent at /services/custom-ai-mvp-development
+   * keeps it. Replaced with "low cost AI prototype development", which
+   * docs/hitasoft_ai_architecture_strategy.md assigns to this path anyway.
+   *
+   * The proof of concept terms come the other way. They were a parent
+   * secondary and they belong here, because a prototype and a proof of
+   * concept are the same pitch and this is the page named for it.
+   *
+   * The title lost "MVP Development" for the same reason. It also lost the
+   * second brand name the brief appended.
+   *
+   * !! NO TIMELINE FIGURES !!
+   *
+   * The comparison asked for two to four weeks against four to six months, the
+   * description for "days, not months", and the H1 for "in Weeks. Not
+   * Months." None of those durations has been measured for a prototype, and
+   * the four to six month figure is the same unbacked shape as the six to
+   * twelve months already cut from the parent. The comparison rows say what
+   * each approach is for instead, which is the durable version of the claim.
+   *
+   * "Fractional fixed-price" went too. Nothing in the repo says the company
+   * prices this way, and a pricing model is not a detail to invent on a
+   * service page.
+   *
+   * The twelve tester beta figure is out, same as on the parent.
+   *
+   * The three use cases in the brief are a shared ledger, an inventory tool
+   * and a community feed, which are the subjects of the two sibling children
+   * and an industry page. Kept, because prototyping genuinely is horizontal,
+   * but rewritten to lead on the question the prototype answers rather than
+   * on the product being built. Otherwise this page reads as a summary of its
+   * own siblings.
+   */
+  "/services/rapid-ai-prototyping": {
+    path: "/services/rapid-ai-prototyping",
+    metaTitle: "Rapid AI Prototyping Services | Proof of Concept",
+    serviceType: "rapid AI prototyping",
+    metaDescription:
+      "Test the idea before you build the platform around it. Rapid AI prototyping services prove the core logic on your own data before the build. Book a review.",
+
+    hero: {
+      eyebrow: "Rapid AI prototyping",
+      /*
+       * The brief's H1 was "Validate Your AI Concept in Weeks. Not Months."
+       * The promise is a duration nobody has measured. This makes the same
+       * argument out of what gets built rather than out of how long it takes.
+       */
+      title: "Build the risky part first. The rest is just software.",
+      lede: "There is usually one thing in an AI product that might not work, and it is rarely the interface. A prototype builds that part and nothing else, so you find out while the budget is still yours.",
+      badges: ["Runs on your own data", "The wrapper survives the prototype"],
+    },
+
+    summary: {
+      heading: "What rapid AI prototyping is",
+      body: "Rapid AI prototyping means building the smallest working version of an AI feature to find out whether the approach holds. It is often called a proof of concept, and it exists to answer a technical question rather than to be launched. The model API, the prompt and enough interface to try it are real, and everything around them waits.",
+    },
+
+    problem: {
+      heading: "Over engineering an idea nobody has tested",
+      body: "The instinct with a new AI product is to build the platform first and add the intelligence at the end. That order checks the one uncertain part last. By then the answer changes what should have been built.",
+      points: [
+        {
+          title: "The uncertain part is left until last",
+          body: "Interfaces and accounts get built first, because that is known work and it feels like progress. The model that has to actually perform waits its turn.",
+        },
+        {
+          title: "Sample data would have said so",
+          body: "Most doubts are settled by a few hundred real records. That rarely happens before the architecture is fixed.",
+        },
+        {
+          title: "The demo proved the wrong thing",
+          body: "A polished mockup shows the idea is appealing. It does not show whether the model works.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The prototyping methodology",
+      items: [
+        {
+          title: "API first, so nothing is wasted",
+          body: "The wrapper around the model is written the way it would be written in production. It is the part that carries forward.",
+        },
+        {
+          title: "The prompt and the retrieval",
+          body: "Most of the work is making the model answer well on material it has never seen. That means prompt design and, where the answers live in your documents, a retrieval step.",
+        },
+        {
+          title: "Enough interface to use it",
+          body: "A plain screen somebody can put a real task through. It is deliberately unfinished.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A prototype against the full build",
+      body: "They answer different questions. The money goes on running the second before the first.",
+      columns: ["A prototype", "The full build"],
+      rows: [
+        {
+          label: "What it is for",
+          values: ["Finding out whether the approach works", "Serving everybody who signs up"],
+        },
+        {
+          label: "What gets built",
+          values: ["The model layer and a plain screen", "Accounts, billing and the rest of it"],
+        },
+        {
+          label: "What it runs on",
+          values: ["A thin wrapper over a model API", "Infrastructure sized for real load"],
+        },
+        {
+          label: "How it ends",
+          values: ["With an answer, either way", "With a product to maintain"],
+        },
+        {
+          label: "If the approach fails",
+          values: ["You stop, having built one part", "You have already paid for all of it"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Prototypes we can build quickly",
+      body: "Three questions worth settling first. In each case the prototype exists to settle one doubt.",
+      items: [
+        {
+          system: "A shared ledger idea",
+          title: "Can it read a receipt well enough?",
+          body: "The doubt is whether a model reads real receipts reliably. A plain screen and a few hundred photographs settle that long before anybody builds a mobile app.",
+        },
+        {
+          system: "An inventory idea",
+          title: "Does the scanner work on real shelves?",
+          body: "Vision models behave differently on a warehouse shelf. Staff try it on actual stock, and the answer decides whether the idea reaches the main system.",
+        },
+        {
+          system: "A community feed idea",
+          title: "Does moderation hold at the edges?",
+          body: "The obvious cases are easy, and the borderline ones decide whether it is usable at all. The prototype runs your own rules over real posts to find where the judgement breaks.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We find the question",
+          body: "Two days working out which part is actually uncertain. It is often not the part the founder expected.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the prototype and what it costs. You decide whether that answer is worth buying.",
+        },
+        {
+          when: "From week 3",
+          title: "It gets built and run on your data",
+          body: "The prototype goes against real records rather than samples. What it does there is the finding.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What carries forward and what does not",
+      body: "A prototype is allowed to be rough, but not everywhere. The parts that would be expensive to redo are written properly, right from the first day.",
+      points: [
+        {
+          label: "The model layer carries forward",
+          body: "The wrapper and the prompt go into the real build.",
+        },
+        {
+          label: "The interface does not",
+          body: "It exists to run the test.",
+        },
+        {
+          label: "The finding is the deliverable",
+          body: "You keep what was learned either way.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What a prototype is built from",
+      body: "Small versions of what the real thing would use. Nothing here is a research tool that has to be swapped out when the product becomes real.",
+      groups: [
+        {
+          label: "The models under test",
+          items: [
+            { name: "Claude", category: "Reasoning over your material", icon: "siClaude" },
+            { name: "GPT", category: "Drafting and classification" },
+            { name: "Vision models", category: "Where the input is an image" },
+          ],
+        },
+        {
+          label: "Making it answer well",
+          items: [
+            { name: "Embeddings", category: "Search across your own content" },
+            { name: "pgvector", category: "Your documents, made searchable" },
+            { name: "Python", category: "Evaluation against real records", icon: "siPython" },
+          ],
+        },
+        {
+          label: "Enough to try it",
+          items: [
+            { name: "React", category: "A plain screen to test with", icon: "siReact" },
+            { name: "PostgreSQL", category: "Where the test data sits", icon: "siPostgresql" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Tenth shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1, 1-2-2-1,
+     * 1-2-1-2, 2-1-1-2, 1-1-1-2 and 2-2-1-1. This is 1-2-1-1.
+     *
+     * One question in, one answer out, and the pair in between is what a
+     * prototype actually consists of. The wrapper and the prompt are built
+     * together rather than in sequence, which is why they sit level, and they
+     * are the only accent nodes because the question and the answer are both
+     * the client's.
+     */
+    diagram: {
+      caption:
+        "One uncertain thing goes in. A wrapper and a prompt are built around it, run against your own records, and what comes back is an answer you can act on.",
+      align: "sequence",
+      rows: [
+        [{ label: "The risky part", sub: "What might not work", tone: "brand" }],
+        [
+          { label: "An API wrapper", sub: "Written to keep", tone: "accent" },
+          { label: "A prompt that holds", sub: "Tuned on your data", tone: "accent" },
+        ],
+        [{ label: "Run on real records", sub: "Not samples", tone: "accent" }],
+        [{ label: "An answer", sub: "Build it, or do not", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Is the prototype code thrown away?",
+        answer:
+          "The interface is discarded, and the model layer underneath it is the part you keep. Wrappers and prompt work are written to production standard, because they are the parts that are expensive to redo. They go straight into the full build. The screen around them was scaffolding.",
+      },
+      {
+        question: "Can we put a prototype on the app stores?",
+        answer:
+          "Closed testing yes, public listing no. A prototype is built to answer a question, and a public listing needs the data handling and review work of a finished product. Going public is a separate piece of work and the prototype is what tells you whether it is worth doing.",
+      },
+      {
+        question: "What do we need to have ready before starting?",
+        answer:
+          "A clear problem and some real data. The problem matters more, because most prototypes fail on a question that was never sharp enough. Sample records are usually enough to begin, and they do not have to be tidy.",
+      },
+      {
+        question: "What is proof of concept AI development?",
+        answer:
+          "It is the smallest thing that settles a technical doubt. The proof of concept is not a small product, and judging it as one is the usual mistake. It is an experiment made of working software.",
+      },
+      {
+        question: "Is low cost AI prototype development realistic?",
+        answer:
+          "The cost tracks the scope, and the scope here is a single question you need answered. A prototype is cheaper than a build because it leaves out everything that is not in doubt. On most products that is nearly all of it.",
+      },
+      {
+        question: "How do we test AI application ideas cheaply?",
+        answer:
+          "Run the uncertain part on your own records. Almost every idea has one component carrying the risk. That alone, run on real data, tells you more than a design or a demo can.",
+      },
+    ],
+  },
+
+  /*
+   * Second child of the MVP silo, 22 August 2026, twelfth page on the
+   * template.
+   *
+   * !! THIS PAGE TAKES "build AI SaaS MVP", NOT "SaaS AI prototype" !!
+   *
+   * The brief listed the second as a secondary. Prototyping belongs to the
+   * sibling at /services/rapid-ai-prototyping, which is named for it, and a
+   * page that sells a shippable MVP should not be bidding on the word
+   * prototype next door. "build AI SaaS MVP" was reserved for this page when
+   * the parent was built and docs/hitasoft_ai_architecture_strategy.md gives
+   * it to this path as well, so it fills the slot.
+   *
+   * "custom ledger software development" sits close to "AI ledger automation"
+   * on /services/financial-data-automation. Kept, because the intents differ:
+   * that page automates a ledger a business already runs, this one builds the
+   * product. Watch it if either title ever moves toward the other.
+   *
+   * Four things in the brief were declined.
+   *
+   * !! "enterprise-grade security" !!
+   *
+   * The word is ruled out for this buyer at docs/positioning.md line 64. It
+   * was in the meta description, which is exactly where it does most damage.
+   *
+   * !! "flawless" AND "zero errors" AND "100%" !!
+   *
+   * The deterministic argument underneath them is the best thing on this page
+   * and it survives in full. The absolutes do not. Tested code is the right
+   * architecture and it is still written by people, and the first wrong total
+   * makes a liar of the word flawless.
+   *
+   * "Seamlessly" was in the second use case. Banned list.
+   *
+   * !! THE PLAY CONSOLE EXPERTISE CLAIM IS UNCONFIRMED !!
+   *
+   * The first FAQ asked to explain "deep familiarity with Google Play Store
+   * policies". Nobody has confirmed an app shipped through review with an AI
+   * feature in it, so the answer describes what the build accounts for rather
+   * than a track record. Same position as the parent. The twelve tester beta
+   * figure is out for the third time in this silo.
+   */
+  "/services/fintech-saas-ai-mvp": {
+    path: "/services/fintech-saas-ai-mvp",
+    /*
+     * 43 characters. The brief's "Fintech & SaaS AI MVP Development" splits
+     * the primary phrase with an ampersand so it no longer matches, and then
+     * appends a second brand name.
+     */
+    metaTitle: "Fintech AI MVP Development & SaaS Platforms",
+    serviceType: "fintech AI MVP development",
+    metaDescription:
+      "Financial software has to be right, not just finished. Fintech AI MVP development that keeps the arithmetic in code and the model on the reading. Book a review.",
+
+    hero: {
+      eyebrow: "Fintech AI MVP development",
+      /*
+       * The brief's H1 was "Build a Fintech MVP That Actually Scales." Scale
+       * is not what a founder is frightened of on day one. Being wrong about
+       * money is, and the brief's own agitation says so before the headline
+       * forgets it.
+       */
+      title: "An app that crashes is annoying. A ledger that is wrong is fatal.",
+      lede: "Financial software is held to a standard ordinary apps are not, and the first version is where that standard gets set. We build the calculating part properly and let the AI do the reading around it.",
+      badges: ["Arithmetic never runs through a model", "Tenants separated from the first table"],
+    },
+
+    summary: {
+      heading: "What a fintech AI MVP is",
+      body: "A fintech AI MVP is a working financial product cut down to the part that has to be proven. That is usually the calculation somebody is trusting you with. The maths runs in deterministic code and the model handles the unstructured input around it, which is receipts, statements and whatever else arrives badly formatted. It is built to be shown to real users rather than to a demo audience.",
+    },
+
+    problem: {
+      heading: "Where finance apps go wrong early",
+      body: "Most of what sinks a financial product is decided early. The data model, where the calculating happens and how tenants are separated are all cheap to get right at the start and expensive afterwards. None of them are visible in a demo.",
+      points: [
+        {
+          title: "The maths ended up in the wrong place",
+          body: "Calculations written into the interface look fine until two clients compare their totals and find different ones. Moving them server side later touches everything.",
+        },
+        {
+          title: "One database, everybody in it",
+          body: "Tenant separation gets deferred because there is only one customer. The day there are two, it stops being a refactor.",
+        },
+        {
+          title: "Compliance work discovered at submission",
+          body: "What you collect and why has to be declared. Working that out afterwards means unpicking decisions taken in the first week of the build.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "Core architecture for financial SaaS",
+      items: [
+        {
+          title: "Deterministic maths, generative reading",
+          body: "The model extracts and categorises. Every figure is calculated by tested code. That line is drawn once.",
+        },
+        {
+          title: "Multi tenant from the first table",
+          body: "Separation is designed into the schema. It costs almost nothing early and a rebuild late.",
+        },
+        {
+          title: "Built to be submitted",
+          body: "What you collect gets decided during the build. That is the part a store review actually examines.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "General app work against financial engineering",
+      body: "Both produce something that runs. They differ on the decisions nobody sees until it matters.",
+      columns: ["A general build", "Financial engineering"],
+      rows: [
+        {
+          label: "Where the maths happens",
+          values: ["In the interface, near the display", "Server side, in code with tests"],
+        },
+        {
+          label: "How tenants are kept apart",
+          values: ["One database, sorted by a column", "Separation designed into the schema"],
+        },
+        {
+          label: "What the AI does",
+          values: ["A chat box bolted on the side", "Reads the input the workflow needs"],
+        },
+        {
+          label: "Data handling",
+          values: ["A privacy policy written at the end", "Decided while the build is happening"],
+        },
+        {
+          label: "When a total is disputed",
+          values: ["Nobody can reconstruct it", "The calculation can be replayed"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "SaaS and financial applications we build",
+      body: "Three products where the hard part is the arithmetic. Each one starts from the calculation and works outward.",
+      items: [
+        {
+          system: "A shared expense app",
+          title: "Debt that redistributes itself",
+          body: "Several people, uneven contributions and a split that has to hold when somebody leaves the group. The calculator is built and tested first.",
+        },
+        {
+          system: "A loyalty product",
+          title: "Points that have to balance",
+          body: "Reward balances behave like money, and they go wrong in the same ways money does. Earning and spending run through the same audited path, so a balance can always be explained.",
+        },
+        {
+          system: "A B2B dashboard",
+          title: "Numbers a founder can defend",
+          body: "Revenue and retention figures get shown to investors, which means every one of them needs a source. The dashboard reports from the ledger.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We work out what has to be right",
+          body: "Two days on the calculation everything depends on. Everything else is scheduled around protecting that.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the slice and the data model. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "The calculator is built before the features",
+          body: "The maths and the schema come first. Interface and AI arrive on top of a foundation that already holds up under them.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "The line between the model and the money",
+      body: "This is the decision the whole page rests on. A model is good at reading a document and the wrong tool for working out what somebody owes.",
+      points: [
+        {
+          label: "The model reads",
+          body: "Receipts and statements, and anything else code cannot parse.",
+        },
+        {
+          label: "Code calculates",
+          body: "Every total and every split, in tested code.",
+        },
+        {
+          label: "The path is replayable",
+          body: "A disputed figure traces back to what produced it.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What a fintech MVP is built from",
+      body: "Ordinary, well understood components, chosen because a financial product is the wrong place to be the first person trying something. Nothing here is a requirement.",
+      groups: [
+        {
+          label: "Reading what arrives",
+          items: [
+            { name: "Claude", category: "Statements and receipts", icon: "siClaude" },
+            { name: "Vision models", category: "Photographs of paperwork" },
+            { name: "Embeddings", category: "Matching a merchant to its history" },
+          ],
+        },
+        {
+          label: "The product itself",
+          items: [
+            { name: "Laravel", category: "The backend and the maths", icon: "siLaravel" },
+            { name: "Flutter", category: "iOS and Android from one build", icon: "siFlutter" },
+            { name: "React", category: "Dashboards and admin", icon: "siReact" },
+          ],
+        },
+        {
+          label: "Where the money is recorded",
+          items: [
+            { name: "PostgreSQL", category: "Ledgers, kept separate per tenant", icon: "siPostgresql" },
+            { name: "Stripe", category: "Taking payments", icon: "siStripe" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Eleventh shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1,
+     * 1-2-2-1, 1-2-1-2, 2-1-1-2, 1-1-1-2, 2-2-1-1 and 1-2-1-1. This is
+     * 2-1-1-1.
+     *
+     * Messy input at the top and one figure at the bottom, which is what a
+     * financial product is for. The two middle nodes are adjacent and separate
+     * on purpose: reading and calculating are different steps done by
+     * different things, and that separation is what this page sells. It ends
+     * on a single node because a ledger has one right answer.
+     */
+    diagram: {
+      caption:
+        "A receipt and a bank line arrive in different shapes. The model reads both into fields, tested code works out the figures, and one ledger is updated for that tenant alone.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "A receipt", sub: "Photographed", tone: "brand" },
+          { label: "A bank line", sub: "From a feed", tone: "brand" },
+        ],
+        [{ label: "The model reads", sub: "Into named fields", tone: "accent" }],
+        [{ label: "Code calculates", sub: "Tested, replayable", tone: "accent" }],
+        [{ label: "One tenant's ledger", sub: "Separated by design", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Does the AI do the financial maths?",
+        answer:
+          "No, and that is deliberate. The model reads documents and decides categories, and every calculation runs in ordinary code with tests against it. A model that is asked for a total will produce something plausible, and plausible is not what a ledger needs.",
+      },
+      {
+        question: "How do you handle app store review?",
+        answer:
+          "The data questions get answered during the build. A review looks at what you collect, why you collect it and where it goes, so those are design decisions rather than paperwork. Nobody can promise an approval, and a finance app is looked at more closely than most.",
+      },
+      {
+        question: "Can we test with a small group before launching?",
+        answer:
+          "That is what the first version is for. A closed testing track puts it in front of a controlled group, which is where permissions and the awkward multi user cases actually get found. Public launch is a separate decision made after that.",
+      },
+      {
+        question: "What does build AI SaaS MVP mean in practice?",
+        answer:
+          "One workflow, built properly, with real users on it. For a financial product that means the calculation and the data model are production standard from the start. The feature list stays short until the numbers are trusted.",
+      },
+      {
+        question: "Do you do custom ledger software development?",
+        answer:
+          "Yes, and it is the part of this work we would rather build than inherit. A ledger written to fit the business it serves stays explainable to the person running it. One bent out of a generic package stops being explainable at the first unusual case.",
+      },
+      {
+        question: "We want to build AI finance application features. Is that this page?",
+        answer:
+          "Probably not. This page is for building the product itself. Adding intelligence to finance software you already run is the sibling service, and the automation pages under workflow cover it properly.",
+      },
+    ],
+  },
+
+  /*
+   * Third child of the MVP silo, 22 August 2026, thirteenth page on the
+   * template. The silo is complete with this one.
+   *
+   * !! THIS BRIEF FIXED A COLLISION THE TRACKER HAD LOGGED !!
+   *
+   * docs/hitasoft_ai_architecture_strategy.md assigns this path the primary
+   * "AI inventory management development", which /industries/retail-and-inventory
+   * also carries as a secondary. docs/page-progress.md lists it as one of the
+   * four phrases claimed twice. The brief proposes "smart inventory AI MVP"
+   * instead, which nothing else touches, so taking the brief's word resolves
+   * it rather than deferring it again.
+   *
+   * "AI stock prediction development" still sits near that industry page's
+   * "predictive inventory AI". Different wording, same neighbourhood, and the
+   * MVP framing is what keeps them apart. Worth watching if either title moves.
+   *
+   * Three things in the brief were declined.
+   *
+   * !! "6-12 months" HAS NOW BEEN PROPOSED THREE TIMES !!
+   *
+   * The comparison asked for six to twelve months of ERP rollout against three
+   * to four weeks for an MVP. The first figure was cut from the integration
+   * page and again from this silo's parent, and neither number has been
+   * measured here. The rows compare what the two things are instead.
+   *
+   * !! SHOPIFY AND SQUARE ARE NOT NAMED !!
+   *
+   * The first FAQ asked to name them as POS systems the MVP pulls from.
+   * Neither is in content/integrations.ts, whose warning says the list has to
+   * match what has been delivered. Same position taken with Zendesk and
+   * Intercom on the customer support page. The answer describes the API
+   * requirement instead.
+   *
+   * The fourteen day stockout alert is out as well. The horizon is a setting
+   * rather than a property of the software, and printing a number invites a
+   * buyer to hold us to it.
+   */
+  "/services/smart-inventory-retail-mvp": {
+    path: "/services/smart-inventory-retail-mvp",
+    /*
+     * 41 characters. The brief's "Smart Inventory & Retail AI MVP Development"
+     * splits the primary phrase with "& Retail" so it stops matching, and then
+     * appends a second brand name at 54.
+     */
+    metaTitle: "Smart Inventory AI MVP & Stock Prediction",
+    serviceType: "smart inventory AI MVP",
+    metaDescription:
+      "Overstocked on one line, out of stock on another. A smart inventory AI MVP counts stock from a photograph and forecasts against real sales. Book a review.",
+
+    hero: {
+      eyebrow: "Smart inventory AI MVP",
+      /*
+       * The brief's H1 was "Stop Guessing Your Stock levels. Build a Smart
+       * Inventory MVP." The second sentence is the service name rather than an
+       * argument, and the first half of the page is stronger than that. This
+       * uses the brief's own agitation, which names both failure modes and is
+       * the more useful thing to lead on.
+       */
+      title: "Money sitting on a shelf. Money you could not sell.",
+      lede: "Overstock and stockouts are the same mistake pointing in opposite directions, and both come from counting by hand and guessing at the rest. An MVP tests the forecasting on part of your catalogue.",
+      badges: ["Runs on a phone camera", "Tested on one product line first"],
+    },
+
+    summary: {
+      heading: "What a smart inventory AI MVP is",
+      body: "A smart inventory AI MVP is a working stock tool built narrow enough to trial on part of a catalogue. A vision model reads what arrives, so a delivery is counted in from a photograph rather than typed. Forecasting then runs against your own sales history, which is what makes a restock alert worth acting on rather than another dashboard nobody opens.",
+    },
+
+    problem: {
+      heading: "Counting by hand, buying on instinct",
+      body: "Stock decisions get made from numbers that were accurate at the last count and have drifted since. Between counts the buying happens on memory. The cost lands twice, in capital tied up in dead lines and in sales lost on the ones that moved.",
+      points: [
+        {
+          title: "The count is already out of date",
+          body: "A cycle count is accurate on the day it happens. Every day after that, the system and the shelf move further apart from each other.",
+        },
+        {
+          title: "Reordering runs on somebody's memory",
+          body: "Whoever knows which lines move is going on experience. That knowledge leaves the building at five o'clock.",
+        },
+        {
+          title: "Dead stock is invisible until it is counted",
+          body: "Capital sitting in slow lines does not announce itself. It surfaces at valuation, long after the money went.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "Core features of an intelligent stock engine",
+      items: [
+        {
+          title: "Deliveries read by camera",
+          body: "A vision model pulls codes and quantities off the packaging. Somebody photographs the delivery, and the count goes in from there without anybody keying it.",
+        },
+        {
+          title: "Restocking that watches the rate",
+          body: "Forecasting runs on how fast a line actually sells against how long a supplier takes. The alert arrives with enough time to act on it.",
+        },
+        {
+          title: "Valuation as it moves",
+          body: "Holding costs and falling value get tracked while stock sits. Capital stuck in slow lines stops being a surprise.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A full ERP against an inventory MVP",
+      body: "One replaces how the business runs. The other answers whether the forecasting is worth having.",
+      columns: ["A full ERP", "An inventory MVP"],
+      rows: [
+        {
+          label: "What it changes",
+          values: ["How the whole business operates", "One product line, beside what you run"],
+        },
+        {
+          label: "Getting stock in",
+          values: ["Typed, or scanned with bought hardware", "Photographed on a phone"],
+        },
+        {
+          label: "Deciding a reorder",
+          values: ["A reorder point somebody set once", "A rate that is recalculated as it sells"],
+        },
+        {
+          label: "What you commit",
+          values: ["Licences and a rollout across the company", "One catalogue slice you can stop"],
+        },
+        {
+          label: "If it does not suit you",
+          values: ["You are already migrated onto it", "You switch it off and keep the finding"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Inventory automation in practice",
+      body: "Three jobs a stockroom already does badly by hand. Each is narrow enough to trial on its own.",
+      items: [
+        {
+          system: "Your goods in",
+          title: "Serial numbers off a box",
+          body: "Electronics arrive with long serials and codes that get mistyped. A phone camera reads them off the packaging, and the row lands in the database with nobody keying it.",
+        },
+        {
+          system: "Your reordering",
+          title: "A draft order before the gap",
+          body: "The engine watches selling rate against supplier lead time. When those cross it drafts the order.",
+        },
+        {
+          system: "Your valuation",
+          title: "What the slow lines are costing",
+          body: "Holding cost and falling value are tracked per line. The dashboard shows where capital is stuck while there is still time to move it.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We look at how stock moves now",
+          body: "Two days in the stockroom rather than in a meeting. Counting, receiving and reordering all get watched as they happen.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the lines to trial and the cost. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It runs on one slice of the catalogue",
+          body: "The MVP goes live beside your existing system. Nothing is switched off yet.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "How far an MVP goes",
+      body: "This is deliberately not a system replacement. It is the smallest thing that shows whether AI forecasting is worth having in your stockroom.",
+      points: [
+        {
+          label: "It runs beside what you have",
+          body: "Nothing is migrated and nothing is switched off.",
+        },
+        {
+          label: "It starts on one slice",
+          body: "One category or one supplier, chosen so the answer generalises.",
+        },
+        {
+          label: "The backend carries forward",
+          body: "The logic and the wrappers go into a full build.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What an inventory MVP is built from",
+      body: "Ordinary components in a small configuration. Nothing here is a requirement, and the work goes ahead against whatever your stock system was built on.",
+      groups: [
+        {
+          label: "Reading the shelf",
+          items: [
+            { name: "Vision models", category: "Codes and serials off a box" },
+            { name: "Claude", category: "Matching a product to your catalogue", icon: "siClaude" },
+            { name: "Flutter", category: "The phone app that does the scanning", icon: "siFlutter" },
+          ],
+        },
+        {
+          label: "Working out what to buy",
+          items: [
+            { name: "Python", category: "Forecasting against your sales", icon: "siPython" },
+            { name: "PostgreSQL", category: "Stock levels and history", icon: "siPostgresql" },
+            { name: "Redis", category: "Alerts and scheduling", icon: "siRedis" },
+          ],
+        },
+        {
+          label: "Where you look at it",
+          items: [
+            { name: "React", category: "The dashboard", icon: "siReact" },
+            { name: "n8n", category: "What happens when a line runs low", icon: "siN" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Twelfth shape, and the last one this silo needs. Shipped so far: 1-2-2,
+     * 1-1-2-1, 1-1-2-1, 2-1-2-1, 1-2-2-1, 1-2-1-2, 2-1-1-2, 1-1-1-2, 2-2-1-1,
+     * 1-2-1-1 and 2-1-1-1. This is 2-1-2-2.
+     *
+     * The bottom two rows are why. This page's problem has two symmetric
+     * halves, overstock and stockout, and they need different actions. A
+     * diagram that resolved into one node would have drawn a single failure
+     * where the copy argues there are two facing opposite ways.
+     */
+    diagram: {
+      caption:
+        "A delivery and your sales feed both come in. One picture of stock comes out of them, and it shows both the lines running out and the lines nothing is happening to.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "A delivery", sub: "Photographed", tone: "brand" },
+          { label: "Your sales", sub: "As they happen", tone: "brand" },
+        ],
+        [{ label: "One stock picture", sub: "Counted and current", tone: "accent" }],
+        [
+          { label: "Running out", sub: "Selling faster than lead time", tone: "accent" },
+          { label: "Not moving", sub: "Capital sitting still", tone: "accent" },
+        ],
+        [
+          { label: "A draft order", sub: "Waiting for a signature", tone: "brand" },
+          { label: "A line to clear", sub: "Money you can free", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Can it connect to our point of sale system?",
+        answer:
+          "The MVP reads sales from your POS through its API. That covers the common hosted tills and it covers something built for you years ago. Where there is no API we look at what it can export before proposing anything.",
+      },
+      {
+        question: "Do we need to buy scanning hardware?",
+        answer:
+          "Not for a trial. A phone camera and a vision model read codes off a box well enough to prove whether the approach works. Dedicated scanners are faster at volume, and that is a decision worth making after the MVP rather than before it.",
+      },
+      {
+        question: "How do we get from MVP to full system?",
+        answer:
+          "The forecasting logic and the API wrappers are written to production standard from the outset. You widen the catalogue and add features. The dashboard is the part most likely to be rebuilt, and it is the cheapest part to redo.",
+      },
+      {
+        question: "What is a retail inventory management prototype for?",
+        answer:
+          "It answers one question, which is whether forecasting on your own data beats the way you buy now. It is deliberately not a replacement system. It runs beside what you have. That is what makes the comparison honest.",
+      },
+      {
+        question: "Does AI stock prediction development work on a small catalogue?",
+        answer:
+          "It works better on a slow catalogue than people expect, because lead times matter more than volume. What it needs is history rather than scale. A year of sales on a few hundred lines is usually enough to test the idea.",
+      },
+      {
+        question: "Is a custom ERP MVP cheaper than buying a system?",
+        answer:
+          "For a trial, yes, because the scope is one slice rather than the whole company. That is the wrong comparison though. The MVP tells you whether the forecasting earns its keep, and then buying or building is a decision with evidence behind it.",
+      },
+    ],
+  },
 };

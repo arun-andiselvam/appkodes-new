@@ -162,6 +162,11 @@ of content at two URLs is the thing paging must not create.
 | `/services/autonomous-ai-agents` | `custom AI agent development` | Custom AI Agent Development \| Multi-Agent Systems (49) |
 | `/services/customer-support-ai` | `AI customer support automation` | AI Customer Support Automation & RAG Agents (43) |
 | `/services/document-processing-ocr` | `AI document processing automation` | AI Document Processing Automation & OCR (39) |
+| `/services/financial-data-automation` | `financial data automation AI` | AI Financial Data Automation & Ledger Pipelines (47) |
+| `/services/custom-ai-mvp-development` | `custom AI MVP development` | Custom AI MVP Development & Prototyping (39) |
+| `/services/rapid-ai-prototyping` | `rapid AI prototyping services` | Rapid AI Prototyping Services \| Proof of Concept (48) |
+| `/services/fintech-saas-ai-mvp` | `fintech AI MVP development` | Fintech AI MVP Development & SaaS Platforms (43) |
+| `/services/smart-inventory-retail-mvp` | `smart inventory AI MVP` | Smart Inventory AI MVP & Stock Prediction (41) |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | AI Automation for Fintech SMBs (30) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |
