@@ -461,7 +461,7 @@ function MegaPanel({
         {tiered ? (
           <div className="grid grid-cols-[minmax(240px,300px)_1fr]">
             {/* The rail. One row per silo, each a link to the silo page. */}
-            <div className="border-r border-foreground/10 p-3">
+            <div className="border-r border-foreground/10 p-2">
               {groups.map((group, i) => {
                 const selected = i === activeIndex;
                 const here = isCurrentBranch(pathname, group.href);
@@ -477,12 +477,26 @@ function MegaPanel({
                       selected ? "bg-foreground/5" : "hover:bg-foreground/5"
                     }`}
                   >
-                    <span
-                      className={`text-sm font-medium ${
-                        here ? "text-muted-foreground" : "text-foreground"
-                      }`}
-                    >
-                      {group.name}
+                    <span className="min-w-0">
+                      <span
+                        className={`block text-sm font-medium ${
+                          here ? "text-muted-foreground" : "text-foreground"
+                        }`}
+                      >
+                        {group.name}
+                      </span>
+                      {/*
+                        The short line, not the blurb. See railNote on NavGroup
+                        in content/types.ts for why they are separate strings.
+                        It truncates rather than wraps, because a second line
+                        here costs more height than the footer strip this
+                        replaced gave back.
+                      */}
+                      {group.railNote && (
+                        <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                          {group.railNote}
+                        </span>
+                      )}
                     </span>
                     <ArrowRight
                       aria-hidden

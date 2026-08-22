@@ -63,13 +63,13 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/services/rapid-ai-prototyping` | `rapid AI prototyping services` | long form | 59 | 155 | Service + FAQ | 11 | 2,583 | **Done** |
 | `/services/fintech-saas-ai-mvp` | `fintech AI MVP development` | long form | 54 | 160 | Service + FAQ | 11 | 2,581 | **Done** |
 | `/services/smart-inventory-retail-mvp` | `smart inventory AI MVP` | long form | 52 | 154 | Service + FAQ | 11 | 2,601 | **Done** |
-| `/services/ai-data-predictive-analytics` | `predictive analytics for SMBs` | blueprint | 41 | **141** | Breadcrumb only | 6 | 914 | Blueprint |
-| `/services/predictive-analytics-bi` | `custom predictive modelling services` | blueprint | 40 | **136** | Breadcrumb only | 5 | 854 | Blueprint |
-| `/services/data-engineering-vector-databases` | `vector database integration` | blueprint | 60 | 150 | Breadcrumb only | 5 | 865 | Blueprint |
-| `/services/computer-vision-quality-control` | `custom image recognition development` | blueprint | **63** | **139** | Breadcrumb only | 5 | 869 | Blueprint |
-| `/services/custom-ai-models-voice` | `custom AI model development` | blueprint | 46 | **141** | Breadcrumb only | 6 | 896 | Blueprint |
-| `/services/private-llm-fine-tuning` | `LLM fine-tuning services` | blueprint | 56 | **125** | Breadcrumb only | 5 | 866 | Blueprint |
-| `/services/ai-voice-telephony-automation` | `AI voice agent integration` | blueprint | 56 | **131** | Breadcrumb only | 5 | 868 | Blueprint |
+| `/services/ai-data-predictive-analytics` | `AI predictive analytics services` | long form | 57 | 154 | Service + FAQ | 12 | 2,625 | **Done** |
+| `/services/predictive-analytics-bi` | `predictive business intelligence AI` | long form | 59 | 157 | Service + FAQ | 11 | 2,510 | **Done** |
+| `/services/data-engineering-vector-databases` | `vector database development services` | long form | 53 | 154 | Service + FAQ | 11 | 2,525 | **Done** |
+| `/services/computer-vision-quality-control` | `computer vision quality control` | long form | 51 | 153 | Service + FAQ | 11 | 2,616 | **Done** |
+| `/services/custom-ai-models-voice` | `custom AI model development` | long form | 46 | 159 | Service + FAQ | 12 | 2,609 | **Done** |
+| `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | long form | 51 | 156 | Service + FAQ | 11 | 2,520 | **Done** |
+| `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | long form | 55 | 154 | Service + FAQ | 11 | 2,570 | **Done** |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | long form | 41 | 151 | Service + FAQ | 9 | 1,828 | **Done** |
 | `/industries/retail-and-inventory` | `predictive inventory AI` | blueprint | 47 | **140** | Breadcrumb only | 5 | 855 | Blueprint |
 | `/industries/healthcare-and-consulting` | `compliant AI development for healthcare` | blueprint | 51 | 153 | Breadcrumb only | 5 | 859 | Blueprint |
@@ -77,13 +77,13 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/industries/edtech-and-learning` | `AI integration for e-learning platforms` | blueprint | 53 | 150 | Breadcrumb only | 5 | 889 | Blueprint |
 | `/industries/marketing-and-adtech` | `AI automation for marketing agencies` | blueprint | 44 | **145** | Breadcrumb only | 5 | 882 | Blueprint |
 
-**Totals.** 30 pages. 13 done, 5 live and awaiting an SEO pass, 12 on the
-blueprint. One title over 60. Fourteen descriptions outside 150 to 160.
+**Totals.** 30 pages. 20 done, 5 live and awaiting an SEO pass, 5 on the
+blueprint. No title is over 60 any more. Seven descriptions outside 150 to 160.
 
-The AI MVP development silo is complete: the parent and all three children.
-So is workflow automation. Two of the five service silos are finished.
-
-The workflow automation silo is complete: the parent and all four children.
+**Every service page is finished.** All five silos, their parents and all
+fourteen children. The five pages still on the blueprint are all industry
+pages, and the five awaiting an SEO pass are the home page, contact, how we
+work and the two hubs.
 
 ---
 
@@ -111,13 +111,13 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | `/services/rapid-ai-prototyping` | `proof of concept AI development`, `test AI application ideas`, `low cost AI prototype development` |
 | `/services/fintech-saas-ai-mvp` | `build AI SaaS MVP`, `build AI finance application`, `custom ledger software development` |
 | `/services/smart-inventory-retail-mvp` | `retail inventory management prototype`, `AI stock prediction development`, `custom ERP MVP` |
-| `/services/ai-data-predictive-analytics` | `AI data analytics services` |
-| `/services/predictive-analytics-bi` | `AI sales forecasting`, `churn prediction development` |
-| `/services/data-engineering-vector-databases` | `RAG data pipeline setup`, `AI data engineering services` |
-| `/services/computer-vision-quality-control` | `AI visual quality control`, `defect detection AI` |
-| `/services/custom-ai-models-voice` | `private AI model deployment` |
-| `/services/private-llm-fine-tuning` | `private AI model deployment`, `reduce cloud AI API costs` |
-| `/services/ai-voice-telephony-automation` | `custom voice AI for small business`, `AI phone answering automation` |
+| `/services/ai-data-predictive-analytics` | `business data forecasting AI`, `machine learning data analytics`, `predictive ROI modelling` |
+| `/services/predictive-analytics-bi` | `AI BI dashboards`, `predictive analytics integration`, `smart data visualization tools` |
+| `/services/data-engineering-vector-databases` | `AI data engineering`, `RAG data architecture`, `unstructured data vectorization` |
+| `/services/computer-vision-quality-control` | `AI visual inspection services`, `automated defect detection`, `edge AI vision models` |
+| `/services/custom-ai-models-voice` | `private AI model deployment`, `custom AI voice models`, `speech-to-text AI integration` |
+| `/services/private-llm-fine-tuning` | `custom AI model training`, `on-premise LLM deployment`, `secure AI model hosting` |
+| `/services/ai-voice-telephony-automation` | `AI phone agents`, `automated call center AI`, `Twilio AI voice integration` |
 | `/industries/fintech-and-finance` | `automated expense tracking`, `AI ledger management` |
 | `/industries/retail-and-inventory` | `AI inventory management development`, `retail automation IT services` |
 | `/industries/healthcare-and-consulting` | `private LLM deployment for patient data`, `secure consultation platform development` |

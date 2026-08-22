@@ -167,6 +167,13 @@ of content at two URLs is the thing paging must not create.
 | `/services/rapid-ai-prototyping` | `rapid AI prototyping services` | Rapid AI Prototyping Services \| Proof of Concept (48) |
 | `/services/fintech-saas-ai-mvp` | `fintech AI MVP development` | Fintech AI MVP Development & SaaS Platforms (43) |
 | `/services/smart-inventory-retail-mvp` | `smart inventory AI MVP` | Smart Inventory AI MVP & Stock Prediction (41) |
+| `/services/ai-data-predictive-analytics` | `AI predictive analytics services` | AI Predictive Analytics Services & Forecasting (46) |
+| `/services/predictive-analytics-bi` | `predictive business intelligence AI` | Predictive Business Intelligence AI & Dashboards (47) |
+| `/services/data-engineering-vector-databases` | `vector database development services` | Vector Database Development Services & RAG (42) |
+| `/services/computer-vision-quality-control` | `computer vision quality control` | Computer Vision Quality Control Services (40) |
+| `/services/custom-ai-models-voice` | `custom AI model development` | Custom AI Model Development & Voice (35) |
+| `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | Private LLM Fine-Tuning & Secure Hosting (40) |
+| `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | AI Voice Telephony Automation & Phone Agents (44) |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | AI Automation for Fintech SMBs (30) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |

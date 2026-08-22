@@ -187,6 +187,21 @@ export type NavGroup = {
   href: string;
   /** One line under the name. Written for a buyer scanning, not for a crawler. */
   blurb: string;
+  /**
+   * A short line under the name in the tiered panel's left rail.
+   *
+   * Added 23 August 2026, when the Services panel lost its "How we work"
+   * footer strip and the rail inherited the height. Deliberately not `blurb`:
+   * the blurbs run to about seventy characters, which wraps to two lines in a
+   * 300px rail and makes the panel half as tall again. These are three or four
+   * words, one line, and they say something the blurb does not, because the
+   * selected silo shows both at once and two versions of one sentence reads as
+   * a mistake.
+   *
+   * Optional. A rail without it just shows the name, which is what the
+   * Industries and Resources panels do.
+   */
+  railNote?: string;
   children?: { name: string; href: string; blurb: string }[];
 };
 

@@ -3817,4 +3817,2057 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       },
     ],
   },
+
+  /*
+   * Silo 4's parent, 22 August 2026, fourteenth page on the template. Built
+   * from the second version of docs/service-pages.md.
+   *
+   * That version is a better brief than the ones before it. No invented
+   * percentages, no durations and no model version numbers, which were the
+   * three things cut repeatedly from the earlier batch.
+   *
+   * Three things still changed.
+   *
+   * !! "enterprise security standards" !!
+   *
+   * The third FAQ asked to reiterate them. The word is ruled out for this
+   * buyer at docs/positioning.md line 64, and the substance is better served
+   * by saying what is actually configured, which is retention off on the model
+   * endpoints. Same answer the secure page gives.
+   *
+   * !! NOTHING IS PREDICTED "exactly" !!
+   *
+   * The second use case asked to say the model predicts exactly when a
+   * component will stock out. A forecast that claims exactness is a forecast
+   * nobody should trust, and on this page of all pages the credibility comes
+   * from admitting the error bar. The diagram ends on a confidence node for
+   * the same reason.
+   *
+   * The title lost "| Hitasoft", which app/layout.tsx already appends, and
+   * gained "Services" so the primary keyword matches rather than stems. Every
+   * title in this file has the same two problems.
+   *
+   * !! WATCH THE BI CHILD WHEN IT IS BUILT !!
+   *
+   * /services/predictive-analytics-bi is briefed with the secondary
+   * "predictive analytics integration", which shares its head term with this
+   * page's primary. Not an exact collision and worth a look before that page
+   * ships. Rule one in docs/seo-standards.md.
+   */
+  "/services/ai-data-predictive-analytics": {
+    path: "/services/ai-data-predictive-analytics",
+    metaTitle: "AI Predictive Analytics Services & Forecasting",
+    serviceType: "AI predictive analytics",
+    metaDescription:
+      "Your dashboard says what already happened. AI predictive analytics services forecast what sells next and which accounts are about to leave. Book a review.",
+
+    hero: {
+      eyebrow: "AI predictive analytics",
+      /*
+       * The brief's H1 was "Stop Looking at Last Month. Predict Your Next
+       * Quarter." The shape is good and the second half promises a quarter
+       * nobody has committed to. This keeps the contrast and puts the promise
+       * on what the data is doing rather than on a horizon.
+       */
+      title: "Your data already knows. Nobody has asked it yet.",
+      lede: "Most businesses have years of history sitting in systems that only ever report it back to them. The same records can say what is likely to happen next, which is a different question and a more useful one.",
+      badges: ["Runs on your own history", "Every forecast carries a confidence"],
+    },
+
+    summary: {
+      heading: "What AI predictive analytics is",
+      body: "AI predictive analytics reads a business's own history and estimates what happens next, rather than summarising what already did. A pattern that holds across thousands of past records becomes the basis for a forecast. Each comes with a measure of how certain it is. Reporting answers what happened. This answers what is likely to.",
+    },
+
+    problem: {
+      heading: "Reports full of yesterday",
+      body: "Most companies have more data than they can read and less direction than they need. The dashboards are accurate and they describe a month that has already been paid for. Nothing in them says which line to reorder or which customer is about to leave.",
+      points: [
+        {
+          title: "The charts describe the past",
+          body: "A dashboard tells you what happened and leaves the interpreting to whoever happens to be looking. Two people read the same chart differently.",
+        },
+        {
+          title: "The signal is buried in the join",
+          body: "What matters usually sits between systems rather than inside one. Sales history alone does not show it.",
+        },
+        {
+          title: "Nobody trusts a number they cannot question",
+          body: "A forecast with no confidence attached gets ignored. That is the correct response to it.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The architecture of forecasting",
+      items: [
+        {
+          title: "Getting the data usable",
+          body: "History arrives spread across systems, and half of it is inconsistent with the other half. Cleaning and joining it is most of the work, and skipping it is why forecasting projects fail.",
+        },
+        {
+          title: "Patterns across the whole history",
+          body: "The model looks for what tends to precede an outcome, across every record rather than a sample. Seasonality and slow trends both show up here.",
+        },
+        {
+          title: "A number somebody can act on",
+          body: "A forecast reaches whoever decides, with its confidence beside it. A prediction nobody sees changes nothing.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "Reporting against forecasting",
+      body: "Both read the same records. They answer different questions.",
+      columns: ["A BI dashboard", "Predictive analytics"],
+      rows: [
+        {
+          label: "The question it answers",
+          values: ["What happened", "What is likely to happen"],
+        },
+        {
+          label: "What it looks at",
+          values: ["The totals, by period", "Patterns across every record"],
+        },
+        {
+          label: "What comes out",
+          values: ["A chart to interpret", "An estimate with a confidence on it"],
+        },
+        {
+          label: "Who does the thinking",
+          values: ["Whoever is reading the chart", "The reading is done, the decision is not"],
+        },
+        {
+          label: "When it is wrong",
+          values: ["Nobody notices", "The confidence said it might be"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Predictive AI in the real world",
+      body: "Three forecasts a business can act on the same week. Each is built from records the company already holds.",
+      items: [
+        {
+          system: "Your subscription data",
+          title: "Accounts that are about to leave",
+          body: "Cancellation is rarely a surprise in the data. Onboarding behaviour and support history together flag accounts worth a call while there is still time.",
+        },
+        {
+          system: "Your stock history",
+          title: "The line that runs out next",
+          body: "Sales rate and lead time decide when a gap appears. A forecast puts a date range on it, so buying happens before the shelf is empty.",
+        },
+        {
+          system: "Your expense records",
+          title: "What next month costs",
+          body: "Recurring bills and seasonal spend are both predictable from history. A business sees the squeeze coming.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We look at the data you actually have",
+          body: "Two days on where records live. This step usually decides whether forecasting is realistic.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the first forecast and what it costs. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It runs against history first",
+          body: "A forecast is tested on records with known outcomes. That is how you find out before trusting it.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What a forecast is worth",
+      body: "A prediction is only useful if somebody can tell how much of it to trust. That is a design decision.",
+      points: [
+        {
+          label: "Tested against known outcomes",
+          body: "Run on old records first, where the answer is known.",
+        },
+        {
+          label: "Confidence travels with it",
+          body: "Every estimate says how sure it is. Low confidence is a result.",
+        },
+        {
+          label: "Your data stays yours",
+          body: "Model endpoints run with retention off.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the forecasting is built from",
+      body: "Statistical modelling handles the numbers. Language models handle the mess around them. Nothing here is a requirement, and the work goes ahead against whatever your systems were built on.",
+      groups: [
+        {
+          label: "Working the numbers",
+          items: [
+            { name: "Python", category: "Modelling and evaluation", icon: "siPython" },
+            { name: "PostgreSQL", category: "History, joined up", icon: "siPostgresql" },
+            { name: "Redis", category: "Scheduling the runs", icon: "siRedis" },
+          ],
+        },
+        {
+          label: "Reading the unstructured half",
+          items: [
+            { name: "Claude", category: "Notes, tickets and free text", icon: "siClaude" },
+            { name: "GPT", category: "Classification and labelling" },
+            { name: "Embeddings", category: "Grouping what belongs together" },
+          ],
+        },
+        {
+          label: "Where it comes out",
+          items: [
+            { name: "React", category: "Dashboards people act on", icon: "siReact" },
+            { name: "n8n", category: "Alerts when something changes", icon: "siN" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Thirteenth shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1,
+     * 1-2-2-1, 1-2-1-2, 2-1-1-2, 1-1-1-2, 2-2-1-1, 1-2-1-1, 2-1-1-1 and
+     * 2-1-2-2. This is 1-1-2-2.
+     *
+     * The bottom pair is the argument and it is why the brief's "predict
+     * exactly" had to go. A forecast and its confidence arrive together, and
+     * drawing them as one node would have said the opposite of what this page
+     * is careful to say in words.
+     */
+    diagram: {
+      caption:
+        "Your own history is cleaned and joined. The model weighs what usually happens against what is different this time, and a forecast comes out with a confidence beside it.",
+      align: "sequence",
+      rows: [
+        [{ label: "Your history", sub: "Years of it", tone: "brand" }],
+        [{ label: "Cleaned and joined", sub: "Across your systems", tone: "accent" }],
+        [
+          { label: "What usually happens", sub: "The pattern", tone: "accent" },
+          { label: "What is different now", sub: "The current signal", tone: "accent" },
+        ],
+        [
+          { label: "A forecast", sub: "What is likely", tone: "brand" },
+          { label: "How sure it is", sub: "Reported, not hidden", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Our data is messy and spread across several tools. Does that rule us out?",
+        answer:
+          "It is the normal starting position and it is the first part of the work. Records get pulled from whatever holds them, cleaned and joined into one history before any modelling happens. That step is where forecasting projects usually go wrong.",
+      },
+      {
+        question: "Which models do you use for forecasting?",
+        answer:
+          "Numerical forecasting uses statistical methods. The unstructured material goes to a language model. Forecasting a quantity is a numerical problem, so a model that predicts text is the wrong tool for it. Claude and GPT read. Tested code does the arithmetic.",
+      },
+      {
+        question: "Is our historical business data safe?",
+        answer:
+          "It is processed and not kept. Model endpoints run with retention switched off, so your records do not reach the pipeline that trains a public model. Where the history cannot leave your network at all, the modelling runs on your own hardware.",
+      },
+      {
+        question: "How accurate will the forecast be?",
+        answer:
+          "Nobody can answer that before seeing the data, which is why the first thing built is a test against history you already have. Running it on records where the outcome is known tells you the accuracy on your own business rather than on somebody's case study.",
+      },
+      {
+        /*
+         * The brief spells this secondary "predictive ROI modeling". The site
+         * is written in British English and uses "modelling" eight times to
+         * one, so the question carries the British spelling. Search treats the
+         * two as the same word, and breaking a spelling convention across a
+         * site to chase an exact match trades something real for something
+         * that is not.
+         */
+        question: "Do you do predictive ROI modelling?",
+        answer:
+          "Yes, where the history supports it. The return on a campaign or a product line forecasts the same way demand does, because both are patterns in your own records. What it needs is enough past examples to learn from.",
+      },
+      {
+        question: "What is business data forecasting AI good at?",
+        answer:
+          "Anything that repeats with enough history behind it. Demand, churn and seasonal spend all qualify. One off events and things with no precedent in your records do not, and a forecast that claims otherwise is guessing with a chart attached.",
+      },
+      {
+        question: "Can machine learning data analytics work on a small business?",
+        answer:
+          "Volume matters less than history. A few years of consistent records beats a few months of high volume, because a pattern needs time to repeat. Most businesses trading a while have more than they think.",
+      },
+    ],
+  },
+
+  /*
+   * First child of the analytics silo, 22 August 2026, fifteenth page on the
+   * template.
+   *
+   * !! TWO PRODUCT NAMES CAME OUT OF THE USE CASES !!
+   *
+   * The brief names "Zedger" and a "Gadgetly-style" retail product as example
+   * builds. Neither appears anywhere in this repository: not in the case
+   * studies, not in the testimonials, not in content/. docs/positioning.md
+   * line 215 is unambiguous, no client names on companies that are not
+   * confirmed clients, and it exists because the original template shipped
+   * invented ones. If they are real clients they can be named once somebody
+   * confirms it and the case study exists. Until then the use cases describe
+   * the product type, which is what they needed to do anyway.
+   *
+   * Three other things changed.
+   *
+   * "enterprise data forecasting" was in the meta description. Banned for this
+   * buyer at docs/positioning.md line 64.
+   *
+   * "Most companies pay thousands of dollars for BI software" opened the
+   * agitation. It is a figure about somebody else's pricing and nobody here
+   * has checked it. The point survives without a number.
+   *
+   * "Months of database mapping" was the setup time row in the comparison.
+   * Same unbacked duration shape cut from four earlier briefs. The row
+   * compares what each thing is built on instead.
+   *
+   * !! ON "predictive analytics integration" !!
+   *
+   * Flagged when the parent shipped, because the parent owns "AI predictive
+   * analytics services" and the two share a head term. Kept here after
+   * looking: the modifiers differ and so does the intent, since the parent
+   * sells the practice and this page sells wiring it into a dashboard. The
+   * parent's exact phrase is verified absent from this page's title and
+   * description. If either title ever drifts toward the other, this is the
+   * pair to re-examine.
+   */
+  "/services/predictive-analytics-bi": {
+    path: "/services/predictive-analytics-bi",
+    /*
+     * 48 characters. The brief's "Predictive AI Business Intelligence"
+     * reorders the primary phrase so it stops matching, then appends a second
+     * brand name at 59.
+     */
+    metaTitle: "Predictive Business Intelligence AI & Dashboards",
+    serviceType: "predictive business intelligence",
+    metaDescription:
+      "A dashboard that only reports is half a tool. Predictive business intelligence AI forecasts from your own records and says what moved and why. Book a review.",
+
+    hero: {
+      eyebrow: "Predictive business intelligence",
+      /*
+       * The brief's H1 was "Upgrade Your BI Dashboards from Reporting to
+       * Predicting." Accurate, and it is the service description rather than
+       * an argument. The rear view mirror line further down the brief is the
+       * better idea, so it moves up here.
+       */
+      title: "A dashboard is a rear view mirror. Ask it what is ahead.",
+      lede: "Reporting tools answer what happened and stop there, which leaves the interpreting to whoever is looking. The same data can answer what is likely next, and say which of last month's numbers actually moved the result.",
+      badges: ["Sits on the database you already have", "Answers in plain English"],
+    },
+
+    summary: {
+      heading: "What AI powered business intelligence is",
+      body: "Predictive business intelligence AI puts forecasting and plain language querying into the dashboard people already open. Rather than clicking filters to assemble a view, somebody types the question they actually have and gets an answer built from the same records. The forecasting sits beside the reporting, so what happened and what is likely appear together.",
+    },
+
+    problem: {
+      heading: "Charts nobody acts on",
+      body: "Companies buy reporting software and open it once a month. The charts are correct and they describe a quarter that has already been paid for. A new question means asking somebody who knows the schema.",
+      points: [
+        {
+          title: "Every new question is a ticket",
+          body: "The dashboard answers what it was built to answer. Anything else waits for whoever writes the queries.",
+        },
+        {
+          title: "Alerts that only say a number moved",
+          body: "A threshold alarm tells you revenue fell. It does not say which segment, or whether this has ever happened before on this line.",
+        },
+        {
+          title: "The trendline is a straight guess",
+          body: "Most reporting tools forecast by drawing the last line onward. That is arithmetic with optimism attached.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The components of a smart BI dashboard",
+      items: [
+        {
+          title: "Forecasts with more than one variable",
+          body: "Charts show what is likely next rather than only what happened, weighing several factors at once. Each projection carries a confidence rather than a single line.",
+        },
+        {
+          title: "Ask it in plain English",
+          body: "Somebody types their question. The system turns it into a query. Nobody needs the schema or any SQL.",
+        },
+        {
+          title: "Reports that explain themselves",
+          body: "A scheduled summary says what changed and what seems to have caused it, in one place. An alert that names the cause gets acted on.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A reporting tool against predictive BI",
+      body: "Both read the same database. What separates them is what you can ask.",
+      columns: ["A reporting tool", "Predictive BI"],
+      rows: [
+        {
+          label: "Getting a new answer",
+          values: ["Build a view, or raise a ticket", "Type the question"],
+        },
+        {
+          label: "What the forecast is",
+          values: ["The last trend, extended", "A model weighing several variables"],
+        },
+        {
+          label: "What an alert says",
+          values: ["A number crossed a threshold", "What changed, and what moved with it"],
+        },
+        {
+          label: "Who can use it",
+          values: ["Whoever understands the schema", "Whoever has the question"],
+        },
+        {
+          label: "What it is built on",
+          values: ["Its own copy of your data", "The database you already run"],
+        },
+      ],
+    },
+
+    /*
+     * The brief's use cases named two products as examples. See the note above
+     * this entry. These describe the same three product types without
+     * attaching anybody's name to work that has not been confirmed.
+     */
+    scenarios: {
+      heading: "Predictive BI in action",
+      body: "Three dashboards built around a number nobody asked for. Each reads a database the business already runs.",
+      items: [
+        {
+          system: "A subscription product",
+          title: "Churn showing before it happens",
+          body: "Product usage and support history flag accounts drifting toward cancellation. The dashboard lists them early enough to matter.",
+        },
+        {
+          system: "A retail stock system",
+          title: "Capital, shown where it is stuck",
+          body: "Holding cost and falling value get plotted against sales rate. A founder sees which shelves are absorbing the money.",
+        },
+        {
+          system: "A marketing function",
+          title: "Which content actually returned",
+          body: "Spend and pipeline are read together. The dashboard shows which topics produced business, which is a different list from the one that produced traffic.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We look at the questions nobody can answer",
+          body: "Two days with the people who read the reports. The gap between what they get and what they need is the specification for this.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the first views and forecasts. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It goes on top of your database",
+          body: "The layer reads what you already store. Your existing reporting keeps working throughout.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where your data stays",
+      body: "A BI layer sees everything a business has, which makes the handling question sharper here than on most pages. It is settled before anything is built.",
+      points: [
+        {
+          label: "It reads, it does not move",
+          body: "The layer queries your database in place.",
+        },
+        {
+          label: "Questions leave, records do not",
+          body: "The model sees the question and the schema.",
+        },
+        {
+          label: "Retention stays off",
+          body: "Anything reaching a model endpoint is processed and not kept.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the BI layer is built from",
+      body: "It sits on top of what you already store. Nothing here is a requirement, and the work goes ahead against whatever your data currently lives in.",
+      groups: [
+        {
+          label: "Where your data already is",
+          items: [
+            { name: "PostgreSQL", category: "Read in place, not copied", icon: "siPostgresql" },
+            { name: "MySQL", category: "If that is what you run", icon: "siMysql" },
+            { name: "Redis", category: "Caching the heavy queries", icon: "siRedis" },
+          ],
+        },
+        {
+          label: "Turning questions into queries",
+          items: [
+            { name: "Claude", category: "Plain English to SQL", icon: "siClaude" },
+            { name: "GPT", category: "Summaries and explanations" },
+            { name: "Python", category: "The forecasting underneath", icon: "siPython" },
+          ],
+        },
+        {
+          label: "What people look at",
+          items: [
+            { name: "React", category: "The dashboard itself", icon: "siReact" },
+            { name: "n8n", category: "Scheduled reports and alerts", icon: "siN" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Fourteenth shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1,
+     * 1-2-2-1, 1-2-1-2, 2-1-1-2, 1-1-1-2, 2-2-1-1, 1-2-1-1, 2-1-1-1, 2-1-2-2
+     * and 1-1-2-2. This is 2-2-2-1.
+     *
+     * Two ways in at the top, because a dashboard is used both by somebody
+     * asking and by something noticing. The third row is the argument: a
+     * number on its own is what a reporting tool already gives you, and the
+     * reason beside it is what this page is selling. They resolve into one
+     * screen because that is where both end up.
+     */
+    diagram: {
+      caption:
+        "Somebody asks a question, or a number moves by itself. Either becomes a query against your database, and what comes back is the figure together with what moved it.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "You ask in English", sub: "No schema needed", tone: "brand" },
+          { label: "A number moves", sub: "Noticed, not alarmed", tone: "brand" },
+        ],
+        [
+          { label: "Turned into a query", sub: "Against your own tables", tone: "accent" },
+          { label: "Checked against history", sub: "Has this happened before", tone: "accent" },
+        ],
+        [
+          { label: "The figure", sub: "What it is", tone: "accent" },
+          { label: "The reason", sub: "What moved it", tone: "accent" },
+        ],
+        [{ label: "Your dashboard", sub: "Both, together", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Do we have to move off our current database?",
+        answer:
+          "No. The layer is built on top of what you already store, reading it in place. Migrating a database to get better reporting is a large project to solve a problem that does not require it.",
+      },
+      {
+        question: "Can people who do not write SQL use it?",
+        answer:
+          "That is most of the point. Somebody types the question in plain English and the system turns it into a query against your schema. The answer arrives with the query it ran, so anybody who does know SQL can check what it did.",
+      },
+      {
+        question: "How safe is our business data with a model involved?",
+        answer:
+          "The model sees the question and the shape of your database rather than the contents of it. Queries run against your own tables. Endpoints run with retention off.",
+      },
+      {
+        question: "What are AI BI dashboards actually doing differently?",
+        answer:
+          "Two things. Anybody can ask a question without knowing how the data is arranged, and the forecasting weighs several variables rather than extending the last line. Everything else about a dashboard stays as it was.",
+      },
+      {
+        question: "Is predictive analytics integration possible with our current reporting?",
+        answer:
+          "Often yes, and it is worth checking before replacing anything. Where there is an API, the forecasting feeds into your existing tool rather than replacing it. Otherwise the layer runs beside it.",
+      },
+      {
+        question: "Do smart data visualization tools need clean data first?",
+        answer:
+          "Cleaner than most businesses expect, but not perfect. Inconsistent records are the normal starting point, and the first fortnight is where that gets assessed honestly rather than discovered later.",
+      },
+    ],
+  },
+
+  /*
+   * Second child of the analytics silo, 22 August 2026, sixteenth page on the
+   * template.
+   *
+   * !! NOTHING HERE IS "hallucination-free" !!
+   *
+   * The brief promises it twice, in the meta description and in the direct
+   * answer block. Retrieval reduces hallucination and does not remove it, and
+   * this site already says so in the right way: the customer support page
+   * explains that an answer not in your documentation is not one the model can
+   * give, and that where nothing matches it escalates. Publishing an absolute
+   * here would contradict a page one click away and would be wrong on its own
+   * terms. The claim is made the way that page makes it.
+   *
+   * !! PINECONE IS NOT NAMED !!
+   *
+   * The brief puts it in an H3 beside pgvector. pgvector is vetted in
+   * content/integrations.ts and already ships on three pages. Pinecone is not
+   * in that file at all, and its warning says the list has to match what has
+   * actually been delivered. Same position as Zendesk, Intercom, Shopify and
+   * Square. Name it once somebody confirms a build.
+   *
+   * "Enterprise" appeared twice, in a section heading and in the second FAQ.
+   * Ruled out at docs/positioning.md line 64.
+   *
+   * !! THE THIRD USE CASE LOST ITS REGULATED PROFESSIONS !!
+   *
+   * It asked to describe medical and legal professionals searching past
+   * consultations under "strict data safety compliance". Storing transcripts
+   * for those professions carries obligations nobody here has confirmed we
+   * meet, and docs/positioning.md line 213 rules out naming compliance we
+   * cannot back. The scenario keeps the architecture, which is the part this
+   * page can actually speak to, and drops the professions and the compliance.
+   *
+   * "Always synced" and "highly accurate" both went as well. A pipeline runs
+   * on a schedule and is therefore current as of the last run, which is a more
+   * useful thing to tell somebody than an absolute.
+   */
+  "/services/data-engineering-vector-databases": {
+    path: "/services/data-engineering-vector-databases",
+    /*
+     * 42 characters. The brief's "Vector DB Development" abbreviates the
+     * primary phrase out of existence and drops "Services", then appends a
+     * second brand name.
+     */
+    metaTitle: "Vector Database Development Services & RAG",
+    serviceType: "vector database development",
+    metaDescription:
+      "Good AI is mostly good data engineering. Vector database development services turn your PDFs and tickets into something a model can search. Book a review.",
+
+    hero: {
+      eyebrow: "Vector database development",
+      /*
+       * The brief's H1 was "Your AI is Only as Smart as Your Data. We Build
+       * the Plumbing." The first half is a truism every vendor writes and the
+       * second is the better half. This keeps the plumbing idea and puts the
+       * specific failure in front of it.
+       */
+      title: "The model is not the hard part. Finding the right page is.",
+      lede: "An assistant that answers well sits on documents somebody prepared. Pointing a model at a shared drive gets you confident answers drawn from whatever happened to match.",
+      badges: ["Runs inside your own database", "Answers cite the passage they came from"],
+    },
+
+    summary: {
+      heading: "What AI data engineering is",
+      body: "AI data engineering turns the material a business already has into something a model can search by meaning rather than by keyword. Documents are split into passages, and each passage becomes a vector that can be compared against a question. The pipeline that keeps doing this as new documents arrive is most of the work. It decides whether answers stay good.",
+    },
+
+    problem: {
+      heading: "The model was never the bottleneck",
+      body: "Teams connect a model to their files and get answers that sound right and cite nothing. The problem is almost never the model. It is that nothing has decided which passage should have been retrieved before the question was asked.",
+      points: [
+        {
+          title: "Keyword search misses the question",
+          body: "Somebody asks about a refund window. The document says returns period. A keyword index finds neither for the other.",
+        },
+        {
+          title: "The documents were never prepared",
+          body: "A PDF split at page boundaries cuts sentences in half. What gets retrieved is a fragment that answers nothing.",
+        },
+        {
+          title: "It goes stale the week after launch",
+          body: "The index is built once and the documents keep changing. Answers drift away from the truth quietly.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The architecture of an AI ready backend",
+      items: [
+        {
+          title: "Pipelines that keep running",
+          body: "Material is pulled from wherever it lives, then cleaned and loaded on a schedule you set. New documents reach the index unprompted.",
+        },
+        {
+          title: "Chunked where the meaning breaks",
+          body: "Documents are split on their own structure. A passage that ends mid argument retrieves badly.",
+        },
+        {
+          title: "Vectors in the database you run",
+          body: "pgvector puts vector search inside your existing PostgreSQL. One database to back up.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A SQL query against a vector search",
+      body: "They are not rivals and they answer different questions. Most systems end up needing both.",
+      columns: ["SQL search", "Vector search"],
+      rows: [
+        {
+          label: "What it matches on",
+          values: ["The characters you typed", "What the passage means"],
+        },
+        {
+          label: "What it holds",
+          values: ["Rows and columns", "Text, and what it is about"],
+        },
+        {
+          label: "A question in other words",
+          values: ["Finds nothing", "Finds the passage anyway"],
+        },
+        {
+          label: "What it is good at",
+          values: ["Totals, filters and exact lookups", "Retrieval for a model to answer from"],
+        },
+        {
+          label: "Where it lives",
+          values: ["Your database", "Also your database, with pgvector"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Vector search in real workflows",
+      body: "Three sets of documents a business already has. Each becomes answerable rather than merely stored.",
+      items: [
+        {
+          system: "Supplier documentation",
+          title: "Specifications nobody can find",
+          body: "Thousands of supplier PDFs sit in a folder, holding the voltages and compatibility notes nobody can find. Staff ask in their own words and get the paragraph, rather than a list of files to open.",
+        },
+        {
+          system: "Financial records",
+          title: "History a model can reason over",
+          body: "Receipts and ledger entries are embedded beside the documents that explain them, in one store. A new transaction gets classified from similar ones.",
+        },
+        {
+          system: "Recorded calls",
+          title: "Transcripts that become searchable",
+          body: "Audio is transcribed, chunked and embedded into a store that sits apart from everything else. Past conversations become searchable by subject.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We look at what you actually hold",
+          body: "Two days on where the material lives. Document quality decides more here than model choice does.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the first sources and the cost. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "One source, measured before the next",
+          body: "The first corpus goes in. Retrieval is tested against questions you supply. More sources before that is how these go wrong.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where your material sits",
+      body: "This work touches everything a company has written down, so where it ends up matters more than usual. It is decided before the first pipeline runs.",
+      points: [
+        {
+          label: "In your own database",
+          body: "pgvector keeps the vectors beside the records they came from.",
+        },
+        {
+          label: "Retrieval is auditable",
+          body: "You can see which passages were returned for any question.",
+        },
+        {
+          label: "Nothing is kept by a model",
+          body: "Embedding endpoints run with retention off.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the pipeline is built from",
+      body: "Standard components, chosen so nothing needs replacing later. Nothing is a requirement, and the work goes ahead against whatever your systems were built on.",
+      groups: [
+        {
+          label: "Where the vectors live",
+          items: [
+            { name: "pgvector", category: "Vector search inside PostgreSQL" },
+            { name: "PostgreSQL", category: "The database you already run", icon: "siPostgresql" },
+            { name: "Redis", category: "Caching the frequent lookups", icon: "siRedis" },
+          ],
+        },
+        {
+          label: "Turning documents into vectors",
+          items: [
+            { name: "Embeddings", category: "The representation itself" },
+            { name: "Claude", category: "Reading and structuring documents", icon: "siClaude" },
+            { name: "Whisper", category: "Audio into text first" },
+          ],
+        },
+        {
+          label: "Keeping it current",
+          items: [
+            { name: "Python", category: "The pipeline and its tests", icon: "siPython" },
+            { name: "n8n", category: "What runs when a document lands", icon: "siN" },
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Fifteenth shape. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1,
+     * 1-2-2-1, 1-2-1-2, 2-1-1-2, 1-1-1-2, 2-2-1-1, 1-2-1-1, 2-1-1-1, 2-1-2-2,
+     * 1-1-2-2 and 2-2-2-1. This is 2-2-1-2.
+     *
+     * The pair at the bottom is the argument the third problem card makes.
+     * A store on its own goes stale, so the thing that keeps it current sits
+     * beside it rather than being assumed. Ending on a single node would have
+     * drawn a project that finishes, which is exactly the misunderstanding
+     * this page is trying to correct.
+     */
+    diagram: {
+      caption:
+        "Documents and transcripts come in from wherever they live. They are cleaned, split where the meaning breaks and embedded, and the result sits in your own database with a pipeline keeping it current.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "Your documents", sub: "PDFs and manuals", tone: "brand" },
+          { label: "Your transcripts", sub: "Tickets and calls", tone: "brand" },
+        ],
+        [
+          { label: "Cleaned", sub: "Whatever shape it arrived in", tone: "accent" },
+          { label: "Split by meaning", sub: "Not by page", tone: "accent" },
+        ],
+        [{ label: "Embedded", sub: "Comparable to a question", tone: "accent" }],
+        [
+          { label: "In your database", sub: "pgvector, beside the records", tone: "brand" },
+          { label: "Kept current", sub: "The pipeline keeps running", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Can you add vector search to our existing database?",
+        answer:
+          "Usually, and it is the first thing worth trying. pgvector adds vector search to a PostgreSQL database you already run, so there is one system to back up and your material does not move. A separate vector store earns its keep at volumes most businesses will never reach in practice.",
+      },
+      {
+        question: "Which embedding models do you use?",
+        answer:
+          "It depends on the material and where it may go. Hosted embedding endpoints are the usual choice. Where documents cannot leave your network, an open weight model produces the vectors on your own hardware instead.",
+      },
+      {
+        question: "Will the AI still make things up?",
+        answer:
+          "Retrieval makes it much less likely. It does not make it impossible. Good data engineering buys you two things. The model answers from passages it was handed rather than from memory, and you can see which ones. Where nothing relevant comes back, saying so is correct.",
+      },
+      {
+        question: "How do you handle documents that keep changing?",
+        answer:
+          "The pipeline runs on a schedule rather than once. New and changed material is picked up, re-chunked and re-embedded, so the index is current as of the last run. How often it runs is a decision about cost.",
+      },
+      {
+        question: "What is RAG data architecture?",
+        answer:
+          "It is the half of a RAG system that is not the model itself, and it does most of the work. Storage, chunking and retrieval all sit here. They decide answer quality far more than the model does.",
+      },
+      {
+        question: "Do you handle unstructured data vectorization for audio and images?",
+        answer:
+          "Yes. Audio is transcribed first and then treated as text. Images are handled by a vision model that describes them, so what gets embedded is a description somebody could also read.",
+      },
+    ],
+  },
+
+  /*
+   * Third child of the analytics silo, 23 August 2026, seventeenth page on the
+   * template. The analytics silo is complete with this page.
+   *
+   * !! THE MOST ABSOLUTE HEAVY BRIEF IN THE SET !!
+   *
+   * "Catch Every Defect" as the H1, "eliminate human error" in the
+   * description, "absolute precision 24/7" and "Infinite 24/7 consistency" in
+   * the agitation and the comparison, "flawless" compliance in a use case,
+   * "drastically reducing return rates", "incredibly flexible" and "highly
+   * accurate". None of them ship.
+   *
+   * This matters more here than on other pages. An inspection buyer knows no
+   * system catches everything, and a page that claims it reads as written by
+   * somebody who has not run one. The honest claim is better and it is the
+   * one the brief already contains: a model applies the same threshold at
+   * three in the afternoon as at three in the morning. Consistency is real,
+   * provable and enough. Perfection is not on offer and saying so is what
+   * makes the rest credible.
+   *
+   * !! NO CAMERA MODEL IS NAMED !!
+   *
+   * A use case asked for a "DJI Osmo Action 5 Pro". That is an unvetted
+   * vendor and a version number in one phrase, and both are already ruled
+   * out, the second by content/integrations.ts line 17. The page says
+   * commercial hardware and leaves the choice where it belongs.
+   *
+   * "Milliseconds per frame" and "million-dollar robotics facility" are both
+   * figures nobody here has measured or priced.
+   *
+   * !! EDGE DEPLOYMENT IS DESCRIBED, NOT CLAIMED AS DELIVERED !!
+   *
+   * "edge AI vision models" is a briefed secondary and running models on
+   * device appears nowhere in this repository. It is written as an option the
+   * architecture supports, which is true of the architecture, rather than as
+   * work already shipped. Confirm before launch alongside the vendor list.
+   */
+  "/services/computer-vision-quality-control": {
+    path: "/services/computer-vision-quality-control",
+    /*
+     * 40 characters. The brief's version splits the primary phrase with an
+     * ampersand and then appends a second brand name at 56. This was also the
+     * one page in docs/page-progress.md whose title was over 60 rendered, so
+     * that row clears with this build.
+     */
+    metaTitle: "Computer Vision Quality Control Services",
+    serviceType: "computer vision quality control",
+    metaDescription:
+      "Nobody inspects as carefully in the last hour. Computer vision quality control scores every item the same way and flags the doubtful ones. Book a review.",
+
+    hero: {
+      eyebrow: "Computer vision quality control",
+      /*
+       * The brief's H1 was "Automate Visual Inspections. Catch Every Defect."
+       * The second sentence is a promise no inspection system keeps, and on
+       * this page it costs more than it buys. Consistency is the real claim
+       * and it is the one a QA manager will recognise as true.
+       */
+      title: "A camera does not get tired. The last item gets the first look.",
+      lede: "Human inspection is good, and it varies across a shift and between two people doing it. A model applies the same judgement to the first item and to the ten thousandth one. It says when it is unsure.",
+      badges: ["The same threshold every time", "Flags what it cannot judge"],
+    },
+
+    summary: {
+      heading: "What computer vision quality control is",
+      body: "Computer vision quality control uses a trained model and a camera to check items against examples of what good and bad look like. Each item gets a score rather than a verdict, and where that score sits decides whether it passes or goes to a person. The value is consistency rather than perfection, because a threshold does not drift over a shift.",
+    },
+
+    problem: {
+      heading: "Inspection that varies by the hour",
+      body: "Visual checking is done by people. People are good at it and also human. Attention drops across a shift, standards differ between inspectors, and what got through is invisible until a customer finds it. The cost arrives later as returns, and by then nobody can say which batch it was.",
+      points: [
+        {
+          title: "The last hour is not the first",
+          body: "Everybody inspects better at the start of a shift. The same item gets a different look at nine and at five o'clock in the afternoon.",
+        },
+        {
+          title: "Two inspectors, two standards",
+          body: "Where the line sits lives in somebody's judgement. It is rarely written down anywhere.",
+        },
+        {
+          title: "Nothing is recorded",
+          body: "A defect caught on a clipboard is a tick. There is no way to see a pattern forming.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The architecture of automated inspection",
+      items: [
+        {
+          title: "Ordinary cameras, mostly",
+          body: "Industrial rigs are supported and often unnecessary. A good commercial camera or a phone is enough for a great many inspection jobs.",
+        },
+        {
+          title: "On the device or in the cloud",
+          body: "Where the model runs is a decision about latency. On device keeps footage off the network. Hosted is simpler to operate.",
+        },
+        {
+          title: "Results land in your system",
+          body: "Every score is written to your database. That is what turns inspection into something you can query.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "Human inspection against a vision model",
+      body: "Both catch defects and both miss some. What differs is when they miss.",
+      columns: ["A person", "A vision model"],
+      rows: [
+        {
+          label: "Across a shift",
+          values: ["Attention declines and recovers", "The threshold does not move"],
+        },
+        {
+          label: "Between inspectors",
+          values: ["Each has their own line", "One line, written down"],
+        },
+        {
+          label: "What gets recorded",
+          values: ["A tick on a sheet, if that", "A score against every item"],
+        },
+        {
+          label: "An uncertain case",
+          values: ["Judged in the moment", "Flagged, with the image kept"],
+        },
+        {
+          label: "Finding a pattern later",
+          values: ["Ask whoever was on shift", "Query the scores"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Vision automation in the real world",
+      body: "Three checks that happen by eye today. Each one becomes a score somebody can look up.",
+      items: [
+        {
+          system: "Goods inwards",
+          title: "Damage found before it is booked in",
+          body: "Electronics arrive and get logged before anybody looks. A camera at the bench reads the serial and checks the case in the same pass.",
+        },
+        {
+          system: "A mobile app",
+          title: "Checks that run on the handset",
+          body: "Some work cannot send video anywhere at all. A smaller model on the device does the checking. Only the result travels.",
+        },
+        {
+          system: "Despatch",
+          title: "The right label on the right box",
+          body: "A label is checked against what the order actually says before the box is sealed. Mismatches are caught at the bench.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We watch the inspection happening",
+          body: "Two days at the bench, watching what gets checked. Photographs of real defects start being collected here.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the first check and the cost. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It runs beside the person doing it now",
+          body: "Both inspect the same items for a while. The disagreements get looked at. That is how the threshold gets set honestly.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What the model is and is not good at",
+      body: "A vision model is excellent at applying one standard repeatedly and poor at judging something it has never seen. Knowing which is which is most of a successful deployment.",
+      points: [
+        {
+          label: "Good at the repeated check",
+          body: "The same defect, the same angle, thousands of times over.",
+        },
+        {
+          label: "Poor at the novel case",
+          body: "Something it has no examples of gets flagged.",
+        },
+        {
+          label: "You set where the line sits",
+          body: "Tighter catches more and flags more. That trade is yours to make.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the inspection is built from",
+      body: "Cameras you can buy. Models that run where you need them. Nothing here is a requirement, and the work goes ahead against whatever hardware you already have.",
+      groups: [
+        {
+          label: "Seeing the item",
+          items: [
+            { name: "Vision models", category: "Scoring against your examples" },
+            { name: "Claude", category: "Describing what was found", icon: "siClaude" },
+            { name: "Flutter", category: "The app at the bench", icon: "siFlutter" },
+          ],
+        },
+        {
+          label: "Running the model",
+          items: [
+            { name: "Python", category: "Training and evaluation", icon: "siPython" },
+            { name: "Docker", category: "Same on a bench or a server", icon: "siDocker" },
+            { name: "AWS", category: "Where the hosted half runs" },
+          ],
+        },
+        {
+          label: "Keeping the record",
+          items: [
+            { name: "PostgreSQL", category: "A score against every item", icon: "siPostgresql" },
+            { name: "Redis", category: "Queueing the frames", icon: "siRedis" },
+            { name: "n8n", category: "What happens on a fail", icon: "siN" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Sixteenth shape, and the last unused arrangement of ones and twos across
+     * four rows. Shipped so far: 1-2-2, 1-1-2-1, 1-1-2-1, 2-1-2-1, 1-2-2-1,
+     * 1-2-1-2, 2-1-1-2, 1-1-1-2, 2-2-1-1, 1-2-1-1, 2-1-1-1, 2-1-2-2, 1-1-2-2,
+     * 2-2-2-1 and 2-2-1-2. This is 1-2-2-2.
+     *
+     * Three pairs stacked under one node, which is right for a page whose
+     * every step is a choice. Where it runs, what the score says and what
+     * happens next are all forks, and the item at the top is the only thing
+     * that is not.
+     *
+     * The middle pair is the honest claim. A score above the line and a score
+     * below it are both normal outputs, and drawing only the passing path
+     * would have been the diagram equivalent of "catch every defect".
+     */
+    diagram: {
+      caption:
+        "An item is photographed at the bench. The model runs on the device or in the cloud and scores the image against your own examples. It logs a pass, or holds it.",
+      align: "sequence",
+      rows: [
+        [{ label: "An item, on camera", sub: "At the bench", tone: "brand" }],
+        [
+          { label: "On the device", sub: "Nothing leaves", tone: "accent" },
+          { label: "Or in the cloud", sub: "Simpler to run", tone: "accent" },
+        ],
+        [
+          { label: "Above the line", sub: "Scored a pass", tone: "accent" },
+          { label: "Below it", sub: "Or simply unsure", tone: "accent" },
+        ],
+        [
+          { label: "Logged and passed", sub: "Score kept either way", tone: "brand" },
+          { label: "Held for a person", sub: "With the image", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Do we need expensive industrial cameras?",
+        answer:
+          "Often not. A good commercial camera or a recent phone handles a surprising number of inspection jobs. Lighting matters more than the sensor for most of them. Industrial rigs earn their place on fast lines and fine tolerances, which is a smaller set of jobs than people expect.",
+      },
+      {
+        question: "Does it need an internet connection?",
+        answer:
+          "Not if it runs on the device. A smaller model on the handset or a machine at the bench works offline and keeps footage off the network. Hosted models are easier to run and update, so the choice is about your constraints rather than about quality.",
+      },
+      {
+        question: "How do you train it on our products?",
+        answer:
+          "With your own images of both good and defective items. Examples of what a defect looks like on your own line matter more than sheer volume. The borderline ones are the most valuable. Collection starts in the first week.",
+      },
+      {
+        question: "Will it catch every defect?",
+        answer:
+          "No, and neither does a person. What it does is apply the same threshold every time, which means the misses are consistent and measurable rather than dependent on the hour. You choose where the line sits, and tighter catches more while flagging more for review.",
+      },
+      {
+        question: "What does AI visual inspection services actually cover?",
+        answer:
+          "Checking a physical thing against a standard. That covers damage, presence and placement, and it stops short of judging something the model has no examples of.",
+      },
+      {
+        question: "What are edge AI vision models?",
+        answer:
+          "Models small enough to run on the device holding the camera rather than in a data centre. Nothing leaves the handset. They trade some accuracy for that, and whether it is worth it depends on the check.",
+      },
+      {
+        question: "How does automated defect detection handle a new fault?",
+        answer:
+          "It flags it rather than passing it, because it will not match anything it knows. That is the correct behaviour, and it is why the flagged pile is worth reviewing. New defects are how the next model gets its examples.",
+      },
+    ],
+  },
+
+  /*
+   * Silo 5's parent, 23 August 2026, eighteenth page on the template.
+   *
+   * !! THIS PAGE COVERS BOTH HALVES OF ITS SILO, NOT ONLY VOICE !!
+   *
+   * The brief is written as a voice page throughout: primary keyword "custom
+   * AI voice models", an H1 reading "Give Your Software a Voice", and three
+   * H3s on speech to text, audio analysis and text to speech. Built that way
+   * it would have broken the silo in two places at once.
+   *
+   * This silo has two children. /services/ai-voice-telephony-automation is
+   * the voice one and owns "AI voice agent integration". A parent scoped to
+   * voice competes with it directly. /services/private-llm-fine-tuning is not
+   * about voice at all, and a voice parent leaves it with no page above it
+   * covering its category.
+   *
+   * docs/hitasoft_ai_architecture_strategy.md gives this parent "custom AI
+   * model development" and "private AI model deployment", and names the silo
+   * "Custom Models & Voice" with the tagline "your own model, hosted where you
+   * choose, answering in your own voice". That covers both children and it is
+   * what this page is built to.
+   *
+   * Voice is a half of the page rather than the whole of it. "custom AI voice
+   * models" stays as a secondary, since it is about the models rather than the
+   * agent the child sells.
+   *
+   * "custom voice app development" was a briefed secondary and is not here.
+   * It sits on top of the child's "custom voice AI for small business" and
+   * belongs to that page.
+   *
+   * Declined from the brief:
+   *
+   *   - "your retention rates will skyrocket", an outcome claim with nothing
+   *     behind it.
+   *   - "perfectly transcribes", "high fidelity in real-time" and "complete
+   *     privacy". Speech recognition is measurably imperfect and the page is
+   *     more useful for saying where it struggles.
+   *   - "enterprise-grade STT models", banned at docs/positioning.md line 64.
+   *   - the claim that models "accurately transcribe heavy accents", which is
+   *     the opposite of true. Accent and background noise are where word
+   *     error rates go up, and a buyer testing it will find that out in ten
+   *     minutes. The FAQ says so.
+   *   - "medical consulting platforms" with "complete privacy" attached, for
+   *     the same reason the vector database page dropped its regulated
+   *     professions. See docs/positioning.md line 213.
+   *   - the Google Play media permission compliance claim, unconfirmed like
+   *     every other Play Console claim in these briefs.
+   */
+  "/services/custom-ai-models-voice": {
+    path: "/services/custom-ai-models-voice",
+    metaTitle: "Custom AI Model Development & Voice",
+    serviceType: "custom AI model development",
+    metaDescription:
+      "A hosted model is somebody else's, on somebody else's terms. Custom AI model development, from a tuned private model to the voice it answers in. Book a review.",
+
+    hero: {
+      eyebrow: "Custom AI model development",
+      /*
+       * The brief's H1 was "Give Your Software a Voice. Build Frictionless
+       * Audio AI." It scopes the page to voice, which is the structural
+       * problem noted above. This is the silo's own tagline, which covers the
+       * model half and the voice half in one line.
+       */
+      title: "Your own model, hosted where you choose.",
+      lede: "Most businesses are fine on a hosted endpoint. It comes down to where the data has to stay, or what the model has to sound like. This is the work for the second kind.",
+      badges: ["Runs on hardware you control", "Open weights, no licence to renew"],
+    },
+
+    summary: {
+      heading: "What custom AI model development is",
+      body: "Custom AI model development covers two things a hosted endpoint cannot offer you at all. The first is a model that runs on infrastructure you own, so records never leave your network. The second is a model tuned to your own material, whether that means the language of your industry or the voice your software answers in.",
+    },
+
+    problem: {
+      heading: "When a hosted endpoint is not enough",
+      body: "A general model behind somebody else's API is the right answer most of the time, and it is worth saying so. It stops being the right answer when the data cannot leave, or when the cost per call outgrows a server.",
+      points: [
+        {
+          title: "The records are not allowed to leave",
+          body: "Some material cannot be sent to a third party. That rules out a hosted endpoint.",
+        },
+        {
+          title: "The bill grows with the traffic",
+          body: "Per call pricing is cheap until volume arrives. At a certain point your own hardware is simply cheaper.",
+        },
+        {
+          title: "The general model does not speak your language",
+          body: "Industry terms get mangled by a model trained on everything. Tuning on your own material fixes what prompting cannot.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "What we build here",
+      items: [
+        {
+          title: "Private model deployment",
+          body: "An open weight model running on your own hardware, or in your own cloud account. No data leaves, and no per call meter runs.",
+        },
+        {
+          title: "Tuned on your own material",
+          body: "Fine tuning teaches a model the vocabulary your work uses. It is the fix when prompting stops being enough.",
+        },
+        {
+          title: "Speech in and speech out",
+          body: "Transcription for what people say to your software, and generated speech for what it says back. Both can run privately.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A hosted endpoint against your own model",
+      body: "Most projects should start hosted. This compares them for the cases where that stops working.",
+      columns: ["A hosted endpoint", "Your own model"],
+      rows: [
+        {
+          label: "Where the data goes",
+          values: ["To a third party, retention off", "Nowhere, it stays on your hardware"],
+        },
+        {
+          label: "What it costs",
+          values: ["Per call, growing with traffic", "The hardware, flat once it is running"],
+        },
+        {
+          label: "Your vocabulary",
+          values: ["Handled by prompting, mostly", "Learned, if you tune it"],
+        },
+        {
+          label: "Keeping it current",
+          values: ["The provider upgrades it for you", "You decide when to move"],
+        },
+        {
+          label: "Getting started",
+          values: ["An API key and an afternoon", "A decision worth costing first"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Where a custom model earns its place",
+      body: "Three situations where a hosted model is the wrong tool. Each has a page of its own below.",
+      items: [
+        {
+          system: "Your own infrastructure",
+          title: "Material that cannot leave the building",
+          body: "An open weight model runs inside your network and the records never reach anybody else. What you give up is some capability, and what you get is a boundary you can point at.",
+        },
+        {
+          system: "Your product's interface",
+          title: "Speaking instead of tapping",
+          body: "Somebody says what they want instead of tapping through four screens of form fields to get there. The words are transcribed and turned into the action intended.",
+        },
+        {
+          system: "Your recorded audio",
+          title: "Conversations that become records",
+          body: "Calls and sessions are transcribed, then structured into searchable notes. Where the audio is sensitive, transcription runs on your hardware.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We check whether you need this",
+          body: "Two days on the constraint that made you ask. Sometimes a hosted endpoint configured properly is the honest answer.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan prices the hardware and the work. You decide whether the move is worth it.",
+        },
+        {
+          when: "From week 3",
+          title: "It runs beside what you have",
+          body: "The private model goes up alongside the hosted one, and both answer the same questions. Comparing them on your own material is the test.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What you give up and what you get",
+      body: "Your own model is a trade rather than an upgrade. It is worth making deliberately, and it is worth being told when it is not.",
+      points: [
+        {
+          label: "You get a hard boundary",
+          body: "Data on your hardware does not reach anybody, by architecture.",
+        },
+        {
+          label: "You give up some capability",
+          body: "The largest hosted models are still ahead on hard reasoning.",
+        },
+        {
+          label: "You take on the upkeep",
+          body: "Somebody has to run it. Usually us, and it is a real cost either way.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What a private deployment is built from",
+      body: "Open weight models and ordinary infrastructure. Nothing here is a requirement, and the work goes ahead against whatever hardware you already have.",
+      groups: [
+        {
+          label: "Models you can host",
+          items: [
+            { name: "Llama", category: "The usual open weight starting point", icon: "siMeta" },
+            { name: "Mistral", category: "Smaller, and often enough", icon: "siMistralai" },
+            { name: "Qwen", category: "Strong on multilingual work", icon: "siQwen" },
+          ],
+        },
+        {
+          label: "Speech, both directions",
+          items: [
+            { name: "Whisper", category: "Transcription that can run privately" },
+            { name: "Twilio", category: "Where the calls come in", icon: "siTwilio" },
+            { name: "Claude", category: "Understanding what was said", icon: "siClaude" },
+          ],
+        },
+        {
+          label: "Where it runs",
+          items: [
+            { name: "Docker", category: "Same on your hardware or ours", icon: "siDocker" },
+            { name: "AWS", category: "Your own cloud account" },
+            { name: "PostgreSQL", category: "Transcripts and records", icon: "siPostgresql" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Seventeenth shape, and the first three row sequence. Every arrangement
+     * of ones and twos across four rows is now used except 1-1-1-1 and
+     * 2-2-2-2, and neither suits a page about choices. The integration parent
+     * proves three rows renders at this height, so this is 2-2-2.
+     *
+     * Every row is a pair because every row is a decision, which is what this
+     * page is: what you bring, how the model is made yours, and where it ends
+     * up running. It opens and closes on the client's own things, and only
+     * the middle row is work we add.
+     */
+    diagram: {
+      caption:
+        "You bring the material and the voice it answers in. The model is either tuned on that or prompted against it, and it runs on your hardware or on an endpoint.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "Your own material", sub: "Records and terms", tone: "brand" },
+          { label: "Your own voice", sub: "How it should sound", tone: "brand" },
+        ],
+        [
+          { label: "Tuned on it", sub: "When prompting stops working", tone: "accent" },
+          { label: "Or prompted well", sub: "Cheaper, and often enough", tone: "accent" },
+        ],
+        [
+          { label: "On your hardware", sub: "Nothing leaves", tone: "brand" },
+          { label: "Or on an endpoint", sub: "Retention off", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Do custom AI voice models handle accents and other languages?",
+        answer:
+          "Languages yes, accents less well than the marketing suggests. Word error rates climb with an unfamiliar accent or background noise, which is measurable and worth measuring on your own recordings before committing. Tuning on your own audio is the fix, and it is a large part of why this service exists.",
+      },
+      {
+        question: "How do microphone permissions and consent work?",
+        answer:
+          "Consent gets asked for in the interface before anything records, and what happens to the audio afterwards is decided in the same conversation. Store reviews look closely at anything touching a microphone, so those decisions belong in the build rather than at submission.",
+      },
+      {
+        question: "Should processing run on the device or in the cloud?",
+        answer:
+          "On the device when the audio cannot travel or the connection is unreliable, and in the cloud when the reasoning matters more. Smaller local models are noticeably weaker, so the honest version is that this is a trade rather than a free choice.",
+      },
+      {
+        question: "When is private AI model deployment actually worth it?",
+        answer:
+          "When data residency requires it, or when the volume makes per call pricing more expensive than a server. Below those thresholds a hosted endpoint with retention switched off is usually the better answer, and we will say so in week two.",
+      },
+      {
+        question: "What does speech-to-text AI integration involve?",
+        answer:
+          "Getting audio into your system, transcribed, and turned into something the software can act on. The transcription is the easy half. Deciding what a sentence means and what to do about it is where the work is.",
+      },
+      {
+        question: "How is this different from the pages below it?",
+        answer:
+          "This page is the decision and they are the builds. Fine tuning a private model and adding voice to telephony are the two specific jobs. Each has a page of its own.",
+      },
+    ],
+  },
+
+  /*
+   * First child of the models and voice silo, 23 August 2026, nineteenth page
+   * on the template.
+   *
+   * !! ON THE PARENT'S "private AI model deployment" !!
+   *
+   * That phrase is a strategy doc secondary for both this page and its parent,
+   * which is the kind of overlap that has needed settling in every other silo.
+   * It does not need settling here. The brief for this page chose
+   * "on-premise LLM deployment" and "secure AI model hosting" instead, so the
+   * two pages describe the same intent in different words. The parent keeps
+   * its assignment, used once in an FAQ that asks whether you need this at
+   * all, and this page takes the brief's three. Nothing was moved.
+   *
+   * !! NO VERSION NUMBER ON LLAMA !!
+   *
+   * An H3 read "Open-Weight Model Fine-Tuning (Llama 3, Mistral)".
+   * content/integrations.ts line 17 allows families and not versions, because
+   * a version dates the page the week it is superseded. Both families are
+   * vetted and both already ship on the parent.
+   *
+   * !! THE GUARANTEES ARE GONE, THE ARCHITECTURE IS NOT !!
+   *
+   * The brief asked for "total data isolation", "Total physical isolation",
+   * "Guaranteed zero third-party data sharing", "perfect, proprietary JSON",
+   * "ensuring zero user data leaks", and an assurance that a platform "easily
+   * passes rigorous Google Play Data safety forms without fear of rejection".
+   *
+   * The argument underneath all of them is the strongest on the page and it
+   * survives whole: a model on hardware you own means records do not leave
+   * because there is nowhere for them to go, which is a property of the
+   * architecture rather than of somebody's policy. That is worth more than
+   * the word guaranteed, and it is the version a security reviewer will
+   * believe. Nobody controls a store review, here or anywhere else.
+   *
+   * "Enterprise" was in the agitation, "incredibly" twice, and "industry
+   * leading" once. All out.
+   *
+   * The first use case dropped its medical platforms, exactly as the vector
+   * database page did, and for the reason at docs/positioning.md line 213.
+   *
+   * "A few weeks" for the training was cut. Nobody has timed it, and this
+   * silo has already refused four duration figures.
+   */
+  "/services/private-llm-fine-tuning": {
+    path: "/services/private-llm-fine-tuning",
+    /* 40 characters. The brief's version appended a second brand name at 52. */
+    metaTitle: "Private LLM Fine-Tuning & Secure Hosting",
+    serviceType: "private LLM fine-tuning",
+    metaDescription:
+      "Some records are not allowed to leave the building. Private LLM fine-tuning runs an open weight model trained on your own material, in house. Book a review.",
+
+    hero: {
+      eyebrow: "Private LLM fine-tuning",
+      /*
+       * The brief's H1 was "Own Your AI Intelligence. Train Private LLMs."
+       * The first half is a slogan and the second is the service name. The
+       * buyer arriving here has been told no by somebody, usually security or
+       * legal, so the headline answers that instead.
+       */
+      title: "The data cannot leave. The model can come to it.",
+      lede: "Plenty of AI projects stop at a policy that forbids sending records to a third party. An open weight model running on your own hardware removes the question rather than arguing with it.",
+      badges: ["Open weights, hosted by you", "No per token meter running"],
+    },
+
+    summary: {
+      heading: "What private LLM fine-tuning is",
+      body: "Private LLM fine-tuning adjusts the weights of an open weight model using your own material, then runs the result on infrastructure you control. Because the model sits inside your network or your own cloud account, records reach it without leaving your boundary. The tuning is what makes it fluent in your vocabulary, and the hosting is what makes it private.",
+    },
+
+    problem: {
+      heading: "The project that stopped at the policy",
+      body: "A hosted endpoint is the right answer for most work and it is genuinely hard to beat. It stops being available the moment somebody decides the records cannot go to a third party. That decision is usually correct and it ends the conversation, unless the model can come to the data instead.",
+      points: [
+        {
+          title: "Legal said no and legal was right",
+          body: "Some material is not ours to send anywhere. Retention settings do not change that. The objection is to the transfer itself.",
+        },
+        {
+          title: "The general model mangles your vocabulary",
+          body: "Industry terms and internal shorthand come back wrong. Prompting patches it up, then stops helping.",
+        },
+        {
+          title: "The bill scales with success",
+          body: "Per token pricing is cheap while volume is low. It keeps growing, and a server that costs the same every month starts looking sensible.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The architecture of a private deployment",
+      items: [
+        {
+          title: "Preparing the material",
+          body: "Most of the work is turning your material into examples. Quality decides the outcome far more than size.",
+        },
+        {
+          title: "Tuning an open weight model",
+          body: "Llama and Mistral are the usual families. Weights adjust to your material, rather than a prompt sitting in front of it describing it.",
+        },
+        {
+          title: "Hosted inside your boundary",
+          body: "The result runs in your own cloud account. Nothing calls out, because there is nothing to call.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "Renting an endpoint against owning a model",
+      body: "Most work should rent. This is the comparison for the work that cannot.",
+      columns: ["A hosted endpoint", "Your own model"],
+      rows: [
+        {
+          label: "Where records go",
+          values: ["To a third party, retention off", "Nowhere. There is no outbound call"],
+        },
+        {
+          label: "What it costs",
+          values: ["Per token, rising with use", "The hardware, flat once running"],
+        },
+        {
+          label: "Your vocabulary",
+          values: ["Described in a long prompt", "Learned by the weights"],
+        },
+        {
+          label: "Output you can rely on",
+          values: ["Prompted, and checked", "Trained toward, and still checked"],
+        },
+        {
+          label: "Who keeps it running",
+          values: ["The provider does", "Somebody has to, and that is a cost"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Where a private model is the only option",
+      body: "Three situations where a hosted endpoint is not available. Each ends with the model inside the boundary.",
+      items: [
+        {
+          system: "A consulting platform",
+          title: "Transcripts that never leave",
+          body: "Session recordings are transcribed and summarised by a model on the same infrastructure that stores them. No third party ever receives the audio or the text.",
+        },
+        {
+          system: "A financial product",
+          title: "Structured output, trained rather than prompted",
+          body: "A tuned model returns the shape your ledger expects without a long prompt describing it each time. Output still gets validated in code, because trained toward is not the same as guaranteed.",
+        },
+        {
+          system: "A closed community",
+          title: "Moderation that runs in house",
+          body: "Posts are checked against your own rules, by a model running on your own servers. What members write never leaves the platform.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We check whether tuning is the answer",
+          body: "Two days on the constraint and the material. Often a hosted endpoint is the honest recommendation.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan prices the hardware, the tuning and the upkeep against what you spend now. You decide whether the move pays.",
+        },
+        {
+          when: "From week 3",
+          title: "Prepared, tuned and compared",
+          body: "The dataset gets built first. It decides everything after it. The tuned model is measured against the hosted one.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What owning the model actually means",
+      body: "Private deployment is a trade. Both sides are worth stating. It buys a boundary. It costs capability and upkeep.",
+      points: [
+        {
+          label: "The boundary is architectural",
+          body: "No outbound call exists. There is no policy to trust.",
+        },
+        {
+          label: "The capability is lower",
+          body: "The largest hosted models still reason better.",
+        },
+        {
+          label: "Somebody runs it",
+          body: "Updates, hardware and monitoring are ongoing work. Usually ours.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What a private deployment is built from",
+      body: "Open weight models, and infrastructure you already know. Nothing here is a requirement, and the work goes ahead against whatever hardware you have.",
+      groups: [
+        {
+          label: "Models worth tuning",
+          items: [
+            { name: "Llama", category: "The usual starting point", icon: "siMeta" },
+            { name: "Mistral", category: "Smaller, and often enough", icon: "siMistralai" },
+            { name: "Qwen", category: "Where the work is multilingual", icon: "siQwen" },
+          ],
+        },
+        {
+          label: "Preparing and tuning",
+          items: [
+            { name: "Python", category: "Dataset preparation and evaluation", icon: "siPython" },
+            { name: "PostgreSQL", category: "Where your material already sits", icon: "siPostgresql" },
+            { name: "pgvector", category: "Retrieval, where tuning is not needed" },
+          ],
+        },
+        {
+          label: "Running it",
+          items: [
+            { name: "Docker", category: "Same on your hardware or ours", icon: "siDocker" },
+            { name: "AWS", category: "Your own cloud account" },
+            { name: "Sentry", category: "Knowing when it stops", icon: "siSentry" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Eighteenth shape, and the one arrangement deliberately avoided until a
+     * page earned it: 1-1-1-1, four single nodes and no fork anywhere.
+     *
+     * Every other diagram on this site forks, because every other page
+     * describes a decision. This one does not. Fine tuning is a pipeline in
+     * the plainest sense, material to dataset to weights to deployment, and
+     * each stage feeds exactly one next stage. Drawing a branch here would
+     * have invented a choice that the work does not contain.
+     *
+     * Only the two middle nodes are accent. The material at the top and the
+     * hardware at the bottom are both the client's, which is the whole claim
+     * of the page rendered as colour.
+     */
+    diagram: {
+      caption:
+        "Your own material becomes a training set, the weights of an open model are adjusted to it, and the result runs on hardware you control. Nothing leaves at any stage.",
+      align: "sequence",
+      rows: [
+        [{ label: "Your own material", sub: "Records and terms", tone: "brand" }],
+        [{ label: "Prepared into examples", sub: "Where the work is", tone: "accent" }],
+        [{ label: "Weights adjusted", sub: "An open model, tuned", tone: "accent" }],
+        [{ label: "Running on your hardware", sub: "No outbound call", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Do we need expensive hardware for this?",
+        answer:
+          "Less than people expect. A quantised model gives up some quality for a large drop in what it needs to run. A great many jobs are served well by that trade. The sizing gets costed in week two.",
+      },
+      {
+        question: "Which open weight models do you fine-tune?",
+        answer:
+          "Usually the Llama or Mistral families, picked for what the job needs rather than for what is newest. Model families are named here deliberately and versions are not, because whichever is current when you read this will not be current for long.",
+      },
+      {
+        question: "How long does fine-tuning take?",
+        answer:
+          "The training itself is the short part. Preparing a dataset worth training on is where the time goes, and it depends entirely on what state your material is in. Week one exists to answer that first.",
+      },
+      {
+        question: "Is custom AI model training better than a long prompt?",
+        answer:
+          "Not always, and trying the prompt first is cheaper. Tuning earns its place when prompting has plateaued, or when the prompt has grown long enough to cost real money on every call.",
+      },
+      {
+        question: "What does on-premise LLM deployment involve day to day?",
+        answer:
+          "Somebody keeps it running. Hardware, updates and monitoring do not vanish just because the model now belongs to you. That upkeep is a real cost. We do it after handover unless you would rather not.",
+      },
+      {
+        question: "Is secure AI model hosting just retention being off?",
+        answer:
+          "No, and the difference is the point. Retention off means a promise not to keep it. Hosting it yourself means nothing is sent, so there is no promise to rely on and nothing to audit.",
+      },
+    ],
+  },
+
+  /*
+   * Second child of the models and voice silo, 23 August 2026, twentieth page
+   * on the template. This completes every service page on the site.
+   *
+   * !! VOICE CLONING IS NOT OFFERED HERE !!
+   *
+   * The third FAQ asked to confirm "fully customizable voice cloning". That is
+   * the one item in any of these briefs that is a problem beyond accuracy.
+   * Cloning a particular person's voice is an impersonation capability, it
+   * needs that person's consent to be lawful in several of the markets in
+   * docs/positioning.md, and nothing in this repository says the company does
+   * it. The page offers voice selection instead, which is what a brand
+   * actually needs, and the FAQ says plainly that cloning a real person is a
+   * consent question rather than a feature toggle.
+   *
+   * !! "Gadgetly" AGAIN !!
+   *
+   * A use case names it as a retail platform, exactly as the predictive BI
+   * brief did. It appears nowhere in this repository except the comment on
+   * that page explaining why it was cut. docs/positioning.md line 215. Same
+   * decision: the scenario keeps the situation and drops the name.
+   *
+   * !! NO CAPACITY OR LATENCY FIGURES !!
+   *
+   * The comparison asked for "Handles 10,000 concurrent calls" and the first
+   * FAQ for "sub-second conversational latency". Neither has been measured,
+   * and the second is the same shape as the "sub 50ms" hosting claim that
+   * docs/positioning.md already records as removed from the template. Latency
+   * is the real risk on this page, so the FAQ describes what causes a pause
+   * and what is done about it rather than quoting a number nobody can hold to.
+   *
+   * Vonage is not named. Twilio is, because Twilio is genuinely vetted in
+   * content/integrations.ts and already ships on the parent. Vonage is not in
+   * that file at all.
+   *
+   * "Enterprise integrations", "ultra-low latency", "ultra-fast" and "without
+   * human intervention" are all out. The last one matters: this page sells a
+   * warm transfer, so promising no human involvement contradicts its own best
+   * feature two sections later.
+   */
+  "/services/ai-voice-telephony-automation": {
+    path: "/services/ai-voice-telephony-automation",
+    /* 44 characters. The brief split the primary phrase with an ampersand and
+     * then appended a second brand name at 56. */
+    metaTitle: "AI Voice Telephony Automation & Phone Agents",
+    serviceType: "AI voice telephony automation",
+    metaDescription:
+      "Nobody has ever enjoyed pressing one for accounts. AI voice telephony automation answers in plain words and hands over when it cannot help. Book a review.",
+
+    hero: {
+      eyebrow: "AI voice telephony automation",
+      /*
+       * The brief's H1 was "Kill the Press 1 Menu. Deploy Intelligent Voice
+       * Agents." The first half is the good half. The second is the product
+       * name with an adjective on it, so it goes.
+       */
+      title: "Press one for accounts. Nobody has ever wanted this.",
+      lede: "A phone menu is a filing system the caller has to operate on your behalf. An agent that listens instead can take the actual question, look the account up, and answer it or fetch somebody who can.",
+      badges: ["Hands over with the transcript", "Answers from your own records"],
+    },
+
+    summary: {
+      heading: "What AI voice telephony automation is",
+      body: "AI voice telephony automation connects a conversational model to the phone line through a programmable voice API. The caller speaks normally instead of choosing from a menu, and the agent can look up their account before answering. What it cannot settle it passes to a person, along with everything the caller has already said.",
+    },
+
+    problem: {
+      heading: "The menu was never for the caller",
+      body: "A phone tree exists to route work, and it does that by making the caller guess which of five options describes their problem. Most of them guess wrong at least once. By the time a person picks up, the caller has spent their patience and explained nothing.",
+      points: [
+        {
+          title: "The options never fit the question",
+          body: "A menu offers the categories your business uses internally. Callers arrive with a problem, not a department.",
+        },
+        {
+          title: "Explaining it twice",
+          body: "Whatever the caller said to the machine is gone. They start again from the beginning.",
+        },
+        {
+          title: "Simple questions still need a person",
+          body: "Balance queries and delivery dates get routed to staff because the menu cannot answer them. They are most of the queue.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "The architecture of a phone agent",
+      items: [
+        {
+          title: "On the line, through Twilio",
+          body: "Calls come in and go out over a programmable voice API, on the number you already publish. The number and the carrier arrangement you already have can usually stay as they are.",
+        },
+        {
+          title: "It can look things up mid call",
+          body: "The agent queries your systems while the caller is talking. That is the difference between answering and pointing.",
+        },
+        {
+          title: "A handover that carries context",
+          body: "Anything it cannot settle goes to a person with a summary of the call attached. Nobody asks the caller to start again.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A phone menu against a voice agent",
+      body: "Both answer the phone. They differ on who does the understanding.",
+      columns: ["A phone menu", "A voice agent"],
+      rows: [
+        {
+          label: "How the caller starts",
+          values: ["Picks from options you wrote", "Says what they want"],
+        },
+        {
+          label: "Reaching your systems",
+          values: ["None, it only routes", "Queries the account mid call"],
+        },
+        {
+          label: "A question outside the tree",
+          values: ["Routed to a person, or looped", "Answered, if the answer exists"],
+        },
+        {
+          label: "When a person takes over",
+          values: ["The caller explains it again", "The transcript goes with the call"],
+        },
+        {
+          label: "Changing what it handles",
+          values: ["Somebody rebuilds the tree", "The documents behind it change"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Telephony workflows in action",
+      body: "Three calls that happen every day. Each one ends in an answer or a warm handover.",
+      items: [
+        {
+          system: "Your support line",
+          title: "A billing question, answered on the call",
+          body: "Somebody rings about a charge they do not recognise. The agent verifies them, reads the account and explains the charge, without a ticket ever being opened.",
+        },
+        {
+          system: "Your supplier calls",
+          title: "Outbound, when the stock says so",
+          body: "A forecast shows a line running short and the agent calls the supplier to confirm a lead time. What was agreed is transcribed into the record afterwards.",
+        },
+        {
+          system: "Your booking line",
+          title: "Appointments taken over the phone",
+          body: "The agent finds a slot, books it and confirms the details back to the caller. The appointment reaches your system directly.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We listen to the calls you get",
+          body: "Two days on what people actually ring about. The repeat questions sort themselves into a short list quickly.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names the first calls and the cost. You decide whether it goes ahead.",
+        },
+        {
+          when: "From week 3",
+          title: "It takes one kind of call",
+          body: "The agent starts narrow and transfers the rest. What it handles widens as the recordings hold up.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "What a voice agent should and should not do",
+      body: "Voice is less forgiving than chat. A caller cannot scroll back, and a wrong answer said confidently out loud is worse than a slow one.",
+      points: [
+        {
+          label: "It answers from your records",
+          body: "Account data and your own documentation, not general knowledge.",
+        },
+        {
+          label: "It says when it is unsure",
+          body: "Then transfers, rather than guessing at something spoken aloud.",
+        },
+        {
+          label: "The caller is told what it is",
+          body: "People are informed they are speaking to an automated agent.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What the phone agent is built from",
+      body: "The telephony you already have, with a model behind it. Nothing here is a requirement, and the work goes ahead against whatever carrier arrangement you run.",
+      groups: [
+        {
+          label: "Getting on the line",
+          items: [
+            { name: "Twilio", category: "Programmable voice, in and out", icon: "siTwilio" },
+            { name: "Whisper", category: "Turning speech into text" },
+            { name: "Flutter", category: "Where an app is involved too", icon: "siFlutter" },
+          ],
+        },
+        {
+          label: "Deciding what to say",
+          items: [
+            { name: "Claude", category: "Holding the conversation", icon: "siClaude" },
+            { name: "pgvector", category: "Your documentation, searchable" },
+            { name: "Embeddings", category: "Finding the passage that answers" },
+          ],
+        },
+        {
+          label: "What it reaches",
+          items: [
+            { name: "PostgreSQL", category: "Accounts and appointments", icon: "siPostgresql" },
+            { name: "Redis", category: "Call state while it runs", icon: "siRedis" },
+            { name: "n8n", category: "What happens after the call", icon: "siN" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Nineteenth shape and the last one this site needs, since every service
+     * page is now built. Three rows, 2-1-2, which nothing else uses.
+     *
+     * Both ends are pairs and the middle is not, because that is the shape of
+     * the work. Calls arrive in two directions, one agent handles both, and
+     * every call ends one of two ways. The brief treats outbound as an
+     * afterthought in a single use case, and putting it level with inbound at
+     * the top says what the copy would otherwise have to argue.
+     */
+    diagram: {
+      caption:
+        "Calls come in and go out through the same agent. It answers from your own records, and every call ends either resolved or handed to a person with the transcript.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "An inbound call", sub: "Somebody rings you", tone: "brand" },
+          { label: "An outbound call", sub: "Something triggered it", tone: "brand" },
+        ],
+        [{ label: "The agent", sub: "Reading your records", tone: "accent" }],
+        [
+          { label: "Answered", sub: "On the call itself", tone: "brand" },
+          { label: "Passed to a person", sub: "Transcript attached", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Will there be an awkward pause before it answers?",
+        answer:
+          "There is a pause, and the work is in keeping it short enough to feel like conversation. It comes from three steps running in sequence, which are hearing the end of a sentence, deciding what to say and speaking it. We measure it on your setup rather than quoting a number, because the carrier route affects it as much as the models do.",
+      },
+      {
+        question: "What happens when it cannot solve the problem?",
+        answer:
+          "It transfers, and the person picking up gets a summary of what has already been said. The caller does not start again, which is the part that makes people hate automated lines. Which calls transfer immediately gets decided in the first fortnight.",
+      },
+      {
+        question: "Can the agent use a particular voice?",
+        answer:
+          "You can choose from a range of synthetic voices and set the pacing and the accent to suit the brand. Cloning a specific real person's voice is a different question. It needs that person's documented consent, and it is not something we set up on request.",
+      },
+      {
+        question: "What can AI phone agents actually do on a call?",
+        answer:
+          "Verify a caller, then answer from your own documentation. What they should not do is anything irreversible without a person, which on most systems means refunds and cancellations.",
+      },
+      {
+        question: "Is this automated call center AI, or something smaller?",
+        answer:
+          "It scales either way, and most projects start smaller. One line and one kind of call is a better first step than replacing a contact centre. It tells you what callers ask.",
+      },
+      {
+        question: "Do you do Twilio AI voice integration specifically?",
+        answer:
+          "Yes, and it is the usual route because the programmable voice side is well documented and reliable. If you already run a number somewhere else, that is worth checking before anybody moves it.",
+      },
+    ],
+  },
 };

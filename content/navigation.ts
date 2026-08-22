@@ -38,6 +38,7 @@ export const mainNav: NavItem[] = [
           href: "/services/ai-software-integration",
           blurb:
             "Make the software you already run intelligent, without rebuilding it.",
+          railNote: "Add AI without a rebuild",
           children: [
             {
               name: "Custom AI API & Software Integration",
@@ -56,6 +57,7 @@ export const mainNav: NavItem[] = [
           href: "/services/ai-workflow-automation",
           blurb:
             "Hand the repeat work to software so your team stops doing it by hand.",
+          railNote: "Support, documents and ledgers",
           children: [
             {
               name: "Autonomous AI Agents",
@@ -84,6 +86,7 @@ export const mainNav: NavItem[] = [
           href: "/services/custom-ai-mvp-development",
           blurb:
             "For founders with a product to prove rather than a system to upgrade.",
+          railNote: "Build the part that proves it",
           children: [
             {
               name: "Rapid AI Prototyping",
@@ -107,6 +110,7 @@ export const mainNav: NavItem[] = [
           href: "/services/ai-data-predictive-analytics",
           blurb:
             "Your own history, turned into a forecast the business acts on.",
+          railNote: "Forecasting, BI and vision",
           children: [
             {
               name: "Predictive Analytics & BI",
@@ -130,6 +134,7 @@ export const mainNav: NavItem[] = [
           href: "/services/custom-ai-models-voice",
           blurb:
             "Your own model, hosted where you choose, answering in your own voice.",
+          railNote: "Private models and phone agents",
           children: [
             {
               name: "Private LLM Fine-Tuning",
@@ -145,12 +150,20 @@ export const mainNav: NavItem[] = [
         },
       ],
       /*
-       * How we work is not a service, so it is not a group. It answers the
-       * question the panel provokes, which is what working with us would
-       * actually be like, so it sits on the strip underneath rather than
-       * taking a slot in the main menu it would have to win from a silo.
+       * No footer strip on this panel, removed 23 August 2026 at the client's
+       * request. It carried a "How we work" link and cost 57px of panel
+       * height while leaving 38px empty under the last silo.
+       *
+       * The five silos took that height instead, as the railNote line above
+       * plus wider spacing. Measured at 1440 wide, the panel was 329px before
+       * and is meant to stay there.
+       *
+       * How we work is still in the site footer and in the process section of
+       * every service page, so it did not lose its only route in.
+       *
+       * Industries and Resources keep their footers. Theirs point at an index
+       * of the panel's own contents, which is a different job.
        */
-      footer: { name: "How we work", href: "/how-we-work" },
     },
   },
   {
