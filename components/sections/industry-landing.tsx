@@ -336,6 +336,38 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
       </Section>
 
       {/*
+        The rest of the sector.
+
+        Placed after the pipeline rather than straight after the use cases,
+        which is where it was suggested. The three use cases and the invoice
+        pipeline are one argument, specific and worked through, and dropping a
+        wide grid into the middle of it would blunt exactly the thing that
+        makes the page convert. It widens once that argument has landed.
+
+        Hairline topped columns rather than a bordered box grid, because the
+        security section below is a bordered box grid and two of those in a row
+        is the rhythm problem the service page had to be fixed for.
+      */}
+      {page.breadth && (
+        <Section spacing="tight" className="border-t border-foreground/10">
+          <Container>
+            <SectionTitle>{page.breadth.heading}</SectionTitle>
+            <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+              {page.breadth.body}
+            </p>
+            <dl className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+              {page.breadth.items.map((item) => (
+                <div key={item.title} className="border-t border-foreground/15 pt-5">
+                  <dt className="font-display text-xl tracking-tight">{item.title}</dt>
+                  <dd className="mt-3 text-muted-foreground leading-relaxed">{item.body}</dd>
+                </div>
+              ))}
+            </dl>
+          </Container>
+        </Section>
+      )}
+
+      {/*
         Security, on the tint the home page already uses for emphasis. The
         brief asks for a full width dark slab, which would invert wrongly in
         one of the two themes and would need a second set of tokens to fix.

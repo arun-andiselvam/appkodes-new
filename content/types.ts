@@ -481,6 +481,35 @@ export type IndustryLanding = {
     items: { title: string; body: string; detail: string[] }[];
   };
   /**
+   * The rest of the sector, after the specific hooks have done their work.
+   *
+   * Optional, because not every industry has adjacent corners worth naming and
+   * a page should not carry an empty gesture at breadth.
+   *
+   * !! THIS IS NOT A CLAIM TO COVER A WHOLE SECTOR !!
+   *
+   * It was suggested on 22 August 2026 as a grid headed "We build AI for the
+   * full financial spectrum". That is a coverage claim, and content/
+   * industries.ts states the opposite position in the file next door: the
+   * industry pages are use cases rather than a claim to specialise, and a page
+   * joins the list once there is something specific to say.
+   *
+   * So each entry says how the work maps onto capabilities already described
+   * further up the page, which is true and is also the more useful answer. A
+   * lending buyer wants to know we understand that a loan file is a document
+   * problem before a scoring problem. Naming the sector and stopping there
+   * tells them nothing.
+   *
+   * The strategy behind it is sound and is why it exists at all. Specific copy
+   * converts and generic copy captures, so the page leads with ledgers and
+   * invoices and widens here, at the bottom, where it cannot dilute them.
+   */
+  breadth?: {
+    heading: string;
+    body: string;
+    items: { title: string; body: string }[];
+  };
+  /**
    * The pipeline for one job in this trade, end to end.
    *
    * !! ONE STEP HAS TO BE A PERSON !!

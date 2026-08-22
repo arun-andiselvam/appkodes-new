@@ -162,6 +162,50 @@ export const industryLandings: Record<string, IndustryLanding> = {
     },
 
     /*
+     * The catch-all, deliberately at the bottom.
+     *
+     * The page leads with ledgers, invoices and support because specific copy
+     * converts. This is here so a lending or insurance buyer does not bounce
+     * off three examples that are not theirs.
+     *
+     * !! IT NAMES CAPABILITIES, NOT SPECIALISMS !!
+     *
+     * The version suggested on 22 August 2026 read "Fraud detection and
+     * anomaly monitoring" and "Automated claims processing", which assert
+     * domain experience nobody here has established. Every line below instead
+     * says how that corner of finance maps onto work already described further
+     * up this page: documents becoming fields, records becoming searchable,
+     * feeds being matched. That is true, and it is the answer a buyer in those
+     * sectors actually wants, since what they are testing is whether we
+     * understand the shape of their problem.
+     *
+     * Anything here that becomes a real specialism should get its own page
+     * rather than a longer line in this grid.
+     */
+    breadth: {
+      heading: "Where else this applies in finance",
+      body: "The same work, pointed at other corners of the sector.",
+      items: [
+        {
+          title: "WealthTech and robo-advisors",
+          body: "Portfolio data is already structured, which makes it the easiest thing in finance to run predictions against. It is the reporting and the signals, not the advice.",
+        },
+        {
+          title: "Lending and credit",
+          body: "Loan files arrive as documents and have to become fields before anything can score them. Document processing does the first half of that, and a scoring model does the second.",
+        },
+        {
+          title: "Payments",
+          body: "Anomaly detection on a transaction feed is the same shape of work as reconciliation, read the other way round. It looks for what does not fit.",
+        },
+        {
+          title: "InsurTech",
+          body: "A claim is a document and a policy is a rule set, and matching them is the job. Routing and a first pass automate well, and the decision still stays with a person.",
+        },
+      ],
+    },
+
+    /*
      * The section the service page has no equivalent of, and the reason this
      * page reads differently from it.
      *
