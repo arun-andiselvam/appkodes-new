@@ -188,7 +188,12 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           body: "A layer sits over your existing logic, and it reads the records you already hold. Staff ask a question in plain words, and the answer comes from your data rather than from the internet.",
         },
         {
-          title: "Legacy system upgrades",
+          // "Legacy system upgrades" until 22 August 2026. The target phrase
+          // is "legacy system AI upgrades", and the card was one word off it
+          // while describing exactly that work. See docs/seo-standards.md:
+          // a secondary keyword is only worth listing if a section answers it,
+          // and this one did without ever saying so.
+          title: "Legacy system AI upgrades",
           body: "We build an encrypted bridge, so older CRM and ERP systems can reach a current model. The core code stays where it is, which matters most when the original developer is long gone.",
         },
       ],
@@ -389,7 +394,20 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     // schema description is supposed to hold.
     summary: {
       heading: "What this service is",
-      body: "Hitasoft connects trained models to software that already exists, over the APIs that software already exposes. A system gains document summaries and search that understands a question, and its core code is never rewritten to get them. The work runs against your own records rather than a public index, and the integration can be removed as cleanly as it went in.",
+      /*
+       * Opens on the phrase itself, added 22 August 2026.
+       *
+       * "add AI to existing software" is a target secondary term and it was
+       * nowhere on the page verbatim. The H1 says "the software you already
+       * run" and the title says "Existing Apps", both of which are better copy
+       * and neither of which is the phrase.
+       *
+       * This block is the right place to carry it rather than the H1, because
+       * it is the passage written to be lifted whole and it is the Service
+       * schema's description. A definition paragraph opening with the plain
+       * phrase is what it should have said anyway.
+       */
+      body: "Hitasoft adds AI to existing software. It happens over the APIs those systems already expose, so no core code is rewritten. A system gains document summaries and search that understands a question rather than a keyword. The work runs against your own records rather than a public index, and the integration can be removed as cleanly as it went in.",
     },
 
     comparison: {
@@ -465,7 +483,11 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           "AI software integration connects a trained model to an application's own database and business logic through secure endpoints. The software gains document summaries and search that understands a question rather than a keyword. None of that requires the core application to be rewritten.",
       },
       {
-        question: "How long does it take to integrate AI into existing software?",
+        // "integrate AI into" until 22 August 2026. The target phrase is "add
+        // AI to existing software", and the summary carries it as "adds",
+        // which Google stems but is not the phrase. A FAQ question is where a
+        // search phrasing belongs verbatim, and this asks the same thing.
+        question: "How long does it take to add AI to existing software?",
         answer:
           "Three weeks, audit to live. Week one reviews the codebase and maps the endpoints, week two connects the models and settles the data handling, and week three tunes the prompts against real traffic before release.",
       },
