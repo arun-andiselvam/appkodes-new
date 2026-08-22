@@ -823,4 +823,309 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       },
     ],
   },
+
+  /*
+   * The second silo child, built 22 August 2026 from a blueprint the client
+   * brought. It owns "secure AI integration services", which is the term
+   * docs/hitasoft_ai_architecture_strategy.md assigns it, and neither the
+   * parent nor its sibling touches that phrase.
+   *
+   * !! THE URL IS NOT THE ONE IN THE BLUEPRINT !!
+   *
+   * It asks for /services/ai-software-integration/secure-ai-compliance. The
+   * page already exists at secure-ai-compliance-architecture, which is the URL
+   * in the navigation, the sitemap and the strategy doc. Third time this has
+   * come up, and the answer is the same: publishing the shorter one would open
+   * a second page to compete with the first.
+   *
+   * !! FOUR THINGS IN THE BLUEPRINT WERE NOT WRITTEN AS ASKED !!
+   *
+   * The H1 was "Enterprise-Grade AI Security. For Mid-Sized Budgets." The same
+   * line arrived on the fintech page and was changed then. positioning.md
+   * bans "enterprise" for this buyer outright, and it was in the meta
+   * description here too.
+   *
+   * The blueprint promises "maintaining compliance with global privacy
+   * regulations" and asks the FAQ to say we help clients "pass Google Play and
+   * App Store compliance". positioning.md line 212 is explicit: do not name a
+   * standard until the company confirms it holds or handles it, describe
+   * process instead. So every line here says what gets configured and what
+   * gets handed over. Retention off, private hosting, the documentation
+   * written down. Nothing promises an outcome somebody else decides.
+   *
+   * "Llama 3" was named. Families rather than version numbers.
+   *
+   * "| Hitasoft" was in the meta title. app/layout.tsx already appends the
+   * brand, so that would have printed it twice.
+   *
+   * The keywords all still land. It is the promises that changed, not the
+   * terms.
+   *
+   * !! THIS PAGE NOW OWNS "compliant AI app development" !!
+   *
+   * docs/hitasoft_ai_architecture_strategy.md line 102 flags that term as
+   * contested between this page and the media and communities industry page,
+   * and says to decide before shipping. Deciding here: compliance is this
+   * page's entire subject, where it is one aspect of a sector page, and a silo
+   * child is the right home for a service term.
+   *
+   * content/industries.ts line 134 still carries the phrase in the media and
+   * communities meta description. It has to come out when that page is built
+   * out, or the two compete again.
+   */
+  "/services/ai-software-integration/secure-ai-compliance-architecture": {
+    path: "/services/ai-software-integration/secure-ai-compliance-architecture",
+    metaTitle: "Secure AI Integration & Compliance",
+    serviceType: "secure AI integration",
+    metaDescription:
+      "Secure AI integration services with retention switched off and private LLM deployment. Your records stay on infrastructure you control. Book a review.",
+
+    hero: {
+      eyebrow: "AI integration",
+      title: "Add the AI. Keep the data.",
+      lede: "Every AI project stalls at the same question. We answer it in writing, and we do it before a model reads a record.",
+      badges: ["Retention off by default", "Private deployment available"],
+    },
+
+    /*
+     * The direct answer block the blueprint asks for, and the reason it sits
+     * this high. An engine looking for a definition of secure AI architecture
+     * takes the compressed version over the prose.
+     *
+     * It names Zero Data Retention and private hosting as things that get
+     * configured, which is true, and stops short of naming a regulation, which
+     * would not be.
+     */
+    summary: {
+      heading: "What this service is",
+      body: "Secure AI integration deploys a language model under privacy controls that are decided before the build. Retention is switched off at the endpoint, so your inputs never enter a training set. Where that is not enough, the model runs inside a network you own rather than ours. Every decision about where a record may sit is written down, which is the document a review asks for. Compliant AI app development is mostly that record.",
+    },
+
+    problem: {
+      heading: "Nobody signed off on where the data went",
+      body: "AI work stalls at the same question every time. Somebody asks where the data goes, and no one in the room has an answer written down. The project then waits for a review nobody scheduled.",
+      points: [
+        {
+          title: "The records left without a decision",
+          body: "Customer data ends up in a vendor's logs, because a default was never changed by anybody. Nobody chose it and nobody wrote it down.",
+        },
+        {
+          title: "No record of what the model saw",
+          body: "A model is shown a table and the fields it read are never listed anywhere. A year later the question comes up, and the only answer anybody has is a guess.",
+        },
+        {
+          title: "The review arrives after the build",
+          body: "Data handling gets examined once the feature is written, which is the most expensive moment to find a problem. Everything then waits on a rewrite nobody costed.",
+        },
+      ],
+    },
+
+    /*
+     * The blueprint's three pillars, kept as three. Named for what gets
+     * configured rather than for a standard, which is the difference between
+     * a claim this company can back and one it cannot.
+     */
+    capabilities: {
+      heading: "Three pillars of AI data safety",
+      items: [
+        {
+          title: "Zero data retention bridges",
+          body: "Calls run against endpoints with retention switched off, so an input is processed and not kept. Somebody has to turn that on for each provider, and we check it rather than assuming a default.",
+        },
+        {
+          title: "Private LLM deployment",
+          body: "An open weight model runs inside a network you own, on your own cloud account or your own hardware. No request leaves it, which is the only version some work can be signed off under.",
+        },
+        {
+          title: "Data safety documentation",
+          body: "Every field a model reads is written down, with where it goes and how long it stays. That document is what a store review or an auditor asks for, and it exists before the build starts.",
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "Securing sensitive workflows",
+      body: "Three systems in which the data decides the architecture rather than the other way round.",
+      items: [
+        {
+          system: "Live consulting",
+          title: "Transcripts that never reach a third party",
+          body: "A video consultation produces a transcript worth summarising and far too sensitive to send out. It runs against an endpoint with retention off, or a model inside your own network, and the field list is documented either way.",
+        },
+        {
+          system: "Closed communities",
+          title: "Moderation that does not export the feed",
+          body: "The posts are the thing members trusted you with. Moderation runs against your own rules, on infrastructure you control, and nothing about a closed testing group leaves it.",
+        },
+        {
+          system: "Finance and legal",
+          title: "Documents that stay on your own servers",
+          body: "Contracts and filings are the clearest case for an open weight model hosted in house. The work costs more to run and the records never leave the building, which is usually the trade that gets signed.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "Three weeks, decision to deployment",
+      steps: [
+        {
+          when: "Week one",
+          title: "The data decisions",
+          body: "We list every field a model would read and agree where each is allowed to sit. That list is the document everything after it is built against, and it is yours whether we build or not.",
+        },
+        {
+          when: "Week two",
+          title: "The secure build",
+          body: "Retention goes off at the endpoint, or the whole model moves onto hardware you own. Access is scoped, and every call the model makes is written to a log a person can read.",
+        },
+        {
+          when: "Week three",
+          title: "Evidence and handover",
+          body: "We run it against real traffic and check the logs say what the document says. You finish holding the deployment and the keys, with a record of every decision made.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "Public AI against private deployment",
+      body: "Both answer the question. They differ in where your records go on the way, and in what you can show somebody who asks.",
+      columns: ["Consumer AI tools", "Secure deployment"],
+      rows: [
+        {
+          label: "Used for training",
+          values: ["Often, by default", "Never, retention is off"],
+        },
+        {
+          label: "Where it runs",
+          values: ["Somebody else's shared tenancy", "Your own account, or your own hardware"],
+        },
+        {
+          label: "Who can read the logs",
+          values: ["Their staff, on their terms", "Yours, on yours"],
+        },
+        {
+          label: "What you can show a reviewer",
+          values: ["A vendor's policy page", "Your own field list and logs"],
+        },
+        {
+          label: "If the answer is wrong",
+          values: ["No record of the input", "The call is in your own log"],
+        },
+      ],
+    },
+
+    reach: {
+      heading: "Where a record is allowed to sit",
+      body: "Residency is a decision rather than a default, and it is made before anything is built. The same engineer stays with it, from that first decision right through to the handover.",
+      clientLocations: ["India", "Indonesia", "Dubai", "Vietnam", "Sharjah"],
+      points: [
+        {
+          label: "Hosted, retention off",
+          body: "The fastest route, and enough for most work. Inputs are processed and nothing is kept.",
+        },
+        {
+          label: "Private deployment",
+          body: "An open weight model inside your own network, for the records that cannot leave it.",
+        },
+        {
+          label: "Written down either way",
+          body: "The field list exists as a document you keep.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "The models and frameworks we use",
+      body: "We fit the AI into the systems you already run. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      groups: [
+        {
+          label: "Models you can host",
+          items: [
+            { name: "Llama", category: "Runs on your own server", icon: "siMeta" },
+            { name: "Mistral", category: "Small and cheap to run", icon: "siMistralai" },
+            { name: "Qwen", category: "Open weights", icon: "siQwen" },
+          ],
+        },
+        {
+          label: "Hosted, retention off",
+          items: [
+            { name: "Claude", category: "Documents nobody wants to read", icon: "siClaude" },
+            { name: "GPT", category: "General purpose work" },
+            { name: "Gemini", category: "Long files and video", icon: "siGooglegemini" },
+          ],
+        },
+        {
+          label: "Your own data",
+          items: [
+            { name: "PostgreSQL", category: "Records and reporting", icon: "siPostgresql" },
+            { name: "pgvector", category: "Your documents, made searchable" },
+            { name: "Embeddings", category: "Search across your own files" },
+          ],
+        },
+        {
+          label: "Where it runs",
+          items: [
+            { name: "Docker", category: "Same everywhere it runs", icon: "siDocker" },
+            { name: "AWS", category: "Hosting and storage" },
+            { name: "Ollama", category: "Models on your own machine" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * A sequence again, and a different one from either sibling. The parent
+     * draws a hierarchy, the API page draws a request, and this draws the
+     * fork that decides everything: sensitive records go one way and ordinary
+     * ones go the other, and both end in the same written record.
+     */
+    diagram: {
+      caption:
+        "A record is classified first. Sensitive data goes to a model inside your own network and everything else to a hosted endpoint with retention off. Both are written to a log you keep.",
+      align: "sequence",
+      numbered: true,
+      rows: [
+        [{ label: "A record", sub: "From your system", tone: "brand" }],
+        [{ label: "Classified", sub: "Decided in week one", tone: "accent" }],
+        [
+          { label: "Private model", sub: "Inside your network", tone: "accent" },
+          { label: "Hosted, retention off", sub: "Nothing kept", tone: "accent" },
+        ],
+        [{ label: "Your audit log", sub: "Every call, readable", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Will OpenAI or Anthropic use our company data to train their models?",
+        answer:
+          "No, on an enterprise endpoint with retention switched off. Inputs are processed and not kept, and they do not reach the pipeline that trains a public model. Somebody has to configure that for each provider, and we check it rather than trusting a default.",
+      },
+      {
+        question: "Can you help us pass app store review with a new AI feature?",
+        answer:
+          "We produce the thing a review asks for. That is a written account of every field the model reads, where it goes and how long it stays. The submission and the decision stay with you, and no supplier can honestly promise the outcome of somebody else's review.",
+      },
+      {
+        question: "What is the difference between an open weight model and an enterprise API?",
+        answer:
+          "An enterprise API is rented. You call their model and configure it to keep nothing. An open weight model is hosted by you, so it runs on hardware you control and no request leaves your network. It costs more to run and answers the question completely.",
+      },
+      {
+        question: "Does a private deployment cost more to run?",
+        answer:
+          "Yes, and it is worth saying plainly. You pay for hardware or a reserved instance whether or not anybody uses it, where a hosted endpoint charges for what you send. The audit puts both numbers in front of you first.",
+      },
+      {
+        question: "Do you hold any security certifications?",
+        answer:
+          "We do not claim one, and you should be careful with any supplier who does without naming the auditor and the report. What we can show is the process: the field list, the retention settings and a log of every call, all of which you keep.",
+      },
+      {
+        question: "What happens to the documentation if we do not go ahead?",
+        answer:
+          "You keep it. Week one produces the field list and the residency decisions. They are useful to whoever builds this, whether that turns out to be us or somebody else.",
+      },
+    ],
+  },
 };
