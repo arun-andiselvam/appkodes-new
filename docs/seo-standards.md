@@ -156,7 +156,8 @@ of content at two URLs is the thing paging must not create.
 | Page | Primary keyword | Title (chars) |
 | --- | --- | --- |
 | `/services/ai-software-integration` | `AI software integration` | AI Software Integration \| Add AI to Existing Apps (49) |
-| `/services/ai-software-integration/custom-ai-api-integration` | `custom AI API integration` | not yet written to this standard |
+| `/services/ai-software-integration/custom-ai-api-integration` | `custom AI API integration` | Custom AI API Integration & AI Wrappers (39) |
+| `/services/ai-software-integration/secure-ai-compliance-architecture` | `secure AI integration services` | Secure AI Integration & Compliance (34) |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | AI Automation for Fintech SMBs (30) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |
@@ -164,6 +165,10 @@ of content at two URLs is the thing paging must not create.
 Add a row when a page ships. The register is what makes rule 1 checkable: two
 pages claiming one phrase is visible here before it is visible in a ranking
 report.
+
+The register covers shipped pages only. For every page in the master menu,
+built or not, with its measured title and description lengths and the phrases
+still assigned to two pages at once, see `docs/page-progress.md`.
 
 ---
 
