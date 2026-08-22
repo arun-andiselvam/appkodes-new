@@ -175,6 +175,42 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       ],
     },
 
+    /*
+     * The concrete half of the page, added 22 August 2026.
+     *
+     * `capabilities` above is conceptual by design and that is also its limit.
+     * Nobody searches for "custom AI wrapper". They search for something about
+     * making their own tickets searchable, and this is the section that
+     * answers them.
+     *
+     * Every line describes work this company can do rather than work it has
+     * done. No client is named, no figure is quoted, and none of these is
+     * written as a case study. The moment one of them gets a number attached
+     * it needs a delivery record behind it. See the claims discipline in
+     * docs/positioning.md and the standing warning in content/metrics.ts.
+     */
+    scenarios: {
+      heading: "What integration actually looks like",
+      body: "Three jobs we get called in for. Each one sits in a system somebody is already running.",
+      items: [
+        {
+          system: "Internal tools",
+          title: "Your team stops asking the person who remembers",
+          body: "The ticket history already sits in your database, and it can only be searched by exact match. We index it so a question in plain words returns the tickets that answer it, with the record attached.",
+        },
+        {
+          system: "Back office",
+          title: "Invoices arrive as PDFs and leave as database rows",
+          body: "A vision model reads the supplier and every line item off the page and writes them into your ERP. Nobody retypes anything, and the ones it was unsure about still go to a person.",
+        },
+        {
+          system: "Customer facing",
+          title: "A dashboard that answers rather than draws a chart",
+          body: "Your users ask what happened last quarter and get a sentence back, drawn from the same numbers the charts use. The dashboard does not get rebuilt to do it.",
+        },
+      ],
+    },
+
     process: {
       heading: "Three weeks, audit to live",
       steps: [

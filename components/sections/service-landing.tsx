@@ -10,6 +10,7 @@ import { BrandMark } from "@/components/ui/brand-mark";
 // Lifted out of this file on 21 August 2026, so the industry pages draw the
 // same row. See components/sections/card-row.tsx.
 import { CardRow } from "@/components/sections/card-row";
+import { TestimonialsSection } from "@/components/sections/testimonials";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { IntegrationDiagram } from "@/components/backgrounds/integration-diagram";
 import { childrenOf } from "@/content/navigation";
@@ -140,7 +141,23 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
         <Container>
           <div className="grid lg:grid-cols-[minmax(0,20rem)_1fr] gap-10 lg:gap-20">
             <SectionTitle>{page.summary.heading}</SectionTitle>
-            <p className="text-xl lg:text-2xl leading-relaxed text-foreground/80">
+            {/*
+              Set as a statement rather than body copy, matching the same block
+              on the industry pages. Kept in step with
+              components/sections/industry-landing.tsx on 22 August 2026: two
+              pages a visitor reaches from the same top nav should not set
+              their definition paragraph two different ways.
+
+              !! THE WORDS DID NOT GET CUT, AND SHOULD NOT BE !!
+
+              The obvious response to a heavy looking block is to shorten it.
+              This paragraph is the Service schema's description, emitted
+              verbatim by lib/service-landing-route.tsx, and it is the passage
+              an answer engine is most likely to lift. Trimming it for weight
+              would buy a lighter page by making the one quotable block on it
+              thinner. Typography was the cheaper fix.
+            */}
+            <p className="text-xl lg:text-2xl font-medium leading-snug text-foreground/90">
               {page.summary.body}
             </p>
           </div>
@@ -191,24 +208,60 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
         </Container>
       </Section>
 
-      {/* Process. The week lives on the step, not in the heading. */}
+      {/*
+        Process, as a vertical timeline rather than a fourth row of three.
+
+        !! THIS SECTION EXISTS TO BREAK THE RHYTHM AS MUCH AS TO CARRY THE STEPS !!
+
+        Problem, capabilities, process and reach were all a heading over three
+        equal columns. Four of those stacked and the eye stops reading them as
+        separate arguments and starts skimming shapes. This one is now a title
+        that holds on the left while the weeks run down the right, joined by a
+        rule with a marker on each step, so the page changes gait in the middle
+        rather than repeating.
+
+        The week lives on the step, not in the heading.
+      */}
       <Section spacing="tight" className="border-t border-foreground/10">
         <Container>
-          <SectionTitle>{page.process.heading}</SectionTitle>
-          <ol className="mt-12 grid md:grid-cols-3 gap-10 lg:gap-16">
-            {page.process.steps.map((step, i) => (
-              <li key={step.title}>
-                <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                  {step.when}
-                </span>
-                <span className="mt-4 block font-display text-6xl tracking-tight text-foreground/15 tabular-nums">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-4 font-display text-xl tracking-tight">{step.title}</h3>
-                <p className="mt-3 text-muted-foreground leading-relaxed">{step.body}</p>
-              </li>
-            ))}
-          </ol>
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-20">
+            <div className="lg:sticky lg:top-32 h-fit">
+              <SectionTitle>{page.process.heading}</SectionTitle>
+            </div>
+
+            <ol className="relative">
+              {/*
+                The spine. Drawn behind the markers and stopped short at both
+                ends, so it starts at the first step and finishes at the last
+                rather than running off into the section padding.
+              */}
+              <span
+                aria-hidden
+                className="absolute left-[7px] top-3 bottom-3 w-px bg-foreground/15"
+              />
+
+              {page.process.steps.map((step, i) => (
+                <li key={step.title} className="relative pl-12 pb-12 last:pb-0">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 top-2 h-[15px] w-[15px] rounded-full border-2 border-foreground/25 bg-background"
+                  />
+                  <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                    {step.when}
+                  </span>
+                  <h3 className="mt-3 font-display text-2xl tracking-tight">
+                    <span className="mr-3 text-foreground/25 tabular-nums">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {step.title}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+                    {step.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </Container>
       </Section>
 
@@ -252,6 +305,53 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
                 ))}
               </tbody>
             </table>
+          </div>
+        </Container>
+      </Section>
+
+      {/*
+        What the work looks like in a real system.
+
+        Placed after the comparison because that table is where somebody
+        decides integration beats a rebuild, and this is the first thing they
+        want once they have. Staggered rows rather than another grid: the
+        system label and headline hold one side, the description the other,
+        and the sides alternate down the page.
+
+        No images. The alternative was three more placeholder photographs on a
+        page that already carries a diagram, and a stock photo above a
+        paragraph about invoices adds nothing the paragraph does not.
+      */}
+      <Section spacing="tight" className="border-t border-foreground/10">
+        <Container>
+          <SectionTitle>{page.scenarios.heading}</SectionTitle>
+          <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+            {page.scenarios.body}
+          </p>
+
+          <div className="mt-14 border-t border-foreground/10">
+            {page.scenarios.items.map((item, i) => (
+              <article
+                key={item.title}
+                className="grid gap-4 border-b border-foreground/10 py-10 lg:grid-cols-2 lg:gap-20 lg:py-14"
+              >
+                <div className={i % 2 === 1 ? "lg:order-2" : ""}>
+                  <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                    {item.system}
+                  </span>
+                  <h3 className="mt-4 font-display text-2xl lg:text-3xl tracking-tight leading-tight">
+                    {item.title}
+                  </h3>
+                </div>
+                <p
+                  className={`text-lg text-muted-foreground leading-relaxed ${
+                    i % 2 === 1 ? "lg:order-1" : ""
+                  }`}
+                >
+                  {item.body}
+                </p>
+              </article>
+            ))}
           </div>
         </Container>
       </Section>
@@ -370,11 +470,26 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
         </Container>
       </Section>
 
-      {/* The silo's children, so the parent links down to what it heads. */}
+      {/*
+        The silo's children, so the parent links down to what it heads.
+
+        !! THESE STAY, AND THEY STAY POINTING DOWN !!
+
+        A review on 22 August 2026 read this as stranded and suggested swapping
+        it for links across to the other service silos. That would invert the
+        architecture. docs/hitasoft_ai_architecture_strategy.md builds each
+        silo so a parent passes its equity to its own children, and sending it
+        sideways to unrelated parents spends the one structural advantage the
+        site has. The same review also assumed the reader was on the child
+        page. They are on the parent, and these two are what sits under it.
+
+        The naming critique was fair and was taken. "What this covers" said
+        nothing about where the links went.
+      */}
       {children.length > 0 && (
         <Section spacing="tight" className="border-t border-foreground/10">
           <Container>
-            <SectionTitle>What this covers</SectionTitle>
+            <SectionTitle>Go deeper on one part</SectionTitle>
             <div className="mt-12 grid md:grid-cols-2 gap-px bg-foreground/10 border border-foreground/10">
               {children.map((child) => (
                 <Link
@@ -400,6 +515,31 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
           </Container>
         </Section>
       )}
+
+      {/*
+        Proof, before the FAQ.
+
+        The page was entirely theoretical up to here: everything it said was
+        about what we can do rather than what anybody has seen us do. This is
+        the home page's testimonials section, reused whole, which carries
+        Trustpilot reviews written by clients and the vetted client marks.
+
+        !! WHAT THIS SECTION IS NOT !!
+
+        A review on 22 August 2026 asked for a case study highlight here, with
+        a worked example reading "38 hours saved per week on manual ticket
+        routing". That figure is not hypothetical: it is one of the drafts in
+        content/metrics.ts, which carries a capitalised warning that all four
+        of its numbers are drafts rather than measurements and must come from
+        delivery records before publication. Putting it on a service page,
+        attached to a client, would be the "98% faster deployment" mistake
+        again with a different number.
+
+        So the page gets real proof instead. The reviews are unedited and the
+        marks are the ones appkodes.com publishes itself. Write a real case
+        study up and it belongs here, above these.
+      */}
+      <TestimonialsSection />
 
       {/*
         FAQ. Native <details>, so it opens with no JavaScript and the keyboard

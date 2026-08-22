@@ -122,10 +122,21 @@ export const industryLandings: Record<string, IndustryLanding> = {
       items: [
         {
           title: "Ledger and expense automation",
-          body: "Transactions get categorised as they arrive, and the ledger updates with no spreadsheet import at all. Shared balances recalculate themselves, and anything that does not reconcile goes to a person with the reason attached.",
+          /*
+           * The multi-user split is named specifically, on feedback from 22
+           * August 2026 that the copy was generic where the logic is hardest.
+           *
+           * It is also the pain docs/industry-page-architecture.md leads with:
+           * "multi-user expense tracking and debt calculation logic is complex
+           * and error-prone". Saying "shared balances recalculate themselves"
+           * described the easy half. A shared household budget and a trip are
+           * the two cases a fintech buyer will recognise as the ones that go
+           * wrong, and naming them is what shows we have met the problem.
+           */
+          body: "Transactions get categorised as they arrive, and the ledger updates with no spreadsheet import at all. Where a balance is split between several people, a shared household budget or a trip, each share recalculates on every entry. Whatever does not reconcile goes to a person, and the reason is attached to it.",
           detail: [
             "Transaction feed read through your banking API",
-            "Shared balances recalculated on every entry",
+            "Multi-user splits, with each person's running debt",
             "Exceptions queued with the reason attached",
           ],
         },

@@ -342,6 +342,27 @@ export type ServiceLanding = {
     groups: { label: string; items: Integration[] }[];
   };
   /**
+   * The same work, described in the systems it actually sits in.
+   *
+   * Added 22 August 2026. `capabilities` above names what we do and does it
+   * conceptually: LLM API integration, custom wrappers, legacy upgrades. A
+   * founder reading that cannot picture a Tuesday. These are three jobs in
+   * three real systems, which is also where the long tail search traffic is,
+   * since nobody types "custom AI wrapper" and plenty of people type
+   * something about searching their own tickets.
+   *
+   * `system` is the seat it happens in rather than a product category, and
+   * the order is deliberate. Internal tools first, because that is the buyer
+   * docs/positioning.md describes. Customer facing last, because that is the
+   * smaller segment and leading with it is the SaaS misread this page was
+   * already corrected for once.
+   */
+  scenarios: {
+    heading: string;
+    body: string;
+    items: { system: string; title: string; body: string }[];
+  };
+  /**
    * One paragraph defining the service in plain terms, for the machines.
    *
    * Added 21 August 2026 from the GEO blueprint. An answer engine quoting this

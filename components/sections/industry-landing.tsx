@@ -149,7 +149,22 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
         <Container>
           <div className="grid lg:grid-cols-[minmax(0,20rem)_1fr] gap-10 lg:gap-20">
             <SectionTitle>{page.summary.heading}</SectionTitle>
-            <p className="text-xl lg:text-2xl leading-relaxed text-foreground/80">
+            {/*
+              Set as a statement rather than body copy, on feedback from 22
+              August 2026 that this block was a speedbump between the hero and
+              the argument. More weight, tighter leading and higher contrast,
+              so it reads as a bridge at a glance.
+
+              !! THE WORDS DID NOT GET CUT, AND SHOULD NOT BE !!
+
+              The obvious response to "too much text" was to shorten it. This
+              paragraph is the Service schema's description, emitted verbatim
+              by lib/industry-landing-route.tsx, and it is the passage an
+              answer engine is most likely to lift. Trimming it for weight
+              would buy a lighter page by making the one quotable block on it
+              thinner. Typography was the cheaper fix.
+            */}
+            <p className="text-xl lg:text-2xl font-medium leading-snug text-foreground/90">
               {page.summary.body}
             </p>
           </div>
