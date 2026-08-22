@@ -62,7 +62,13 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
             four hundred pixels to stay legible, so below lg it drops out
             entirely rather than shrinking into an unreadable thumbnail.
           */}
-          <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_440px] xl:grid-cols-[minmax(0,1fr)_480px] gap-10 xl:gap-14 items-center">
+          {/*
+            The diagram column went from 440 to 520 on 22 August 2026 so the
+            isometric assembly could be drawn larger. At 1400 of container that
+            still leaves about 760 for the headline, which "Add AI to the
+            software you already run." sets on two lines exactly as before.
+          */}
+          <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_520px] xl:grid-cols-[minmax(0,1fr)_580px] gap-10 xl:gap-14 items-center">
             <div>
             <Eyebrow className="mb-6">{page.hero.eyebrow}</Eyebrow>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05]">
