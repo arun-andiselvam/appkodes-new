@@ -215,20 +215,32 @@ export function DeliveryMap() {
         />
 
         {/*
-          One arc, and only while a dot is being pointed at.
+          Every route, as a hairline.
 
-          !! FORTY EIGHT ARCS AT ONCE WAS THE PROBLEM, NOT THE POINT !!
+          !! THE WEIGHT IS THE WHOLE ARGUMENT HERE, TWICE OVER !!
 
-          Every arc leaves the same hub, so drawn together they merge into a
-          fan and the map stops being readable: the eye cannot follow any
-          single route, and the landmass the arcs are meant to sit on top of
-          disappears under them. Drawing the hovered one alone means the
-          resting state is a map of where the work is and the pointer asks
-          the question "and where does that one go".
+          These were drawn at 60 per cent and a 1.2 stroke, and forty eight
+          arcs leaving one hub at that weight merged into a solid fan: no
+          single route could be followed and the landmass underneath
+          disappeared. Removing them entirely fixed that and cost something
+          real, because a field of unconnected dots does not say the work
+          came from one place.
 
-          Nothing else is in the DOM. There is no dimmed set underneath, so
-          this is also forty seven fewer paths on every frame.
+          So they are back at a sixth of the alpha and half the width, which
+          is about the lightest a line can be and still resolve. It reads as
+          structure rather than as content, the map stays legible through it,
+          and the hovered arc has somewhere to stand out from.
+
+          No animation and no filter on these, so forty eight static paths
+          cost a paint and nothing per frame.
         */}
+        <g fill="none" strokeLinecap="round" className="text-brand-blue/[0.18]">
+          {arcs.map(({ d, path }) => (
+            <path key={d.code} d={path} stroke="currentColor" strokeWidth={0.6} />
+          ))}
+        </g>
+
+        {/* The one being pointed at, drawn over the top of them. */}
         {activeArc && (
           <g fill="none" strokeLinecap="round">
             <path
