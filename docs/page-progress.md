@@ -6,9 +6,18 @@ rendered HTML rather than the source files. Last measured 24 August 2026.
 
 **Not in this table:** blog articles under `/resources/*` and case studies under
 `/resources/case-studies/*`. Both are collections rather than fixed menu pages,
-both still run on sample data, and both are tracked by the flags in
-`lib/posts.ts` and `lib/case-studies.ts`. Their category and detail templates
-are built and approved.
+and both have their category and detail templates built and approved.
+
+Case studies came off sample data on 24 August 2026. `content/case-studies.ts`
+holds two real engagements, Japan Pro and an unnamed Dubai short video platform,
+and the flag, the sample file and the four placeholder photographs are deleted.
+Blog articles still run on sample data behind `USE_SAMPLE_POSTS` in
+`lib/posts.ts`.
+
+Two things are outstanding on the studies themselves. The Dubai client is not
+named, so its `client` field reads "Undisclosed" until somebody says otherwise.
+Neither study carries a client quote, because nobody has supplied words anyone
+has agreed to.
 
 **Four Resources pages are live and are in neither list.** `/resources`,
 `/resources/case-studies`, `/resources/integration-guides` and
@@ -225,7 +234,7 @@ These affect all 30 rows and none of them are fixed by page work.
 | --- | --- | --- |
 | ~~**Domain**~~ | `content/site.ts` | **Closed 23 August 2026.** Confirmed as `hitasoft.com` and set as the default. Canonicals, Open Graph and all 34 sitemap entries verified on the new origin. |
 | **Sitemap** | `app/sitemap.ts` | Articles and case studies are absent, and no entry carries `lastModified`. Parked by decision, not by oversight. |
-| **Sample content** | `USE_SAMPLE_POSTS`, `USE_SAMPLE_CASE_STUDIES` | Both true. `content/posts-sample.ts`, `content/case-studies-sample.ts` and `public/sample/` all ship until they are flipped. |
+| **Sample content** | `USE_SAMPLE_POSTS` | **Half closed 24 August 2026.** `USE_SAMPLE_CASE_STUDIES` is gone, with `content/case-studies-sample.ts` and the four `public/sample/case-*.webp` files, replaced by one real engagement in `content/case-studies.ts`. Blog posts are still sampled: `USE_SAMPLE_POSTS` is true and the ten remaining `public/sample/` images ship with it. |
 | **Contact form** | `CONTACT_WEBHOOK_URL` | Unset, so `/contact` returns a 503 with an honest message rather than delivering anything. |
 | **Draft metrics** | `content/metrics.ts` | Four figures are drafts under a capitalised warning. They must not reach a page. |
 | **Unverified claim** | Home page and `/how-we-work`, "50+ countries" | Not in any verified facts list. The map read its own data and said 49 until 24 August 2026, when the client asked for 50+ so it stops disagreeing with the hero stats row. The same day the map was added to the home page, where it now sits under that row. The dots are still the forty nine `content/delivery-map.ts` holds and none was invented to close the gap, so one confirmation from delivery records settles the figure everywhere it appears. |

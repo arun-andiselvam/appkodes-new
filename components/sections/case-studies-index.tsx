@@ -23,13 +23,15 @@ import { caseStudies, type CaseStudy } from "@/lib/case-studies";
  * are never paired with a story, because docs/positioning.md line 199 forbids
  * attaching a claim to a named company that has not agreed to it.
  *
- * Everything under `caseStudies()` is invented until somebody writes a real
- * engagement up. See the warnings in lib/case-studies.ts.
+ * Everything under `caseStudies()` was invented placeholder content behind a
+ * flag until 24 August 2026, when the first real engagement was written up and
+ * the four samples were deleted. What renders there now is real, and its one
+ * figure came from the client. See the warnings in content/case-studies.ts.
  *
- * The real proof sections the page carried before this, the metrics, the
- * Trustpilot reviews, the awards and the meeting photographs, stay below. They
- * are the honest answer while there are no written studies, and they remain
- * worth reading once there are.
+ * The proof sections the page carried before the stories, the metrics, the
+ * Trustpilot reviews and the meeting photographs, stay below. They were the
+ * honest answer while there were no written studies, and they are still worth
+ * reading now that there is one.
  */
 export async function CaseStudiesIndex({ path }: { path: string }) {
   const studies = await caseStudies();

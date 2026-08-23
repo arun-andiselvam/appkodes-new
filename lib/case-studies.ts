@@ -19,6 +19,18 @@
  * `caseStudies` and nothing else changes.
  */
 
+/**
+ * One act of the narrative: a paragraph that frames it, then the specifics.
+ *
+ * `points` may be empty, which renders the paragraph alone. That is the right
+ * shape for a short engagement and the wrong shape for most of them, since the
+ * itemised half is what a reader scans for their own situation.
+ */
+export type StudyAct = {
+  body: string;
+  points: { title: string; body: string }[];
+};
+
 /** One written up engagement. */
 export type CaseStudy = {
   /** Last segment of the URL. */
@@ -48,9 +60,28 @@ export type CaseStudy = {
    * empty list renders nothing rather than a gap.
    */
   results: { value: string; label: string }[];
-  challenge: string;
-  approach: string;
-  outcome: string;
+  /**
+   * The three acts, each an opening paragraph and then itemised.
+   *
+   * !! THESE WERE THREE BARE PARAGRAPHS AND THAT WAS NOT ENOUGH !!
+   *
+   * The first real study shipped that way on 24 August 2026 and the client
+   * read it back the same day: too thin to do the job a case study exists to
+   * do. A visitor is not reading to admire the work. They are checking whether
+   * their own mess appears anywhere in it, and one paragraph of prose gives
+   * them nothing to scan for. Named, itemised problems do.
+   *
+   * `challenge.points` and `approach.points` are written to be read side by
+   * side and in the same order. Point three of the answer answers point three
+   * of the problem. Nothing in the markup enforces that, because a study may
+   * genuinely have four problems and three answers, but a study where the two
+   * lists have drifted out of order is a study that has stopped arguing.
+   *
+   * `outcome.points` is optional. Some studies end on a paragraph and should.
+   */
+  challenge: StudyAct;
+  approach: StudyAct;
+  outcome: StudyAct;
   /** Their words, unedited, with permission. Absent is fine. */
   quote?: { text: string; name: string; role: string };
   /** The service page this engagement belongs to. Feeds the silo. */
@@ -58,24 +89,28 @@ export type CaseStudy = {
 };
 
 /**
- * !! FLIP THIS TO false BEFORE LAUNCH !!
+ * Every case study, newest first.
  *
- * True serves four invented engagements from content/case-studies-sample.ts so
- * the index and the detail page can be judged with content in them. Turned on
- * 21 August 2026 for a design review.
+ * !! THE SAMPLE SEAM IS GONE, AND IT SHOULD STAY GONE !!
  *
- * The sample companies are fictional and are deliberately not the six real
- * clients named in content/testimonials.ts. A placeholder story under an
- * invented name is a layout exercise. The same story under a real client's
- * name is a false statement about somebody else's business.
+ * A `USE_SAMPLE_CASE_STUDIES` flag stood here from 21 August 2026, serving
+ * four invented engagements out of content/case-studies-sample.ts so the index
+ * and the detail template could be reviewed with something in them. Switching
+ * it off before launch was one of the two blockers docs/page-progress.md
+ * tracked.
+ *
+ * Removed on 24 August 2026, along with the sample file and its four
+ * placeholder photographs, when the first real study arrived. Do not
+ * reintroduce it. The template has real content to be judged against now, and
+ * a flag that serves fabricated stories under company names is one careless
+ * deploy away from publishing them.
+ *
+ * Still async, because every caller awaits it and a real source, a CMS or a
+ * database, will want to be.
  */
-const USE_SAMPLE_CASE_STUDIES = true;
-
-/** Every case study, newest first. */
 export async function caseStudies(): Promise<CaseStudy[]> {
-  if (!USE_SAMPLE_CASE_STUDIES) return [];
-  const { sampleCaseStudies } = await import("@/content/case-studies-sample");
-  return sampleCaseStudies;
+  const { caseStudies: studies } = await import("@/content/case-studies");
+  return studies;
 }
 
 /** One by slug, or undefined. */

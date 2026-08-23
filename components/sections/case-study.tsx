@@ -16,7 +16,7 @@ import type { CaseStudy } from "@/lib/case-studies";
  * !! EVERY FIGURE AND EVERY QUOTED WORD BELONGS TO SOMEBODY ELSE !!
  *
  * This component will render whatever it is given, which is exactly why the
- * warnings live in lib/case-studies.ts and content/case-studies-sample.ts. A
+ * warnings live in lib/case-studies.ts and content/case-studies.ts. A
  * percentage nobody measured looks identical to one that was, and the site has
  * already been cleaned once of a template crediting "98% faster deployment" to
  * Stripe.
@@ -120,19 +120,66 @@ export function CaseStudyPage({
               ))}
             </dl>
 
-            <div className="space-y-12">
+            {/*
+              Three acts, each a paragraph and then the specifics.
+
+              !! THE NUMBERS ARE THE ARGUMENT, NOT DECORATION !!
+
+              Challenge 03 and answer 03 are the same subject, so a reader who
+              recognises one of the problems can drop straight to what was done
+              about it. That is the whole reason the lists are numbered rather
+              than bulleted, and it is why the two are written in one order.
+              The pairing is a writing discipline rather than something the
+              markup enforces. See the note on StudyAct in lib/case-studies.ts.
+
+              An <ol> because the order carries meaning. A study whose points
+              could be shuffled without loss has not found its argument yet.
+            */}
+            <div className="space-y-16">
               {[
-                { heading: "Challenge", body: study.challenge },
-                { heading: "What we built", body: study.approach },
-                { heading: "What changed", body: study.outcome },
+                { heading: "Challenge", act: study.challenge },
+                { heading: "What we built", act: study.approach },
+                { heading: "What changed", act: study.outcome },
               ].map((block) => (
                 <section key={block.heading}>
                   <h2 className="font-display text-2xl lg:text-3xl tracking-tight">
                     {block.heading}
                   </h2>
                   <p className="mt-4 max-w-3xl text-lg text-muted-foreground leading-relaxed">
-                    {block.body}
+                    {block.act.body}
                   </p>
+
+                  {block.act.points.length > 0 && (
+                    <ol className="mt-10 border-t border-foreground/10">
+                      {block.act.points.map((point, i) => (
+                        <li
+                          key={point.title}
+                          className="grid gap-2 border-b border-foreground/10 py-6 sm:grid-cols-[auto_1fr] sm:gap-6 lg:gap-8"
+                        >
+                          {/*
+                            Numbered from the index rather than typed into the
+                            content, so a point cannot be reordered into
+                            carrying somebody else's number. Same padStart the
+                            service pages use.
+                          */}
+                          <span
+                            className="font-mono text-sm text-muted-foreground tabular-nums sm:pt-1"
+                            aria-hidden
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <div className="max-w-3xl">
+                            <h3 className="font-display text-xl lg:text-2xl tracking-tight">
+                              {point.title}
+                            </h3>
+                            <p className="mt-2 text-muted-foreground leading-relaxed">
+                              {point.body}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                 </section>
               ))}
 
@@ -141,12 +188,24 @@ export function CaseStudyPage({
                 reader to the service it describes has spent their attention
                 and returned none of it, which is the same rule the blog posts
                 are held to in lib/posts.ts.
+
+                !! THE LABEL FOLLOWS THE TARGET, AND IT HAS TO !!
+
+                It read "The service behind this" whatever it was pointing at.
+                Not every engagement has a service page behind it: a platform
+                build has no entry in the services silo, and the honest
+                destination is the industry page for the sector it was built
+                for. A link promising a service and landing on an industry is
+                the kind of small lie a reader notices and nothing else on the
+                page recovers from.
               */}
               <Link
                 href={study.sendsTo}
                 className="group/next inline-flex items-center gap-2 border border-foreground/15 px-5 py-3 font-mono text-xs uppercase tracking-widest transition-colors hover:border-foreground/40"
               >
-                The service behind this
+                {study.sendsTo.startsWith("/industries/")
+                  ? "The sector behind this"
+                  : "The service behind this"}
                 <ArrowRight
                   aria-hidden
                   className="w-3.5 h-3.5 transition-transform group-hover/next:translate-x-1"
