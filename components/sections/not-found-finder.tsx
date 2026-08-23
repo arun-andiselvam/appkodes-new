@@ -59,8 +59,8 @@ const SHADOW = { textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" } as const;
 const COLS = 2;
 const ROWS = 4;
 const CELLS = COLS * ROWS;
-/** Tile height. Four rows plus gaps has to stay under the copy's 540. */
-const ROW_H = 78;
+/** Tile height. Fits an eyebrow, a name over two lines and the path. */
+const ROW_H = 86;
 
 /**
  * Score a page against what has been typed.
@@ -234,7 +234,22 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
   };
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:gap-16 lg:items-start">
+    /*
+      The industry hero's grid, verbatim. See components/sections/
+      industry-landing.tsx.
+
+      !! A FIXED PANEL COLUMN IS WHAT CENTRES IT, NOT justify-self !!
+
+      This had a flexible track with the field capped by max-width inside it.
+      The track resolved to exactly the cap, so there was no slack for
+      justify-self to distribute and the field sat against the container edge
+      with the 3D tilt painting past it. Every other page on the site solves
+      this by giving the panel a fixed 420 or 460 pixel column and letting the
+      copy take the rest, so the panel is the same width and in the same place
+      on all of them. This is that, so the 404 stops being the one page laid
+      out differently.
+    */
+    <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px] gap-10 xl:gap-14 items-center">
       <div>
         {/*
           The page's own heading lives in this column rather than above the
@@ -258,7 +273,9 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
           and it has to be readable on a phone where the field is hidden.
         */}
         <div
-          className="mb-8 px-4 py-3 shadow-[0_18px_34px_-18px_rgb(223_44_22/0.4)]"
+          /* mt-10 is the industry hero's gap between its lede and the button
+             row underneath it, so the copy column breathes the same way. */
+          className="mt-10 mb-8 px-4 py-3 shadow-[0_18px_34px_-18px_rgb(223_44_22/0.4)]"
           style={{ background: FACES.exception }}
         >
           <span
@@ -337,7 +354,8 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
         and the list above already carries the content.
       */}
       <div
-        className="hidden lg:block w-full lg:max-w-[34rem] lg:justify-self-end select-none diagram-in"
+        /* Fills the fixed column, the same way every record panel does. */
+        className="hidden lg:block select-none diagram-in"
         ref={fieldRef}
         onPointerMove={onMove}
         onPointerLeave={() => setTilt({ x: 0, y: 0 })}
@@ -431,8 +449,15 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
                 >
                   {page.section}
                 </span>
+                {/*
+                  Wraps rather than truncates. At 460 pixels a two column field
+                  gives each tile about 225, and half the page names on this
+                  site are longer than that at 13px. A cut name on a link is
+                  worse than a second line, and these are the only labels here
+                  a visitor navigates by.
+                */}
                 <span
-                  className="truncate text-[13px] font-medium leading-tight text-white"
+                  className="line-clamp-2 text-[13px] font-medium leading-tight text-white"
                   style={SHADOW}
                 >
                   {page.name}
