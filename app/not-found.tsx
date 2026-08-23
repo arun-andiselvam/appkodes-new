@@ -45,7 +45,44 @@ export default function NotFound() {
   return (
     <main>
       <Section spacing="none" className="relative overflow-hidden pt-28 lg:pt-36 pb-20 lg:pb-28">
-        <Container>
+        {/*
+          The number, large and nearly not there.
+
+          The eyebrow says 404 in mono at eleven pixels, which is the correct
+          size for a label and is easy to scroll past. This is the same fact at
+          a size nobody misses, so the page announces what it is before anybody
+          reads a word of it.
+
+          !! FOUR PER CENT, AND IT HAS TO STAY THERE !!
+
+          It sits behind live text and a field of links. Anything with enough
+          contrast to read properly is enough to interfere with the paragraph
+          crossing it, and a watermark that competes with the copy is worse
+          than no watermark. The colour comes from the foreground token rather
+          than a literal, so it inverts with the theme and stays at the same
+          faintness on both.
+
+          aria-hidden because it is decoration: the eyebrow already carries the
+          text, and a screen reader reading "404" twice helps nobody. Rendered
+          here in the server component, so the whole thing costs no JavaScript.
+        */}
+        <span
+          aria-hidden="true"
+          /*
+            Left aligned, not centred.
+
+            Centred put the last glyph behind the panel, whose tiles are
+            opaque, so the watermark read as "40" with a smudge after it. The
+            copy column is the only part of this layout with nothing solid in
+            it, so all three numerals live there and the paragraph crosses them
+            without either one suffering.
+          */
+          className="pointer-events-none absolute inset-0 flex select-none items-center justify-start pl-[6%] font-display text-[clamp(12rem,24vw,24rem)] leading-none tracking-tighter text-foreground/[0.04]"
+        >
+          404
+        </span>
+
+        <Container className="relative z-10">
           <NotFoundFinder
             heading={
               <>
