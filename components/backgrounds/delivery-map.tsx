@@ -84,6 +84,33 @@ function inRing(lng: number, lat: number, ring: Ring) {
   return inside;
 }
 
+/**
+ * A bounding box per ring, computed once.
+ *
+ * !! WITHOUT THIS THE REAL OUTLINE IS TOO SLOW TO USE !!
+ *
+ * The hand drawn outline was forty rings of a dozen points. Natural Earth is a
+ * hundred and four rings of four thousand nine hundred, and the grid is twenty
+ * thousand cells, so testing every cell against every vertex is around a
+ * hundred million operations on mount. Rejecting on the box first throws away
+ * almost all of it: a cell in the Pacific fails a hundred and four number
+ * comparisons instead of walking a hundred and four coastlines, and a cell in
+ * France only ever walks Eurasia.
+ */
+const BOXES = landmasses.map((ring) => {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  for (const [x, y] of ring) {
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  return { ring, minX, maxX, minY, maxY };
+});
+
 export function DeliveryMap() {
   const uid = useId();
   const [active, setActive] = useState<Destination | null>(null);
@@ -94,7 +121,15 @@ export function DeliveryMap() {
     const parts: string[] = [];
     for (let lat = LAT_TOP; lat >= LAT_BOTTOM; lat -= STEP) {
       for (let lng = -180; lng <= 180; lng += STEP) {
-        if (!landmasses.some((ring) => inRing(lng, lat, ring))) continue;
+        let land = false;
+        for (const b of BOXES) {
+          if (lng < b.minX || lng > b.maxX || lat < b.minY || lat > b.maxY) continue;
+          if (inRing(lng, lat, b.ring)) {
+            land = true;
+            break;
+          }
+        }
+        if (!land) continue;
         const { x, y } = project(lng, lat);
         parts.push(`M${x.toFixed(1)} ${y.toFixed(1)}l0 0`);
       }
