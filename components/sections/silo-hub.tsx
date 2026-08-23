@@ -33,7 +33,7 @@ export function SiloHub({
 
   return (
     <>
-      <Section spacing="none" className="pt-32 lg:pt-40 pb-16 lg:pb-20">
+      <Section spacing="none" className="pt-24 lg:pt-28 pb-16 lg:pb-20">
         <Container>
           <Breadcrumbs path={path} />
           <Eyebrow className="mb-6">{eyebrow}</Eyebrow>

@@ -259,7 +259,7 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
       them to the panel puts every name and every path on one line and leaves
       the copy at its natural measure.
     */
-    <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_460px] xl:grid-cols-[minmax(0,1fr)_580px] gap-10 xl:gap-14 items-center">
+    <div className="grid lg:grid-cols-[minmax(0,1fr)_460px] xl:grid-cols-[minmax(0,1fr)_580px] gap-10 xl:gap-14 items-center">
       <div>
         {/*
           The page's own heading lives in this column rather than above the

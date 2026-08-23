@@ -24,7 +24,7 @@ import { NotFoundFinder } from "@/components/sections/not-found-finder";
  *
  * This had `min-h-[70vh] flex items-center` and an h2 sized heading, which is
  * a layout no other route uses, and it showed. The Section below carries the
- * same `spacing="none"` with `pt-28 lg:pt-36 pb-20 lg:pb-28` that every
+ * same `spacing="none"` with `pt-24 lg:pt-28 pb-20 lg:pb-28` that every
  * service and industry hero carries, and the h1 is the same type ramp. A 404
  * that is laid out like the rest of the site reads as part of it.
  *

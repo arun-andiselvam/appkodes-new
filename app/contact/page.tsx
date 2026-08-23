@@ -42,7 +42,7 @@ export default function ContactPage() {
     <main>
       <Section spacing="none" className="pt-32 lg:pt-40 pb-16 lg:pb-20">
         <Container>
-          <Breadcrumbs path="/contact" />
+          <Breadcrumbs path="/contact" visible />
 
           <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
             <div>

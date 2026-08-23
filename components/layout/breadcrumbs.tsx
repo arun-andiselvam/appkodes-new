@@ -25,8 +25,30 @@ import { siteOrigin } from "@/lib/site-url";
 export async function Breadcrumbs({
   path,
   leaf,
+  visible = false,
 }: {
   path: string;
+  /**
+   * Draw the trail, not just the schema.
+   *
+   * !! OFF BY DEFAULT, WHICH IS A DELIBERATE INVERSION !!
+   *
+   * The client asked on 24 August 2026 for the trail to come off every
+   * service, industry and resource page. That is seven of the eight places
+   * this component is used, so the default is the answer rather than seven
+   * identical props. A page that wants the trail back opts in.
+   *
+   * !! THE SCHEMA STILL SHIPS, AND THAT IS A JUDGEMENT CALL WORTH KNOWING !!
+   *
+   * Google's structured data guidance says not to mark up content a reader
+   * cannot see, so a BreadcrumbList with no trail on the page is the kind of
+   * thing it may decide to ignore. Removing the block as well would lose the
+   * breadcrumb rich result outright and would drop the schema
+   * docs/seo-standards.md requires on every page below the top level, which is
+   * a larger loss than a rich result that might be discounted. Ask before
+   * changing this either way.
+   */
+  visible?: boolean;
   /**
    * A final crumb for a page the navigation tree does not contain.
    *
@@ -94,32 +116,37 @@ export async function Breadcrumbs({
           __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
         }}
       />
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-          {trail.map((crumb, i) => {
-            const last = i === trail.length - 1;
-            return (
-              <li key={crumb.href} className="flex items-center gap-2">
-                {i > 0 && (
-                  <ChevronRight aria-hidden className="w-3.5 h-3.5 opacity-50" />
-                )}
-                {last ? (
-                  <span aria-current="page" className="text-foreground">
-                    {crumb.name}
-                  </span>
-                ) : (
-                  <Link
-                    href={crumb.href}
-                    className="hover:text-foreground transition-colors"
-                  >
-                    {crumb.name}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      {!visible ? null : (
+        <nav aria-label="Breadcrumb" className="mb-8">
+          <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+            {trail.map((crumb, i) => {
+              const last = i === trail.length - 1;
+              return (
+                <li key={crumb.href} className="flex items-center gap-2">
+                  {i > 0 && (
+                    <ChevronRight
+                      aria-hidden
+                      className="w-3.5 h-3.5 opacity-50"
+                    />
+                  )}
+                  {last ? (
+                    <span aria-current="page" className="text-foreground">
+                      {crumb.name}
+                    </span>
+                  ) : (
+                    <Link
+                      href={crumb.href}
+                      className="hover:text-foreground transition-colors"
+                    >
+                      {crumb.name}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      )}
     </>
   );
 }

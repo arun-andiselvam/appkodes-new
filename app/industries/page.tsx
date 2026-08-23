@@ -5,8 +5,20 @@ import { CtaSection } from "@/components/sections/cta";
 
 export const metadata = pageMetadata({
   title: "Industries",
+  /*
+   * 160 characters, down from 182.
+   *
+   * The old one was over the budget in docs/seo-standards.md and was being cut
+   * in results. It also listed six sectors inline, which the voice rules cut
+   * to two, and the sixth of them was "agency production", written while the
+   * marketing page still sold work at volume. That page argues the opposite
+   * now, so the description was promising something no page behind it keeps.
+   *
+   * It leads on the argument the hub itself makes rather than reciting the
+   * list underneath it, and closes on the action, which the old one never did.
+   */
   description:
-    "Where we have put AI to work. Retail inventory, healthcare consultations, financial data, community platforms, e-learning and agency production, with the constraints each one brings.",
+    "The constraint changes by trade. Retail worries about stock, healthcare about who sees a record, and the work follows the constraint. Book an automation review.",
   path: "/industries",
 });
 

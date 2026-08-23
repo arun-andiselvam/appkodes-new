@@ -68,13 +68,13 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
       */}
       <Section
         spacing="none"
-        className="relative overflow-hidden pt-28 lg:pt-36 pb-20 lg:pb-28"
+        className="relative overflow-hidden pt-24 lg:pt-28 pb-20 lg:pb-28"
       >
         <HeroBackdrop />
         <Container className="relative z-10">
           <Breadcrumbs path={page.path} />
 
-          <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px] gap-10 xl:gap-14 items-center">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px] gap-10 xl:gap-14 items-center">
             <div>
               <Eyebrow className="mb-6">{page.hero.eyebrow}</Eyebrow>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05]">

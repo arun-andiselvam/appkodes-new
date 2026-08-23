@@ -63,7 +63,7 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | Contact | none set | bespoke | 18 | **115** | Breadcrumb only | 3 | 965 | Live, SEO pass due |
 | How we work | none set | bespoke | 22 | **97** | none | 4 | 1,264 | Live, SEO pass due |
 | Services hub | none set | bespoke | 19 | **118** | Breadcrumb only | 8 | 1,256 | Live, SEO pass due |
-| Industries hub | none set | bespoke | 21 | **182** | Breadcrumb only | 8 | 1,001 | Live, SEO pass due |
+| Industries hub | none set | bespoke | 21 | 160 | Breadcrumb only | 8 | 1,001 | Live, SEO pass due |
 | `/services/ai-software-integration` | `AI software integration` | long form | 60 | **149** | Service + FAQ | 12 | 2,739 | **Done** |
 | `/services/custom-ai-api-integration` | `custom AI API integration` | long form | 50 | 154 | Service + FAQ | 11 | 2,684 | **Done** |
 | `/services/secure-ai-compliance-architecture` | `secure AI integration services` | long form | 45 | 150 | Service + FAQ | 11 | 2,756 | **Done** |
@@ -91,8 +91,9 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/industries/marketing-and-adtech` | `marketing AI automation` | long form | 51 | 160 | Service + FAQ | 9 | 1,888 | **Done** |
 
 **Totals.** 30 pages. 25 done, 5 live and awaiting an SEO pass, none left on
-the blueprint. No title is over 60. **Six descriptions outside 150 to 160**,
-and five of the six are the five pages awaiting the pass.
+the blueprint. No title is over 60. **Five descriptions outside 150 to 160**,
+and four of the five are pages awaiting the pass. The industries hub was the
+sixth and was fixed on 24 August 2026, at 182 and being cut in results.
 
 That six read "two" until 24 August 2026 and had been wrong for a while. The
 number was decremented by hand each time a page was marked Done, rather than

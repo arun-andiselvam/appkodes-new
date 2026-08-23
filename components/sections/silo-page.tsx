@@ -42,7 +42,7 @@ export function SiloPage({ page, path }: { page: ServicePage; path: string }) {
         with a component that happens to have enough top padding. These pages
         state it rather than relying on that.
       */}
-      <Section spacing="none" className="pt-32 lg:pt-40 pb-16 lg:pb-20">
+      <Section spacing="none" className="pt-24 lg:pt-28 pb-16 lg:pb-20">
         <Container>
           <Breadcrumbs path={path} />
 

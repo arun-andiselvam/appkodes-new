@@ -50,7 +50,7 @@ export async function ResourceCategoryPage({
 
   return (
     <>
-      <Section spacing="none" className="pt-32 lg:pt-40 pb-10 lg:pb-14">
+      <Section spacing="none" className="pt-24 lg:pt-28 pb-10 lg:pb-14">
         <Container>
           <Breadcrumbs path={path} />
           <Eyebrow className="mb-6">{category.eyebrow}</Eyebrow>

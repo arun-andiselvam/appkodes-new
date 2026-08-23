@@ -52,7 +52,7 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
       */}
       <Section
         spacing="none"
-        className="relative overflow-hidden pt-28 lg:pt-36 pb-20 lg:pb-28"
+        className="relative overflow-hidden pt-24 lg:pt-28 pb-20 lg:pb-28"
       >
         <HeroBackdrop />
         <Container className="relative z-10">
@@ -69,7 +69,7 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
             still leaves about 760 for the headline, which "Add AI to the
             software you already run." sets on two lines exactly as before.
           */}
-          <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_520px] xl:grid-cols-[minmax(0,1fr)_580px] gap-10 xl:gap-14 items-center">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_520px] xl:grid-cols-[minmax(0,1fr)_580px] gap-10 xl:gap-14 items-center">
             <div>
             <Eyebrow className="mb-6">{page.hero.eyebrow}</Eyebrow>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05]">

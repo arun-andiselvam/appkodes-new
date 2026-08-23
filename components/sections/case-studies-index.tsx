@@ -36,7 +36,7 @@ export async function CaseStudiesIndex({ path }: { path: string }) {
 
   return (
     <>
-      <Section spacing="none" className="pt-32 lg:pt-40 pb-12 lg:pb-16">
+      <Section spacing="none" className="pt-24 lg:pt-28 pb-12 lg:pb-16">
         <Container>
           <Breadcrumbs path={path} />
           <Eyebrow className="mb-6">Case studies</Eyebrow>
