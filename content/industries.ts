@@ -130,8 +130,16 @@ export const industryPages: Record<string, ServicePage> = {
     eyebrow: "Industries",
     lede: "A feed worth opening and moderation that keeps pace, on platforms where the conversation is the product.",
     metaTitle: "AI for Media, Communities & Secure Consulting",
+    /*
+     * `compliant AI app development` came out on 23 August 2026, when the long
+     * form page was built. docs/page-progress.md had it assigned to two pages
+     * at once, here and on the Secure AI & Compliance Architecture service
+     * page, which is built and owns it. The long form entry in
+     * content/industry-landings.ts supersedes this description anyway, so the
+     * phrase was only ever going to reappear if somebody read this file first.
+     */
     metaDescription:
-      "Community platform AI integration. Intelligent feeds, automated moderation and compliant AI app development for closed communities and live video consulting.",
+      "Community platform AI integration. Intelligent feeds and automated moderation for closed communities and live video consulting.",
     problem: {
       heading: "The conversation is the product, and people do not scale",
       body: "A platform people talk on lives or dies on two things: whether the feed is worth opening, and whether the worst post of the day gets caught. Both are done by hand, and neither keeps pace with sign-ups.",

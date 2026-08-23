@@ -662,6 +662,29 @@ export type IndustryLanding = {
    * caption carries the words.
    */
   record: {
+    /**
+     * Which arrangement the panel draws itself in.
+     *
+     * !! REQUIRED, SO EVERY PAGE HAS TO CHOOSE !!
+     *
+     * There was one arrangement until 23 August 2026, a three by six field. It
+     * was designed for fintech and the other four industry pages inherited it,
+     * which meant a ledger, a stock room, a clinic day, a feed and a gradebook
+     * were all drawn as the same object. Making this optional with a default
+     * would put the next page straight back into that.
+     *
+     * Each one says something the others cannot. See the layout functions in
+     * components/backgrounds/record-stack.tsx.
+     */
+    layout: "field" | "shelf" | "day" | "stream" | "cohort";
+    /**
+     * Labels for the across axis. `cohort` only, and required by it.
+     *
+     * This is not the `columns` field removed on 23 August 2026 with the
+     * caption bar. That one labelled the four fields of a row. This names the
+     * second axis of a matrix, which only the gradebook has.
+     */
+    axis?: string[];
     /** Read in place of the panel by anything that cannot see it. */
     caption: string;
     rows: {

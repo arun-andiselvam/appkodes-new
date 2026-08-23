@@ -152,7 +152,18 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
       */}
       <Section spacing="tight" className="border-t border-foreground/10">
         <Container>
-          <div className="grid lg:grid-cols-[minmax(0,20rem)_1fr] gap-10 lg:gap-20">
+          {/*
+            26rem, not 20. Widened 23 August 2026.
+
+            The fintech page's summary heading is "What this covers", three
+            short words, and 20rem held it comfortably. The retail page's
+            carries its primary keyword verbatim, which is the right call for a
+            definition block an answer engine reads, and "What retail AI
+            inventory automation is" broke to four lines with "is" alone on the
+            last one. Widening the column was cheaper than shortening a heading
+            that is doing SEO work.
+          */}
+          <div className="grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-10 lg:gap-20">
             <SectionTitle>{page.summary.heading}</SectionTitle>
             {/*
               Set as a statement rather than body copy, on feedback from 22
@@ -465,7 +476,20 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
       */}
       <Section spacing="tight" className="border-t border-foreground/10">
         <Container>
-          <SectionTitle>Common questions about AI in finance</SectionTitle>
+          {/*
+            The sector comes from the hero eyebrow rather than from a field of
+            its own, because every page already sets one and a second place to
+            name the same trade is a second place to get it wrong.
+
+            This read "Common questions about AI in finance" until 23 August
+            2026. It was written with the fintech page, the only one that
+            existed at the time, and hardcoded. Retail, healthcare and media
+            all shipped underneath it, so three industry pages were asking the
+            reader questions about finance.
+          */}
+          <SectionTitle>
+            Common questions about AI in {page.hero.eyebrow.toLowerCase()}
+          </SectionTitle>
           <div className="mt-12 grid md:grid-cols-2 gap-x-12 lg:gap-x-16">
             {page.faqs.map((faq, i) => (
               <details

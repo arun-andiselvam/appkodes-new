@@ -71,19 +71,20 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | long form | 51 | 156 | Service + FAQ | 11 | 2,520 | **Done** |
 | `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | long form | 55 | 154 | Service + FAQ | 11 | 2,570 | **Done** |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | long form | 41 | 151 | Service + FAQ | 9 | 1,828 | **Done** |
-| `/industries/retail-and-inventory` | `predictive inventory AI` | blueprint | 47 | **140** | Breadcrumb only | 5 | 855 | Blueprint |
-| `/industries/healthcare-and-consulting` | `compliant AI development for healthcare` | blueprint | 51 | 153 | Breadcrumb only | 5 | 859 | Blueprint |
-| `/industries/media-and-communities` | `community platform AI integration` | blueprint | 56 | 157 | Breadcrumb only | 5 | 909 | Blueprint |
-| `/industries/edtech-and-learning` | `AI integration for e-learning platforms` | blueprint | 53 | 150 | Breadcrumb only | 5 | 889 | Blueprint |
-| `/industries/marketing-and-adtech` | `AI automation for marketing agencies` | blueprint | 44 | **145** | Breadcrumb only | 5 | 882 | Blueprint |
+| `/industries/retail-and-inventory` | `retail AI inventory automation` | long form | 50 | 154 | Service + FAQ | 9 | 1,772 | **Done** |
+| `/industries/healthcare-and-consulting` | `healthcare AI automation` | long form | 48 | 159 | Service + FAQ | 9 | 1,873 | **Done** |
+| `/industries/media-and-communities` | `community app AI automation` | long form | 51 | 156 | Service + FAQ | 9 | 1,842 | **Done** |
+| `/industries/edtech-and-learning` | `edtech AI automation` | long form | 52 | 158 | Service + FAQ | 9 | 1,887 | **Done** |
+| `/industries/marketing-and-adtech` | `marketing AI automation` | long form | 51 | 160 | Service + FAQ | 9 | 1,888 | **Done** |
 
-**Totals.** 30 pages. 20 done, 5 live and awaiting an SEO pass, 5 on the
-blueprint. No title is over 60 any more. Seven descriptions outside 150 to 160.
+**Totals.** 30 pages. 25 done, 5 live and awaiting an SEO pass, none left on
+the blueprint. No title is over 60 any more. Two descriptions outside 150 to
+160.
 
-**Every service page is finished.** All five silos, their parents and all
-fourteen children. The five pages still on the blueprint are all industry
-pages, and the five awaiting an SEO pass are the home page, contact, how we
-work and the two hubs.
+**Every service and industry page is finished.** All five silos, their parents
+and all fourteen children, and all six industries. Nothing renders the
+generated silo page any more. The five awaiting an SEO pass are the home page,
+contact, how we work and the two hubs, and they are the whole remaining list.
 
 ---
 
@@ -119,11 +120,11 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | `/services/private-llm-fine-tuning` | `custom AI model training`, `on-premise LLM deployment`, `secure AI model hosting` |
 | `/services/ai-voice-telephony-automation` | `AI phone agents`, `automated call center AI`, `Twilio AI voice integration` |
 | `/industries/fintech-and-finance` | `automated expense tracking`, `AI ledger management` |
-| `/industries/retail-and-inventory` | `AI inventory management development`, `retail automation IT services` |
-| `/industries/healthcare-and-consulting` | `private LLM deployment for patient data`, `secure consultation platform development` |
-| `/industries/media-and-communities` | `secure AI for telehealth consulting`, `compliant AI app development` |
-| `/industries/edtech-and-learning` | `custom EdTech AI development`, `automated tutoring AI for startups` |
-| `/industries/marketing-and-adtech` | `generative AI creative pipelines`, `programmatic SEO AI development` |
+| `/industries/retail-and-inventory` | `smart inventory management`, `retail vision AI`, `automated stock forecasting` |
+| `/industries/healthcare-and-consulting` | `telehealth AI integration`, `secure medical AI apps`, `automated patient intake` |
+| `/industries/media-and-communities` | `social feed AI moderation`, `media platform AI integration`, `automated community guidelines` |
+| `/industries/edtech-and-learning` | `AI learning platforms`, `audio recitation AI`, `educational app development` |
+| `/industries/marketing-and-adtech` | `adtech AI integration`, `predictive marketing ROI`, `AI content clustering` |
 
 ---
 
@@ -135,7 +136,7 @@ page is built, not after.
 
 | Phrase | Claimed by | Decide |
 | --- | --- | --- |
-| `compliant AI app development` | secondary on `secure-ai-compliance-architecture`, secondary on `media-and-communities` | The secure page is built and owns it. Drop it from `content/industries.ts:134` when Media & Communities is written. |
+| ~~`compliant AI app development`~~ | was secondary on `secure-ai-compliance-architecture` and on `media-and-communities` | **Resolved 23 August 2026.** Media & Communities was written and took `social feed AI moderation` instead, and the phrase came out of `content/industries.ts`. The secure page keeps it. |
 | ~~`AI inventory management development`~~ | was primary on `smart-inventory-retail-mvp`, secondary on `retail-and-inventory` | **Resolved 22 August 2026.** The MVP page took `smart inventory AI MVP` when it was built, so the industry page keeps this one. |
 | `private AI model deployment` | secondary on `private-llm-fine-tuning`, secondary on the `custom-ai-models-voice` parent | Parent and child again. The parent should take the category term its URL carries. |
 | `integrate LLM into existing software` | secondary on `custom-ai-api-integration`, secondary on the `ai-software-integration` parent | Both pages are built and both already carry it. Acceptable as a secondary on two pages in one silo, but do not let it reach either title. |

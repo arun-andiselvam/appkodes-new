@@ -15,7 +15,11 @@ export function SectionTitle({
   return (
     <h2
       className={cn(
-        "text-4xl lg:text-6xl font-display tracking-tight",
+        // text-balance so a heading that wraps distributes its lines evenly
+        // rather than leaving one word alone on the last. Added 23 August 2026
+        // when "What retail AI inventory automation is" broke with "is" by
+        // itself, which no amount of column width reliably prevents.
+        "text-4xl lg:text-6xl font-display tracking-tight text-balance",
         className,
       )}
       {...props}

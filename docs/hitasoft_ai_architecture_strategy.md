@@ -99,12 +99,14 @@ These six own no child pages, so the header draws them as cards rather than as a
 
     Added 21 August 2026. The challenge: platforms handling user interactions need heavy moderation, while consulting apps face strict data privacy requirements. The work: strict data safety architectures for live video consulting, and intelligent social feeds and moderation tooling for closed community applications.
 
-    **Overlap to resolve:** `compliant AI app development` is also targeted by Silo 1's Secure AI & Compliance Architecture page, and live-video consulting is claimed by the Healthcare & Consulting page's copy too. Three pages competing for one term is cannibalisation. Decide which page owns it before this ships.
+    **Overlap resolved 23 August 2026**, when the long form page was built. `compliant AI app development` stays with Silo 1's Secure AI & Compliance Architecture page, which was built first and is named for it. Telehealth and live video consulting go to `/industries/healthcare-and-consulting`, built the day before, which carries `telehealth AI integration` as one of its own secondaries. This page dropped both. It took `community app AI automation` as its primary, with `social feed AI moderation`, `media platform AI integration` and `automated community guidelines` under it. Moderation for open and closed social platforms is what this page owns, which is what the EdTech note below already assumed.
 
 *   **EdTech & Digital Learning Systems** — `/industries/edtech-and-learning`
     `AI integration for e-learning platforms`, `custom EdTech AI development`, `automated tutoring AI for startups`
 
     Added 21 August 2026. Online education is moving from static video courses toward interactive, community-driven platforms, and mid-sized educators and startup platforms need smart features to hold engagement. The challenge: keeping engagement high, giving personalised feedback, and moderating community interaction at scale without hiring a large support team. The work: AI-driven voice and recitation analysis, quiz generation keyed to a learner's progress, and automated moderation on closed community feeds.
+
+    **Split applied 23 August 2026**, when the long form page was built, exactly as the note below asked. The EdTech page leads on recitation and marking, and its one moderation use case is a course forum that says on the page it is moderation inside a course rather than across a public feed. Media & Communities keeps public feed moderation and got a single line about recitation in return. The keywords moved with the split: this page took `edtech AI automation` as its primary, with `AI learning platforms`, `audio recitation AI` and `educational app development` under it. The three listed above were replaced because none of them carried the primary phrase a buyer types.
 
     **Note:** the moderation angle overlaps Media & Communities above. EdTech should own moderation *of course cohorts*; Media & Communities owns it for open and closed social platforms.
 

@@ -210,8 +210,22 @@ seven words. Padding a button to hit a word count makes the copy worse.
 
 Never publish a claim the company cannot back.
 
-- Do not name HIPAA, SOC 2 or GDPR certification until Appkodes confirms it
-  holds or handles them. Describe process instead.
+- HIPAA and GDPR may be named as the regimes the work is built around. The
+  client cleared this on 23 August 2026, and `/industries/healthcare-and-consulting`
+  is the first page to use it.
+
+  What is still barred is claiming to hold or to grant them. HIPAA compliance
+  attaches to a covered entity rather than to a software supplier, and there is
+  no HIPAA certificate to hold, only attestation and a Business Associate
+  Agreement. "Built for HIPAA workflows" is fine. "HIPAA compliant" as a
+  property of Appkodes is not, and neither is promising a client stays
+  compliant.
+
+  SOC 2 is unchanged and still barred: it is an audit somebody either has or
+  does not, and nobody has confirmed one.
+
+  Whether Appkodes signs Business Associate Agreements is still unanswered. If
+  it does, that is the strongest sentence a healthcare page can carry.
 - Do not attach client logos or numbers to companies that are not clients. The
   original template shipped fake claims like "98% faster deployment, STRIPE".
   Those are removed and must not return.

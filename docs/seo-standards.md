@@ -174,7 +174,12 @@ of content at two URLs is the thing paging must not create.
 | `/services/custom-ai-models-voice` | `custom AI model development` | Custom AI Model Development & Voice (35) |
 | `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | Private LLM Fine-Tuning & Secure Hosting (40) |
 | `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | AI Voice Telephony Automation & Phone Agents (44) |
-| `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | AI Automation for Fintech SMBs (30) |
+| `/industries/fintech-and-finance` | `AI automation for fintech` | AI Automation for Fintech & Finance Teams (41) |
+| `/industries/retail-and-inventory` | `retail AI inventory automation` | Retail AI Inventory Automation & Vision (39) |
+| `/industries/healthcare-and-consulting` | `healthcare AI automation` | Healthcare AI Automation & Telehealth (37) |
+| `/industries/media-and-communities` | `community app AI automation` | Community App AI Automation & Moderation (40) |
+| `/industries/edtech-and-learning` | `edtech AI automation` | EdTech AI Automation & Learning Platforms (41) |
+| `/industries/marketing-and-adtech` | `marketing AI automation` | Marketing AI Automation & Ad Forecasting (40) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |
 
