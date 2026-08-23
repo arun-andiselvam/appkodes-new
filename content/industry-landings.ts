@@ -44,10 +44,19 @@ import type { IndustryLanding } from "./types";
  * !! CONFIRM THE ECOSYSTEM LIST BEFORE LAUNCH !!
  *
  * Stripe, PostgreSQL, Laravel and React are already vetted in
- * content/integrations.ts. Plaid, QuickBooks, Xero and Salesforce are not.
- * They came from the brief, and the section is worded as what finance teams
- * bring us rather than what we have delivered, which is the honest reading.
- * Anything that has genuinely never been connected should come out.
+ * content/integrations.ts.
+ *
+ * QuickBooks and Xero came out on 23 August 2026. The client confirmed neither
+ * has been connected on a project, and content/integrations.ts is explicit
+ * that this kind of list has to match what has actually been delivered. There
+ * was no replacement to find: Hitasoft builds the ledger, so the honest answer
+ * to where the books live is the client's own database, and PostgreSQL and
+ * MySQL were already in the row saying exactly that.
+ *
+ * !! PLAID AND SALESFORCE ARE STILL UNCONFIRMED !!
+ *
+ * Same position the other two were in, and the same question has not been put
+ * to the client yet. Ask before launch.
  *
  * Voice rules from docs/positioning.md apply to every string below. No em
  * dashes and no semicolons, sentences alternating short and long and never
@@ -282,8 +291,6 @@ export const industryLandings: Record<string, IndustryLanding> = {
       items: [
         { name: "Stripe", category: "Taking payments", icon: "siStripe" },
         { name: "Plaid", category: "Bank feeds and balances" },
-        { name: "QuickBooks", category: "Where the books live", icon: "siQuickbooks" },
-        { name: "Xero", category: "Ledgers and invoicing", icon: "siXero" },
         { name: "Salesforce", category: "Accounts and contacts" },
         { name: "PostgreSQL", category: "Records and reporting", icon: "siPostgresql" },
         { name: "MySQL", category: "Older ledgers and reports", icon: "siMysql" },

@@ -114,7 +114,7 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | `/services/ai-data-predictive-analytics` | `business data forecasting AI`, `machine learning data analytics`, `predictive ROI modelling` |
 | `/services/predictive-analytics-bi` | `AI BI dashboards`, `predictive analytics integration`, `smart data visualization tools` |
 | `/services/data-engineering-vector-databases` | `AI data engineering`, `RAG data architecture`, `unstructured data vectorization` |
-| `/services/computer-vision-quality-control` | `AI visual inspection services`, `automated defect detection`, `edge AI vision models` |
+| `/services/computer-vision-quality-control` | `AI visual inspection services`, `automated defect detection` |
 | `/services/custom-ai-models-voice` | `private AI model deployment`, `custom AI voice models`, `speech-to-text AI integration` |
 | `/services/private-llm-fine-tuning` | `custom AI model training`, `on-premise LLM deployment`, `secure AI model hosting` |
 | `/services/ai-voice-telephony-automation` | `AI phone agents`, `automated call center AI`, `Twilio AI voice integration` |
@@ -180,13 +180,16 @@ These affect all 30 rows and none of them are fixed by page work.
 
 | Blocker | Where | Impact |
 | --- | --- | --- |
-| **Domain** | `site.url` still defaults to `appkodes.com` | Every canonical, sitemap entry and schema URL on all 30 pages points at the old site. One env var, `NEXT_PUBLIC_SITE_URL`. This is the launch blocker. |
+| ~~**Domain**~~ | `content/site.ts` | **Closed 23 August 2026.** Confirmed as `hitasoft.com` and set as the default. Canonicals, Open Graph and all 34 sitemap entries verified on the new origin. |
 | **Sitemap** | `app/sitemap.ts` | Articles and case studies are absent, and no entry carries `lastModified`. Parked by decision, not by oversight. |
 | **Sample content** | `USE_SAMPLE_POSTS`, `USE_SAMPLE_CASE_STUDIES` | Both true. `content/posts-sample.ts`, `content/case-studies-sample.ts` and `public/sample/` all ship until they are flipped. |
 | **Contact form** | `CONTACT_WEBHOOK_URL` | Unset, so `/contact` returns a 503 with an honest message rather than delivering anything. |
 | **Draft metrics** | `content/metrics.ts` | Four figures are drafts under a capitalised warning. They must not reach a page. |
 | **Unverified claim** | Home page, "more than 50 countries" | Not in any verified facts list. |
-| **Play Console claim** | Used in service copy | Confirm an app has genuinely shipped through review with an AI feature. |
+| ~~**Voice cloning**~~ | `/services/ai-voice-telephony-automation` | **Closed 23 August 2026.** Not offered. The page already says cloning a real person's voice is a consent question rather than a feature, which is the correct resting state. |
+| **App store copy** | Six service pages | The client says store review belongs to Appkodes rather than Hitasoft. Nothing published claims a track record, so there is no risk, but roughly seventeen strings across six pages are written around a subject that may not be this brand's. Decide whether that copy stays. |
+| **Vendor list** | `content/integrations.ts` | QuickBooks and Xero removed 23 August 2026, confirmed never connected. Shopify, Square, Zendesk, Intercom, Pinecone and Vonage were never named. **Plaid and Salesforce are still on the fintech industry row and still unconfirmed.** |
+| ~~**Edge deployment**~~ | `/services/computer-vision-quality-control` | **Closed 23 August 2026.** No vision model has run on a device for a client, so the capability, the scenario, two FAQs, a diagram row and the `edge AI vision models` keyword all came out. |
 
 ---
 

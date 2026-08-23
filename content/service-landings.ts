@@ -2394,11 +2394,12 @@ export const serviceLandings: Record<string, ServiceLanding> = {
    * survives. The absolutes do not, because a pipeline is more than its
    * calculator and the first wrong total makes a liar of the word.
    *
-   * QuickBooks and Xero are named, following the decision already taken on the
-   * fintech industry page. They are not in content/integrations.ts, so they
-   * are worded as where the client's books already live rather than as
-   * integrations we have delivered. Both carry the same confirm before launch
-   * flag as that page's ecosystem row.
+   * QuickBooks and Xero were named here for a day, following the decision the
+   * fintech industry page had taken. Removed 23 August 2026: the client
+   * confirmed neither has been connected on a project. The stack group says
+   * PostgreSQL, MySQL and Laravel instead, which is the truthful answer
+   * anyway, because Hitasoft builds the ledger rather than integrating with
+   * somebody else's.
    *
    * The primary keyword reads "financial data automation AI" in the brief,
    * which is not a phrase anybody writes in a sentence. The title uses the
@@ -2562,16 +2563,13 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     },
 
     /*
-     * !! QuickBooks AND Xero ARE NOT ON THE VETTED LIST !!
-     *
-     * Same position as content/industry-landings.ts takes with its ecosystem
-     * row, and the same wording: these are where a client's books already
-     * live, not integrations being claimed. Confirm before launch, together
-     * with that page's list and content/integrations.ts.
+     * Everything here is vetted in content/integrations.ts. QuickBooks and
+     * Xero sat in the ledger group until 23 August 2026 and came out when the
+     * client confirmed neither had been connected on a project.
      */
     stack: {
       heading: "What the pipeline is built from",
-      body: "We fit the pipeline around the books you already keep. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
+      body: "We build the ledger rather than bolting onto somebody else's. Nothing on this list is a requirement, and the work goes ahead against whatever your software was built on.",
       groups: [
         {
           label: "Reading what arrives",
@@ -2582,11 +2580,11 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           ],
         },
         {
-          label: "Where the books live",
+          label: "Where the ledger lives",
           items: [
-            { name: "QuickBooks", category: "If that is what you run", icon: "siQuickbooks" },
-            { name: "Xero", category: "Ledgers and invoicing", icon: "siXero" },
-            { name: "PostgreSQL", category: "Or your own database", icon: "siPostgresql" },
+            { name: "PostgreSQL", category: "The ledger itself", icon: "siPostgresql" },
+            { name: "MySQL", category: "If that is what you run", icon: "siMysql" },
+            { name: "Laravel", category: "The application around it", icon: "siLaravel" },
           ],
         },
         {
@@ -4731,12 +4729,26 @@ export const serviceLandings: Record<string, ServiceLanding> = {
    * "Milliseconds per frame" and "million-dollar robotics facility" are both
    * figures nobody here has measured or priced.
    *
-   * !! EDGE DEPLOYMENT IS DESCRIBED, NOT CLAIMED AS DELIVERED !!
+   * !! EDGE DEPLOYMENT IS GONE, NOT SOFTENED !!
    *
-   * "edge AI vision models" is a briefed secondary and running models on
-   * device appears nowhere in this repository. It is written as an option the
-   * architecture supports, which is true of the architecture, rather than as
-   * work already shipped. Confirm before launch alongside the vendor list.
+   * "edge AI vision models" was a briefed secondary keyword, and the page
+   * carried it in a capability, a scenario, two FAQs and a row of the diagram.
+   * All of it was written as an option the architecture supports rather than
+   * as work delivered, which was defensible until it was checked. The client
+   * confirmed on 23 August 2026 that no vision model has run on a device for a
+   * client and that the site should carry what has actually been done, so it
+   * all came out.
+   *
+   * The keyword went with it. A secondary with no section behind it is what
+   * rule 2 of docs/seo-standards.md forbids, so cutting the capability and
+   * keeping the term would have left the page bidding on something it no
+   * longer says.
+   *
+   * What replaced it is what the work actually turns on: the model scores
+   * against photographs of your own good and defective items, and collecting
+   * those is the first week. That was already the substance of the training
+   * FAQ and of week one, so the page lost a claim and gained nothing new to
+   * defend.
    */
   "/services/computer-vision-quality-control": {
     path: "/services/computer-vision-quality-control",
@@ -4796,8 +4808,8 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           body: "Industrial rigs are supported and often unnecessary. A good commercial camera or a phone is enough for a great many inspection jobs.",
         },
         {
-          title: "On the device or in the cloud",
-          body: "Where the model runs is a decision about latency. On device keeps footage off the network. Hosted is simpler to operate.",
+          title: "Trained on your own defects",
+          body: "The images the model scores against are photographs of your own good and defective items. Collecting them is the first week's work.",
         },
         {
           title: "Results land in your system",
@@ -4844,9 +4856,9 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           body: "Electronics arrive and get logged before anybody looks. A camera at the bench reads the serial and checks the case in the same pass.",
         },
         {
-          system: "A mobile app",
-          title: "Checks that run on the handset",
-          body: "Some work cannot send video anywhere at all. A smaller model on the device does the checking. Only the result travels.",
+          system: "Returns",
+          title: "What came back against what left",
+          body: "A returned item arrives and nobody can say what left the warehouse in the first place. The despatch photograph and the return get compared.",
         },
         {
           system: "Despatch",
@@ -4944,14 +4956,11 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      */
     diagram: {
       caption:
-        "An item is photographed at the bench. The model runs on the device or in the cloud and scores the image against your own examples. It logs a pass, or holds it.",
+        "An item is photographed at the bench and scored against photographs of your own good and defective examples. It logs a pass, or holds the item.",
       align: "sequence",
       rows: [
         [{ label: "An item, on camera", sub: "At the bench", tone: "brand" }],
-        [
-          { label: "On the device", sub: "Nothing leaves", tone: "accent" },
-          { label: "Or in the cloud", sub: "Simpler to run", tone: "accent" },
-        ],
+        [{ label: "Scored against your examples", sub: "Good and defective", tone: "accent" }],
         [
           { label: "Above the line", sub: "Scored a pass", tone: "accent" },
           { label: "Below it", sub: "Or simply unsure", tone: "accent" },
@@ -4970,9 +4979,9 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           "Often not. A good commercial camera or a recent phone handles a surprising number of inspection jobs. Lighting matters more than the sensor for most of them. Industrial rigs earn their place on fast lines and fine tolerances, which is a smaller set of jobs than people expect.",
       },
       {
-        question: "Does it need an internet connection?",
+        question: "Where does the model actually run?",
         answer:
-          "Not if it runs on the device. A smaller model on the handset or a machine at the bench works offline and keeps footage off the network. Hosted models are easier to run and update, so the choice is about your constraints rather than about quality.",
+          "On a server, which can be yours or hosted. That choice is about where the images are allowed to sit rather than about speed. It gets made in the first fortnight.",
       },
       {
         question: "How do you train it on our products?",
@@ -4988,11 +4997,6 @@ export const serviceLandings: Record<string, ServiceLanding> = {
         question: "What does AI visual inspection services actually cover?",
         answer:
           "Checking a physical thing against a standard. That covers damage, presence and placement, and it stops short of judging something the model has no examples of.",
-      },
-      {
-        question: "What are edge AI vision models?",
-        answer:
-          "Models small enough to run on the device holding the camera rather than in a data centre. Nothing leaves the handset. They trade some accuracy for that, and whether it is worth it depends on the check.",
       },
       {
         question: "How does automated defect detection handle a new fault?",

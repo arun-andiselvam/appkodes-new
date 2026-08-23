@@ -6,8 +6,13 @@ export const site = {
    * and robots.txt. Every one of those has to be absolute, so guessing it per
    * file is how a staging URL ends up in production metadata. Set
    * NEXT_PUBLIC_SITE_URL on preview deployments to point them at themselves.
+   *
+   * hitasoft.com, confirmed by the client on 23 August 2026. It defaulted to
+   * appkodes.com, the old brand, which put the wrong origin on every canonical,
+   * every Open Graph tag and every sitemap entry. That was the blocking launch
+   * issue recorded in docs/page-progress.md.
    */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://appkodes.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitasoft.com",
   /**
    * The Hitasoft wordmark, replacing the Appkodes one on 20 August 2026.
    *
