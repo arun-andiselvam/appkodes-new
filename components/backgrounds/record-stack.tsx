@@ -87,6 +87,19 @@ const SHADOW = { textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" } as const;
  * space, and it has no 3D children whose composition flattening could break.
  * The fade on the figure sits outside the perspective entirely, as it must.
  *
+ * That is what lets the records arrive one at a time. Every tile carries
+ * `.record-in` and a delay, and the layouts below order those delays the way
+ * each arrangement should be read: down a field, front bay to back on a shelf,
+ * through the morning on a day, nearest first in a stream.
+ *
+ * !! A TILE SETS --tile-op, NEVER opacity !!
+ *
+ * The entrance animates to `var(--tile-op, 1)` rather than to 1, because the
+ * texture in a field fades toward the back and the far posts in a stream sit
+ * under full strength. An inline `opacity` would be overridden by the
+ * animation's fill and every one of those would settle at the wrong value,
+ * taking the depth with it. Set the variable and let the keyframe land on it.
+ *
  * !! MEASURE OVERFLOW ON THE CHILDREN, NEVER ON THE FIGURE !!
  *
  * A layout box does not include what a 3D transform pushes past it. An earlier
@@ -190,15 +203,19 @@ function Tile({
   row,
   className,
   style,
+  delay = 0,
 }: {
   row: Row;
   className?: string;
   style?: React.CSSProperties;
+  /** Milliseconds before this one arrives. See `.record-in` in globals.css. */
+  delay?: number;
 }) {
   return (
     <div
-      className={`flex flex-col justify-center gap-1 px-3 ${className ?? ""}`}
+      className={`record-in flex flex-col justify-center gap-1 px-3 ${className ?? ""}`}
       style={{
+        animationDelay: `${delay}ms`,
         background: row.flagged ? FACES.exception : FACES.settled,
         boxShadow: `0 18px 34px -18px ${
           row.flagged ? "rgb(223 44 22 / 0.4)" : "rgb(20 111 144 / 0.4)"
@@ -237,14 +254,22 @@ function Tile({
  * else's wireframe. Tinting it costs no legibility, because nothing in it is
  * text.
  */
-function Ghost({ className, style }: { className?: string; style?: React.CSSProperties }) {
+function Ghost({
+  className,
+  style,
+  delay = 0,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  delay?: number;
+}) {
   return (
     <div
       aria-hidden="true"
-      className={`flex flex-col justify-center gap-1.5 border border-brand-blue/20 bg-brand-blue/[0.03] px-3 ${
+      className={`record-in flex flex-col justify-center gap-1.5 border border-brand-blue/20 bg-brand-blue/[0.03] px-3 ${
         className ?? ""
       }`}
-      style={style}
+      style={{ animationDelay: `${delay}ms`, ...style }}
     >
       <span className="h-[3px] w-2/5 rounded-full bg-brand-blue/35" />
       <span className="h-[3px] w-4/5 rounded-full bg-brand-blue/20" />
@@ -330,11 +355,17 @@ function Field({ record }: { record: Panel }) {
         */
         const fade = Math.max(0.16, 0.62 - Math.floor(i / FIELD_COLS) * 0.1);
         const style = { transform: `translateZ(${z}px)` };
+        /* Row by row down the field, with a little lag across each row. */
+        const delay = Math.floor(i / FIELD_COLS) * 55 + (i % FIELD_COLS) * 22;
 
         return row ? (
-          <Tile key={`${row.when}-${row.what}`} row={row} style={style} />
+          <Tile key={`${row.when}-${row.what}`} row={row} style={style} delay={delay} />
         ) : (
-          <Ghost key={`t-${i}`} style={{ ...style, opacity: fade }} />
+          <Ghost
+            key={`t-${i}`}
+            style={{ ...style, "--tile-op": fade } as React.CSSProperties}
+            delay={delay}
+          />
         );
       })}
     </Scene>
@@ -403,13 +434,24 @@ function Shelf({ record }: { record: Panel }) {
               transformStyle: "preserve-3d",
             }}
           >
-            {slots.slice(bay * SHELF_SLOTS, bay * SHELF_SLOTS + SHELF_SLOTS).map((row, i) =>
-              row ? (
-                <Tile key={`${row.when}-${row.what}`} row={row} style={{ height: 80 }} />
+            {slots.slice(bay * SHELF_SLOTS, bay * SHELF_SLOTS + SHELF_SLOTS).map((row, i) => {
+              /* Front bay first, then back, the way a shelf gets loaded. */
+              const delay = bay * 90 + i * 40;
+              return row ? (
+                <Tile
+                  key={`${row.when}-${row.what}`}
+                  row={row}
+                  style={{ height: 80 }}
+                  delay={delay}
+                />
               ) : (
-                <Ghost key={`hole-${bay}-${i}`} style={{ height: 80, opacity: 0.5 }} />
-              ),
-            )}
+                <Ghost
+                  key={`hole-${bay}-${i}`}
+                  style={{ height: 80, "--tile-op": 0.5 } as React.CSSProperties}
+                  delay={delay}
+                />
+              );
+            })}
           </div>
           {/*
             The board the stock stands on. Rotated ninety degrees about its top
@@ -514,6 +556,8 @@ function Day({ record }: { record: Panel }) {
           key={`${row.when}-${row.what}`}
           row={row}
           className="absolute left-[6%] right-[6%]"
+          /* Down the day in order, because that is what the column is. */
+          delay={i * 70}
           style={{
             top: tops[i],
             height: DAY_TILE,
@@ -584,16 +628,21 @@ function Stream({ record }: { record: Panel }) {
             key={`${row.when}-${row.what}`}
             row={row}
             className="absolute"
-            style={{
-              left: `${at.left}%`,
-              top: at.top,
-              width: "46%",
-              height: 70,
-              transform: `translateZ(${at.z}px) rotate(${at.spin}deg)`,
-              /* The far ones sit back rather than being drawn smaller by hand.
-                 The held one never fades, wherever it is. */
-              opacity: row.flagged ? 1 : at.z < -40 ? 0.62 : at.z < 0 ? 0.82 : 1,
-            }}
+            /* Nearest first, so the feed reads as arriving toward the viewer
+               rather than being dealt from the back. */
+            delay={Math.round((100 - at.z) * 1.6)}
+            style={
+              {
+                left: `${at.left}%`,
+                top: at.top,
+                width: "46%",
+                height: 70,
+                transform: `translateZ(${at.z}px) rotate(${at.spin}deg)`,
+                /* The far ones sit back rather than being drawn smaller by
+                   hand. The held one never fades, wherever it is. */
+                "--tile-op": row.flagged ? 1 : at.z < -40 ? 0.62 : at.z < 0 ? 0.82 : 1,
+              } as React.CSSProperties
+            }
           />
         );
       })}
@@ -669,10 +718,16 @@ function Cohort({ record }: { record: Panel }) {
       {Array.from({ length: COHORT_COLS * COHORT_ROWS }, (_, i) => {
         const row = byCell.get(i);
         const style = { height: 74, transform: `translateZ(${row ? 26 : 0}px)` };
+        /* Unit by unit down the grid, which is the order it is read in. */
+        const delay = Math.floor(i / COHORT_COLS) * 55 + (i % COHORT_COLS) * 22;
         return row ? (
-          <Tile key={`${row.when}-${row.what}`} row={row} style={style} />
+          <Tile key={`${row.when}-${row.what}`} row={row} style={style} delay={delay} />
         ) : (
-          <Ghost key={`c-${i}`} style={{ ...style, opacity: 0.34 }} />
+          <Ghost
+            key={`c-${i}`}
+            style={{ ...style, "--tile-op": 0.34 } as React.CSSProperties}
+            delay={delay}
+          />
         );
       })}
     </Scene>

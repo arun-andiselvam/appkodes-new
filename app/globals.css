@@ -236,8 +236,43 @@
   }
 
   /*
+    Records arrive one after another instead of the panel appearing as a block.
+
+    .diagram-in above fades the whole figure, which was the industry hero's
+    only entrance: correct, and characterless next to the service page, where
+    the slabs settle a row at a time. This is the equivalent for a record. The
+    delay is set per tile in the component, because the order the eye should
+    read them in differs between a field, a shelf and a day.
+
+    !! THIS ANIMATES OPACITY, WHICH IS ONLY SAFE BECAUSE A TILE IS A LEAF !!
+
+    Opacity below 1 forces transform-style: flat on whatever carries it, and
+    that cost the service diagram its slab thickness once. A tile survives it
+    because it has no 3D children: its own transform still places it in the
+    parent's preserve-3d space, and there is nothing inside whose composition
+    could flatten. Putting this on a wrapper, a shelf bay or a plane would
+    break all five arrangements. See components/backgrounds/record-stack.tsx.
+
+    !! THE TARGET IS --tile-op, NOT 1 !!
+
+    Texture tiles fade toward the back of a field and the far posts in the
+    stream sit under full strength, so a plain `to { opacity: 1 }` would
+    animate every one of them to the wrong resting value and flatten the depth
+    the arrangement is built on. The component sets --tile-op instead of
+    opacity, and 1 is the default for a tile with no reason to be quieter.
+  */
+  .record-in {
+    animation: record-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes record-in {
+    from { opacity: 0; }
+    to { opacity: var(--tile-op, 1); }
+  }
+
+  /*
     Reduced motion gets the finished diagram rather than a slower one. The
-    resting state is the whole assembly in place, which is what both of these
+    resting state is the whole assembly in place, which is what all of these
     animate towards anyway.
   */
   @media (prefers-reduced-motion: reduce) {
@@ -246,6 +281,12 @@
       animation: none;
       opacity: 1;
       transform: none;
+    }
+
+    /* Its own rule, because the resting opacity here is not always 1. */
+    .record-in {
+      animation: none;
+      opacity: var(--tile-op, 1);
     }
   }
 
