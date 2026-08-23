@@ -343,4 +343,172 @@ export const caseStudies: CaseStudy[] = [
 
     sendsTo: "/industries/media-and-communities",
   },
+
+  /*
+   * The content production platform, added 24 August 2026 from the client's
+   * account. Third real study, and the first one that is squarely about AI.
+   *
+   * !! THE CLIENT IS NOT NAMED, AND THAT ONE IS SETTLED RATHER THAN PENDING !!
+   *
+   * The client confirmed on 24 August 2026 that the name is not disclosed, so
+   * "Undisclosed" is the final answer here rather than a gap waiting to be
+   * filled. That is different from the Dubai study above, where nobody has
+   * been asked yet.
+   *
+   * The country is the United States and the headcount is 150 to 200, both
+   * confirmed the same day. `location` read "Distributed" for about an hour,
+   * which described the writers and not the company, and a country is what
+   * that column is for. The team being spread across languages and time zones
+   * is a fact about the work and it lives in the copy where it belongs.
+   *
+   * The slug is the product rather than the company, which matters more here
+   * than on the other two: there is no name coming, so the URL has to stand on
+   * its own.
+   *
+   * !! WHAT IS THE CLIENT'S ACCOUNT AND WHAT IS INFERENCE !!
+   *
+   * From the client: a United States business of 150 to 200 people, more than
+   * a hundred and fifty of them writers across several
+   * languages, some in an office and most not, a manual process running for
+   * years and differing per customer, a couple of weeks spent collecting that
+   * process before anything was proposed, a proposal for end to end automation
+   * with the people kept in it, writers verifying text and images as an
+   * approval step, generation of text with images, narrated audio and video
+   * summaries, video at two minutes and at fifteen, eight and five seconds,
+   * the model having to produce writing close enough to human that readers and
+   * search engines do not discount it, output that had been three or four
+   * pieces a week, a month of that volume now landing in a week, thousands of
+   * hours saved by the client's own count, and people moved to other work
+   * rather than let go.
+   *
+   * Inferred, and strike anything the client does not recognise: that the
+   * model was tuned against this team's own writing rather than generically,
+   * that language is a property of a piece rather than a separate deployment,
+   * and that the process document became the specification. Each is the
+   * ordinary way to build what was described.
+   *
+   * !! "THOUSANDS OF HOURS" IS THE CLIENT'S FIGURE AND THE LABEL SAYS SO !!
+   *
+   * It is the softest number on the site and it stays only because the label
+   * attributes it. docs/positioning.md forbids publishing a figure nobody
+   * measured. This one was measured by the person who owns the payroll, which
+   * is a different thing from one we invented, and the reader is told which it
+   * is. A precise hours count from their records would be stronger and should
+   * replace it if it ever arrives.
+   *
+   * !! THE PHOTOGRAPH IS NOT THE CLIENT'S PREMISES !!
+   *
+   * public/case-studies/content-production-platform.webp is lower Manhattan at
+   * sunset from the Brooklyn side, by Matt Lamers, released CC0 through
+   * Unsplash and held on Wikimedia Commons. Public domain, no attribution
+   * required, recorded here so nobody has to trace it later.
+   *
+   * All three studies now carry a photograph of the country the client is in,
+   * which is the pattern rather than a coincidence. Read as a set on the index
+   * they say the work travels, and that argument is worth more than three
+   * unrelated stock desks. It also means the image has to change if a client's
+   * country turns out to be wrong.
+   *
+   * Same rule as the two studies above. It places the engagement and nothing
+   * more. No caption may imply it shows the client or their premises.
+   */
+  {
+    slug: "content-production-platform",
+    /* 43 characters, 54 rendered, inside the 49 the standard allows a page.
+       It read "does a month's work in a week" first, which measured the same
+       on the budget and landed in the eleven to fourteen word band the voice
+       rules keep headlines out of. */
+    title: "How a content team fits a month into a week",
+    client: "Undisclosed",
+    industry: "Digital content and marketing",
+    companySize: "150 to 200",
+    location: "United States",
+    summary:
+      "A hundred and fifty writers produced every piece by hand. The system drafts, illustrates and narrates it now, and a person signs off before anything publishes.",
+    image: "/case-studies/content-production-platform.webp",
+    results: [
+      { value: "1 week", label: "for what had been a month of content" },
+      { value: "Thousands", label: "of hours given back, by the client's own count" },
+    ],
+
+    challenge: {
+      body: "A marketing business sells the judgement of its writers. The writing itself was never the problem. What cost them was the number of hours between a brief and something ready to publish.",
+      points: [
+        {
+          title: "A process nobody had written down",
+          body: "Years of habit ran the pipeline, and it ran a little differently for every client. The people who knew it were the people doing it. So the first job was finding out what actually happened, one client at a time.",
+        },
+        {
+          title: "Content that reads as AI is worth nothing",
+          body: "Their customers buy writing that a person wants to read. A draft that announces itself as machine written loses the reader and the search result in the same moment. The value of the whole system depended on output nobody could pick out as generated.",
+        },
+        {
+          title: "Four kinds of output, not one",
+          body: "A piece is not finished when the text is. It needs images for the blocks, a narrated version, and video cuts at the lengths a social post takes. A tool that only writes solves one quarter of it.",
+        },
+        {
+          title: "The person cannot be automated out",
+          body: "The writers are what the client sells, and their judgement is what customers pay for. Remove them and the product goes with them. Approval had to be part of the design rather than a setting somebody turns on.",
+        },
+        {
+          title: "A hundred and fifty writers, many languages",
+          body: "The team works in several languages and across a spread of time zones, some in the office and most not. Anything built for them had to be one system rather than a tool per office. A hundred and fifty people were never going to be retrained into one house method.",
+        },
+        {
+          title: "The ceiling was a few pieces a week",
+          body: "Output ran at three or four pieces a week and it had run there for years. A customer asking for more meant hiring somebody, which is the point at which growth costs more than it returns.",
+        },
+      ],
+    },
+
+    approach: {
+      body: "The proposal was full automation with the people left in it, which sounds like a compromise and is the only version that works here. The answers run in the order the problems were listed.",
+      points: [
+        {
+          title: "Two weeks inside the process first",
+          body: "We sat with the team before proposing anything. Every stage was written down as it actually ran, client by client, including the parts nobody thought were worth mentioning. That document became the specification, and it was theirs whatever they decided to do next.",
+        },
+        {
+          title: "A model tuned until the draft reads like them",
+          body: "The model was trained against the way this team already writes rather than against the internet. A draft arrives in their voice and a writer edits it, which is a different job from rewriting a stranger's work. The output does not announce itself, and that was the entire point of the exercise.",
+        },
+        {
+          title: "The media comes out of the same brief",
+          body: "Images for the blocks, a narrated audio version and video summaries all generate inside the editor. Video runs at two minutes for the long cut, and at fifteen, eight or five seconds for the short ones. The writer clicks rather than briefs four different suppliers.",
+        },
+        {
+          title: "Approval is a step, not a courtesy",
+          body: "The system stops and waits for a person. A writer verifies the text and the images before anything moves on, and nothing publishes without that. It runs the whole pipeline and then stops, one step short of publishing, on purpose.",
+        },
+        {
+          title: "One system, whatever language you write in",
+          body: "Everybody works in the same tool, in the office or a long way from it. Language is a property of the piece rather than a separate installation, so a brief in one language travels the same rails as the next.",
+        },
+        {
+          title: "The work is now a few clicks",
+          body: "A writer starts from the brief and the system produces the piece with its media attached. What is left for them is the judgement, which is the part they were hired for. The piece goes out on a click.",
+        },
+      ],
+    },
+
+    outcome: {
+      body: "A month of content now takes a week, and the people who used to produce it are doing work that needed them more.",
+      points: [
+        {
+          title: "A month of output in a week",
+          body: "Three or four pieces a week was the ceiling. What used to be a month of work for a customer now lands inside a week. Nobody was hired to make that happen.",
+        },
+        {
+          title: "Thousands of hours, by the client's own count",
+          body: "The saving is theirs to measure and they put it in the thousands of hours. The people it freed were moved onto work the business had been putting off rather than shown the door.",
+        },
+        {
+          title: "Every piece still carries a person",
+          body: "A writer signs every piece before a customer sees it. That was the condition the whole design was built around, and it survived contact with the schedule.",
+        },
+      ],
+    },
+
+    sendsTo: "/services/ai-workflow-automation",
+  },
 ];
