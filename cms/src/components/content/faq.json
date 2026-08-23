@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_content_faqs",
+  "info": {
+    "displayName": "FAQ",
+    "icon": "question",
+    "description": "One question the article genuinely answers. Leave the whole list empty rather than padding it, because these emit FAQPage schema and a crawler sees through filler."
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "answer": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

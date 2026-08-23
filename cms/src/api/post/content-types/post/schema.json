@@ -1,0 +1,89 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "singularName": "post",
+    "pluralName": "posts",
+    "displayName": "Post",
+    "description": "One published article. Mirrors the Post type in lib/posts.ts, and the two have to be changed together."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 70
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["/resources/integration-guides", "/resources/cost-reduction-strategies"],
+      "required": true
+    },
+    "excerpt": {
+      "type": "text",
+      "required": true,
+      "maxLength": 220
+    },
+    "published": {
+      "type": "date",
+      "required": true
+    },
+    "updated": {
+      "type": "date"
+    },
+    "readingMinutes": {
+      "type": "integer",
+      "min": 1
+    },
+    "author": {
+      "type": "string",
+      "default": "Hitasoft"
+    },
+    "takeaways": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.text-item",
+      "required": true,
+      "min": 3,
+      "max": 3
+    },
+    "faqs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.faq"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "imageAlt": {
+      "type": "string"
+    },
+    "sendsTo": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "dynamiczone",
+      "components": [
+        "content.paragraph",
+        "content.heading",
+        "content.list",
+        "content.quote",
+        "content.callout",
+        "content.table",
+        "content.figure"
+      ],
+      "required": true
+    }
+  }
+}

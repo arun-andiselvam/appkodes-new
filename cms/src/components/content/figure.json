@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_content_figures",
+  "info": {
+    "displayName": "Figure",
+    "icon": "picture",
+    "description": "An image inside the article. Both the alt text and the caption are required, because a field that may be skipped is a field that will be."
+  },
+  "options": {},
+  "attributes": {
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "alt": {
+      "type": "string",
+      "required": true
+    },
+    "caption": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_content_table_rows",
+  "info": {
+    "displayName": "Table row",
+    "description": "One row. Give it the same number of cells as the table has headers, or the rendered grid will be ragged."
+  },
+  "options": {},
+  "attributes": {
+    "cells": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.text-item",
+      "required": true,
+      "min": 2
+    }
+  }
+}

@@ -1,23 +1,27 @@
+import { strapiPosts } from "@/lib/strapi";
+
 /**
  * Where blog posts come from.
  *
- * !! THIS FILE IS THE ONLY THING THAT CHANGES WHEN A CMS IS PICKED !!
+ * !! THIS FILE WAS THE ONLY THING THAT CHANGED WHEN THE CMS WAS PICKED !!
  *
- * Nothing is chosen yet. MDX in the repo was started on 21 August 2026 and
- * stopped the same day, and the decision is now between a headless CMS and
- * something else. So this returns an empty list, the category pages render
- * their honest empty state, and no component anywhere knows or cares where a
- * post came from.
+ * The claim above stood untested from 21 August 2026, when MDX in the repo was
+ * started and abandoned the same day, until 24 August when Strapi was chosen.
+ * It held. `source` below is the only new code, lib/strapi.ts does the fetching
+ * and the mapping, and not one component knows that anything changed.
  *
- * To wire a source up, replace the body of `postsIn`. That is the whole job.
- * Every call site already awaits it, so a network fetch drops in without a
- * single component changing.
+ * Strapi 5, running from cms/ in this repository and deployed separately. See
+ * cms/README.md for the setup and lib/strapi.ts for the mapping.
  *
- * A note for whoever does that. Astro is a static site framework rather than
- * a CMS, and its content collections are local files, so choosing it is closer
- * to choosing MDX than to choosing Strapi. Strapi, Sanity and Payload are the
- * like for like comparison if the point is that somebody can publish without
- * touching the repo.
+ * Payload was the recommendation on 24 August, because it runs inside this
+ * Next app and needs no second deployment. The client chose Strapi, having run
+ * it before, which is a better reason than it looks: a CMS nobody on the team
+ * can fix at six on a Friday costs more than an extra deployment does.
+ *
+ * A note for whoever revisits this. Astro is a site framework rather than a
+ * CMS, and its content collections are local files, so choosing it would have
+ * been closer to choosing MDX than to choosing Strapi. Sanity and Payload are
+ * the like for like alternatives if this ever needs replacing.
  */
 
 /**
@@ -177,15 +181,23 @@ export type Post = {
 };
 
 /**
- * !! FLIP THIS TO false BEFORE LAUNCH !!
+ * !! THE SAMPLES ARE NOW A FALLBACK, NOT THE SOURCE !!
  *
- * True serves the ten invented posts in content/posts-sample.ts so the
- * category layout and the pagination can be judged at volume. Turned on 21
- * August 2026 for a design review.
+ * True still serves the ten invented posts in content/posts-sample.ts, and it
+ * only takes effect when Strapi is not configured. Turned on 21 August 2026
+ * for a design review, and demoted to a fallback on 24 August when Strapi was
+ * wired up.
  *
- * False returns nothing and the category pages fall back to their honest empty
- * state, which is the only correct behaviour on a live site until a real
- * source is wired up. Cleanup is this boolean, the import below, and deleting
+ * Set STRAPI_URL and STRAPI_API_TOKEN and this flag stops mattering, because
+ * `source` below never reaches it. Leave them unset, on a laptop with no CMS
+ * to point at, and the site renders exactly as it did before.
+ *
+ * !! IT STILL HAS TO GO TO false BEFORE LAUNCH !!
+ *
+ * Production must not be able to fall back to invented articles if the CMS is
+ * unreachable. An empty category page is honest. Ten fabricated ones under the
+ * company's name are not, and "the CMS was down" is not a defence anybody
+ * would accept. Cleanup is this boolean, the imports below, and deleting
  * content/posts-sample.ts.
  */
 const USE_SAMPLE_POSTS = true;
@@ -194,18 +206,38 @@ const USE_SAMPLE_POSTS = true;
 export const POSTS_PER_PAGE = 4;
 
 /**
- * Posts in one category, newest first.
+ * Every post, from whichever source is available.
  *
- * Async on purpose even though the current implementation is synchronous. A
- * CMS fetch is async, and having the call sites already await means adopting
- * one touches this function and nothing else.
+ * !! THE PRECEDENCE HERE IS THE WHOLE CMS INTEGRATION !!
+ *
+ * Strapi first when it is configured, samples second when the flag allows it,
+ * and an empty list otherwise. Three states, one place, and everything below
+ * reads from this rather than deciding for itself.
+ *
+ * A Strapi failure returns null rather than throwing, so an outage falls
+ * through to the same branch as a laptop with no CMS. That is deliberate on a
+ * marketing site: a visitor gets a page, and the error is in the server log
+ * where somebody can act on it.
  */
-export async function postsIn(category: string): Promise<Post[]> {
+async function source(): Promise<Post[]> {
+  const fromStrapi = await strapiPosts();
+  if (fromStrapi) return fromStrapi;
+
   if (!USE_SAMPLE_POSTS) return [];
 
   const { samplePosts } = await import("@/content/posts-sample");
+  return samplePosts;
+}
 
-  return samplePosts
+/**
+ * Posts in one category, newest first.
+ *
+ * Async on purpose since before there was anything to await. A CMS fetch is
+ * async, and having the call sites already await meant adopting one touched
+ * this file and nothing else. It did.
+ */
+export async function postsIn(category: string): Promise<Post[]> {
+  return (await source())
     .filter((post) => post.category === category)
     .sort((a, b) => b.published.localeCompare(a.published));
 }
@@ -225,11 +257,16 @@ export async function postsIn(category: string): Promise<Post[]> {
  * follow: the posts on it still get crawled and still pass equity down the
  * silo, and the thin archive page itself stays out of the index.
  */
-/** Every post that has a body, across all categories. What the routes build. */
+/**
+ * Every post that has a body, across all categories. What the routes build.
+ *
+ * The body check matters more with a CMS behind it than it did with samples.
+ * Strapi's draft and publish means a half written article exists as a record
+ * long before it should have a URL, and the note on `body` above says the
+ * honest response is not to publish one for it.
+ */
 export async function postsWithBody(): Promise<Post[]> {
-  if (!USE_SAMPLE_POSTS) return [];
-  const { samplePosts } = await import("@/content/posts-sample");
-  return samplePosts.filter((post) => post.body && post.body.length > 0);
+  return (await source()).filter((post) => post.body && post.body.length > 0);
 }
 
 /**

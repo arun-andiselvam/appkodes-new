@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_content_headings",
+  "info": {
+    "displayName": "Heading",
+    "icon": "heading",
+    "description": "A section heading. Level 2 is what the contents panel is built from. Never open a section with a level 3."
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "level": {
+      "type": "enumeration",
+      "enum": ["h2", "h3"],
+      "default": "h2",
+      "required": true
+    }
+  }
+}

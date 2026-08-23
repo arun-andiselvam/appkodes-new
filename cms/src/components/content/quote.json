@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_content_quotes",
+  "info": {
+    "displayName": "Quote",
+    "icon": "quote",
+    "description": "Somebody else's words. Never our own copy set large."
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

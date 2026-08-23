@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_content_tables",
+  "info": {
+    "displayName": "Table",
+    "icon": "grid",
+    "description": "A real table rather than a paragraph describing one. Answer engines parse it far more reliably, which is why it earns its own block."
+  },
+  "options": {},
+  "attributes": {
+    "head": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.text-item",
+      "required": true,
+      "min": 2
+    },
+    "rows": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.table-row",
+      "required": true,
+      "min": 1
+    }
+  }
+}

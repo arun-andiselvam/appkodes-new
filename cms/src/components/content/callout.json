@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_content_callouts",
+  "info": {
+    "displayName": "Callout",
+    "icon": "exclamationCircle",
+    "description": "One sentence set apart. The line somebody should leave with, so use it once per article at most."
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

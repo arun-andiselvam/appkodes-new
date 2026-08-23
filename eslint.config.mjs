@@ -9,5 +9,11 @@ import nextTypescript from 'eslint-config-next/typescript'
 export default defineConfig([
   ...nextVitals,
   ...nextTypescript,
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+  /*
+   * cms/** is the Strapi app, added 24 August 2026. It is a separate
+   * application with its own package.json, its own lockfile and its own build,
+   * and linting a Koa server against next/core-web-vitals produces nothing but
+   * noise. The root tsconfig excludes it for the same reason.
+   */
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'cms/**']),
 ])

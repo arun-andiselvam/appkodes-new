@@ -18,6 +18,11 @@ yarn-error.log*
 
 # env files
 .env*
+# Except the examples, which are documentation rather than secrets. `.env*`
+# is unanchored, so it was swallowing cms/.env.example, and the one file that
+# tells somebody which variables Strapi needs was the file nobody could commit.
+!.env.example
+!**/.env.example
 
 # vercel
 .vercel

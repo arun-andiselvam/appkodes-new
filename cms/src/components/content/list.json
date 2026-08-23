@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_content_lists",
+  "info": {
+    "displayName": "List",
+    "icon": "bulletList",
+    "description": "A bulleted list."
+  },
+  "options": {},
+  "attributes": {
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.text-item",
+      "required": true,
+      "min": 2
+    }
+  }
+}

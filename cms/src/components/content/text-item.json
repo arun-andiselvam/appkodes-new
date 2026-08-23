@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_content_text_items",
+  "info": {
+    "displayName": "Text item",
+    "description": "One line of text. Shared by list items, table cells and takeaways, because Strapi has no repeatable plain string."
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
