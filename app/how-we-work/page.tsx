@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { HowItWorksSection } from "@/components/sections/how-it-works";
 import { AudiencesSection } from "@/components/sections/audiences";
 import { SecuritySection } from "@/components/sections/security";
+import { DeliveryReachSection } from "@/components/sections/delivery-reach";
 import { CtaSection } from "@/components/sections/cta";
 
 export const metadata = pageMetadata({
@@ -24,6 +25,7 @@ export default function HowWeWorkPage() {
     <main>
       <HowItWorksSection />
       <AudiencesSection />
+      <DeliveryReachSection />
       <SecuritySection />
       <CtaSection />
     </main>

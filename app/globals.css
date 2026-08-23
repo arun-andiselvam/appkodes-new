@@ -373,3 +373,17 @@
     background-size: 100% 100%, 8px 8px;
   }
 }
+
+  /*
+    The pulse that runs along a delivery arc while it is hovered.
+
+    Only the dash offset moves, which the compositor handles without a layout
+    or a paint. The distance is the arc's own length, handed in as --arc-len by
+    components/backgrounds/delivery-map.tsx, because every arc is a different
+    length and a fixed offset would make the short ones snap and the long ones
+    crawl.
+  */
+  @keyframes delivery-pulse {
+    from { stroke-dashoffset: calc(var(--arc-len) * 1px); }
+    to { stroke-dashoffset: 0; }
+  }
