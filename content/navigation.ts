@@ -280,6 +280,77 @@ export function allNavRoutes(): string[] {
 }
 
 /**
+ * Every page on the site with the words a person would search for it by.
+ *
+ * The same walk as `allNavRoutes` above, carrying what that one throws away.
+ * The 404 finder needs a name and a line of description per route, and both
+ * already exist on the tree: a group and a child each have a `blurb` written
+ * for a buyer scanning the menu, which is exactly the text somebody who
+ * mistyped a URL would recognise.
+ *
+ * `section` is the top level item the page sits under, so a result can say
+ * where it lives without the finder re-deriving the hierarchy.
+ *
+ * Home is included here and is not in `allNavRoutes`. The menu leaves it out
+ * because the wordmark is the home link, and somebody who has just hit a 404
+ * should still be offered it.
+ */
+export type NavPage = { name: string; href: string; section: string; blurb: string };
+
+export function allNavPages(): NavPage[] {
+  const pages: NavPage[] = [
+    {
+      name: "Home",
+      href: "/",
+      section: "Hitasoft",
+      blurb: "AI automation for the systems a growing business already runs.",
+    },
+  ];
+
+  for (const item of mainNav) {
+    pages.push({
+      name: item.name,
+      href: item.href,
+      section: item.name,
+      blurb: `Everything under ${item.name.toLowerCase()}.`,
+    });
+
+    for (const group of item.panel?.groups ?? []) {
+      if (group.href !== item.href) {
+        pages.push({
+          name: group.name,
+          href: group.href,
+          section: item.name,
+          blurb: group.blurb,
+        });
+      }
+      for (const child of group.children ?? []) {
+        pages.push({
+          name: child.name,
+          href: child.href,
+          section: item.name,
+          blurb: child.blurb,
+        });
+      }
+    }
+
+    const footer = item.panel?.footer;
+    if (footer) {
+      pages.push({
+        name: footer.name,
+        href: footer.href,
+        section: item.name,
+        blurb: "How an engagement actually runs, week by week.",
+      });
+    }
+  }
+
+  /* Same de-duplication as above, keeping the first mention of a route. */
+  const seen = new Set<string>();
+  return pages.filter((p) => !seen.has(p.href) && seen.add(p.href));
+}
+
+/**
  * The trail from the home page down to `href`, inclusive.
  *
  * A silo only pays for itself if a visitor who lands three levels down from a
