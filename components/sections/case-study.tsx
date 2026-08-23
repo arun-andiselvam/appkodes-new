@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Phone } from "lucide-react";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { SectionTitle } from "@/components/primitives/section-title";
+import { actions } from "@/content/site";
 import type { CaseStudy } from "@/lib/case-studies";
 
 /**
@@ -104,21 +105,70 @@ export function CaseStudyPage({
       <Section spacing="tight" className="border-t border-foreground/10">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,18rem)_1fr] lg:gap-16">
-            <dl className="h-fit border-t border-foreground/10 lg:sticky lg:top-32">
-              {[
-                { label: "Company", value: study.client },
-                { label: "Industry", value: study.industry },
-                { label: "Company size", value: study.companySize },
-                { label: "Location", value: study.location },
-              ].map((row) => (
-                <div key={row.label} className="border-b border-foreground/10 py-4">
-                  <dt className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-                    {row.label}
-                  </dt>
-                  <dd className="mt-1.5">{row.value}</dd>
-                </div>
-              ))}
-            </dl>
+            {/*
+              The spec column, with the call under it.
+
+              !! THE STICKY BOX IS THE WRAPPER, NOT THE dl !!
+
+              `lg:sticky` was on the <dl> itself, which was correct while the
+              column held nothing but the facts. The call has to travel with
+              them, so the position moved out to a wrapper and the dl kept only
+              its rule. Putting sticky back on the dl would leave the link
+              behind at the top of the section on a long study.
+            */}
+            <div className="h-fit lg:sticky lg:top-32">
+              <dl className="border-t border-foreground/10">
+                {[
+                  { label: "Company", value: study.client },
+                  { label: "Industry", value: study.industry },
+                  { label: "Company size", value: study.companySize },
+                  { label: "Location", value: study.location },
+                ].map((row) => (
+                  <div key={row.label} className="border-b border-foreground/10 py-4">
+                    <dt className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+                      {row.label}
+                    </dt>
+                    <dd className="mt-1.5">{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              {/*
+                The call, asked for on 24 August 2026.
+
+                It sits here rather than at the end of the study on purpose.
+                The facts above it are what a reader checks to see whether this
+                company looks anything like theirs, and the moment they decide
+                it does is the moment worth catching. At the end of the page
+                the closing panel already has them.
+
+                Text and an icon rather than a filled button. The primary
+                action on this page is reading the study, and a solid button in
+                a sticky column would compete with the one in the closing panel
+                for a reader who has both on screen at once.
+
+                !! THE LABEL IS A QUESTION, WHICH IS NORMALLY BARRED !!
+
+                docs/positioning.md bars rhetorical questions in copy, and the
+                rule is about prose that opens or closes a section rather than
+                about a button. This wording is the client's own, asked for
+                verbatim on 24 August 2026. It is doing what a question does
+                well here, which is inviting a reply rather than announcing
+                something.
+              */}
+              <Link
+                href={actions.book}
+                className="group/call mt-8 inline-flex items-center gap-3 text-sm leading-snug transition-colors hover:text-primary"
+              >
+                <Phone
+                  aria-hidden
+                  className="w-4 h-4 shrink-0 text-primary transition-transform group-hover/call:-rotate-12"
+                />
+                <span className="underline decoration-foreground/25 underline-offset-4 transition-colors group-hover/call:decoration-primary">
+                  You want to know this story?
+                </span>
+              </Link>
+            </div>
 
             {/*
               Three acts, each a paragraph and then the specifics.
