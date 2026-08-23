@@ -36,7 +36,7 @@ export type Destination = {
    *
    * !! THE MAP DOES NOT DRAW THIS DIFFERENTLY, AND THAT IS THE POINT !!
    *
-   * Twelve of the forty eight below have a named testimonial in
+   * Twelve of the forty nine below have a named testimonial in
    * content/testimonials.ts and a flag in public/flags. The rest are the
    * markets the "50+ countries" figure covers. Both plot the same, because a
    * map that drew two grades of dot would be asking a visitor to read a
@@ -114,6 +114,10 @@ export const destinations: Destination[] = [
   { code: "NO", name: "Norway", lat: 61.2, lng: 9.4 },
   { code: "DK", name: "Denmark", lat: 56.1, lng: 9.5 },
   { code: "FI", name: "Finland", lat: 62.6, lng: 26.0 },
+  /* Moscow. Far to the west of a country that reaches 180 east, which is the
+     convention every map like this uses, and it is well clear of Finland
+     and Kazakhstan on screen. */
+  { code: "RU", name: "Russia", lat: 55.75, lng: 37.6 },
   { code: "AZ", name: "Azerbaijan", lat: 40.4, lng: 47.6 },
   { code: "KZ", name: "Kazakhstan", lat: 48.2, lng: 67.5 },
   { code: "AE", name: "United Arab Emirates", lat: 23.9, lng: 54.4 },
