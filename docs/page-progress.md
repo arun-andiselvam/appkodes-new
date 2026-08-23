@@ -1,14 +1,27 @@
 # Page progress
 
 Every page in the master menu, with what is built and what each one still owes.
-Measured against the live server on 22 August 2026, by fetching all 30 routes
-and reading the rendered HTML rather than the source files.
+Measured against the live server, by fetching every route and reading the
+rendered HTML rather than the source files. Last measured 24 August 2026.
 
 **Not in this table:** blog articles under `/resources/*` and case studies under
 `/resources/case-studies/*`. Both are collections rather than fixed menu pages,
 both still run on sample data, and both are tracked by the flags in
 `lib/posts.ts` and `lib/case-studies.ts`. Their category and detail templates
 are built and approved.
+
+**Four Resources pages are live and are in neither list.** `/resources`,
+`/resources/case-studies`, `/resources/integration-guides` and
+`/resources/cost-reduction-strategies` are hub pages rather than articles, and
+two of them already hold a primary keyword in `docs/seo-standards.md`. All four
+render real content, carry only a `BreadcrumbList`, and have descriptions
+between 104 and 133. They belong with the five awaiting an SEO pass, which
+makes that queue nine pages rather than five.
+
+**`/how-we-work` is not in the sitemap.** It renders, it is linked from the
+closing panel of every page, and `app/sitemap.ts` builds from the navigation
+tree, which the path is not in. Add it to `extraRoutes` there. It is also the
+one page with no `BreadcrumbList`, for the same reason.
 
 The standard these columns test is `docs/seo-standards.md`. The voice and claims
 rules are `docs/positioning.md`. The keyword assignments come from
@@ -46,40 +59,49 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 
 | Page | Primary keyword | Copy | Title | Desc | Schema | H2 | Words | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Home | none set | bespoke | 47 | **133** | none | 11 | 3,008 | Live, SEO pass due |
-| Contact | none set | bespoke | 18 | **115** | Breadcrumb only | 3 | 944 | Live, SEO pass due |
-| How we work | none set | bespoke | 22 | **97** | none | 4 | 1,243 | Live, SEO pass due |
-| Services hub | none set | bespoke | 19 | **118** | Breadcrumb only | 8 | 1,235 | Live, SEO pass due |
-| Industries hub | none set | bespoke | 21 | **182** | Breadcrumb only | 8 | 980 | Live, SEO pass due |
-| `/services/ai-software-integration` | `AI software integration` | long form | 60 | **149** | Service + FAQ | 12 | 2,727 | **Done** |
-| `/services/custom-ai-api-integration` | `custom AI API integration` | long form | 50 | 154 | Service + FAQ | 11 | 2,677 | **Done** |
-| `/services/secure-ai-compliance-architecture` | `secure AI integration services` | long form | 45 | 150 | Service + FAQ | 11 | 2,741 | **Done** |
-| `/services/ai-workflow-automation` | `AI workflow automation services` | long form | 51 | 157 | Service + FAQ | 12 | 2,725 | **Done** |
-| `/services/autonomous-ai-agents` | `custom AI agent development` | long form | 60 | 160 | Service + FAQ | 11 | 2,651 | **Done** |
-| `/services/customer-support-ai` | `AI customer support automation` | long form | 54 | 156 | Service + FAQ | 11 | 2,660 | **Done** |
-| `/services/document-processing-ocr` | `AI document processing automation` | long form | 50 | 154 | Service + FAQ | 11 | 2,673 | **Done** |
-| `/services/financial-data-automation` | `financial data automation AI` | long form | 58 | 153 | Service + FAQ | 11 | 2,632 | **Done** |
-| `/services/custom-ai-mvp-development` | `custom AI MVP development` | long form | 50 | 151 | Service + FAQ | 12 | 2,650 | **Done** |
-| `/services/rapid-ai-prototyping` | `rapid AI prototyping services` | long form | 59 | 155 | Service + FAQ | 11 | 2,583 | **Done** |
-| `/services/fintech-saas-ai-mvp` | `fintech AI MVP development` | long form | 54 | 160 | Service + FAQ | 11 | 2,581 | **Done** |
-| `/services/smart-inventory-retail-mvp` | `smart inventory AI MVP` | long form | 52 | 154 | Service + FAQ | 11 | 2,601 | **Done** |
-| `/services/ai-data-predictive-analytics` | `AI predictive analytics services` | long form | 57 | 154 | Service + FAQ | 12 | 2,625 | **Done** |
-| `/services/predictive-analytics-bi` | `predictive business intelligence AI` | long form | 59 | 157 | Service + FAQ | 11 | 2,510 | **Done** |
-| `/services/data-engineering-vector-databases` | `vector database development services` | long form | 53 | 154 | Service + FAQ | 11 | 2,525 | **Done** |
-| `/services/computer-vision-quality-control` | `computer vision quality control` | long form | 51 | 153 | Service + FAQ | 11 | 2,616 | **Done** |
-| `/services/custom-ai-models-voice` | `custom AI model development` | long form | 46 | 159 | Service + FAQ | 12 | 2,609 | **Done** |
-| `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | long form | 51 | 156 | Service + FAQ | 11 | 2,520 | **Done** |
-| `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | long form | 55 | 154 | Service + FAQ | 11 | 2,570 | **Done** |
-| `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | long form | 41 | 151 | Service + FAQ | 9 | 1,828 | **Done** |
-| `/industries/retail-and-inventory` | `retail AI inventory automation` | long form | 50 | 154 | Service + FAQ | 9 | 1,772 | **Done** |
-| `/industries/healthcare-and-consulting` | `healthcare AI automation` | long form | 48 | 159 | Service + FAQ | 9 | 1,873 | **Done** |
-| `/industries/media-and-communities` | `community app AI automation` | long form | 51 | 156 | Service + FAQ | 9 | 1,842 | **Done** |
-| `/industries/edtech-and-learning` | `edtech AI automation` | long form | 52 | 158 | Service + FAQ | 9 | 1,887 | **Done** |
+| Home | none set | bespoke | 47 | **133** | none | 11 | 3,029 | Live, SEO pass due |
+| Contact | none set | bespoke | 18 | **115** | Breadcrumb only | 3 | 965 | Live, SEO pass due |
+| How we work | none set | bespoke | 22 | **97** | none | 4 | 1,264 | Live, SEO pass due |
+| Services hub | none set | bespoke | 19 | **118** | Breadcrumb only | 8 | 1,256 | Live, SEO pass due |
+| Industries hub | none set | bespoke | 21 | **182** | Breadcrumb only | 8 | 1,001 | Live, SEO pass due |
+| `/services/ai-software-integration` | `AI software integration` | long form | 60 | **149** | Service + FAQ | 12 | 2,739 | **Done** |
+| `/services/custom-ai-api-integration` | `custom AI API integration` | long form | 50 | 154 | Service + FAQ | 11 | 2,684 | **Done** |
+| `/services/secure-ai-compliance-architecture` | `secure AI integration services` | long form | 45 | 150 | Service + FAQ | 11 | 2,756 | **Done** |
+| `/services/ai-workflow-automation` | `AI workflow automation services` | long form | 51 | 157 | Service + FAQ | 12 | 2,740 | **Done** |
+| `/services/autonomous-ai-agents` | `custom AI agent development` | long form | 60 | 160 | Service + FAQ | 11 | 2,657 | **Done** |
+| `/services/customer-support-ai` | `AI customer support automation` | long form | 54 | 156 | Service + FAQ | 11 | 2,675 | **Done** |
+| `/services/document-processing-ocr` | `AI document processing automation` | long form | 50 | 154 | Service + FAQ | 11 | 2,688 | **Done** |
+| `/services/financial-data-automation` | `financial data automation AI` | long form | 58 | 153 | Service + FAQ | 11 | 2,653 | **Done** |
+| `/services/custom-ai-mvp-development` | `custom AI MVP development` | long form | 50 | 151 | Service + FAQ | 12 | 2,671 | **Done** |
+| `/services/rapid-ai-prototyping` | `rapid AI prototyping services` | long form | 59 | 155 | Service + FAQ | 11 | 2,604 | **Done** |
+| `/services/fintech-saas-ai-mvp` | `fintech AI MVP development` | long form | 54 | 160 | Service + FAQ | 11 | 2,599 | **Done** |
+| `/services/smart-inventory-retail-mvp` | `smart inventory AI MVP` | long form | 52 | 154 | Service + FAQ | 11 | 2,622 | **Done** |
+| `/services/ai-data-predictive-analytics` | `AI predictive analytics services` | long form | 57 | 154 | Service + FAQ | 12 | 2,646 | **Done** |
+| `/services/predictive-analytics-bi` | `predictive business intelligence AI` | long form | 59 | 157 | Service + FAQ | 11 | 2,531 | **Done** |
+| `/services/data-engineering-vector-databases` | `vector database development services` | long form | 53 | 154 | Service + FAQ | 11 | 2,546 | **Done** |
+| `/services/computer-vision-quality-control` | `computer vision quality control` | long form | 51 | 153 | Service + FAQ | 11 | 2,567 | **Done** |
+| `/services/custom-ai-models-voice` | `custom AI model development` | long form | 46 | 159 | Service + FAQ | 12 | 2,630 | **Done** |
+| `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | long form | 51 | 156 | Service + FAQ | 11 | 2,541 | **Done** |
+| `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | long form | 55 | 154 | Service + FAQ | 11 | 2,591 | **Done** |
+| `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | long form | 52 | 152 | Service + FAQ | 9 | 1,897 | **Done** |
+| `/industries/retail-and-inventory` | `retail AI inventory automation` | long form | 50 | 154 | Service + FAQ | 9 | 1,769 | **Done** |
+| `/industries/healthcare-and-consulting` | `healthcare AI automation` | long form | 48 | 159 | Service + FAQ | 9 | 1,861 | **Done** |
+| `/industries/media-and-communities` | `community app AI automation` | long form | 51 | 156 | Service + FAQ | 9 | 1,844 | **Done** |
+| `/industries/edtech-and-learning` | `edtech AI automation` | long form | 52 | 158 | Service + FAQ | 9 | 1,885 | **Done** |
 | `/industries/marketing-and-adtech` | `marketing AI automation` | long form | 51 | 160 | Service + FAQ | 9 | 1,888 | **Done** |
 
 **Totals.** 30 pages. 25 done, 5 live and awaiting an SEO pass, none left on
-the blueprint. No title is over 60 any more. Two descriptions outside 150 to
-160.
+the blueprint. No title is over 60. **Six descriptions outside 150 to 160**,
+and five of the six are the five pages awaiting the pass.
+
+That six read "two" until 24 August 2026 and had been wrong for a while. The
+number was decremented by hand each time a page was marked Done, rather than
+recounted, and marking an industry page Done never changed it: those pages
+were inside the range on the blueprint and inside it afterwards. Recount this
+line, do not adjust it.
+
+The sixth is `/services/ai-software-integration` at 149, one character short,
+which is the only finished page missing the standard.
 
 **Every service and industry page is finished.** All five silos, their parents
 and all fourteen children, and all six industries. Nothing renders the
