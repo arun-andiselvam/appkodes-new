@@ -53,14 +53,15 @@ export default function NotFound() {
           a size nobody misses, so the page announces what it is before anybody
           reads a word of it.
 
-          !! FOUR PER CENT, AND IT HAS TO STAY THERE !!
+          !! SEVEN PER CENT, AND THAT IS ABOUT THE CEILING !!
 
-          It sits behind live text and a field of links. Anything with enough
-          contrast to read properly is enough to interfere with the paragraph
-          crossing it, and a watermark that competes with the copy is worse
-          than no watermark. The colour comes from the foreground token rather
-          than a literal, so it inverts with the theme and stays at the same
-          faintness on both.
+          It sits behind live text. Four per cent read as a smudge rather than
+          a number, so this is seven, which is the point where the numerals are
+          unmistakable and the paragraph crossing them still measures well
+          clear of AA. Much past this and the copy starts fighting it, which is
+          worse than having no watermark at all. The colour comes from the
+          foreground token rather than a literal, so it inverts with the theme
+          and stays equally faint on both.
 
           aria-hidden because it is decoration: the eyebrow already carries the
           text, and a screen reader reading "404" twice helps nobody. Rendered
@@ -77,7 +78,7 @@ export default function NotFound() {
             it, so all three numerals live there and the paragraph crosses them
             without either one suffering.
           */
-          className="pointer-events-none absolute inset-0 flex select-none items-center justify-start pl-[6%] font-display text-[clamp(12rem,24vw,24rem)] leading-none tracking-tighter text-foreground/[0.04]"
+          className="pointer-events-none absolute inset-0 flex select-none items-center justify-start pl-[6%] font-display text-[clamp(12rem,24vw,24rem)] leading-none tracking-tighter text-foreground/[0.07]"
         >
           404
         </span>
