@@ -228,7 +228,32 @@ export const mainNav: NavItem[] = [
           blurb: "Campaign returns forecast before the budget is placed.",
         },
       ],
-      footer: { name: "All industries", href: "/industries" },
+      /*
+       * !! NEITHER REMAINING FOOTER STRIP POINTS AT ITS OWN PANEL ANY MORE !!
+       *
+       * This one read "All industries" and went to /industries. Both it and
+       * the Resources strip below were changed to How we work on 24 August
+       * 2026 at the client's request, so whichever panel a visitor opens has
+       * the same way through to the engagement.
+       *
+       * The background: How we work lost its only route in from the header on
+       * 23 August, when the Services panel footer was removed to save panel
+       * height. The page has since been rewritten to rank for
+       * `AI MVP development process`, which made a header route worth having
+       * again.
+       *
+       * !! /industries AND /resources ARE NOT ORPHANED BY THIS !!
+       *
+       * Each is the `href` of its own menu item, which is where
+       * `allNavRoutes` picks it up for the sitemap, and content/footer.ts
+       * lists both again in the site footer. Verify both before pointing
+       * either strip anywhere else.
+       */
+      footer: {
+        name: "How we work",
+        href: "/how-we-work",
+        blurb: "How an engagement actually runs, week by week.",
+      },
     },
   },
   {
@@ -261,7 +286,14 @@ export const mainNav: NavItem[] = [
             "What the work returned, and what clients say about it without us editing them.",
         },
       ],
-      footer: { name: "All resources", href: "/resources" },
+      /* The same strip as the Industries panel above, and for the reasons
+         recorded there. This one read "All resources" and went to /resources
+         until 24 August 2026. */
+      footer: {
+        name: "How we work",
+        href: "/how-we-work",
+        blurb: "How an engagement actually runs, week by week.",
+      },
     },
   },
   { name: "Contact", href: "/contact" },
@@ -345,13 +377,28 @@ export function allNavPages(): NavPage[] {
       }
     }
 
+    /*
+     * The blurb comes off the footer now rather than being written here.
+     *
+     * This line was a string literal reading "How an engagement actually runs,
+     * week by week." It was correct while the Services panel footer was the
+     * only one and it pointed at How we work. That strip went on 23 August
+     * 2026 and the sentence stayed, so from then until 24 August the 404
+     * finder offered "All industries" and "All resources" and described both
+     * as an engagement.
+     *
+     * Both strips point at How we work again, so the old literal would happen
+     * to be right today. It is still wrong to keep it here, because it is only
+     * right by coincidence and the next person to repoint a strip inherits the
+     * same bug.
+     */
     const footer = item.panel?.footer;
     if (footer) {
       pages.push({
         name: footer.name,
         href: footer.href,
         section: item.name,
-        blurb: "How an engagement actually runs, week by week.",
+        blurb: footer.blurb,
       });
     }
   }

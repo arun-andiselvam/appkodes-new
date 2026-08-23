@@ -218,8 +218,24 @@ export type NavItem = {
   href: string;
   panel?: {
     groups: NavGroup[];
-    /** The strip along the bottom of the panel, for the "see everything" link. */
-    footer?: { name: string; href: string };
+    /**
+     * The strip along the bottom of the panel.
+     *
+     * Usually the "see everything" link for that panel's own contents. The
+     * Resources panel carries the route to /how-we-work instead, which is a
+     * deliberate exception rather than a mistake. See content/navigation.ts.
+     *
+     * !! blurb IS NOT DECORATION, IT FEEDS THE 404 FINDER !!
+     *
+     * `allNavPages` hardcoded one description for every footer strip, and it
+     * read "How an engagement actually runs, week by week." That was written
+     * when the Services panel carried How we work. The strip was removed on
+     * 23 August 2026 and the sentence stayed behind, so the finder has been
+     * describing "All industries" as an engagement ever since. The fix on
+     * 24 August 2026 was to keep the description next to the link it
+     * describes, which is why this is required rather than optional.
+     */
+    footer?: { name: string; href: string; blurb: string };
   };
 };
 

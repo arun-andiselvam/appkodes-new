@@ -13,9 +13,17 @@ const extraRoutes: string[] = [
   /*
    * /how-we-work reached this list through the Services panel footer until
    * that strip was removed on 23 August 2026. Nobody noticed the sitemap lose
-   * it with it, and docs/page-progress.md has carried the gap ever since. The
-   * page is linked from the site footer and from the process section of every
-   * service page, so it stayed crawlable and was simply absent from the map.
+   * it with it, and docs/page-progress.md carried the gap until 24 August.
+   *
+   * !! IT IS BACK IN THE MENU TREE AND IT STAYS HERE ANYWAY !!
+   *
+   * The Industries and Resources footer strips both point at it as of 24
+   * August, so `allNavRoutes` finds it again and this entry is redundant
+   * today. Removing it would make the sitemap depend on a menu strip that has
+   * already been repointed twice in two days, and the last time one moved this
+   * page silently left the map. The de-duplication below makes carrying it
+   * free, which is a better trade than being right until somebody edits a
+   * menu.
    */
   "/how-we-work",
 ];
@@ -37,7 +45,18 @@ function priorityFor(path: string) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const paths = ["/", ...allNavRoutes(), ...extraRoutes];
+  /*
+   * De-duplicated across all three sources.
+   *
+   * `allNavRoutes` already de-duplicates within the menu tree, which was
+   * enough while `extraRoutes` only held pages the menu did not carry. It
+   * stopped being enough on 24 August 2026, when /how-we-work went back into
+   * the tree while staying in `extraRoutes` on purpose. See the note there.
+   *
+   * One page at two URLs is the thing a sitemap must never create, and one
+   * page listed twice at the same URL is only a little better.
+   */
+  const paths = [...new Set(["/", ...allNavRoutes(), ...extraRoutes])];
   const origin = await siteOrigin();
 
   return paths.map((path) => ({
