@@ -24,7 +24,9 @@ import { NotFoundFinder } from "@/components/sections/not-found-finder";
  * The interaction lives in components/sections/not-found-finder.tsx, which is
  * a client component because it needs the attempted path and a text input.
  * This shell stays on the server so the copy and the heading are in the HTML a
- * crawler sees.
+ * crawler sees, and the heading is handed down as a prop rather than rendered
+ * above the finder: the field has to start level with the headline, and the
+ * note on that component explains what it looked like when it did not.
  *
  * !! NO metadata EXPORT HERE, AND THAT IS DELIBERATE !!
  *
@@ -38,21 +40,24 @@ export default function NotFound() {
     <main>
       <Section className="min-h-[70vh] flex items-center">
         <Container>
-          <Eyebrow className="mb-6">404</Eyebrow>
-          <SectionTitle className="mb-6 max-w-3xl">
-            This one we could
-            <br />
-            <span className="text-muted-foreground">not match.</span>
-          </SectionTitle>
-
-          <p className="mb-14 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            The rest of this site argues that a model should settle what it can
-            and hand back what it cannot. This is that, happening to you. The
-            address you asked for did not match a page, so it is held here for a
-            person to sort.
-          </p>
-
-          <NotFoundFinder />
+          <NotFoundFinder
+            heading={
+              <>
+                <Eyebrow className="mb-6">404</Eyebrow>
+                <SectionTitle className="mb-6">
+                  This one we could
+                  <br />
+                  <span className="text-muted-foreground">not match.</span>
+                </SectionTitle>
+                <p className="mb-12 text-lg leading-relaxed text-muted-foreground">
+                  The rest of this site argues that a model should settle what it
+                  can and hand back what it cannot. This is that, happening to
+                  you. The address you asked for did not match a page, so it is
+                  held here for a person to sort.
+                </p>
+              </>
+            }
+          />
         </Container>
       </Section>
     </main>

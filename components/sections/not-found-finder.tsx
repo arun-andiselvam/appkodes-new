@@ -41,9 +41,26 @@ const FACES = {
 
 const SHADOW = { textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" } as const;
 
-const COLS = 3;
+/**
+ * Two columns of four, not three of five.
+ *
+ * !! FEWER COLUMNS IS WHAT STOPS THE NAMES TRUNCATING !!
+ *
+ * Three columns across the full right hand track gave each tile 245 pixels,
+ * and four of the fifteen still cut their name: "Custom AI API & Software
+ * Integra...", "Secure AI & Compliance Architec...". Narrowing the field to
+ * make it quieter would have made that worse, so the column count came down
+ * instead. Two columns inside 34rem is about 268 pixels a tile, which fits
+ * every page name on the site.
+ *
+ * The field is also simply smaller than the copy beside it now, which is the
+ * right order. It illustrates the argument, it is not the argument.
+ */
+const COLS = 2;
 const ROWS = 4;
 const CELLS = COLS * ROWS;
+/** Tile height. Four rows plus gaps has to stay under the copy's 540. */
+const ROW_H = 78;
 
 /**
  * Score a page against what has been typed.
@@ -167,7 +184,7 @@ function similarity(page: NavPage, attempted: string) {
   return total / asked.length;
 }
 
-export function NotFoundFinder() {
+export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
   const pages = useMemo(() => allNavPages(), []);
   const attempted = usePathname();
   const [query, setQuery] = useState("");
@@ -217,8 +234,24 @@ export function NotFoundFinder() {
   };
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-16 lg:items-start">
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:gap-16 lg:items-start">
       <div>
+        {/*
+          The page's own heading lives in this column rather than above the
+          grid.
+
+          !! THE FIELD HAS TO START LEVEL WITH THE HEADLINE !!
+
+          It did not. The heading and the paragraph sat above this grid, so the
+          right column began at the search box and the top right of the screen
+          was empty for four hundred pixels. Measured, the left column was 179
+          pixels against the field's 366, and top aligning a short thing beside
+          one twice its height is what made the whole block look like it had
+          slid down the page. With the copy inside the column the two are 480
+          against 366 and the object sits beside the argument it illustrates.
+        */}
+        {heading}
+
         {/*
           The address that failed, drawn as the record that would not match.
           Not inside the 3D field: it is the subject of the sentence above it,
@@ -304,7 +337,7 @@ export function NotFoundFinder() {
         and the list above already carries the content.
       */}
       <div
-        className="hidden lg:block select-none diagram-in"
+        className="hidden lg:block w-full lg:max-w-[34rem] lg:justify-self-end select-none diagram-in"
         ref={fieldRef}
         onPointerMove={onMove}
         onPointerLeave={() => setTilt({ x: 0, y: 0 })}
@@ -314,7 +347,7 @@ export function NotFoundFinder() {
           className="grid motion-reduce:!transition-none"
           style={{
             gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))`,
-            gridAutoRows: "84px",
+            gridAutoRows: `${ROW_H}px`,
             gap: 10,
             transformStyle: "preserve-3d",
             transform: `rotateX(${12 + tilt.x}deg) rotateY(${-8 + tilt.y}deg)`,
