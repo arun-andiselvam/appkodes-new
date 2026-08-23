@@ -1,6 +1,7 @@
 import { channels } from "@/content/contact";
 import { socialLinks } from "@/content/footer";
 import { site } from "@/content/site";
+import { siteOrigin } from "@/lib/site-url";
 
 /**
  * The one Organization block, emitted once per page from app/layout.tsx.
@@ -36,7 +37,9 @@ import { site } from "@/content/site";
  * and it needs opening hours and a Google Business Profile behind it. Adding
  * the type without those is a claim with nothing under it.
  */
-export function organizationSchema() {
+export async function organizationSchema() {
+  const origin = await siteOrigin();
+
   const email = channels.find((c) => c.label === "Email")?.value;
   const office = channels.find((c) => c.label === "Office")?.value;
 
@@ -54,8 +57,8 @@ export function organizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: site.name,
-    url: site.url,
-    logo: `${site.url}${site.logo.src}`,
+    url: origin,
+    logo: `${origin}${site.logo.src}`,
     foundingDate: "2008",
     ...(office
       ? {

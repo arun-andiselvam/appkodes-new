@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { siteOrigin } from "@/lib/site-url";
 import { pageMetadata } from "@/lib/seo";
 import { PostPage } from "@/components/sections/post";
 import { CtaSection } from "@/components/sections/cta";
@@ -43,6 +44,18 @@ export function postRoute(category: string) {
       if (!post) notFound();
 
       const related = await relatedPosts(category, slug);
+      /*
+        Absolute URLs in the schema below, from the request rather than a
+        constant. See lib/site-url.ts.
+
+        !! DECLARE THIS. `origin` IS A GLOBAL IN THE DOM LIB !!
+
+        Leaving it out does not fail typecheck. lib.dom declares `origin: string`
+        at global scope, so a missing local silently resolves to it, and on the
+        server that value is undefined. The schema then publishes
+        "undefined/resources/..." with nothing anywhere reporting a problem.
+      */
+      const origin = await siteOrigin();
 
       /*
        * BlogPosting, not Article.
@@ -64,8 +77,8 @@ export function postRoute(category: string) {
         "@type": "BlogPosting",
         headline: post.title,
         description: post.excerpt,
-        url: `${site.url}${category}/${slug}`,
-        ...(post.image ? { image: `${site.url}${post.image}` } : {}),
+        url: `${origin}${category}/${slug}`,
+        ...(post.image ? { image: `${origin}${post.image}` } : {}),
         datePublished: post.published,
         dateModified: post.updated ?? post.published,
         // Counts every block kind. Written as a switch rather than a "text" in
@@ -86,9 +99,9 @@ export function postRoute(category: string) {
               return total + block.text.split(/\s+/).length;
           }
         }, 0),
-        author: { "@type": "Organization", name: site.name, url: site.url },
-        publisher: { "@type": "Organization", name: site.name, url: site.url },
-        mainEntityOfPage: `${site.url}${category}/${slug}`,
+        author: { "@type": "Organization", name: site.name, url: origin },
+        publisher: { "@type": "Organization", name: site.name, url: origin },
+        mainEntityOfPage: `${origin}${category}/${slug}`,
       };
 
       /*

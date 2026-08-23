@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/content/site";
+import { siteOrigin } from "@/lib/site-url";
 import { allNavRoutes } from "@/content/navigation";
 
 /**
@@ -27,11 +27,12 @@ function priorityFor(path: string) {
   return 0.6;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const paths = ["/", ...allNavRoutes(), ...extraRoutes];
+  const origin = await siteOrigin();
 
   return paths.map((path) => ({
-    url: new URL(path, site.url).toString(),
+    url: new URL(path, origin).toString(),
     changeFrequency: "monthly",
     priority: priorityFor(path),
   }));

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { trailFor } from "@/content/navigation";
-import { site } from "@/content/site";
+import { siteOrigin } from "@/lib/site-url";
 
 /**
  * The path back up the silo.
@@ -22,7 +22,7 @@ import { site } from "@/content/site";
  * somebody renames a menu item. Deriving both here means a rename in
  * content/navigation.ts moves the two together or neither.
  */
-export function Breadcrumbs({
+export async function Breadcrumbs({
   path,
   leaf,
 }: {
@@ -46,12 +46,15 @@ export function Breadcrumbs({
   const trail = [...trailFor(path), ...(leaf ? [leaf] : [])];
   if (trail.length < 2) return null;
 
+  /* Absolute, and from the request rather than a constant. See lib/site-url.ts. */
+  const origin = await siteOrigin();
+
   /*
    * BreadcrumbList, which is what puts "appkodes.com > Services > AI
    * Integration" in a search result in place of the raw URL. Three things
    * Google is strict about, all handled here:
    *
-   * - `item` has to be an absolute URL, so site.url is prefixed. A relative
+   * - `item` has to be an absolute URL, so the request origin is prefixed. A relative
    *   path is ignored rather than reported as an error, which is the quiet
    *   way this feature fails.
    * - `position` is 1 based and has to run unbroken from the first crumb.
@@ -71,7 +74,7 @@ export function Breadcrumbs({
       name: crumb.name,
       ...(i === trail.length - 1
         ? {}
-        : { item: `${site.url}${crumb.href === "/" ? "" : crumb.href}` }),
+        : { item: `${origin}${crumb.href === "/" ? "" : crumb.href}` }),
     })),
   };
 

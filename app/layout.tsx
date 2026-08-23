@@ -1,29 +1,34 @@
-import React from "react"
-import { headers } from 'next/headers'
-import type { Metadata } from 'next'
-import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
-import { ThemeProvider } from '@/components/theme-provider'
-import { organizationSchema } from '@/lib/organization-schema'
-import { Navigation } from '@/components/layout/navigation'
-import { Footer } from '@/components/layout/footer'
-import { site } from '@/content/site'
-import './globals.css'
+import React from "react";
+import { headers } from "next/headers";
+import type { Metadata } from "next";
+import {
+  Instrument_Sans,
+  Instrument_Serif,
+  JetBrains_Mono,
+} from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { ThemeProvider } from "@/components/theme-provider";
+import { organizationSchema } from "@/lib/organization-schema";
+import { Navigation } from "@/components/layout/navigation";
+import { Footer } from "@/components/layout/footer";
+import { site } from "@/content/site";
+import { siteOrigin } from "@/lib/site-url";
+import "./globals.css";
 
-const instrumentSans = Instrument_Sans({ 
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  variable: '--font-instrument'
+  variable: "--font-instrument",
 });
 
-const instrumentSerif = Instrument_Serif({ 
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
-  variable: '--font-instrument-serif'
+  variable: "--font-instrument-serif",
 });
 
-const jetbrainsMono = JetBrains_Mono({ 
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: '--font-jetbrains'
+  variable: "--font-jetbrains",
 });
 
 /**
@@ -31,48 +36,62 @@ const jetbrainsMono = JetBrains_Mono({
  * per-request for Next to stamp the matching nonce onto its own inline scripts.
  * Without this the prerendered nonce-less scripts are blocked by the policy.
  */
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-// Brand facts come from content/site.ts so the name is defined in one place.
-export const metadata: Metadata = {
-  // Canonical URLs and Open Graph tags have to be absolute. Setting the base
-  // here lets every page write its own as a plain path. See lib/seo.ts.
-  metadataBase: new URL(site.url),
-  // A template so each route supplies its own name and the brand is appended
-  // once, rather than every page repeating the company name by hand.
-  title: {
-    default: `${site.name} - AI Automation for Growing Businesses`,
-    template: `%s - ${site.name}`,
-  },
-  description: site.description,
-  // Defaults for anything a page does not override. Pages set their own title,
-  // description and URL through pageMetadata; these carry the rest.
-  openGraph: {
-    siteName: site.name,
-    locale: 'en_GB',
-    type: 'website',
-    // The default share card, for the home page and anything not going through
-    // pageMetadata. That helper sets its own images for the reason explained
-    // there: a page's openGraph replaces this object rather than merging.
-    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: site.name }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
+/*
+  Brand facts come from content/site.ts so the name is defined in one place.
+
+  This is a function rather than a constant because metadataBase now follows
+  the origin actually serving the request. Everything else here is static; the
+  base is the one value that cannot be, and Next has no way to make a single
+  field per-request while the rest stays exported. See lib/site-url.ts.
+*/
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    // Canonical URLs and Open Graph tags have to be absolute. Setting the base
+    // here lets every page write its own as a plain path, and it is what turns
+    // `alternates.canonical: "/industries/..."` into a full URL. See lib/seo.ts.
+    metadataBase: new URL(await siteOrigin()),
+    // A template so each route supplies its own name and the brand is appended
+    // once, rather than every page repeating the company name by hand.
+    title: {
+      default: `${site.name} - AI Automation for Growing Businesses`,
+      template: `%s - ${site.name}`,
+    },
+    description: site.description,
+    // Defaults for anything a page does not override. Pages set their own title,
+    // description and URL through pageMetadata; these carry the rest.
+    openGraph: {
+      siteName: site.name,
+      locale: "en_GB",
+      type: "website",
+      // The default share card, for the home page and anything not going through
+      // pageMetadata. That helper sets its own images for the reason explained
+      // there: a page's openGraph replaces this object rather than merging.
+      images: [
+        { url: "/og-default.png", width: 1200, height: 630, alt: site.name },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
+  };
 }
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   // next-themes injects an inline anti-flash script; hand it the same nonce the
   // proxy put in the CSP so it is not blocked.
-  const nonce = (await headers()).get('x-nonce') ?? undefined
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+      <body
+        className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+      >
         {/*
           The Organization, once, on every page.
 
@@ -95,7 +114,10 @@ export default async function RootLayout({
           // Our own content, and JSON.stringify escapes the quotes. The `<`
           // guard covers the one case that would still break out of the tag.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema()).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(await organizationSchema()).replace(
+              /</g,
+              "\\u003c",
+            ),
           }}
         />
         <ThemeProvider
@@ -120,5 +142,5 @@ export default async function RootLayout({
         <Analytics />
       </body>
     </html>
-  )
+  );
 }

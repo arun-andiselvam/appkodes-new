@@ -1,4 +1,5 @@
 import { pageMetadata } from "@/lib/seo";
+import { siteOrigin } from "@/lib/site-url";
 import { IndustryLandingPage } from "@/components/sections/industry-landing";
 import { CtaSection } from "@/components/sections/cta";
 import { industryLandings } from "@/content/industry-landings";
@@ -55,13 +56,15 @@ export function industryLandingRoute(path: string) {
    * docs/positioning.md. Four codes for five locations, because Dubai and
    * Sharjah are both in the UAE.
    */
-  const serviceSchema = {
+  /* A function of the origin, because that is per request now and this
+     helper is called once at module scope. Built inside the Page below. */
+  const serviceSchema = (origin: string) => ({
     "@context": "https://schema.org",
     "@type": "Service",
     name: page.metaTitle,
     description: page.summary.body,
     serviceType: "AI automation",
-    url: `${site.url}${path}`,
+    url: `${origin}${path}`,
     audience: {
       "@type": "Audience",
       audienceType: page.audience,
@@ -69,14 +72,14 @@ export function industryLandingRoute(path: string) {
     provider: {
       "@type": "Organization",
       name: site.name,
-      url: site.url,
+      url: origin,
       foundingDate: "2008",
     },
     areaServed: ["IN", "ID", "AE", "VN"].map((code) => ({
       "@type": "Country",
       identifier: code,
     })),
-  };
+  });
 
   return {
     metadata: pageMetadata({
@@ -84,7 +87,8 @@ export function industryLandingRoute(path: string) {
       description: page.metaDescription,
       path,
     }),
-    Page: function IndustryLandingRoutePage() {
+    Page: async function IndustryLandingRoutePage() {
+      const origin = await siteOrigin();
       return (
         <main>
           {/*
@@ -92,7 +96,7 @@ export function industryLandingRoute(path: string) {
             valid, and separate blocks are easier to read in a rich result test
             when one of them is rejected.
           */}
-          {[serviceSchema, faqSchema].map((schema) => (
+          {[serviceSchema(origin), faqSchema].map((schema) => (
             <script
               key={schema["@type"]}
               type="application/ld+json"

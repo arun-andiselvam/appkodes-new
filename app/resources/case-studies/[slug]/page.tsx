@@ -4,6 +4,7 @@ import { CaseStudyPage } from "@/components/sections/case-study";
 import { CtaSection } from "@/components/sections/cta";
 import { caseStudies, caseStudyBySlug, relatedCaseStudies } from "@/lib/case-studies";
 import { site } from "@/content/site";
+import { siteOrigin } from "@/lib/site-url";
 
 /**
  * One case study.
@@ -45,6 +46,11 @@ export default async function Page({
 
   const related = await relatedCaseStudies(slug);
 
+  /* Absolute URLs below, from the request rather than a constant. Declare it:
+     `origin` is a global in the DOM lib, so a missing local typechecks and
+     resolves to undefined on the server. See lib/site-url.ts. */
+  const origin = await siteOrigin();
+
   /*
    * Article rather than a made up type. schema.org has no CaseStudy, and
    * inventing one gets the block ignored.
@@ -65,11 +71,11 @@ export default async function Page({
     "@type": "Article",
     headline: study.title,
     description: study.summary,
-    url: `${site.url}/resources/case-studies/${slug}`,
-    image: `${site.url}${study.image}`,
+    url: `${origin}/resources/case-studies/${slug}`,
+    image: `${origin}${study.image}`,
     about: { "@type": "Organization", name: study.client },
-    author: { "@type": "Organization", name: site.name, url: site.url },
-    publisher: { "@type": "Organization", name: site.name, url: site.url },
+    author: { "@type": "Organization", name: site.name, url: origin },
+    publisher: { "@type": "Organization", name: site.name, url: origin },
   };
 
   const breadcrumbSchema = {
@@ -85,7 +91,7 @@ export default async function Page({
       position: i + 1,
       name: crumb.name,
       // No `item` on the final crumb, which is the page itself.
-      ...(i === all.length - 1 ? {} : { item: `${site.url}${crumb.href}` }),
+      ...(i === all.length - 1 ? {} : { item: `${origin}${crumb.href}` }),
     })),
   };
 

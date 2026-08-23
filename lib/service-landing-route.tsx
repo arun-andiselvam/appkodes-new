@@ -1,4 +1,5 @@
 import { pageMetadata } from "@/lib/seo";
+import { siteOrigin } from "@/lib/site-url";
 import { ServiceLandingPage } from "@/components/sections/service-landing";
 import { CtaSection } from "@/components/sections/cta";
 import { serviceLandings } from "@/content/service-landings";
@@ -60,7 +61,9 @@ export function serviceLandingRoute(path: string) {
    * No client counts and no regional project splits, for the reason set out in
    * content/service-landings.ts.
    */
-  const serviceSchema = {
+  /* A function of the origin, because that is per request now and this
+     helper is called once at module scope. Built inside the Page below. */
+  const serviceSchema = (origin: string) => ({
     "@context": "https://schema.org",
     "@type": "Service",
     /*
@@ -79,7 +82,7 @@ export function serviceLandingRoute(path: string) {
     name: page.serviceType,
     description: page.summary.body,
     serviceType: page.serviceType,
-    url: `${site.url}${path}`,
+    url: `${origin}${path}`,
     /*
      * A reference rather than a copy. The Organization itself is defined once
      * in app/layout.tsx, on every page, and repeating its details here would
@@ -89,7 +92,7 @@ export function serviceLandingRoute(path: string) {
     provider: {
       "@type": "Organization",
       name: site.name,
-      url: site.url,
+      url: origin,
     },
     /*
      * Named, not coded. These were `identifier: "IN"`, which is valid schema
@@ -106,7 +109,7 @@ export function serviceLandingRoute(path: string) {
       name: country.name,
       identifier: country.code,
     })),
-  };
+  });
 
   return {
     metadata: pageMetadata({
@@ -114,7 +117,8 @@ export function serviceLandingRoute(path: string) {
       description: page.metaDescription,
       path,
     }),
-    Page: function ServiceLandingRoutePage() {
+    Page: async function ServiceLandingRoutePage() {
+      const origin = await siteOrigin();
       return (
         <main>
           {/*
@@ -122,7 +126,7 @@ export function serviceLandingRoute(path: string) {
             valid, and separate blocks are easier to read in a rich result test
             when one of them is rejected.
           */}
-          {[serviceSchema, faqSchema].map((schema) => (
+          {[serviceSchema(origin), faqSchema].map((schema) => (
             <script
               key={schema["@type"]}
               type="application/ld+json"
