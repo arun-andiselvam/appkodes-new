@@ -248,8 +248,18 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
       copy take the rest, so the panel is the same width and in the same place
       on all of them. This is that, so the 404 stops being the one page laid
       out differently.
+
+      !! WIDER THAN THE 420 AND 460 THE RECORD PANELS USE, ON PURPOSE !!
+
+      Those carry invented strings written short enough to fit. These carry
+      real page names, and they are links: "Custom AI API & Software
+      Integration" wrapped to two lines at 460 and the longest path still cut.
+      The copy column was 788 pixels against a lede capped at max-w-2xl, so
+      there were a hundred spare pixels sitting in it doing nothing. Moving
+      them to the panel puts every name and every path on one line and leaves
+      the copy at its natural measure.
     */
-    <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px] gap-10 xl:gap-14 items-center">
+    <div className="mt-10 grid lg:grid-cols-[minmax(0,1fr)_460px] xl:grid-cols-[minmax(0,1fr)_580px] gap-10 xl:gap-14 items-center">
       <div>
         {/*
           The page's own heading lives in this column rather than above the
