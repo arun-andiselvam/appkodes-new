@@ -213,8 +213,19 @@ export const mainNav: NavItem[] = [
         {
           name: "Marketing & AdTech",
           href: "/industries/marketing-and-adtech",
-          blurb:
-            "Creative and campaign production at volume, without the headcount it used to take.",
+          /*
+           * Rewritten 24 August 2026, when the page behind it was built.
+           *
+           * It read "Creative and campaign production at volume, without the
+           * headcount it used to take." The page argues the opposite: it
+           * declines content generated at volume by name, because Google
+           * demotes it as scaled content abuse, and leads on forecasting spend
+           * and clustering search terms instead. This blurb renders in the
+           * header on every route, on the industries hub and in the 404
+           * finder, so the promise the whole site was making did not match the
+           * page it linked to.
+           */
+          blurb: "Campaign returns forecast before the budget is placed.",
         },
       ],
       footer: { name: "All industries", href: "/industries" },

@@ -204,10 +204,19 @@ export const industryPages: Record<string, ServicePage> = {
     slug: "marketing-and-adtech",
     title: "AI for digital marketing & AdTech",
     eyebrow: "Industries",
-    lede: "Creative and campaign work at the volume clients now expect, without the headcount that used to imply.",
+    /*
+     * The lede and the description were rewritten on 24 August 2026, when the
+     * long form page was built, for the reason set out on the blurb in
+     * content/navigation.ts. Both sold work at volume, and the description
+     * named "programmatic SEO content generation", which is the one thing that
+     * page refuses to sell. The long form entry in content/industry-landings.ts
+     * supersedes this description for the page itself, so this was only ever
+     * going to resurface if somebody read this file first.
+     */
+    lede: "Forecasts you can commit a budget against, and search terms grouped by intent.",
     metaTitle: "AI for Digital Marketing & AdTech",
     metaDescription:
-      "AI automation for marketing agencies. Generative creative pipelines, programmatic SEO content generation and intelligent ad-bidding integrations.",
+      "AI automation for marketing agencies. Campaign forecasting, keyword clustering by intent and reporting that assembles itself.",
     problem: {
       heading: "The volume went up and the budget did not",
       body: "A boutique agency is asked for more assets, more locales and more landing pages every quarter, then asked to show what each one returned. Most of that is production work, and production is where the margin goes.",
