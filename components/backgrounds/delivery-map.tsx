@@ -163,6 +163,8 @@ export function DeliveryMap() {
     [hubPt.x, hubPt.y],
   );
 
+  const activeArc = active ? arcs.find((a) => a.d.code === active.code) : null;
+
   return (
     <figure className="not-prose">
       {/*
@@ -212,45 +214,47 @@ export function DeliveryMap() {
           fill="none"
         />
 
-        {/* Arcs, dim until asked. */}
-        <g fill="none" strokeLinecap="round">
-          {arcs.map(({ d, path, len }) => {
-            const on = active?.code === d.code;
-            return (
-              <g key={d.code}>
-                <path
-                  d={path}
-                  className={
-                    on ? "text-brand-blue" : active ? "text-brand-blue/20" : "text-brand-blue/60"
-                  }
-                  stroke="currentColor"
-                  strokeWidth={on ? 2 : 1.2}
-                  style={{ transition: "stroke-width 200ms" }}
-                />
-                {/*
-                  The pulse. A short dash chased along the arc by animating the
-                  offset, which is one property and compositor friendly. It
-                  only exists while the arc is hovered, so nothing animates on
-                  an idle page.
-                */}
-                {on && (
-                  <path
-                    d={path}
-                    stroke="currentColor"
-                    className="text-brand-blue motion-reduce:hidden"
-                    strokeWidth={2.4}
-                    filter={`url(#${uid}-glow)`}
-                    style={{
-                      strokeDasharray: `26 ${Math.round(len)}`,
-                      animation: "delivery-pulse 1100ms linear infinite",
-                      ["--arc-len" as string]: Math.round(len + 26),
-                    }}
-                  />
-                )}
-              </g>
-            );
-          })}
-        </g>
+        {/*
+          One arc, and only while a dot is being pointed at.
+
+          !! FORTY EIGHT ARCS AT ONCE WAS THE PROBLEM, NOT THE POINT !!
+
+          Every arc leaves the same hub, so drawn together they merge into a
+          fan and the map stops being readable: the eye cannot follow any
+          single route, and the landmass the arcs are meant to sit on top of
+          disappears under them. Drawing the hovered one alone means the
+          resting state is a map of where the work is and the pointer asks
+          the question "and where does that one go".
+
+          Nothing else is in the DOM. There is no dimmed set underneath, so
+          this is also forty seven fewer paths on every frame.
+        */}
+        {activeArc && (
+          <g fill="none" strokeLinecap="round">
+            <path
+              d={activeArc.path}
+              className="text-brand-blue"
+              stroke="currentColor"
+              strokeWidth={1.6}
+            />
+            {/*
+              The pulse. A short dash chased along the arc by animating the
+              offset, which is one property and compositor friendly.
+            */}
+            <path
+              d={activeArc.path}
+              stroke="currentColor"
+              className="text-brand-blue motion-reduce:hidden"
+              strokeWidth={2.4}
+              filter={`url(#${uid}-glow)`}
+              style={{
+                strokeDasharray: `26 ${Math.round(activeArc.len)}`,
+                animation: "delivery-pulse 1100ms linear infinite",
+                ["--arc-len" as string]: Math.round(activeArc.len + 26),
+              }}
+            />
+          </g>
+        )}
 
         {/* Destinations. The hit area is a fat invisible circle, because a
             four pixel dot is not something a pointer can reasonably find. */}
@@ -293,29 +297,68 @@ export function DeliveryMap() {
           />
         </g>
 
-        {/* Labels last of all. The hub is always named; a destination names
-            itself only while it is the one being pointed at. */}
-        <text
-          x={hubPt.x}
-          y={hubPt.y + 30}
-          textAnchor="middle"
-          className="fill-foreground font-mono"
-          style={{ fontSize: 13 }}
-        >
-          {hub.name}
-        </text>
+        {/* Labels last of all, over everything. The hub is always named; a
+            destination names itself only while it is being pointed at. */}
+        <Pill x={hubPt.x} y={hubPt.y + 26} text={hub.name} />
         {active && (
-          <text
+          <Pill
             x={project(active.lng, active.lat).x}
-            y={project(active.lng, active.lat).y - 14}
-            textAnchor="middle"
-            className="fill-foreground font-mono"
-            style={{ fontSize: 12 }}
-          >
-            {active.name}
-          </text>
+            y={project(active.lng, active.lat).y - 20}
+            text={active.name}
+          />
         )}
       </svg>
     </figure>
+  );
+}
+
+/**
+ * A name on a rounded plate, the way a tooltip reads.
+ *
+ * !! SVG HAS NO BACKGROUND ON TEXT, SO THE PLATE IS A REAL RECT !!
+ *
+ * There is no text-background in SVG and no box model to lean on, so the
+ * plate has to be drawn and sized by hand, which means knowing how wide the
+ * string will be before it renders. Measuring it properly would mean putting
+ * it in the DOM, reading it back and drawing a second time.
+ *
+ * The font makes that unnecessary. These labels are set in JetBrains Mono,
+ * where every glyph is exactly 0.6em wide, so the width is the character
+ * count times the size times 0.6 and it is exact rather than approximate.
+ * Change this to a proportional face and the plate will fit some names and
+ * cut others.
+ *
+ * --secondary is the token: near white on a light ground, the surface tint on
+ * a dark one, with --secondary-foreground as the ink either way. That pairing
+ * is defined in app/brand.css and is contrast checked there, so the plate
+ * cannot end up light on light when the theme flips.
+ */
+const CHAR_W = 0.6;
+
+function Pill({ x, y, text, size = 12 }: { x: number; y: number; text: string; size?: number }) {
+  const padX = 9;
+  const w = text.length * size * CHAR_W + padX * 2;
+  const h = size + 11;
+  return (
+    <g style={{ pointerEvents: "none" }}>
+      <rect
+        x={x - w / 2}
+        y={y - h / 2}
+        width={w}
+        height={h}
+        rx={h / 2}
+        className="fill-secondary"
+      />
+      <text
+        x={x}
+        y={y}
+        textAnchor="middle"
+        dominantBaseline="central"
+        className="fill-secondary-foreground font-mono"
+        style={{ fontSize: size }}
+      >
+        {text}
+      </text>
+    </g>
   );
 }
