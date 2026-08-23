@@ -15,11 +15,24 @@ import { destinations, hub } from "@/content/delivery-map";
  *
  * !! THE COUNT COMES FROM THE DATA, IT IS NOT TYPED HERE !!
  *
- * The site publishes "50+ countries" in its stats row and that figure is
- * flagged as unconfirmed where it appears. A map is a sharper claim than a
- * figure, because a dot names a place, so this section counts what is
- * actually plotted and says that number instead. Add a country to
- * content/delivery-map.ts and the heading moves with it.
+ * Add a country to content/delivery-map.ts and this paragraph moves with it,
+ * so the number on the page can never drift from the number of dots.
+ *
+ * !! THE COPY SAYS "REACHED", NOT "PUT THEIR NAME TO THE WORK" !!
+ *
+ * It said the second thing while the map held twelve countries, each with a
+ * named testimonial behind it, and that sentence was true. The client asked
+ * on 24 August 2026 for the map to carry the full fifty, which is the figure
+ * the stats row already publishes, so thirty eight of them have no named
+ * client and the old sentence would have been a claim about all fifty that
+ * only twelve could support. "Reached" is what the fifty actually supports.
+ *
+ * The twelve are still marked in the data, so the difference survives even
+ * though the map draws them identically. See content/delivery-map.ts.
+ *
+ * The line about every one running on the same two week start went at the
+ * same time. It was written to tie the map to this page and nobody has
+ * checked whether it is true of all of them.
  *
  * DeliveryMap is a client component, for the hover. This section is not, so
  * the heading and the country list are in the HTML a crawler reads.
@@ -32,7 +45,7 @@ export function DeliveryReachSection() {
           <Eyebrow className="mb-6">Reach</Eyebrow>
           <SectionTitle>One team, and a lot of time zones.</SectionTitle>
           <p className="mt-8 text-xl leading-relaxed text-muted-foreground">
-            {`The team sits in ${hub.name}. These are the ${destinations.length} countries with a client who has put their name to the work, and every one of them ran on the same two week start. Hover a line to follow it.`}
+            {`The team sits in ${hub.name}. These are the ${destinations.length} countries the work has reached. Hover a line to follow one.`}
           </p>
         </div>
 
