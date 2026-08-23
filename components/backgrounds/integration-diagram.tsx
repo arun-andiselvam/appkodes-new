@@ -287,10 +287,27 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
                     {node.label}
                   </span>
                   {node.sub && (
-                    // Was white/75, which measured under AA over the lightest
-                    // stop even after the gradient was fixed.
+                    /*
+                      !! FULL WHITE. NO ALPHA. !!
+
+                      This was white/75, then white/90 when 75 measured under
+                      AA over the lightest stop. Ninety is not enough either,
+                      and no value below a hundred can be: white on the accent
+                      face's lightest stop is 4.66:1 at full strength, so every
+                      reduction lands under 4.5. Measured over #df2c16, white
+                      at 90 per cent is 4.01:1 and at 85 is 3.69.
+
+                      It survived two attempts because both were checked
+                      against the brand face, which has headroom at 5.67:1 and
+                      passes at 90. Every diagram on the site has at least one
+                      accent node, so the failing case was always on screen.
+
+                      Caught 23 August 2026 while building the industry hero,
+                      which hit the same wall and resolved it the same way:
+                      hierarchy comes from size and weight, not from opacity.
+                    */
                     <span
-                      className="mt-1 block font-mono text-[12px] font-medium leading-tight text-white/90"
+                      className="mt-1 block font-mono text-[12px] font-medium leading-tight text-white"
                       style={{ textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" }}
                     >
                       {node.sub}
