@@ -100,6 +100,18 @@ const SHADOW = { textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" } as const;
  * animation's fill and every one of those would settle at the wrong value,
  * taking the depth with it. Set the variable and let the keyframe land on it.
  *
+ * !! A TILE IS KEYED BY ITS POSITION, NEVER BY ITS CONTENT !!
+ *
+ * Every layout below keys on the cell, slot or index a tile occupies. That is
+ * the identity that actually matters here: the tile at cell 7 is the tile at
+ * cell 7, whatever ends up in it.
+ *
+ * These were keyed on `when` and `what` until 24 August 2026, which held only
+ * because the first four industries happened to have unique rows. A ledger
+ * does. A gradebook does not: two learners handing in the same exercise for
+ * the same unit is the ordinary case, and the marketing grid has three tests
+ * in one week. React duplicated or dropped tiles and warned about it.
+ *
  * !! MEASURE OVERFLOW ON THE CHILDREN, NEVER ON THE FIGURE !!
  *
  * A layout box does not include what a 3D transform pushes past it. An earlier
@@ -359,10 +371,10 @@ function Field({ record }: { record: Panel }) {
         const delay = Math.floor(i / FIELD_COLS) * 55 + (i % FIELD_COLS) * 22;
 
         return row ? (
-          <Tile key={`${row.when}-${row.what}`} row={row} style={style} delay={delay} />
+          <Tile key={`cell-${i}`} row={row} style={style} delay={delay} />
         ) : (
           <Ghost
-            key={`t-${i}`}
+            key={`cell-${i}`}
             style={{ ...style, "--tile-op": fade } as React.CSSProperties}
             delay={delay}
           />
@@ -439,14 +451,14 @@ function Shelf({ record }: { record: Panel }) {
               const delay = bay * 90 + i * 40;
               return row ? (
                 <Tile
-                  key={`${row.when}-${row.what}`}
+                  key={`slot-${bay}-${i}`}
                   row={row}
                   style={{ height: 80 }}
                   delay={delay}
                 />
               ) : (
                 <Ghost
-                  key={`hole-${bay}-${i}`}
+                  key={`slot-${bay}-${i}`}
                   style={{ height: 80, "--tile-op": 0.5 } as React.CSSProperties}
                   delay={delay}
                 />
@@ -553,7 +565,7 @@ function Day({ record }: { record: Panel }) {
       />
       {rows.map((row, i) => (
         <Tile
-          key={`${row.when}-${row.what}`}
+          key={`at-${i}`}
           row={row}
           className="absolute left-[6%] right-[6%]"
           /* Down the day in order, because that is what the column is. */
@@ -625,7 +637,7 @@ function Stream({ record }: { record: Panel }) {
         const at = STREAM_AT[i];
         return (
           <Tile
-            key={`${row.when}-${row.what}`}
+            key={`post-${i}`}
             row={row}
             className="absolute"
             /* Nearest first, so the feed reads as arriving toward the viewer
@@ -721,10 +733,10 @@ function Cohort({ record }: { record: Panel }) {
         /* Unit by unit down the grid, which is the order it is read in. */
         const delay = Math.floor(i / COHORT_COLS) * 55 + (i % COHORT_COLS) * 22;
         return row ? (
-          <Tile key={`${row.when}-${row.what}`} row={row} style={style} delay={delay} />
+          <Tile key={`cell-${i}`} row={row} style={style} delay={delay} />
         ) : (
           <Ghost
-            key={`c-${i}`}
+            key={`cell-${i}`}
             style={{ ...style, "--tile-op": 0.34 } as React.CSSProperties}
             delay={delay}
           />
