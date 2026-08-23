@@ -8,7 +8,7 @@ import { SectionTitle } from "@/components/primitives/section-title";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
-import { LedgerPanel } from "@/components/backgrounds/ledger-panel";
+import { RecordStack } from "@/components/backgrounds/record-stack";
 import { actions } from "@/content/site";
 import type { IndustryLanding } from "@/content/types";
 
@@ -38,7 +38,7 @@ import type { IndustryLanding } from "@/content/types";
  *
  * Section by section against the service page:
  *
- *   Hero            ledger panel, not the architecture diagram
+ *   Hero            a tilted stack of the trade's paperwork, not the diagram
  *   Summary         full width pull quote, not a narrow title split
  *   Bottleneck      two columns, not a card row
  *   Use cases       full width rows with specifics, not three cards
@@ -47,7 +47,12 @@ import type { IndustryLanding } from "@/content/types";
  *   Ecosystem       marquee, not a static grid
  *   FAQ             shared, and deliberately so
  *
- * No "use client". These pages carry text and links.
+ * No "use client" on this section. It carries text and links.
+ *
+ * RecordStack in the hero is a client component, added 23 August 2026 when the
+ * hero visual gained pointer tracked tilt. A client child inside a server
+ * parent only ships the child, so everything below the hero is still rendered
+ * on the server and sends no JavaScript.
  */
 export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
   return (
@@ -119,7 +124,7 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
               </ul>
             </div>
 
-            <LedgerPanel ledger={page.ledger} />
+            <RecordStack record={page.record} />
           </div>
         </Container>
       </Section>

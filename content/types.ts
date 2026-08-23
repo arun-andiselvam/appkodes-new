@@ -637,30 +637,44 @@ export type IndustryLanding = {
   };
   faqs: { question: string; answer: string }[];
   /**
-   * The hero visual.
+   * The hero visual: a short stack of the trade's own paperwork, tilted.
    *
    * Not an ArchitectureDiagram. That component is the service page's
    * signature, and relabelling its boxes gave the industry page the same
-   * opening as the page it is meant to be distinct from. This is a ledger
-   * instead: the trade's own document, with the categories a model assigned
-   * and one row held back for a person.
+   * opening as the page it is meant to be distinct from. The service hero
+   * draws things connecting to each other. This draws one object sitting
+   * there, which is a different grammar and cannot be mistaken for it.
    *
-   * The rows are an illustration of a screen, not a client's books. They are
+   * !! THE FIELD NAMES ARE DELIBERATELY NOT FINANCIAL !!
+   *
+   * This was `ledger`, with rows of `date`, `description`, `amount` and
+   * `category`, because finance was the first industry built. Renamed 23
+   * August 2026, while one page used it rather than six. A delivery note, a
+   * consultation record, a marked assignment and a moderation queue are all
+   * the same four columns, and an author writing the healthcare page should
+   * not have to put a consultation length in a field called `amount`.
+   *
+   * The rows are an illustration of a screen, not a client's records. They are
    * written to look like nobody's real data on purpose.
+   *
+   * `label` and `footnote` were removed on 23 August 2026 along with the bar
+   * that rendered them. The visual carries the argument on its own and the
+   * caption carries the words.
    */
-  ledger: {
+  record: {
     /** Read in place of the panel by anything that cannot see it. */
     caption: string;
-    /** Header on the panel. */
-    label: string;
     rows: {
-      date: string;
-      description: string;
-      amount: string;
-      category: string;
+      /** Narrow left column. A date, a reference, a time. */
+      when: string;
+      /** The wide column, and the part a reader actually scans. */
+      what: string;
+      /** Right aligned and monospaced. A sum, a count, a duration. */
+      value: string;
+      /** The tag under `what`. What the model decided this row is. */
+      status: string;
       /** Held for review rather than posted. Exactly one row should set this. */
       flagged?: boolean;
     }[];
-    footnote: string;
   };
 };

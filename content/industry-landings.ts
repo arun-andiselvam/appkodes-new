@@ -310,23 +310,46 @@ export const industryLandings: Record<string, IndustryLanding> = {
      * The flagged row is the point: three categorised on arrival, one held for
      * a person, which is the same argument the workflow section makes.
      */
-    ledger: {
+    /*
+     * Renamed from `ledger` on 23 August 2026, along with its field names. See
+     * the `record` type in content/types.ts: a delivery note and a
+     * consultation record are the same four columns, and the next five
+     * industry pages should not be filling in a field called `amount`.
+     *
+     * No `columns` here. A date, a payee and a sum need no headings, and the
+     * pages that follow will want them.
+     */
+    /*
+     * Eight rows rather than four, from 23 August 2026. Four filled a fifth of
+     * the field and left the panel reading as mostly empty texture, so the
+     * argument the colour makes was too quiet to carry the hero.
+     *
+     * Still exactly one flagged. One exception in eight is a better story than
+     * one in four, because the claim is that most of this settles itself.
+     *
+     * Invented names on purpose. See the note on `record` in content/types.ts:
+     * these look like nobody's real books, and no supplier here is a company
+     * anybody could go and check.
+     */
+    record: {
       caption:
-        "A ledger with four transactions. Three have been categorised automatically, and the fourth is held back for a person to review.",
-      label: "Transactions",
+        "A ledger with eight transactions. Seven have been categorised automatically, and the eighth is held back for a person to review.",
       rows: [
-        { date: "12 Mar", description: "Northgate Supplies", amount: "1,240.00", category: "Inventory" },
-        { date: "12 Mar", description: "Cloud hosting", amount: "318.40", category: "Software" },
-        { date: "13 Mar", description: "Ferry, client visit", amount: "62.00", category: "Travel" },
+        { when: "12 Mar", what: "Northgate Supplies", value: "1,240.00", status: "Inventory" },
+        { when: "12 Mar", what: "Cloud hosting", value: "318.40", status: "Software" },
+        { when: "12 Mar", what: "Payout, card takings", value: "4,820.00", status: "Income" },
         {
-          date: "13 Mar",
-          description: "Unlabelled transfer",
-          amount: "900.00",
-          category: "Review",
+          when: "13 Mar",
+          what: "Unlabelled transfer",
+          value: "900.00",
+          status: "Review",
           flagged: true,
         },
+        { when: "13 Mar", what: "Ferry, client visit", value: "62.00", status: "Travel" },
+        { when: "13 Mar", what: "Office rent, March", value: "2,100.00", status: "Premises" },
+        { when: "14 Mar", what: "Courier, 14 parcels", value: "96.20", status: "Logistics" },
+        { when: "14 Mar", what: "Design subscription", value: "54.99", status: "Software" },
       ],
-      footnote: "Categorised on arrival. One held for a person.",
     },
 
     faqs: [
