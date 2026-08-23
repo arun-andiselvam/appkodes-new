@@ -112,44 +112,103 @@ const cleaned = rings
   })
   .sort((a, b) => b.length - a.length);
 
-const body = cleaned
-  .map((r) => `  [${r.map(([a, b]) => `[${a},${b}]`).join(",")}],`)
-  .join("\n");
+/* ------------------------------------------------------------------ */
+/* Rasterise here, so nothing has to at runtime                        */
+/* ------------------------------------------------------------------ */
 
-const header = `/**
- * The land, as real coastlines in [longitude, latitude].
+/*
+ * !! THE OUTLINE ITSELF NEVER REACHES THE BROWSER !!
+ *
+ * It used to. The component imported 82KB of coordinates, 26KB gzipped,
+ * and turned them into a path on mount, which meant shipping the data, the
+ * point in polygon test and the bounding boxes to every visitor so they could
+ * all compute the same string. Worse, it ran twice: once server side for the
+ * HTML and again on hydration.
+ *
+ * The result is deterministic, so it belongs here. The browser gets the
+ * finished path and nothing else.
+ *
+ * The projection constants are emitted with it. They have to match the
+ * component's viewBox exactly, and a path generated against one window and
+ * drawn in another is a bug that looks like bad geography rather than like a
+ * mismatch, so there is one source for both.
+ */
+const LAT_TOP = 78;
+const LAT_BOTTOM = -56;
+const VIEW_W = 1000;
+const VIEW_H = Math.round((VIEW_W * (LAT_TOP - LAT_BOTTOM)) / 360);
+const STEP = 1.5;
+
+const project = (lng, lat) => ({
+  x: ((lng + 180) / 360) * VIEW_W,
+  y: ((LAT_TOP - lat) / (LAT_TOP - LAT_BOTTOM)) * VIEW_H,
+});
+
+function inRing(lng, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+const boxes = cleaned.map((ring) => {
+  const xs = ring.map((p) => p[0]);
+  const ys = ring.map((p) => p[1]);
+  return { ring, minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) };
+});
+
+const parts = [];
+for (let lat = LAT_TOP; lat >= LAT_BOTTOM; lat -= STEP) {
+  for (let lng = -180; lng <= 180; lng += STEP) {
+    let land = false;
+    for (const b of boxes) {
+      if (lng < b.minX || lng > b.maxX || lat < b.minY || lat > b.maxY) continue;
+      if (inRing(lng, lat, b.ring)) { land = true; break; }
+    }
+    if (!land) continue;
+    const { x, y } = project(lng, lat);
+    /* Integers. The dots are 2.4 wide and sit on a fixed grid, so a tenth of a
+       pixel is invisible and costs a fifth of the file. */
+    parts.push(`M${Math.round(x)} ${Math.round(y)}l0 0`);
+  }
+}
+const landPath = parts.join("");
+
+const out = `/**
+ * The land, rasterised to a dot grid and ready to draw.
  *
  * !! GENERATED. DO NOT HAND EDIT !!
  *
- * Natural Earth 1:110m land, decoded from the world-atlas TopoJSON build and
- * flattened to plain rings. Natural Earth is public domain, so this ships
- * without an attribution requirement, though it is worth keeping the credit.
+ * Natural Earth 1:110m land, public domain, decoded from the world-atlas
+ * TopoJSON build. Regenerate with scripts/build-world-outline.mjs.
  *
- * Regenerate with scratchpad/topo.mjs against
- * https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json
+ * !! THIS IS A PATH, NOT AN OUTLINE, AND THAT IS THE POINT !!
  *
- * !! THIS REPLACED A HAND DRAWN OUTLINE, AND THAT IS WHY IT EXISTS !!
+ * The coastline data stays in the build script. Shipping it meant 26KB
+ * gzipped of coordinates plus a point in polygon test in every visitor's
+ * bundle, all to compute one string that never changes, and computing it
+ * twice, once server side and again on hydration.
  *
- * The first three versions of this file were coordinates written from
- * knowledge. Each pass fixed something real, a Mediterranean that had closed
- * up and fused Africa to Europe, a hole where West Siberia should be, a
- * missing Gulf of Mexico, and each pass still looked wrong, because a
- * coastline written from memory gets to "recognisable" and stops. Real data
- * is ${Math.round(body.length / 1024)}KB and settles it.
+ * Every dot is a zero length segment, "M x y l0 0", drawn by one path with a
+ * round line cap. ${parts.length} dots, one node.
  *
- * Holes are dropped. At the grid size components/backgrounds/delivery-map.tsx
- * rasterises to, the Caspian is a handful of cells and the Great Lakes are
- * about one, so subtracting them costs more code than it saves dots.
- *
- * Coordinates are rounded to one decimal, roughly eleven kilometres, which is
- * well inside a single cell of that grid.
+ * The projection constants below are what this path was generated against.
+ * components/backgrounds/delivery-map.tsx imports them rather than declaring
+ * its own, because a path built for one window and drawn in another looks
+ * like bad geography rather than like a mismatch.
  */
-export type Ring = [number, number][];
+export const LAT_TOP = ${LAT_TOP};
+export const LAT_BOTTOM = ${LAT_BOTTOM};
+export const VIEW_W = ${VIEW_W};
+export const VIEW_H = ${VIEW_H};
 
-export const landmasses: Ring[] = [
+export const landPath =
+  "${landPath}";
 `;
 
-writeFileSync("content/world-outline.ts", header + body + "\n];\n");
-
+writeFileSync("content/world-map.ts", out);
 const pts = cleaned.reduce((n, r) => n + r.length, 0);
-console.log(`${cleaned.length} rings, ${pts} points, ${Math.round((header.length + body.length) / 1024)}KB`);
+console.log(`${cleaned.length} rings, ${pts} source points -> ${parts.length} dots, ${Math.round(out.length / 1024)}KB emitted`);
