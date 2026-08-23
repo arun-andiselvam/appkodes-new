@@ -83,6 +83,35 @@ export type Destination = {
 /** Madurai, where the team is. */
 export const hub = { name: "Madurai", lat: 9.93, lng: 78.12 };
 
+/**
+ * The figure the copy publishes, which is no longer `destinations.length`.
+ *
+ * !! THE COUNT USED TO COME FROM THE DATA, AND THE CLIENT ENDED THAT !!
+ *
+ * The visible paragraph and the caption both read the array's length, so the
+ * sentence moved with the list and the number on the page could not drift from
+ * the number of dots. That was the right default and it is worth knowing why
+ * it went. The list holds forty nine countries, the home page stats row has
+ * published "50+ countries delivered to" since the rebuild started, and a map
+ * saying 49 one click away from a stats row saying 50+ reads as one of the two
+ * being wrong. The client asked on 24 August 2026 for the map to say 50+.
+ *
+ * The two claims are pinned together here. This string and the `heroStats`
+ * entry in content/site.ts are the same claim, so if one changes the other
+ * has to.
+ *
+ * !! THE FIGURE IS UNVERIFIED, AND THAT PREDATES THIS CHANGE !!
+ *
+ * docs/page-progress.md carries "more than 50 countries" as an unverified
+ * claim against the home page. A second page now makes it. Nothing about the
+ * change makes it truer, and that blocker is untouched.
+ *
+ * The dots stay honest either way. Adding a fiftieth country to make the
+ * arithmetic work would be inventing a delivery, which is the one thing the
+ * note at the top of this file exists to prevent.
+ */
+export const reachFigure = "50+";
+
 export const destinations: Destination[] = [
   /* ---- Named client, checkable in content/testimonials.ts ---- */
   /* Kansas and Saskatchewan rather than New York and Toronto. Both are

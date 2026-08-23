@@ -15,13 +15,17 @@ are built and approved.
 `/resources/cost-reduction-strategies` are hub pages rather than articles, and
 two of them already hold a primary keyword in `docs/seo-standards.md`. All four
 render real content, carry only a `BreadcrumbList`, and have descriptions
-between 104 and 133. They belong with the five awaiting an SEO pass, which
-makes that queue nine pages rather than five.
+between 104 and 133. They belong with the four awaiting an SEO pass, which
+makes that queue eight pages rather than four.
 
-**`/how-we-work` is not in the sitemap.** It renders, it is linked from the
-closing panel of every page, and `app/sitemap.ts` builds from the navigation
-tree, which the path is not in. Add it to `extraRoutes` there. It is also the
-one page with no `BreadcrumbList`, for the same reason.
+**`/how-we-work` was missing from the sitemap. Fixed 24 August 2026.**
+`app/sitemap.ts` builds from the navigation tree, and the path dropped out of
+that tree when the Services panel footer strip was removed on 23 August. It is
+in `extraRoutes` now and the sitemap is back to 34 entries.
+
+It is still the one page with no `BreadcrumbList`, and that is correct rather
+than outstanding. The standard asks for one below the top level, and this is a
+top level path, so the trail would read Home and then the page itself.
 
 The standard these columns test is `docs/seo-standards.md`. The voice and claims
 rules are `docs/positioning.md`. The keyword assignments come from
@@ -59,9 +63,9 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 
 | Page | Primary keyword | Copy | Title | Desc | Schema | H2 | Words | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Home | none set | bespoke | 47 | **133** | none | 11 | 3,029 | Live, SEO pass due |
+| Home | none set | bespoke | 47 | **133** | none | 12 | 3,071 | Live, SEO pass due |
 | Contact | none set | bespoke | 18 | **115** | Breadcrumb only | 3 | 965 | Live, SEO pass due |
-| How we work | none set | bespoke | 22 | **97** | none | 4 | 1,264 | Live, SEO pass due |
+| How we work | `AI MVP development process` | bespoke | 59 | 155 | FAQ | 9 | 1,615 | **Done** |
 | Services hub | none set | bespoke | 19 | **118** | Breadcrumb only | 8 | 1,256 | Live, SEO pass due |
 | Industries hub | none set | bespoke | 21 | 160 | Breadcrumb only | 8 | 1,001 | Live, SEO pass due |
 | `/services/ai-software-integration` | `AI software integration` | long form | 60 | **149** | Service + FAQ | 12 | 2,739 | **Done** |
@@ -90,24 +94,32 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/industries/edtech-and-learning` | `edtech AI automation` | long form | 52 | 158 | Service + FAQ | 9 | 1,885 | **Done** |
 | `/industries/marketing-and-adtech` | `marketing AI automation` | long form | 51 | 160 | Service + FAQ | 9 | 1,888 | **Done** |
 
-**Totals.** 30 pages. 25 done, 5 live and awaiting an SEO pass, none left on
-the blueprint. No title is over 60. **Five descriptions outside 150 to 160**,
-and four of the five are pages awaiting the pass. The industries hub was the
-sixth and was fixed on 24 August 2026, at 182 and being cut in results.
+**Totals.** 30 pages. 26 done, 4 live and awaiting an SEO pass, none left on
+the blueprint. No title is over 60. **Four descriptions outside 150 to 160**,
+and three of the four are pages awaiting the pass. The industries hub was at 182
+and being cut in results, and how we work was at 97. Both were fixed on 24
+August 2026.
 
-That six read "two" until 24 August 2026 and had been wrong for a while. The
+That count read "two" until 24 August 2026 and had been wrong for a while. The
 number was decremented by hand each time a page was marked Done, rather than
 recounted, and marking an industry page Done never changed it: those pages
 were inside the range on the blueprint and inside it afterwards. Recount this
 line, do not adjust it.
 
-The sixth is `/services/ai-software-integration` at 149, one character short,
-which is the only finished page missing the standard.
+The four are the home page at 133, the services hub at 118, contact at 115 and
+`/services/ai-software-integration` at 149. That last one is a character short
+and is the only finished page missing the standard.
+
+One measurement trap caught a fifth on the recount and it was not real.
+`/services/custom-ai-models-voice` measures 169 if the raw HTML is counted,
+because two apostrophes render as `&#x27;` at six characters each. Decoded it
+is 159 and inside the range. Decode before counting, the same rule the title
+column already carries.
 
 **Every service and industry page is finished.** All five silos, their parents
 and all fourteen children, and all six industries. Nothing renders the
-generated silo page any more. The five awaiting an SEO pass are the home page,
-contact, how we work and the two hubs, and they are the whole remaining list.
+generated silo page any more. The four awaiting an SEO pass are the home page,
+contact and the two hubs, and they are the whole remaining list.
 
 ---
 
@@ -120,7 +132,7 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | --- | --- |
 | Home | none set |
 | Contact | none set |
-| How we work | none set |
+| How we work | `agile AI engineering`, `secure AI app deployment`, `software prototyping process` |
 | Services hub | none set |
 | Industries hub | none set |
 | `/services/ai-software-integration` | `add AI to existing SaaS`, `integrate LLM into existing software` |
@@ -175,9 +187,16 @@ to both `/industries/fintech-and-finance` and
 industry page took `AI automation for fintech SMBs` when it was built, so the
 service child keeps the original.
 
-The five pages with no keyword set are the home page, the two hubs, contact and
-how we work. Home and the hubs need one assigned. Contact and how we work are
-navigational and do not need to rank.
+The four pages with no keyword set are the home page, the two hubs and contact.
+Home and the hubs need one assigned. Contact is navigational and does not need
+to rank.
+
+How we work was on that list until 24 August 2026, described as navigational.
+The client's brief overrode that and it took `AI MVP development process`, which
+is a phrase with process intent rather than buying intent. The overlap with
+`/services/custom-ai-mvp-development` is a shared substring and was checked
+before the page shipped. The reasoning is in `docs/seo-standards.md`, under the
+register.
 
 ---
 
@@ -209,9 +228,9 @@ These affect all 30 rows and none of them are fixed by page work.
 | **Sample content** | `USE_SAMPLE_POSTS`, `USE_SAMPLE_CASE_STUDIES` | Both true. `content/posts-sample.ts`, `content/case-studies-sample.ts` and `public/sample/` all ship until they are flipped. |
 | **Contact form** | `CONTACT_WEBHOOK_URL` | Unset, so `/contact` returns a 503 with an honest message rather than delivering anything. |
 | **Draft metrics** | `content/metrics.ts` | Four figures are drafts under a capitalised warning. They must not reach a page. |
-| **Unverified claim** | Home page, "more than 50 countries" | Not in any verified facts list. |
+| **Unverified claim** | Home page and `/how-we-work`, "50+ countries" | Not in any verified facts list. The map read its own data and said 49 until 24 August 2026, when the client asked for 50+ so it stops disagreeing with the hero stats row. The same day the map was added to the home page, where it now sits under that row. The dots are still the forty nine `content/delivery-map.ts` holds and none was invented to close the gap, so one confirmation from delivery records settles the figure everywhere it appears. |
 | ~~**Voice cloning**~~ | `/services/ai-voice-telephony-automation` | **Closed 23 August 2026.** Not offered. The page already says cloning a real person's voice is a consent question rather than a feature, which is the correct resting state. |
-| **App store copy** | Six service pages | The client says store review belongs to Appkodes rather than Hitasoft. Nothing published claims a track record, so there is no risk, but roughly seventeen strings across six pages are written around a subject that may not be this brand's. Decide whether that copy stays. |
+| **App store copy** | Six service pages and `/how-we-work` | The client says store review belongs to Appkodes rather than Hitasoft. Nothing published claims a track record, so there is no risk, but roughly twenty strings across seven pages are written around a subject that may not be this brand's. How we work added a phase and an FAQ to that count on 24 August 2026, at the client's own request in the brief, which is worth weighing when the question is answered. Decide whether that copy stays. |
 | **Vendor list** | `content/integrations.ts` | QuickBooks and Xero removed 23 August 2026, confirmed never connected. Shopify, Square, Zendesk, Intercom, Pinecone and Vonage were never named. **Plaid and Salesforce are still on the fintech industry row and still unconfirmed.** |
 | ~~**Edge deployment**~~ | `/services/computer-vision-quality-control` | **Closed 23 August 2026.** No vision model has run on a device for a client, so the capability, the scenario, two FAQs, a diagram row and the `edge AI vision models` keyword all came out. |
 

@@ -1,33 +1,70 @@
 import { pageMetadata } from "@/lib/seo";
-import { HowItWorksSection } from "@/components/sections/how-it-works";
-import { AudiencesSection } from "@/components/sections/audiences";
-import { SecuritySection } from "@/components/sections/security";
+import { HowWeWorkPage, HowWeWorkFaqs } from "@/components/sections/how-we-work";
 import { DeliveryReachSection } from "@/components/sections/delivery-reach";
 import { CtaSection } from "@/components/sections/cta";
+import { cta, faqs, meta } from "@/content/how-we-work";
 
 export const metadata = pageMetadata({
-  title: "How we work",
-  description:
-    "The engagement in three steps, what it looks like at your size, and what we commit to in writing.",
+  title: meta.metaTitle,
+  description: meta.metaDescription,
   path: "/how-we-work",
 });
 
 /**
- * The engagement.
+ * The engagement, written as a page of its own.
  *
- * Three steps first, then the same engagement told back at four company sizes,
- * since "two weeks to a costed plan" means something different to a two person
- * startup than to a three hundred person business. Security closes it because
- * the commitments row is part of what the engagement actually is.
+ * It was five imported sections, four of which the home page also renders:
+ * the three step process, the audience tabs, the security cards and the
+ * closing panel. See the note at the top of content/how-we-work.ts for what
+ * changed and why, and components/sections/how-we-work.tsx for how it draws.
+ *
+ * !! THE MAP SITS BETWEEN THE GUARANTEES AND THE QUESTIONS !!
+ *
+ * That is the one piece of the old page written for this one, and the client
+ * asked for it to stay. The placement is the argument. The reader has just
+ * been told what we commit to, and the map is the evidence those commitments
+ * have travelled. It is also the only picture on a long page of prose, so it
+ * breaks the scroll at about the right point.
+ *
+ * !! NO Service SCHEMA, AND NO HowTo EITHER !!
+ *
+ * docs/seo-standards.md types a page by what it is. This is not a service, so
+ * `Service` would be a second entity competing with the twenty pages that
+ * genuinely are one. `HowTo` was the other candidate and was declined on
+ * meaning rather than on value: it marks up instructions a reader carries out
+ * themselves, and these four phases are what we do. Google also retired the
+ * HowTo rich result in 2023, so the trade would have been misleading markup
+ * for nothing.
+ *
+ * `FAQPage` it is, built from the same array the section renders so the markup
+ * and the schema cannot drift apart. There is no `BreadcrumbList`, because
+ * this is a top level path and the standard asks for one below the top level.
  */
-export default function HowWeWorkPage() {
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })),
+};
+
+export default function Page() {
   return (
     <main>
-      <HowItWorksSection />
-      <AudiencesSection />
+      <script
+        type="application/ld+json"
+        // Our own copy, and JSON.stringify escapes the quotes. The `<` guard
+        // covers the one character that could still close the tag early.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+      <HowWeWorkPage />
       <DeliveryReachSection />
-      <SecuritySection />
-      <CtaSection />
+      <HowWeWorkFaqs />
+      <CtaSection copy={cta} />
     </main>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useState } from "react";
 
-import { destinations, hub, type Destination } from "@/content/delivery-map";
+import { destinations, hub, reachFigure, type Destination } from "@/content/delivery-map";
 import { LAT_BOTTOM, LAT_TOP, VIEW_H, VIEW_W, landPath } from "@/content/world-map";
 
 /**
@@ -95,9 +95,20 @@ export function DeliveryMap() {
         It said "Clients in 49 countries", which is the claim the visible copy
         was moved off when the list went from twelve evidenced countries to the
         full figure. The two have to say the same thing.
+
+        !! THE FIGURE AND THE LIST ARE TWO SENTENCES NOW, ON PURPOSE !!
+
+        Both read `destinations.length` until 24 August 2026, when the client
+        asked for the copy to say 50+. Interpolating that into the old sentence
+        would have produced "reached 50+ countries: " followed by exactly forty
+        nine names, which invites the one reader who counts to conclude the
+        page is padded. The second sentence says what the list is instead, so
+        somebody hearing this gets the published figure and the plotted set
+        without either pretending to be the other. See `reachFigure` in
+        content/delivery-map.ts.
       */}
       <figcaption className="sr-only">
-        {`The work has reached ${destinations.length} countries from the team in ${hub.name}: ${destinations
+        {`The work has reached ${reachFigure} countries from the team in ${hub.name}. These are the ones on the map: ${destinations
           .map((d) => d.name)
           .join(", ")}.`}
       </figcaption>

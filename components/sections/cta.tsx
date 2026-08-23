@@ -21,8 +21,29 @@ import { CtaPanel } from "@/components/sections/cta-panel";
  *
  * Adding a hook or a handler here would pull all of it back. Put the
  * interactive bit in CtaPanel instead.
+ *
+ * !! THE OVERRIDES ARE ONE PAGE'S COPY, NOT A THEME !!
+ *
+ * Every field defaults to content/site.ts, so the eight routes rendering this
+ * without props are untouched. /how-we-work passes its own, because a page
+ * whose whole argument is "stop planning, start prototyping" should not close
+ * on the site's general automation pitch. Added 24 August 2026.
+ *
+ * Anything passed here still has to pass docs/positioning.md. The copy in
+ * content/site.ts was rewritten twice after the client read it back and could
+ * not tell what it meant, and an override is an easy way to undo that work in
+ * one line.
  */
-export function CtaSection() {
+/*
+ * Widened off ctaCopy rather than `Partial<typeof ctaCopy>`. That object is
+ * `as const`, so a Partial of it would only accept the exact strings already
+ * in it, which makes the prop useless in the one way it exists to be used.
+ */
+type CtaCopy = { [K in keyof typeof ctaCopy]: string };
+
+export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
+  const panel = { ...ctaCopy, ...copy };
+
   return (
     <Section id="contact" spacing="none" className="pt-12 lg:pt-16 pb-20 lg:pb-24 overflow-hidden">
       <Container>
@@ -41,7 +62,7 @@ export function CtaSection() {
             <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 lg:items-center">
               <div className="max-w-2xl">
                 <Eyebrow className="mb-5">
-                  {ctaCopy.eyebrow}
+                  {panel.eyebrow}
                 </Eyebrow>
                 {/*
                   Was lg:text-7xl, the largest type on the page after the hero.
@@ -49,13 +70,13 @@ export function CtaSection() {
                   stops needing the height.
                 */}
                 <SectionTitle className="mb-6 leading-[0.95]">
-                  {ctaCopy.headline}
+                  {panel.headline}
                   <br />
-                  <span className="text-muted-foreground">{ctaCopy.headlineAccent}</span>
+                  <span className="text-muted-foreground">{panel.headlineAccent}</span>
                 </SectionTitle>
 
                 <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-                  {ctaCopy.description}
+                  {panel.description}
                 </p>
 
                 {/*
@@ -72,7 +93,7 @@ export function CtaSection() {
                     className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
                   >
                     <Link href={actions.book}>
-                      {ctaCopy.primaryCta}
+                      {panel.primaryCta}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
@@ -83,7 +104,7 @@ export function CtaSection() {
                     variant="outline"
                     className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
                   >
-                    <Link href={ctaCopy.secondaryHref}>{ctaCopy.secondaryCta}</Link>
+                    <Link href={panel.secondaryHref}>{panel.secondaryCta}</Link>
                   </Button>
                 </div>
               </div>

@@ -180,6 +180,7 @@ of content at two URLs is the thing paging must not create.
 | `/industries/media-and-communities` | `community app AI automation` | Community App AI Automation & Moderation (40) |
 | `/industries/edtech-and-learning` | `edtech AI automation` | EdTech AI Automation & Learning Platforms (41) |
 | `/industries/marketing-and-adtech` | `marketing AI automation` | Marketing AI Automation & Ad Forecasting (40) |
+| `/how-we-work` | `AI MVP development process` | AI MVP Development Process \| Weeks, Not Quarters (48) |
 | `/resources/integration-guides` | `AI integration guides` | AI Integration Guides (21) |
 | `/resources/cost-reduction-strategies` | `AI cost reduction strategies` | AI Cost Reduction Strategies (28) |
 
@@ -190,6 +191,22 @@ report.
 The register covers shipped pages only. For every page in the master menu,
 built or not, with its measured title and description lengths and the phrases
 still assigned to two pages at once, see `docs/page-progress.md`.
+
+### One overlap in the register is deliberate
+
+`/how-we-work` took `AI MVP development process` on 24 August 2026, and the
+words "AI MVP Development" now sit in two titles. The other is
+`/services/custom-ai-mvp-development`, which owns `custom AI MVP development`.
+
+That is a shared substring rather than a shared phrase, and the two pages
+answer different searches. One is a buyer looking for somebody to build an MVP.
+The other is a buyer who has already decided and wants to know how the weeks
+run. Rule 1 exists so a parent does not outrank the child it feeds, and neither
+of these is the other's parent.
+
+The line not to cross is the service page's own phrase. `custom AI MVP
+development` appears nowhere on `/how-we-work`, verified against the rendered
+HTML, and it must stay that way.
 
 ---
 

@@ -9,7 +9,16 @@ import { allNavRoutes } from "@/content/navigation";
  *
  * Anything that ships without a menu entry needs adding to `extraRoutes`.
  */
-const extraRoutes: string[] = [];
+const extraRoutes: string[] = [
+  /*
+   * /how-we-work reached this list through the Services panel footer until
+   * that strip was removed on 23 August 2026. Nobody noticed the sitemap lose
+   * it with it, and docs/page-progress.md has carried the gap ever since. The
+   * page is linked from the site footer and from the process section of every
+   * service page, so it stayed crawlable and was simply absent from the map.
+   */
+  "/how-we-work",
+];
 
 /**
  * How a crawler should weigh each URL.
