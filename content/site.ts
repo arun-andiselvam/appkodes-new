@@ -89,8 +89,6 @@ export const heroWords: string[] = [
   "retail",
   "logistics",
   "media",
-  "B2B",
-  "B2C",
   "your business",
 ];
 
