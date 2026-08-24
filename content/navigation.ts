@@ -304,6 +304,13 @@ export const mainNav: NavItem[] = [
    * the client's request.
    */
   { name: "Academy", href: "https://internship.hitasoft.com", external: true },
+  /*
+   * Added 25 August 2026 at the client's request, alongside the page itself.
+   * No panel: one page, not a silo, same as Contact below it. Placed after
+   * Academy rather than inside Resources or Industries, because an open role
+   * is neither reading material nor a sector this company sells into.
+   */
+  { name: "Careers", href: "/careers" },
   { name: "Contact", href: "/contact" },
 ];
 

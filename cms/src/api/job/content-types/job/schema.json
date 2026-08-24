@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jobs",
+  "info": {
+    "singularName": "job",
+    "pluralName": "jobs",
+    "displayName": "Job",
+    "description": "One open position on /careers. Mirrors the Job type in lib/careers.ts, and the two have to be changed together. Unpublish a listing (draftAndPublish) rather than deleting it once a role is filled, so the URL does not start 404ing on anyone who bookmarked it."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 120
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "department": {
+      "type": "string",
+      "required": true,
+      "maxLength": 80
+    },
+    "location": {
+      "type": "string",
+      "required": true,
+      "maxLength": 80
+    },
+    "employmentType": {
+      "type": "enumeration",
+      "enum": ["Full-time", "Part-time", "Contract", "Internship"],
+      "required": true
+    },
+    "summary": {
+      "type": "text",
+      "required": true,
+      "maxLength": 200
+    },
+    "description": {
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "required": true,
+      "options": {
+        "preset": "Hitasoft article"
+      }
+    },
+    "applyEmail": {
+      "type": "email",
+      "required": true
+    },
+    "postedDate": {
+      "type": "date",
+      "required": true
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { htmlToBlocks } from "@/lib/html-to-blocks";
 import type { Block, Post } from "@/lib/posts";
+import type { Job } from "@/lib/careers";
 
 /**
  * The Strapi client, and the map from its shapes to ours.
@@ -113,14 +114,19 @@ type StrapiPost = {
  * an operational event, and the correct response on a marketing site is to
  * serve what we have and log it, not to hand a visitor a 500. The caller in
  * lib/posts.ts decides what "what we have" means.
+ *
+ * `tag` names the content type for `next.tags`, so a future revalidation
+ * webhook can invalidate posts and jobs independently rather than one
+ * `revalidateTag` call clearing both caches, or worse, a job publish
+ * revalidating a tag nothing actually reads by.
  */
-async function strapiFetch<T>(path: string): Promise<T | null> {
+async function strapiFetch<T>(path: string, tag: string): Promise<T | null> {
   if (!strapiConfigured()) return null;
 
   try {
     const res = await fetch(`${STRAPI_URL}/api/${path}`, {
       headers: { Authorization: `Bearer ${STRAPI_TOKEN}` },
-      next: { revalidate: REVALIDATE_SECONDS, tags: ["posts"] },
+      next: { revalidate: REVALIDATE_SECONDS, tags: [tag] },
     });
 
     if (!res.ok) {
@@ -242,8 +248,63 @@ export async function strapiPosts(): Promise<Post[] | null> {
     "populate[image]=true",
   ].join("&");
 
-  const json = await strapiFetch<StrapiList<StrapiPost>>(`posts?${query}`);
+  const json = await strapiFetch<StrapiList<StrapiPost>>(`posts?${query}`, "posts");
   if (!json) return null;
 
   return json.data.map(mapPost);
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Jobs. Same shapes and the same reasoning as the post mapping above; kept
+ * separate rather than generalised into one shared mapper, because the two
+ * content types already differ in exactly the fields you would need to
+ * branch on (categories and takeaways here, department and an apply address
+ * there), and a shared function would spend more code on the branching than
+ * this duplication costs.
+ * ---------------------------------------------------------------------------
+ */
+
+type StrapiJob = {
+  slug: string;
+  title: string;
+  department: string;
+  location: string;
+  employmentType: Job["employmentType"];
+  summary: string;
+  applyEmail: string;
+  postedDate: string;
+  /** CKEditor output. One HTML string, parsed in lib/html-to-blocks.ts. */
+  description: string | null;
+};
+
+/** One Strapi entry to one Job. */
+function mapJob(entry: StrapiJob): Job {
+  return {
+    slug: entry.slug,
+    title: entry.title,
+    department: entry.department,
+    location: entry.location,
+    employmentType: entry.employmentType,
+    summary: entry.summary,
+    description: htmlToBlocks(entry.description ?? ""),
+    applyEmail: entry.applyEmail,
+    postedDate: entry.postedDate,
+  };
+}
+
+/**
+ * Every published job listing.
+ *
+ * `description` is a plain field rather than a dynamic zone or a media
+ * relation, so it needs no `populate` line of its own, same as `body` on
+ * StrapiPost above.
+ */
+export async function strapiJobs(): Promise<Job[] | null> {
+  const query = ["sort=postedDate:desc", "pagination[pageSize]=100"].join("&");
+
+  const json = await strapiFetch<StrapiList<StrapiJob>>(`jobs?${query}`, "jobs");
+  if (!json) return null;
+
+  return json.data.map(mapJob);
 }

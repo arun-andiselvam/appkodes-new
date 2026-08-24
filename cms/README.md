@@ -23,7 +23,7 @@ choosing MDX.
 ## What is and is not in here
 
 **In:** blog posts, under `/resources/integration-guides` and
-`/resources/cost-reduction-strategies`.
+`/resources/cost-reduction-strategies`. Job listings, on `/careers`.
 
 **Not in, deliberately:**
 
@@ -143,6 +143,48 @@ direction, so it stays unless somebody actually hits it.
 
 ---
 
+## Careers
+
+Added 25 August 2026. `Job` in `lib/careers.ts` is the shape the site
+renders, the schema in `src/api/job/content-types/job/schema.json` mirrors
+it, and `strapiJobs()`/`mapJob()` in `lib/strapi.ts` map one to the other.
+Same rule as posts: change one and you change all three.
+
+`description` is a CKEditor field reusing the "Hitasoft article" preset,
+parsed by the same `lib/html-to-blocks.ts` a post's body goes through, and
+rendered by the same `BodyBlock` — extracted to
+`components/primitives/rich-text.tsx` when this was built, since a job
+description and an article body are both just a `Block[]`.
+
+**No lifecycle guard, unlike posts.** `src/api/post/content-types/post/
+lifecycles.ts` exists because articles are judged on search and GEO
+performance against rules specific to that job. A job listing is judged on
+whether the facts in it are true, which is not something a lifecycle hook
+can check, so this content type has none beyond Strapi's own required-field
+validation. If listings ever need house rules of their own (a location
+that has to match a real office, say), the pattern to copy is that file, not
+to invent a new one.
+
+**Unpublish a filled role rather than deleting it.** draftAndPublish is on
+for the same reason it is on for posts: it keeps the URL alive rather than
+turning a bookmarked or shared listing into a 404 the moment the role is
+filled.
+
+**No sample fallback when Strapi is not configured**, unlike posts. See the
+note at the top of `lib/careers.ts` for why: an invented job listing under
+the company's real name is a worse failure than an invented article.
+`/careers` renders an honest "nothing open right now" instead.
+
+**The read-only API token needs no extra configuration for this.** Strapi 5's
+built-in `read-only` token type grants `find`/`findOne` on every content
+type automatically — confirmed by querying `strapi_api_token_permissions`
+directly, which holds zero rows even though the same token already reads
+posts. A **custom** token type would need `api::job.job.find` and
+`.findOne` granted explicitly in the admin under Settings, API Tokens; the
+default Read Only token this project uses does not.
+
+---
+
 ## SEO and GEO: what is installed, and what actually enforces it
 
 Two things, doing different jobs. The difference matters.
@@ -231,9 +273,10 @@ to adopt the plugin's whole component.
 
 ## Caching, and the webhook that is not built yet
 
-`lib/strapi.ts` caches a fetched list for fifteen minutes, tagged `posts`.
-Publishing in the admin does **not** appear on the site immediately, and
-fifteen minutes is the worst case.
+`lib/strapi.ts` caches a fetched list for fifteen minutes, tagged `posts` or
+`jobs` depending which collection was fetched, so the two can be revalidated
+independently once something does that. Publishing in the admin does **not**
+appear on the site immediately, and fifteen minutes is the worst case.
 
 The proper fix is a Strapi webhook pointing at a revalidation route on the
 site, which would make publishing appear within seconds and let the cache live

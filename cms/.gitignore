@@ -129,3 +129,7 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
+# TypeScript definitions strapi develop/build regenerates from the schema
+# files on every run. Committing it means a stale copy nobody notices; the
+# schema.json files are the source of truth.
+types/generated
