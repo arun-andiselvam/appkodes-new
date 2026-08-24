@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { useInView } from "@/hooks/use-in-view";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -17,15 +19,29 @@ export function HeroSection() {
   const isVisible = useHydrated();
   const [wordIndex, setWordIndex] = useState(0);
 
+  // Same guard as every other rotating section on the page (see
+  // AudiencesSection): stop cycling once this is scrolled out of view, and
+  // never start for a visitor who has asked for reduced motion. This one used
+  // to run forever regardless of either, the one inconsistency with the rest
+  // of the site's rotators.
+  const [heroRef, heroInView] = useInView<HTMLElement>({ once: false, threshold: 0 });
+  const reducedMotion = useReducedMotion();
+  const rotating = heroInView && !reducedMotion;
+
   useEffect(() => {
+    if (!rotating) return;
     const interval = setInterval(() => {
       setWordIndex((prev) => (prev + 1) % words.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [rotating]);
 
   return (
-    <Section spacing="none" className="min-h-screen flex flex-col justify-center overflow-hidden">
+    <Section
+      ref={heroRef}
+      spacing="none"
+      className="min-h-screen flex flex-col justify-center overflow-hidden"
+    >
       <HeroBackdrop />
 
       <Container className="relative z-10 pt-24 pb-40 lg:pt-28 lg:pb-56">

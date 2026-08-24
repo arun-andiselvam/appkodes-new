@@ -64,18 +64,36 @@ export function DotMatrix({
     const INTERACTIVE =
       'header, nav, a, button, [role="button"], input, select, textarea, label, [data-slot="button"]';
 
+    // Raw pointermove can fire well above the render loop's own rate — high
+    // poll-rate mice and trackpads report far more than 60 times a second.
+    // The spotlight only ever reads mouseRef/fadeTargetRef once per painted
+    // frame, so sampling them more often than that changes nothing on
+    // screen; it just spends elementFromPoint (a hit-test against layout)
+    // on positions the loop will never draw. Coalescing to the next frame
+    // keeps the same response the visitor sees, for a fraction of the calls.
+    let pendingEvent: PointerEvent | null = null;
+    let moveFrame = 0;
     const onMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      pendingEvent = e;
+      if (moveFrame) return;
+      moveFrame = requestAnimationFrame(() => {
+        moveFrame = 0;
+        const ev = pendingEvent;
+        if (!ev) return;
+        pendingEvent = null;
 
-      // The canvas itself is pointer-events:none, so this returns whatever the
-      // visitor is actually pointing at.
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      const overInteractive = !!el?.closest(INTERACTIVE);
-      fadeTargetRef.current = overInteractive ? spotlightDimTo : 1;
+        const rect = canvas.getBoundingClientRect();
+        mouseRef.current = { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
 
-      // A paused loop still needs to run out the fade.
-      if (!frameRef.current && visible && !document.hidden) render();
+        // The canvas itself is pointer-events:none, so this returns whatever
+        // the visitor is actually pointing at.
+        const el = document.elementFromPoint(ev.clientX, ev.clientY);
+        const overInteractive = !!el?.closest(INTERACTIVE);
+        fadeTargetRef.current = overInteractive ? spotlightDimTo : 1;
+
+        // A paused loop still needs to run out the fade.
+        if (!frameRef.current && visible && !document.hidden) render();
+      });
     };
 
     const onPointerOut = () => {
@@ -155,6 +173,7 @@ export function DotMatrix({
       document.removeEventListener("visibilitychange", onVisibility);
       io.disconnect();
       cancelAnimationFrame(frameRef.current);
+      cancelAnimationFrame(moveFrame);
     };
   }, [gap, spotlightDimTo, spotlightStrength, inkRef]);
 

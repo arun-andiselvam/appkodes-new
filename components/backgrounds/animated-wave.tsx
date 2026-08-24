@@ -18,12 +18,35 @@ export function AnimatedWave() {
     const chars = "·∘○◯◌●◉";
     let time = 0;
 
+    /*
+     * Cached from resize rather than read in render().
+     *
+     * !! getBoundingClientRect WAS A LAYOUT QUERY EVERY FRAME !!
+     *
+     * resize() and the ResizeObserver below already know whenever the size
+     * changes, so re-measuring the element 60 times a second inside the
+     * render loop was pure overhead — the answer is the same value every
+     * time except the one frame after an actual resize. Caching it here
+     * means the loop reads two numbers instead of querying layout.
+     */
+    let w = 0, h = 0, cols = 0, rows = 0;
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      w = rect.width; h = rect.height;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
       ctx.scale(dpr, dpr);
+      cols = Math.floor(w / 20);
+      rows = Math.floor(h / 20);
+
+      // Context state survives a scale() call, but not a canvas resize —
+      // setting canvas.width/height above clears it, so these have to be
+      // reapplied here rather than only once at setup.
+      ctx.font = "14px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
     };
 
     resize();
@@ -63,20 +86,12 @@ export function AnimatedWave() {
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
     const render = () => {
-      const rect = canvas.getBoundingClientRect();
-      ctx.clearRect(0, 0, rect.width, rect.height);
-
-      ctx.font = "14px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      const cols = Math.floor(rect.width / 20);
-      const rows = Math.floor(rect.height / 20);
+      ctx.clearRect(0, 0, w, h);
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-          const px = (x + 0.5) * (rect.width / cols);
-          const py = (y + 0.5) * (rect.height / rows);
+          const px = (x + 0.5) * (w / cols);
+          const py = (y + 0.5) * (h / rows);
 
           // Multiple wave interference
           const wave1 = Math.sin(x * 0.2 + time * 2) * Math.cos(y * 0.15 + time);

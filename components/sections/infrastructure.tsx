@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/use-in-view";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { deliveryHubs, projectsHeadline } from "@/content/infrastructure";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -11,16 +12,28 @@ import { SectionTitle } from "@/components/primitives/section-title";
 export function InfrastructureSection() {
   const [activeHub, setActiveHub] = useState(0);
   const [sectionRef, isVisible] = useInView<HTMLElement>();
+
+  // `sectionRef` above latches true on first sight, for the entrance
+  // transition, so it can't also answer "is this on screen right now". This
+  // second observer keeps reporting, which the rotation needs — the same
+  // split AudiencesSection uses for its own panel. This rotator used to run
+  // forever regardless of scroll position or prefers-reduced-motion; every
+  // other rotating section on the page already guards both.
+  const [panelRef, panelInView] = useInView<HTMLDivElement>({ once: false, threshold: 0.1 });
+  const reducedMotion = useReducedMotion();
+  const rotating = panelInView && !reducedMotion;
+
   useEffect(() => {
+    if (!rotating) return;
     const interval = setInterval(() => {
       setActiveHub((prev) => (prev + 1) % deliveryHubs.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [rotating]);
 
   return (
     <Section ref={sectionRef} className="overflow-hidden">
-      <Container>
+      <Container ref={panelRef}>
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left: Content */}
           <div

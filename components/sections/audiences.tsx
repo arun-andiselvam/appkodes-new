@@ -117,7 +117,17 @@ export function AudiencesSection() {
   }, [rotating, paused]);
 
   return (
-    <Section id="audiences" ref={sectionRef} className="overflow-hidden">
+    /*
+      !! THE EMPHASIS PANEL, THE SAME ONE THE PROCESS AND REACH SECTIONS USE !!
+
+      Everything inside now reads from --emphasis-foreground rather than
+      --foreground, and --emphasis-accent rather than --primary. --emphasis is
+      dark in BOTH themes, so the usual light/dark pairs are wrong here in one
+      of the two — see the note on --emphasis-accent in app/brand.css, and the
+      one on DeliveryReachSection above its own Section. --primary manages
+      only 2.06:1 on this ground.
+    */
+    <Section id="audiences" ref={sectionRef} className="bg-emphasis text-emphasis-foreground overflow-hidden">
       <style dangerouslySetInnerHTML={{ __html: panelAnimationStyles }} />
       <Container>
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
@@ -127,15 +137,15 @@ export function AudiencesSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <Eyebrow className="mb-6">
+            <Eyebrow tone="emphasis" className="mb-6">
               Who we work with
             </Eyebrow>
             <SectionTitle className="mb-8">
               Your size changes
               <br />
-              <span className="text-muted-foreground">what we build first.</span>
+              <span className="text-emphasis-foreground/50">what we build first.</span>
             </SectionTitle>
-            <p className="text-xl text-muted-foreground mb-12 leading-relaxed">
+            <p className="text-xl text-emphasis-foreground/70 mb-12 leading-relaxed">
               A two person startup and a two hundred person company want different work
               from us. One of them needs a product to exist at all. The other one simply
               wants their week back. Those are not the same job, so we do not sell them
@@ -152,7 +162,7 @@ export function AudiencesSection() {
                   style={{ transitionDelay: `${index * 50 + 200}ms` }}
                 >
                   <h3 className="font-medium mb-1">{assurance.title}</h3>
-                  <p className="text-sm text-muted-foreground">{assurance.description}</p>
+                  <p className="text-sm text-emphasis-foreground/70">{assurance.description}</p>
                 </div>
               ))}
             </div>
@@ -172,7 +182,7 @@ export function AudiencesSection() {
             */}
             <div
               ref={panelRef}
-              className="border border-foreground/10"
+              className="border border-emphasis-foreground/10"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
               onFocusCapture={() => setPaused(true)}
@@ -185,7 +195,7 @@ export function AudiencesSection() {
                 arranged. So the strip carries tabs only and scrolls when it has
                 to, and the headcount moved into the panel where it has room.
               */}
-              <div className="overflow-x-auto border-b border-foreground/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="overflow-x-auto border-b border-emphasis-foreground/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {showTabs ? (
                   /*
                     The sliding line lives in this inner element rather than the
@@ -201,8 +211,8 @@ export function AudiencesSection() {
                         onClick={() => setActive(index)}
                         className={`group shrink-0 px-5 py-4 text-sm font-mono whitespace-nowrap transition-colors relative ${
                           active === index
-                            ? "text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
+                            ? "text-emphasis-foreground"
+                            : "text-emphasis-foreground/50 hover:text-emphasis-foreground"
                         }`}
                       >
                         {item.label}
@@ -218,10 +228,10 @@ export function AudiencesSection() {
                         */}
                         {active === index ? (
                           rotating ? (
-                            <span className="absolute bottom-0 left-0 right-0 h-px bg-foreground/15 overflow-hidden">
+                            <span className="absolute bottom-0 left-0 right-0 h-px bg-emphasis-foreground/15 overflow-hidden">
                               <span
                                 key={`${item.id}-${active}`}
-                                className="block h-full w-0 bg-primary"
+                                className="block h-full w-0 bg-emphasis-accent"
                                 style={{
                                   animation: `audProgress ${ROTATION_MS}ms linear forwards`,
                                   animationPlayState: paused ? "paused" : "running",
@@ -229,10 +239,10 @@ export function AudiencesSection() {
                               />
                             </span>
                           ) : (
-                            <span className="absolute bottom-0 left-0 right-0 h-px bg-primary" />
+                            <span className="absolute bottom-0 left-0 right-0 h-px bg-emphasis-accent" />
                           )
                         ) : (
-                          <span className="absolute bottom-0 left-5 right-5 h-px bg-foreground/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                          <span className="absolute bottom-0 left-5 right-5 h-px bg-emphasis-foreground/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                         )}
                       </button>
                     ))}
@@ -256,8 +266,8 @@ export function AudiencesSection() {
                 reads as an estimate, which is the document a founder who fears
                 open ended cost actually wants to see.
               */}
-              <div className="px-8 py-10 bg-foreground/[0.01]">
-                <span className="block font-mono text-xs uppercase tracking-widest text-muted-foreground mb-3">
+              <div className="px-8 py-10 bg-emphasis-foreground/[0.02]">
+                <span className="block font-mono text-xs uppercase tracking-widest text-emphasis-foreground/50 mb-3">
                   {segment.headcount}
                 </span>
                 <h3 className="aud-row font-display text-2xl lg:text-3xl tracking-tight mb-8">
@@ -268,17 +278,17 @@ export function AudiencesSection() {
                   {segment.rows.map((row, index) => (
                     <div
                       key={`${segment.id}-${row.label}`}
-                      className="aud-row flex items-baseline justify-between gap-6 border-t border-foreground/10 py-4"
+                      className="aud-row flex items-baseline justify-between gap-6 border-t border-emphasis-foreground/10 py-4"
                       style={{ animationDelay: `${(index + 1) * 90}ms` }}
                     >
-                      <dt className="font-mono text-xs uppercase tracking-widest text-muted-foreground shrink-0">
+                      <dt className="font-mono text-xs uppercase tracking-widest text-emphasis-foreground/50 shrink-0">
                         {row.label}
                       </dt>
                       <dd
                         className={`text-right ${
                           row.emphasis
                             ? "font-display text-3xl lg:text-4xl tracking-tight"
-                            : "text-base text-foreground/80"
+                            : "text-base text-emphasis-foreground/80"
                         }`}
                       >
                         <RevealText

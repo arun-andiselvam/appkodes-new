@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/use-in-view";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { steps } from "@/content/how-it-works";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -12,16 +13,25 @@ export function HowItWorksSection() {
   const [isPaused, setIsPaused] = useState(false);
   const [sectionRef, isVisible] = useInView<HTMLDivElement>();
 
+  // `sectionRef` above latches true on first sight, for the entrance
+  // transition, so it can't also answer "is this on screen right now". This
+  // second observer keeps reporting, which the rotation needs — the same
+  // split AudiencesSection uses for its own panel.
+  const [panelRef, panelInView] = useInView<HTMLDivElement>({ once: false, threshold: 0.1 });
+  const reducedMotion = useReducedMotion();
+  const rotating = panelInView && !reducedMotion;
+
   // The steps advance on their own, which is fine until someone is halfway
   // through reading one. Hovering or focusing anywhere in the section holds
-  // the current step until they move away.
+  // the current step until they move away. Scrolling it out of view or
+  // asking for reduced motion holds it too.
   useEffect(() => {
-    if (isPaused) return;
+    if (!rotating || isPaused) return;
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [rotating, isPaused]);
 
   return (
     <Section
@@ -42,7 +52,7 @@ export function HowItWorksSection() {
         }} />
       </div>
 
-      <Container className="relative z-10">
+      <Container ref={panelRef} className="relative z-10">
         {/* Header */}
         <div className="mb-16 lg:mb-24">
           <span className="inline-flex items-center gap-3 text-sm font-mono text-emphasis-foreground/50 mb-6">
@@ -75,7 +85,7 @@ export function HowItWorksSection() {
                 key={step.number}
                 type="button"
                 onClick={() => setActiveStep(index)}
-                className={`w-full text-left py-8 border-b border-background/10 transition-all duration-500 group ${
+                className={`relative w-full text-left py-8 transition-all duration-500 group ${
                   activeStep === index ? "opacity-100" : "opacity-40 hover:opacity-70"
                 }`}
               >
@@ -88,21 +98,38 @@ export function HowItWorksSection() {
                     <p className="text-emphasis-foreground/60 leading-relaxed">
                       {step.description}
                     </p>
-                    
-                    {/* Progress indicator */}
-                    {activeStep === index && (
-                      <div className="mt-4 h-px bg-background/20 overflow-hidden">
-                        <div
-                          className="h-full bg-emphasis-accent w-0"
-                          style={{
-                            animation: 'step-progress 5s linear forwards',
-                            animationPlayState: isPaused ? 'paused' : 'running',
-                          }}
-                        />
-                      </div>
-                    )}
                   </div>
                 </div>
+
+                {/*
+                  The separator doubles as the progress track, rather than a
+                  plain border with a second, shorter bar inset under the
+                  text above it — the same one-line-does-both-jobs technique
+                  AudiencesSection's tab underline uses. Three states, never
+                  two at once: rotating fills the full-width track over the
+                  hold time, active-but-not-rotating (paused, scrolled out of
+                  view, or reduced motion) gets a plain accent line instead of
+                  a bar that fills and then does nothing, and every other row
+                  keeps the plain hairline the border used to draw.
+                */}
+                {activeStep === index ? (
+                  rotating ? (
+                    <span className="absolute bottom-0 left-0 right-0 h-px bg-background/20 overflow-hidden">
+                      <span
+                        key={`${step.number}-${activeStep}`}
+                        className="block h-full w-0 bg-emphasis-accent"
+                        style={{
+                          animation: "step-progress 5s linear forwards",
+                          animationPlayState: isPaused ? "paused" : "running",
+                        }}
+                      />
+                    </span>
+                  ) : (
+                    <span className="absolute bottom-0 left-0 right-0 h-px bg-emphasis-accent" />
+                  )
+                ) : (
+                  <span className="absolute bottom-0 left-0 right-0 h-px bg-background/10" />
+                )}
               </button>
             ))}
           </div>
