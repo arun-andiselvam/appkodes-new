@@ -59,6 +59,37 @@ function looksLikeEmail(value: string) {
 
 type Fields = { name: string; email: string; company: string; phone: string; message: string };
 
+/** Escapes text dropped into the HTML email body. Every field here is user
+ * supplied, so this is what stands between a submission and HTML injection
+ * in whatever reads the notification. */
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * One row in the notification email's field table.
+ *
+ * `value` is escaped here, so callers pass the raw field, never markup — the
+ * one exception is the email row below, which builds its own `<a>` and skips
+ * this helper entirely rather than fight its escaping.
+ *
+ * Skipped entirely (both label and value) when the field is empty, same as
+ * the plain text version omits it.
+ */
+function fieldRow(label: string, value: string) {
+  if (!value) return "";
+  return `
+      <tr>
+        <td style="padding:10px 0;color:#6b7280;font-size:13px;width:100px;vertical-align:top;white-space:nowrap;">${label}</td>
+        <td style="padding:10px 0;font-size:15px;color:#1a1a1a;">${escapeHtml(value)}</td>
+      </tr>`;
+}
+
 /**
  * Sends the submission as an email via Resend's HTTP API.
  *
@@ -77,6 +108,35 @@ async function deliverViaResend(fields: Fields) {
   const from = process.env.RESEND_FROM_EMAIL || "Hitasoft site <contact@hitasoft.com>";
   const to = process.env.CONTACT_TO_EMAIL || "info@hitasoft.com";
 
+  // #146f90 is --brand-blue in app/brand.css, the same colour as the site's
+  // primary button. Everything else is inline because email clients do not
+  // read a <style> block reliably, let alone Tailwind.
+  const html = `
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;">
+  <div style="background:#146f90;padding:24px 32px;border-radius:8px 8px 0 0;">
+    <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ffffffb3;">Hitasoft</p>
+    <p style="margin:4px 0 0;font-size:20px;font-weight:600;color:#ffffff;">New enquiry</p>
+  </div>
+  <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;padding:8px 32px 28px;">
+    <table role="presentation" style="width:100%;border-collapse:collapse;">
+      ${fieldRow("Name", fields.name)}
+      <tr>
+        <td style="padding:10px 0;color:#6b7280;font-size:13px;width:100px;vertical-align:top;white-space:nowrap;">Email</td>
+        <td style="padding:10px 0;font-size:15px;">
+          <a href="mailto:${escapeHtml(fields.email)}" style="color:#146f90;text-decoration:none;">${escapeHtml(fields.email)}</a>
+        </td>
+      </tr>
+      ${fieldRow("Company", fields.company)}
+      ${fieldRow("Phone", fields.phone)}
+    </table>
+    <div style="margin-top:12px;padding-top:20px;border-top:1px solid #e5e7eb;">
+      <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#6b7280;">Message</p>
+      <p style="margin:0;white-space:pre-wrap;line-height:1.6;font-size:15px;color:#1a1a1a;">${escapeHtml(fields.message)}</p>
+    </div>
+  </div>
+  <p style="margin:16px 4px 0;font-size:12px;color:#9ca3af;">Sent from the contact form at hitasoft.com/contact. Reply to this email to reach ${escapeHtml(fields.name)} directly.</p>
+</div>`;
+
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -90,6 +150,9 @@ async function deliverViaResend(fields: Fields) {
       // person who wrote in, not back to this notification address.
       reply_to: fields.email,
       subject: `New enquiry from ${fields.name}`,
+      html,
+      // Kept alongside html: the client that renders no HTML at all is rare
+      // but not zero, and Resend sends both in the same message either way.
       text: [
         `Name: ${fields.name}`,
         `Email: ${fields.email}`,
