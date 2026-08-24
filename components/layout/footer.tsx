@@ -22,7 +22,54 @@ import { Container } from "@/components/primitives/container";
  */
 export function Footer() {
   return (
-    <footer className="relative border-t border-foreground/10">
+    /*
+      !! THE EMPHASIS PANEL, THE SAME DARK GROUND THE DELIVERY MAP SITS ON !!
+
+      This was the plain page background, border-t and all. The client asked
+      for the dark treatment on 24 August 2026, in the same session as the
+      team photo above. The border-t went with it: --emphasis is dark in both
+      themes, so whatever section precedes the footer now meets it as a
+      colour change, and a colour change is its own edge. See the identical
+      note on DeliveryReachSection.
+
+      !! IT IS SCOPED TO THE MAIN BLOCK, NOT THE WHOLE FOOTER !!
+
+      The bottom bar below stays on the plain page background on purpose,
+      by the client's request: the panel is the columns and the photo above
+      it, not the copyright line. Everything down to the bottom bar reads
+      from --emphasis-foreground rather than --foreground for the reason
+      above; the bottom bar's own div opts back out. See the note there.
+    */
+    <footer className="relative bg-emphasis text-emphasis-foreground overflow-hidden">
+      {/*
+        The team, behind everything. Full bleed rather than boxed to Container,
+        so it reads as the footer's own ground rather than as a photo dropped
+        into it. Opacity is a compromise rather than a low default: it has to
+        stay legible as a photograph while still losing to the copy on top of
+        it, and 0.12 read as barely there once the ground behind it went dark.
+        public/team.webp, added 24 August 2026.
+
+        !! GRAYSCALE, NOT THE ORIGINAL COLOUR !!
+
+        It is a real photograph and stays one; nothing here is a stand-in or
+        stock. But a dozen bright, unrelated clothing colours sitting behind
+        two link columns and a brand mark in its own two colours was the
+        loudest thing on a page built from hairlines and one accent colour
+        everywhere else. Desaturating it is what makes it read as an
+        editorial backdrop rather than a candid snapshot competing with the
+        copy on top of it, and grayscale plus the panel's own dark teal
+        showing through at this opacity is what gives it the brand tint
+        rather than leaving it a flat grey.
+      */}
+      <Image
+        src="/team.webp"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="object-cover grayscale contrast-110 opacity-[0.35] pointer-events-none select-none"
+      />
+
       {/*
         The wave is scoped to this block rather than the whole footer: it sizes
         itself to the columns above and stops at the copyright bar's border.
@@ -49,7 +96,7 @@ export function Footer() {
                   />
                 </Link>
 
-                <p className="text-muted-foreground leading-relaxed mb-8 max-w-xs">
+                <p className="text-emphasis-foreground/70 leading-relaxed mb-8 max-w-xs">
                   {site.description}
                 </p>
 
@@ -60,7 +107,7 @@ export function Footer() {
                     <a
                       key={link.name}
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group"
+                      className="text-sm text-emphasis-foreground/70 hover:text-emphasis-foreground transition-colors flex items-center gap-1 group"
                     >
                       {link.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -79,7 +126,7 @@ export function Footer() {
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
+                        className="text-sm text-emphasis-foreground/70 hover:text-emphasis-foreground transition-colors inline-flex items-center gap-2"
                       >
                         {link.name}
                       </Link>
@@ -93,26 +140,46 @@ export function Footer() {
         </Container>
       </div>
 
-      {/* Bottom Bar. Outside the wave's block, so it keeps a clean ground. */}
-      <Container>
-        {/*
-          The copyright line alone. A green "All systems operational" badge sat
-          opposite it until 21 August 2026, which promised a status page we do
-          not run and reported health nothing was actually measuring.
+      {/*
+        Bottom Bar. Plain page background, not the dark panel above it.
 
-          One child now, so the row no longer needs flex to space two things
-          apart: it centres on small screens and sits left from md up.
-        */}
-        <div className="py-8 border-t border-foreground/10 text-center md:text-left">
+        !! bg-background AND relative z-10 ARE BOTH LOAD BEARING !!
+
+        The photo and the panel colour both live on <footer> itself (fill,
+        and bg-emphasis), so without an opaque ground here this strip would
+        show the photo bleeding through under the copyright line rather than
+        sitting on a clean band the way it did before either was added. And
+        because the photo is position: absolute, it paints above ordinary
+        flow content regardless of DOM order - z-10 is what actually puts
+        this bar on top of it rather than the other way round.
+
+        The Container goes inside this wrapper rather than around it, so the
+        opaque background runs the full width the photo does; a Container
+        alone stops at 1400px and would leave the photo showing at the edges
+        on a wider screen.
+      */}
+      <div className="relative z-10 bg-background">
+        <Container>
           {/*
-            suppressHydrationWarning covers the one edge case where the server
-            and the visitor's clock straddle New Year across timezones.
+            The copyright line alone. A green "All systems operational" badge
+            sat opposite it until 21 August 2026, which promised a status page
+            we do not run and reported health nothing was actually measuring.
+
+            One child now, so the row no longer needs flex to space two things
+            apart: it centres on small screens and sits left from md up.
           */}
-          <p className="text-sm text-muted-foreground" suppressHydrationWarning>
-            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
-          </p>
-        </div>
-      </Container>
+          <div className="py-8 border-t border-foreground/10 text-center md:text-left">
+            {/*
+              suppressHydrationWarning covers the one edge case where the
+              server and the visitor's clock straddle New Year across
+              timezones.
+            */}
+            <p className="text-sm text-muted-foreground" suppressHydrationWarning>
+              &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+            </p>
+          </div>
+        </Container>
+      </div>
     </footer>
   );
 }

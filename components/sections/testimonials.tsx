@@ -452,41 +452,55 @@ export function TestimonialsSection({
             </p>
           </div>
 
-          {/* The number we do not choose. */}
-          <a
-            href={trustpilotSnapshot.profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group shrink-0 border border-foreground/10 p-6 hover:border-foreground/30 transition-colors"
-          >
-            <SourceMark source="trustpilot" className="mb-4" />
-            <span className="flex items-baseline gap-2">
-              <span className="font-display text-4xl lg:text-5xl tracking-tight tabular-nums">
-                {trustpilotSnapshot.score}
-              </span>
-              <span className="text-muted-foreground">out of {trustpilotSnapshot.outOf}</span>
-            </span>
-            <span
-              className="mt-2 flex gap-0.5"
-              aria-label={`${trustpilotSnapshot.label}, ${trustpilotSnapshot.score} out of ${trustpilotSnapshot.outOf}`}
+          {/*
+            The number we do not choose, and the note that explains where it
+            lives. The border and padding are on this div rather than the
+            <a> now, so the note sits inside the same box as the score
+            instead of trailing off underneath it.
+          */}
+          <div className="shrink-0 border border-foreground/10 p-6 hover:border-foreground/30 transition-colors">
+            <a
+              href={trustpilotSnapshot.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
             >
-              {[0, 1, 2, 3, 4].map((i) => (
-                <Star
-                  key={i}
-                  aria-hidden="true"
-                  className="w-4 h-4 fill-current"
-                  style={{ color: i < 4 ? TRUSTPILOT_GREEN : "transparent", stroke: TRUSTPILOT_GREEN }}
-                />
-              ))}
-            </span>
-            <span className="mt-2 block text-sm">{trustpilotSnapshot.label}</span>
-            <span className="mt-1 block text-xs font-mono text-muted-foreground">
-              {trustpilotSnapshot.reviewCount} reviews · checked {trustpilotSnapshot.checked}
-            </span>
-            <span className="mt-3 block text-sm underline underline-offset-4 group-hover:text-foreground">
-              Read all of them
-            </span>
-          </a>
+              <SourceMark source="trustpilot" className="mb-4" />
+              <span className="flex items-baseline gap-2">
+                <span className="font-display text-4xl lg:text-5xl tracking-tight tabular-nums">
+                  {trustpilotSnapshot.score}
+                </span>
+                <span className="text-muted-foreground">out of {trustpilotSnapshot.outOf}</span>
+              </span>
+              <span
+                className="mt-2 flex gap-0.5"
+                aria-label={`${trustpilotSnapshot.label}, ${trustpilotSnapshot.score} out of ${trustpilotSnapshot.outOf}`}
+              >
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star
+                    key={i}
+                    aria-hidden="true"
+                    className="w-4 h-4 fill-current"
+                    style={{ color: i < 4 ? TRUSTPILOT_GREEN : "transparent", stroke: TRUSTPILOT_GREEN }}
+                  />
+                ))}
+              </span>
+              <span className="mt-2 block text-sm">{trustpilotSnapshot.label}</span>
+              <span className="mt-1 block text-xs font-mono text-muted-foreground">
+                {trustpilotSnapshot.reviewCount} reviews · checked {trustpilotSnapshot.checked}
+              </span>
+              <span className="mt-3 block text-sm underline underline-offset-4 group-hover:text-foreground">
+                Read all of them
+              </span>
+            </a>
+            {/*
+              Still outside the <a>: this explains the link rather than
+              extending it, so it should not also be part of what a click or
+              a tap on the card activates. See the note on trustpilotSnapshot
+              in content/testimonials.ts.
+            */}
+            <p className="mt-3 text-xs text-muted-foreground">{trustpilotSnapshot.note}</p>
+          </div>
         </div>
       </Container>
 

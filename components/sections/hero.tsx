@@ -142,14 +142,17 @@ export function HeroSection() {
           note above @keyframes marquee in globals.css.
 
           Four sets rather than two because of how far the row travels. Each
-          set is about 1370px wide and the keyframe moves it its own width, so
+          set is about 1653px wide now that heroStats carries five figures
+          rather than four (150+ team members, added 24 August 2026; it was
+          about 1370px at four) and the keyframe moves it its own width, so
           at the end of a cycle the content spans (N-1) sets to the right of
-          the origin. Two sets leave the last 68px of a 1440px viewport empty
-          just before the loop resets - a gap that is exactly as visible as
-          the jump this replaces. The rule is N >= viewport / set + 1; four
-          covers displays up to about 4100px, which takes in 4K.
+          the origin. Two sets leave a gap of empty space just before the loop
+          resets - as visible as the jump this replaces. The rule is
+          N >= viewport / set + 1; four covers displays up to about 4950px,
+          which still clears 4K (3840px) with room to spare even at the wider
+          set width.
 
-          Every set after the first is aria-hidden: it is the same four
+          Every set after the first is aria-hidden: it is the same five
           figures again, and a screen reader should hear them once.
         */}
         <div className="flex overflow-hidden">

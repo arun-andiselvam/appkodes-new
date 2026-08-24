@@ -5,7 +5,14 @@ import { useCanvasInk } from "@/hooks/use-canvas-ink";
 
 export function AnimatedWave() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const inkRef = useCanvasInk();
+  /*
+   * "emphasis", not the default "page" tone. This component has exactly one
+   * caller, components/layout/footer.tsx, and the footer sits on the dark
+   * emphasis panel now rather than the plain page background. The default
+   * tone reads --foreground, which is dark in light mode - dark glyphs on
+   * a panel that is already dark in light mode would be close to invisible.
+   */
+  const inkRef = useCanvasInk("emphasis");
   const frameRef = useRef(0);
 
   useEffect(() => {

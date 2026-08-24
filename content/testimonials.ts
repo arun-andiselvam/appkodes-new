@@ -270,6 +270,18 @@ export const testimonialSlides: TestimonialSlide[] = [
  * safe to print. The date is not decoration. A figure with no date is a claim
  * the reader cannot age, and this one moves every time a client writes
  * something, so check it whenever the site is touched.
+ *
+ * !! THE PROFILE IS UNDER appkodes.com, NOT hitasoft.com !!
+ *
+ * Appkodes is Hitasoft's software product division, confirmed by the client
+ * on 24 August 2026. Every review, the "since 2008" bio in the footer and
+ * the delivery figures on this page all trace back to that one company,
+ * which is honest: the work and the track record are real regardless of
+ * which of the two names sits on the review. But a visitor landing on
+ * hitasoft.com and clicking through to a profile named appkodes.com has no
+ * way to know that on their own, and a mismatched company name on the far
+ * end of a trust signal reads as the opposite of one. `note` says so in the
+ * card itself, rather than leaving the reader to work it out or wonder.
  */
 export const trustpilotSnapshot = {
   score: "4.4",
@@ -278,6 +290,7 @@ export const trustpilotSnapshot = {
   label: "Excellent",
   checked: "19 August 2026",
   profileUrl: "https://www.trustpilot.com/review/appkodes.com",
+  note: "These reviews are for Appkodes, our software product division.",
 } as const;
 
 /**

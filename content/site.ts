@@ -125,12 +125,18 @@ export const heroCopy = {
   secondaryCta: "See case studies",
 } as const;
 
-/** Stats ticker under the hero. Real figures from appkodes.com. */
+/**
+ * Stats ticker under the hero. Real figures from appkodes.com.
+ *
+ * "150+ team members" is the exception: given directly by the client on
+ * 24 August 2026, not sourced from appkodes.com like the other four.
+ */
 export const heroStats = [
   { value: "18 years", label: "of delivery experience" },
   { value: "1000+", label: "clients worldwide" },
   { value: "2000+", label: "projects delivered" },
   { value: "50+", label: "countries delivered to" },
+  { value: "150+", label: "team members" },
 ] as const;
 
 /** Full industry list for the Industries menu and section. */
