@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { useInView } from "@/hooks/use-in-view";
 
 /**
@@ -27,15 +27,47 @@ import { useInView } from "@/hooks/use-in-view";
  */
 export function CtaPanel({ children }: { children: React.ReactNode }) {
   const [ref, isVisible] = useInView<HTMLDivElement>({ threshold: 0.2 });
-  const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
+  const spotlightRef = useRef<HTMLDivElement>(null);
+  const pendingRef = useRef<{ target: HTMLDivElement; x: number; y: number } | null>(null);
+  const frameRef = useRef(0);
 
+  /*
+   * Written straight to the DOM, not through useState.
+   *
+   * !! THIS RAN A LAYOUT READ AND A FULL RE-RENDER ON EVERY PIXEL OF MOUSE
+   *    MOVEMENT, ON EVERY PAGE ON THE SITE !!
+   *
+   * getBoundingClientRect() forces the browser to flush any pending layout
+   * before it can answer, and raw mousemove fires far more often than the
+   * screen repaints - well above 60 times a second on some hardware. The old
+   * version paid that cost, then a setState re-render, on every single one
+   * of those events. This panel sits on every page, so that cost was paid on
+   * every page.
+   *
+   * The fix has two parts. Coalescing to one requestAnimationFrame callback
+   * per event, same as the pointer handler in dot-matrix.tsx, means the
+   * layout read happens once per painted frame instead of once per raw
+   * event. And writing the gradient position directly onto the element via
+   * the ref, rather than through setState, means the frame that does run
+   * costs one style write rather than a full React re-render.
+   */
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setSpotlight({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
+    pendingRef.current = { target: e.currentTarget, x: e.clientX, y: e.clientY };
+    if (frameRef.current) return;
+    frameRef.current = requestAnimationFrame(() => {
+      frameRef.current = 0;
+      const pending = pendingRef.current;
+      if (!pending || !spotlightRef.current) return;
+      const rect = pending.target.getBoundingClientRect();
+      const x = ((pending.x - rect.left) / rect.width) * 100;
+      const y = ((pending.y - rect.top) / rect.height) * 100;
+      spotlightRef.current.style.background = `radial-gradient(600px circle at ${x}% ${y}%, var(--spotlight), transparent 40%)`;
     });
   };
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(frameRef.current);
+  }, []);
 
   return (
     /*
@@ -51,10 +83,13 @@ export function CtaPanel({ children }: { children: React.ReactNode }) {
       }`}
     >
       <div
+        ref={spotlightRef}
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-10 transition-opacity duration-300"
+        // Centred, matching the old useState default, until the first
+        // mousemove frame overwrites it.
         style={{
-          background: `radial-gradient(600px circle at ${spotlight.x}% ${spotlight.y}%, var(--spotlight), transparent 40%)`,
+          background: "radial-gradient(600px circle at 50% 50%, var(--spotlight), transparent 40%)",
         }}
       />
       <div className="relative z-10 px-8 lg:px-12 py-12 lg:py-14">{children}</div>

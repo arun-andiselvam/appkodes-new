@@ -72,6 +72,31 @@ const nextConfig = {
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
         ],
       },
+      /*
+       * public/ served with no cache policy at all otherwise.
+       *
+       * next/image's own optimizer sets a long cache lifetime on the
+       * resized, hashed variants it serves, but that only covers images
+       * that actually go through <Image>. Several are deliberately raw
+       * <img> (testimonials avatars, flags, award badges, meeting photos,
+       * client logos, the footer's team photo) and every uploaded font,
+       * favicon or logo file bypasses the optimizer entirely, so a returning
+       * visitor was refetching every one of them on every visit. Lighthouse
+       * flags this as "efficient cache lifetimes".
+       *
+       * A week, not a year: nothing here is content-hashed, so a file that
+       * changes without being renamed (exactly what happened when
+       * public/team.webp was replaced this session) would stay stale in a
+       * visitor's cache for however long this number says. A week bounds
+       * that risk to something that corrects itself on its own within days,
+       * while still being long enough for Lighthouse's own threshold and for
+       * the return-visit case that matters, rather than an immutable cache a
+       * change like that would need a filename bump to ever bust.
+       */
+      {
+        source: '/:path*.(jpg|jpeg|png|webp|avif|gif|svg|ico|woff|woff2)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, must-revalidate' }],
+      },
     ]
   },
 }
