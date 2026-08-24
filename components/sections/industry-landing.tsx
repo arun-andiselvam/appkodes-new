@@ -298,7 +298,21 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
             {page.workflow.body}
           </p>
 
-          <ol className="mt-14 grid gap-y-8 lg:grid-cols-5 lg:gap-x-6">
+          {/*
+            !! COLUMNS MATCH THE STEP COUNT, NOT A FIXED FIVE !!
+
+            This was lg:grid-cols-5 unconditionally. Five of the six industry
+            pages carry four steps, not five, so the row sat in a five column
+            track with the last column empty — the line and the four steps
+            stopped short of the container's right edge instead of running
+            its full width. The count comes from the data now, via a custom
+            property, so a page with four steps gets four full-width columns
+            and the one page with five still gets five.
+          */}
+          <ol
+            className="mt-14 grid gap-y-8 lg:grid-cols-[repeat(var(--step-count),minmax(0,1fr))] lg:gap-x-6"
+            style={{ ["--step-count" as string]: page.workflow.steps.length }}
+          >
             {page.workflow.steps.map((step, i) => (
               <li key={step.label} className="relative lg:pt-8">
                 {/*

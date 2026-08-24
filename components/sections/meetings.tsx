@@ -37,13 +37,15 @@ import { SectionTitle } from "@/components/primitives/section-title";
 const OFFSETS = ["lg:mt-0", "lg:mt-10", "lg:mt-4", "lg:mt-14"];
 
 /**
- * The dashed route drawn behind the photographs.
+ * The dashed route drawn over the photographs.
  *
  * The section already argues that somebody travels; the line is what that
- * argument looks like. It crests in the three gaps between the columns and
- * ducks behind each photograph in between, so the pictures are what
- * interrupts it. A line laid entirely on top would be a decoration sitting
- * over the faces, which is the opposite of what this section is for.
+ * argument looks like. It crested in the three gaps between the columns and
+ * ducked behind each photograph in between until 24 August 2026, when the
+ * client asked for it in front instead. z-10 on the wrapper below is the
+ * whole change: the geometry is untouched, so it still climbs in the gaps
+ * and dips under each column's offset, but now it draws over the frame
+ * rather than being interrupted by it.
  *
  * Geometry, since the numbers look arbitrary otherwise. The viewBox is 1000
  * by 360 with preserveAspectRatio="none", so every coordinate is really a
@@ -85,7 +87,7 @@ function FlightRoute({ isVisible }: { isVisible: boolean }) {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute -top-12 inset-x-0 bottom-0 hidden lg:block"
+      className="pointer-events-none absolute -top-12 inset-x-0 bottom-0 z-10 hidden lg:block"
     >
       <div
         className="absolute inset-0"
@@ -194,8 +196,9 @@ export function MeetingsSection() {
           {/*
             items-start stops the short columns stretching to the tallest, which
             is what leaves a pocket of dead space under them once the offsets
-            are applied. relative keeps the photographs painting over the route
-            behind them, which is the whole point of the route.
+            are applied. relative no longer decides paint order against the
+            route — FlightRoute's z-10 does that now — but it is harmless to
+            leave in place.
           */}
           <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-start">
             {meetingPlaces.map((place, index) => (
