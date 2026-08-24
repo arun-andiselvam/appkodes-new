@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 
 /**
  * Ink colour for the 2D canvas backdrops, as an `r, g, b` string ready to drop

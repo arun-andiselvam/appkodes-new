@@ -1,8 +1,8 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useHydrated } from "@/hooks/use-hydrated";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
+import { Moon, Sun } from "lucide-react";
 
 type ThemeToggleProps = {
   className?: string;
@@ -11,36 +11,26 @@ type ThemeToggleProps = {
 };
 
 /**
- * Three settings, not two: follow the system, force light, force dark.
+ * Two states, not three.
  *
- * !! SYSTEM WAS UNREACHABLE ONCE A VISITOR HAD CLICKED ONCE !!
+ * !! NO MONITOR ICON, AND NO "SYSTEM" TO CYCLE BACK TO !!
  *
- * app/layout.tsx has always set `defaultTheme="system"` with `enableSystem`,
- * so a first time visitor already got their OS preference. This button only
- * ever wrote "light" or "dark", and next-themes persists that to localStorage,
- * so the first click took them off system permanently. Somebody whose machine
- * switches at sunset lost that for good, and no control on the page could give
- * it back.
+ * There used to be a third setting here, matching the OS preference
+ * explicitly rather than just defaulting to it. The client asked for that
+ * removed on 25 August 2026: the page already opens on the system setting
+ * by itself (see components/theme-provider.tsx), so a button offering
+ * "follow my system" as a choice was offering to do what it does anyway.
+ * What is left is a plain light/dark switch for anyone who wants something
+ * else for this visit.
  *
- * !! THE ICON SHOWS THE CURRENT SETTING, NOT THE DESTINATION !!
+ * !! THE ICON SHOWS THE CURRENT COLOUR, NOT THE DESTINATION !!
  *
- * That is a reversal of what this button used to do, and it is forced. The two
- * state version showed where a click would take you: a sun while dark, a moon
- * while light. With a third state that reads as a lie, because the monitor
- * icon would be showing while the setting was something else. So the icon now
- * answers "what am I on", which is the question a visitor on system actually
- * has, and the label answers "what happens if I press this".
+ * A sun while dark and a moon while light would show where a press leads
+ * rather than what is on screen, and the label already says that ("Switch
+ * to ..."). The icon answers "what am I looking at".
  */
-const ICONS = { system: Monitor, light: Sun, dark: Moon } as const;
-
-const DESCRIBE = {
-  system: "follow your system",
-  light: "light",
-  dark: "dark",
-} as const;
-
 export function ThemeToggle({ className = "", compact = false }: ThemeToggleProps) {
-  const { theme, resolvedTheme, systemTheme, setTheme } = useTheme();
+  const { resolvedTheme, toggle } = useTheme();
   // The server cannot know the visitor's OS preference, so the icon is only
   // meaningful after hydration. Rendering a same-sized placeholder first keeps
   // the nav from shifting.
@@ -53,50 +43,14 @@ export function ThemeToggle({ className = "", compact = false }: ThemeToggleProp
     return <div className={`${size} ${className}`} aria-hidden="true" />;
   }
 
-  /* next-themes leaves `theme` undefined until it has read storage. */
-  const current = (theme ?? "system") as keyof typeof ICONS;
   const isDark = resolvedTheme === "dark";
-
-  /*
-    !! THE ORDER TURNS ON THE SYSTEM PREFERENCE, NOT ON WHAT IS ON SCREEN !!
-
-    A fixed system, light, dark rotation reads tidier and has a hole in it. The
-    stored default is system, so the first press a visitor makes leaves system
-    for whichever end the order starts at. Half of them are already resolved to
-    exactly that, and nothing on the page changes. A control that looks broken
-    on its first press is worse than a slightly cleverer rule.
-
-    So the cycle is system, then the opposite of what the machine prefers, then
-    the machine's own setting held explicitly, then back to system. Every step
-    but the last changes the colours, and the last swaps the icon to the
-    monitor so the press is still acknowledged.
-
-    !! DERIVE THIS FROM systemTheme, NOT FROM resolvedTheme !!
-
-    The first version keyed the whole cycle off resolvedTheme, which equals the
-    system preference only while the setting is system. Once the setting was
-    explicit, resolvedTheme just echoed it, so every explicit dark handed back
-    to system no matter which direction it had been reached from. On a machine
-    preferring light that collapsed the control to two states, system and dark,
-    and light could not be pinned at all. systemTheme is the same value in both
-    cases, which is what makes the three settings all reachable.
-  */
-  const machine = systemTheme === "dark" ? "dark" : "light";
-  const opposite = machine === "dark" ? "light" : "dark";
-  const next: keyof typeof ICONS =
-    current === "system" ? opposite : current === opposite ? machine : "system";
-
-  const Icon = ICONS[current];
-  /* The resolved colour is worth naming only while the setting is system,
-     because that is the one case where the setting does not state it. */
-  const state =
-    current === "system" ? `follows your system, currently ${isDark ? "dark" : "light"}` : current;
-  const label = `Theme: ${state}. Switch to ${DESCRIBE[next]}.`;
+  const Icon = isDark ? Moon : Sun;
+  const label = `Theme: ${isDark ? "dark" : "light"}. Switch to ${isDark ? "light" : "dark"}.`;
 
   return (
     <button
       type="button"
-      onClick={() => setTheme(next)}
+      onClick={toggle}
       className={`${base} ${className}`}
       aria-label={label}
       title={label}

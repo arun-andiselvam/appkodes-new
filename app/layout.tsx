@@ -83,8 +83,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // next-themes injects an inline anti-flash script; hand it the same nonce the
-  // proxy put in the CSP so it is not blocked.
+  // ThemeProvider injects an inline anti-flash script; hand it the same nonce
+  // the proxy put in the CSP so it is not blocked.
   const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
@@ -120,13 +120,7 @@ export default async function RootLayout({
             ),
           }}
         />
-        <ThemeProvider
-          nonce={nonce}
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider nonce={nonce}>
           {/*
             Navigation and the footer moved up here when the site became more
             than one page. Rendering them inside each route would remount both
