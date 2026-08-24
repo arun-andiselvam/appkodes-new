@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { pageMetadata } from "@/lib/seo";
 import { site } from "@/content/site";
 import { HeroSection } from "@/components/sections/hero";
@@ -8,11 +9,23 @@ import { MetricsSection } from "@/components/sections/metrics";
 import { IntegrationsSection } from "@/components/sections/integrations";
 import { SecuritySection } from "@/components/sections/security";
 import { AudiencesSection } from "@/components/sections/audiences";
-import { TestimonialsSection } from "@/components/sections/testimonials";
 import { RecognitionSection } from "@/components/sections/recognition";
 import { DeliveryReachSection } from "@/components/sections/delivery-reach";
 import { MeetingsSection } from "@/components/sections/meetings";
 import { CtaSection } from "@/components/sections/cta";
+
+/**
+ * Loaded through next/dynamic, ssr left true, same reasoning as DeliveryMap
+ * in delivery-reach.tsx: it is the second largest client bundle this page
+ * ships (the carousel, the star ratings, the client logo strip), it is the
+ * ninth section down, and a plain import makes React wait on all of that as
+ * part of hydrating the hero above it. This page is the one PageSpeed was
+ * actually run against, which is why the change is here and not also on
+ * /resources/case-studies, the only other page that renders this section.
+ */
+const TestimonialsSection = dynamic(() =>
+  import("@/components/sections/testimonials").then((m) => m.TestimonialsSection),
+);
 
 export const metadata = pageMetadata({
   // The one page that leads with the company name. See lib/seo.ts.

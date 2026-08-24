@@ -1,9 +1,36 @@
+import dynamic from "next/dynamic";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
-import { DeliveryMap } from "@/components/backgrounds/delivery-map";
 import { hub, reachFigure } from "@/content/delivery-map";
+
+/**
+ * Loaded through next/dynamic rather than a plain import, same idiom as
+ * VideoModal in testimonials.tsx. ssr stays true (the default) on purpose,
+ * unlike that one: DeliveryMap's figcaption is the whole text alternative
+ * for the map (see the note in delivery-map.tsx), so it has to stay in the
+ * HTML a crawler and a screen reader get without running any JS at all.
+ *
+ * What this buys, without touching a line of DeliveryMap itself: it is the
+ * single largest client bundle on the home page (a six thousand seven
+ * hundred dot land path, forty nine arcs), and it sits ninth of thirteen
+ * sections down the page. A plain import makes React wait on that bundle
+ * as part of the same hydration pass that hydrates the hero. Wrapped in
+ * dynamic(), it hydrates behind its own Suspense boundary instead, so the
+ * hero above the fold is not held up by a map nobody has scrolled to yet.
+ */
+const DeliveryMap = dynamic(
+  () => import("@/components/backgrounds/delivery-map").then((m) => m.DeliveryMap),
+  {
+    /*
+     * Same aspect ratio as the map's own viewBox (content/world-map.ts:
+     * VIEW_W 1000, VIEW_H 372), so there is no layout shift between this
+     * placeholder and the real SVG landing in its place.
+     */
+    loading: () => <div className="aspect-[1000/372] w-full" aria-hidden />,
+  },
+);
 
 /**
  * Where the work has gone. On /how-we-work and on the home page.
