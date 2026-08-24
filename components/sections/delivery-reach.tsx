@@ -57,8 +57,47 @@ import { hub, reachFigure } from "@/content/delivery-map";
  */
 export function DeliveryReachSection() {
   return (
-    <Section spacing="tight" className="border-t border-foreground/10">
-      <Container>
+    /*
+      !! THE EMPHASIS PANEL, THE SAME ONE THE PROCESS SECTION USES !!
+
+      This was a white section with a hairline above it. The client asked for
+      the dark treatment on 24 August 2026, because the home page ran white
+      from the hero to the closing panel with only the process section
+      breaking it, and a map is the other block on the page that can carry a
+      dark ground without being shouted at.
+
+      The border-t went with the change. A rule belongs between two sections
+      of the same colour, and a panel that changes colour draws its own edge.
+
+      Everything inside it now reads from --emphasis-foreground rather than
+      --foreground. That is not a detail: --emphasis is dark in BOTH themes,
+      so the usual light and dark pairs are wrong here in one of the two. See
+      the note on --emphasis-accent in app/brand.css, which exists because
+      --primary manages only 2.06:1 on this ground.
+    */
+    <Section spacing="tight" className="bg-emphasis text-emphasis-foreground overflow-hidden">
+      {/*
+        The diagonal hatch from the process section, at the same 3% opacity so
+        the two panels read as one treatment rather than two dark sections that
+        happen to be near each other. It draws in currentColor, which is
+        --emphasis-foreground here, so it needs no colour of its own.
+      */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 40px,
+            currentColor 40px,
+            currentColor 41px
+          )`,
+          }}
+        />
+      </div>
+
+      <Container className="relative z-10">
         {/*
           !! THE HEADING IS NOT INSIDE THE max-w-2xl COLUMN !!
 
@@ -77,11 +116,18 @@ export function DeliveryReachSection() {
           full stop off the right edge rather than wrapping it. Below xl the
           heading wraps as it always did.
         */}
-        <Eyebrow className="mb-6">Reach</Eyebrow>
+        <Eyebrow tone="emphasis" className="mb-6">
+          Reach
+        </Eyebrow>
         <SectionTitle className="xl:text-nowrap">
           One team, and a lot of time zones.
         </SectionTitle>
-        <p className="mt-8 max-w-2xl text-xl leading-relaxed text-muted-foreground">
+        {/*
+          text-emphasis-foreground/70 rather than text-muted-foreground. The
+          muted token is a grey chosen against the page background, and on this
+          panel it is close enough to the ground to be hard work.
+        */}
+        <p className="mt-8 max-w-2xl text-xl leading-relaxed text-emphasis-foreground/70">
           {`The team sits in ${hub.name}. The work has reached ${reachFigure} countries, and every one on this map is a place it landed. Hover a line to follow one.`}
         </p>
 

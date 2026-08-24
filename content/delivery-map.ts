@@ -20,12 +20,31 @@
  * content/testimonials.ts and a flag in public/flags. That is a real record,
  * checkable in the repository, and it is the honest starting set.
  *
- * !! ADDING TO THIS LIST IS A BUSINESS DECISION, NOT A DESIGN ONE !!
+ * !! CHANGING THIS LIST IS A BUSINESS DECISION, NOT A DESIGN ONE !!
  *
- * The map draws whatever is here and counts it, so the headline follows the
- * data rather than being typed. Hand over the real delivery list and it
+ * The map draws whatever is here. Hand over the real delivery list and it
  * plots, arcs and all, with no change to the component. Do not pad it to make
- * the picture busier.
+ * the picture busier, and do not remove a country to tidy the picture either.
+ *
+ * !! PAKISTAN AND KAZAKHSTAN WERE REMOVED ON 24 AUGUST 2026 !!
+ *
+ * At the client's request. Neither was one of the twelve with a named
+ * testimonial behind it, so nothing checkable was lost and no flag in
+ * public/flags is now orphaned. The list went from forty nine to forty seven.
+ *
+ * The reason is not recorded because it was not given. If the removal was
+ * about where the work has actually gone, this is now more accurate than it
+ * was. If it was about the picture, it is a country the company delivered in
+ * that the map no longer admits to, and that is worth knowing before somebody
+ * puts either back.
+ *
+ * !! THE GAP BETWEEN THE FIGURE AND THE DOTS IS NOW THREE !!
+ *
+ * `reachFigure` below publishes "50+" while forty seven plot. It was one when
+ * the figure stopped being derived from the data. Still defensible, since the
+ * figure is a claim about delivery and the dots are the subset anybody has
+ * written down. It is worth watching rather than ignoring: at some width of
+ * gap a reader who counts is right to doubt the number.
  */
 export type Destination = {
   /** ISO 3166-1 alpha-2. */
@@ -144,11 +163,11 @@ export const destinations: Destination[] = [
   { code: "DK", name: "Denmark", lat: 56.1, lng: 9.5 },
   { code: "FI", name: "Finland", lat: 62.6, lng: 26.0 },
   /* Moscow. Far to the west of a country that reaches 180 east, which is the
-     convention every map like this uses, and it is well clear of Finland
-     and Kazakhstan on screen. */
+     convention every map like this uses, and it is well clear of Finland on
+     screen. It used to have to clear Kazakhstan too, which has since been
+     removed. */
   { code: "RU", name: "Russia", lat: 55.75, lng: 37.6 },
   { code: "AZ", name: "Azerbaijan", lat: 40.4, lng: 47.6 },
-  { code: "KZ", name: "Kazakhstan", lat: 48.2, lng: 67.5 },
   { code: "AE", name: "United Arab Emirates", lat: 23.9, lng: 54.4 },
   { code: "QA", name: "Qatar", lat: 25.3, lng: 51.2 },
   { code: "KW", name: "Kuwait", lat: 29.4, lng: 47.6 },
@@ -157,7 +176,6 @@ export const destinations: Destination[] = [
   { code: "DZ", name: "Algeria", lat: 28.2, lng: 2.6 },
   { code: "KE", name: "Kenya", lat: 0.6, lng: 37.7 },
   { code: "ZA", name: "South Africa", lat: -29.2, lng: 24.7 },
-  { code: "PK", name: "Pakistan", lat: 30.0, lng: 69.4 },
   { code: "BD", name: "Bangladesh", lat: 24.0, lng: 90.2 },
   { code: "LK", name: "Sri Lanka", lat: 7.7, lng: 80.7 },
   { code: "CN", name: "China", lat: 34.8, lng: 103.5 },
