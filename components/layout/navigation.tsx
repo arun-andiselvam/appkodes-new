@@ -41,6 +41,16 @@ export function Navigation() {
   /** The route the menu state belongs to. See the reset below. */
   const [lastPathname, setLastPathname] = useState(pathname);
 
+  /**
+   * Whether the bar is drawn as a solid panel rather than sitting transparent
+   * over the page.
+   *
+   * Named because it drives the class list, the per property transition timing
+   * and nothing else should have to re-derive it. It was written inline twice
+   * and the two would have gone out of step the first time either changed.
+   */
+  const solid = isScrolled || isMobileMenuOpen;
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -114,10 +124,97 @@ export function Navigation() {
           whole bar jumped sideways under the pointer. The bar belongs to the
           page position, not to the menu. Only the panel appears.
         */
-        className={`relative mx-auto transition-all duration-500 ${
-          isScrolled || isMobileMenuOpen
-            ? "bg-background/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg max-w-[1200px]"
-            : "bg-transparent max-w-[1400px]"
+        /*
+          !! THE BORDER AND THE RADIUS ARE ALWAYS THERE. ONLY THE COLOUR MOVES !!
+
+          This toggled `border` and `rounded-2xl` on and off under
+          `transition-all`, and it flickered a hard cornered rectangle through
+          the middle of every transition. Two causes, and the first is easy to
+          miss.
+
+          `border-style` does not animate. Adding the `border` class takes it
+          from none to solid, which snaps, so the full weight of the line
+          arrived on the first frame. `border-radius` meanwhile was animating
+          from 0 to 1rem across half a second. A line at full strength around
+          corners that have not rounded yet is a rectangle, and it sat on
+          screen for most of those 500ms.
+
+          So the border is declared always, 1px solid transparent, and the
+          radius is always 1rem. Neither is visible while the bar is
+          transparent and neither has to change shape. Only `border-color`
+          moves, and that does animate.
+
+          !! ONLY ONE BORDER COLOUR CLASS AT A TIME, AND THIS IS WHY !!
+
+          The first version of this fix put `border-transparent` in the base
+          class list and `border-foreground/10` in the scrolled branch, so both
+          were on the element together. They are the same utility at the same
+          specificity, which means the winner is whichever Tailwind emits later
+          in the stylesheet, not whichever is written last in the attribute.
+          `.border-transparent` lands about a kilobyte after
+          `.border-foreground/10` in the generated CSS, so transparent won
+          permanently and the border never appeared at all.
+
+          The colour therefore lives in the branches. `border` on its own stays
+          in the base, because the width and style have to be constant for the
+          reason above.
+
+          !! THE DELAY IS ASYMMETRIC, AND IT HAS TO BE !!
+
+          On the way in, the colour and the shadow wait for the geometry to
+          finish, then fade in over 200ms. 500 is the full width transition, so
+          the line starts only once the bar has actually stopped moving. That
+          is the literal request and it is worth keeping literal: at 380 the
+          last few percent of travel is still running, which is what made an
+          earlier version of this still read as arriving mid-transition.
+
+          On the way out they take no delay. A symmetric delay would hold a
+          finished border on screen while the bar expanded back to full width,
+          which is the same rectangle in reverse. Fading the line out first and
+          moving the geometry underneath is the order that reads correctly in
+          both directions.
+        */
+        /*
+          !! THE BLUR IS SWITCHED, NEVER ANIMATED, AND THAT IS THE SECOND BUG !!
+
+          backdrop-filter was in this list on a 500ms duration and it made the
+          return to the plain header look stuck.
+
+          Tailwind writes the utility as
+          `backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-...)`,
+          so dropping the class unsets the variable and the whole value
+          collapses to nothing. CSS cannot interpolate a filter list against
+          nothing, so it falls back to discrete animation, and a discrete
+          transition flips at the halfway point. The blur therefore stayed
+          glued on for 250ms while the bar was already expanding, then vanished
+          in one frame. Nothing else was stuck. It was the one property that
+          could not move.
+
+          It is now 1ms, which makes the flip effectively instant, and the
+          delay decides when that instant happens. Going in it waits with the
+          border so the panel solidifies as one thing. Coming out it goes
+          immediately, because a blur over a background that is already fading
+          is the part a reader notices first.
+
+          -webkit-backdrop-filter is listed too. Safari reads that one, and a
+          property named in the class but missing from this list would animate
+          on its own default rather than on the timing declared here.
+        */
+        style={{
+          transitionProperty:
+            "max-width, background-color, backdrop-filter, -webkit-backdrop-filter, border-color, box-shadow",
+          transitionDuration: solid
+            ? "500ms, 500ms, 1ms, 1ms, 200ms, 200ms"
+            : "500ms, 250ms, 1ms, 1ms, 150ms, 150ms",
+          transitionDelay: solid
+            ? "0ms, 0ms, 500ms, 500ms, 500ms, 500ms"
+            : "0ms, 0ms, 0ms, 0ms, 0ms, 0ms",
+          transitionTimingFunction: "ease",
+        }}
+        className={`relative mx-auto rounded-2xl border ${
+          solid
+            ? "border-foreground/10 bg-background/80 backdrop-blur-xl shadow-lg max-w-[1200px]"
+            : "border-transparent bg-transparent max-w-[1400px]"
         }`}
       >
         <div
