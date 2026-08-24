@@ -195,7 +195,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                   Wondering what this would take against your own systems?
                 </p>
                 <p className="mt-3 text-muted-foreground leading-relaxed">
-                  The review is a fixed price, and you keep the costed plan and
+                  The audit costs nothing, and you keep the costed plan and
                   the risks whether you go ahead or not.
                 </p>
                 <Button
@@ -204,7 +204,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                   className="mt-6 h-14 rounded-full bg-primary px-8 text-base text-primary-foreground has-[>svg]:px-8 hover:bg-primary/90 group/cta"
                 >
                   <Link href={actions.book}>
-                    Book an automation review
+                    Book a free automation audit
                     <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
                   </Link>
                 </Button>

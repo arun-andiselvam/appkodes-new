@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import { ArrowRight, Check } from "lucide-react";
 
 /**
@@ -20,14 +21,78 @@ import { ArrowRight, Check } from "lucide-react";
  * Five fields, three required. docs/positioning.md says this buyer fears open
  * ended scoping and wants a first step small enough to say yes to without a
  * board, and a long form is the opposite of a small first step.
+ *
+ * Cloudflare Turnstile, added 24 August 2026, sits beside the honeypot as the
+ * spam check a honeypot alone does not cover. It renders explicitly (render=
+ * explicit, then window.turnstile.render) rather than auto-scanning the page,
+ * because React mounts this form after the script has had a chance to load
+ * and an auto-scan can miss that. The widget's own script tag carries the
+ * page's CSP nonce — see proxy.ts — so no script-src change was needed for it.
+ *
+ * With NEXT_PUBLIC_TURNSTILE_SITE_KEY unset, none of this renders and the
+ * form behaves exactly as it did before: same pattern as the webhook itself.
  */
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: HTMLElement, options: Record<string, unknown>) => string;
+      reset: (widgetId?: string) => void;
+      remove: (widgetId: string) => void;
+    };
+  }
+}
 
 type Errors = Record<string, string>;
 
-export function ContactForm() {
+export function ContactForm({ nonce }: { nonce?: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [failure, setFailure] = useState("");
+  // No site key: nothing to wait for, so the button is never held up by it.
+  const [turnstileReady, setTurnstileReady] = useState(!TURNSTILE_SITE_KEY);
+
+  const widgetContainerRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | undefined>(undefined);
+
+  function renderTurnstile() {
+    if (!TURNSTILE_SITE_KEY || !window.turnstile || !widgetContainerRef.current) return;
+    // Guards a second render: Script's onLoad and the mount effect below can
+    // both reach here if the script was already cached from an earlier page.
+    if (widgetIdRef.current) return;
+    widgetIdRef.current = window.turnstile.render(widgetContainerRef.current, {
+      sitekey: TURNSTILE_SITE_KEY,
+      appearance: "interaction-only",
+      theme: "auto",
+      callback: () => setTurnstileReady(true),
+      "expired-callback": () => setTurnstileReady(false),
+      "error-callback": () => setTurnstileReady(false),
+    });
+  }
+
+  useEffect(() => {
+    // Covers the case where the script tag is already loaded (a client side
+    // navigation back to this page), so Script's onLoad will not fire again.
+    if (TURNSTILE_SITE_KEY && window.turnstile) renderTurnstile();
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current);
+        widgetIdRef.current = undefined;
+      }
+    };
+  }, []);
+
+  function resetTurnstile() {
+    // A token is single use. If the submit it was attached to failed, the
+    // token is spent either way, so the widget has to reissue one before
+    // another attempt can pass verification.
+    if (widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current);
+      setTurnstileReady(false);
+    }
+  }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,12 +117,14 @@ export function ContactForm() {
       }
 
       setStatus("idle");
+      resetTurnstile();
       if (result.errors) setErrors(result.errors as Errors);
       // The route's own wording, shown as written. It is more honest about
       // what happened than anything this component could guess.
       if (result.error) setFailure(String(result.error));
     } catch {
       setStatus("idle");
+      resetTurnstile();
       setFailure("That did not send. Please try again.");
     }
   }
@@ -89,6 +156,15 @@ export function ContactForm() {
       noValidate
       className="border border-foreground/15 p-6 sm:p-8 lg:p-10"
     >
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          strategy="afterInteractive"
+          nonce={nonce}
+          onLoad={renderTurnstile}
+        />
+      )}
+
       <div className="grid gap-5 sm:grid-cols-2">
         <Field
           name="name"
@@ -144,6 +220,13 @@ export function ContactForm() {
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
+      {/*
+        Turnstile injects its own "cf-turnstile-response" hidden input here
+        once rendered, inside the <form>, so the existing FormData collection
+        in onSubmit already picks it up without any change to it.
+      */}
+      {TURNSTILE_SITE_KEY && <div ref={widgetContainerRef} className="mt-6" />}
+
       {failure && (
         <p
           role="alert"
@@ -155,7 +238,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        disabled={status === "sending"}
+        disabled={status === "sending" || !turnstileReady}
         className="group/send mt-8 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-8 text-base text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
       >
         {status === "sending" ? "Sending" : "Send this"}

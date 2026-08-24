@@ -118,7 +118,7 @@ export const contactFaqs = [
   {
     question: "What does the first step cost?",
     answer:
-      "The review is a fixed price, agreed before it starts. You keep the costed plan and the risk list at the end of it, whether you go ahead with the build or not.",
+      "Nothing. The audit is free. You keep the costed plan and the risk list at the end of it, whether you go ahead with the build or not.",
   },
   {
     question: "Do we need an IT team to work with you?",

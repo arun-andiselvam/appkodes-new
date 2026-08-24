@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { pageMetadata } from "@/lib/seo";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -37,7 +38,9 @@ export const metadata = pageMetadata({
  * is a dead control. HowItWorks and the meeting photographs close it instead:
  * what happens after you write, and the people you would be writing to.
  */
-export default function ContactPage() {
+export default async function ContactPage() {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <main>
       <Section spacing="none" className="pt-32 lg:pt-40 pb-16 lg:pb-20">
@@ -103,7 +106,7 @@ export default function ContactPage() {
               */}
             </div>
 
-            <ContactForm />
+            <ContactForm nonce={nonce} />
           </div>
         </Container>
       </Section>

@@ -164,10 +164,14 @@ First step is a fixed scope assessment. The visitor leaves with a migration
 blueprint and a costed risk register, theirs to keep whether or not they
 continue.
 
-**Unconfirmed and needs a decision:** whether the assessment is free or paid,
-and whether two weeks is the real duration. Current copy says two weeks. If it
-is free, say so loudly. If it is paid, name the price, because a named price
-reads as confidence.
+**Resolved 25 August 2026:** it is free. Confirmed by the client. Said loudly
+now — the primary CTA reads "Book a free automation audit" rather than "Book
+an automation review", and the contact FAQ answers "What does the first step
+cost?" with "Nothing" rather than "a fixed price". "Audit" replaced "review"
+at the same time, matching the term already used in content/posts-sample.ts.
+
+Still unconfirmed: whether two weeks is the real duration. Current copy says
+two weeks.
 
 ## Vocabulary
 

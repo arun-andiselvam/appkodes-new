@@ -37,7 +37,16 @@ export default function proxy(request: NextRequest) {
     // widget.trustpilot.com was allowed here while a TrustBox was embedded.
     // That embed rendered empty and was replaced by a plain link, so the
     // permission went with it. See docs/positioning.md if it comes back.
-    `frame-src https://www.youtube-nocookie.com`,
+    //
+    // challenges.cloudflare.com was added 24 August 2026 for the contact
+    // form's spam check. script-src needed no change for it: the widget's
+    // own script tag carries the same per-request nonce everything else on
+    // this page does, and Cloudflare's docs document that as the supported
+    // path for a strict-dynamic policy, ahead of allowlisting the origin by
+    // name. frame-src has no nonce mechanism, so this is the one directive
+    // that genuinely needs the host added. See components/sections/
+    // contact-form.tsx.
+    `frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,

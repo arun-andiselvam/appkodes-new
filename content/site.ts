@@ -121,7 +121,11 @@ export const heroCopy = {
    */
   description:
     "Most AI projects never get past a demo. We build the ones that end up in daily use, which is a different job from building something impressive.",
-  primaryCta: "Book an automation review",
+  // Changed 25 August 2026, from "Book an automation review". The offer was
+  // always free — docs/positioning.md had it flagged as an open decision
+  // ("if it is free, say so loudly") — confirmed by the client and now said
+  // outright rather than left for the FAQ to clarify.
+  primaryCta: "Book a free automation audit",
   secondaryCta: "See case studies",
 } as const;
 
@@ -204,7 +208,8 @@ export const ctaCopy = {
   headlineAccent: " half of the job.",
   description:
     "Data entry, answering the same tickets, chasing numbers between systems. We automate the parts that repeat. Your team keeps the parts that need judgement.",
-  primaryCta: "Book an automation review",
+  // See the note on heroCopy.primaryCta above — same change, same reason.
+  primaryCta: "Book a free automation audit",
   secondaryCta: "See how we work",
   secondaryHref: "/how-we-work",
 } as const;
