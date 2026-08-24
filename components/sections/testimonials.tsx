@@ -220,7 +220,13 @@ function SlideCard({ slide }: { slide: TestimonialSlide }) {
   return (
     <figure className="h-full flex flex-col border border-foreground/10 bg-background p-6 lg:p-8">
       <div className="flex items-center justify-between gap-4 mb-5">
-        <span className="flex gap-0.5" aria-label="Rated 5 out of 5 on Trustpilot">
+        {/*
+          role="img", not a bare span. A plain span carries the implicit
+          ARIA role "generic", and "generic" does not permit aria-label -
+          the row of five star icons has to be given a role that supports
+          naming before the label on it is valid, not just present.
+        */}
+        <span role="img" className="flex gap-0.5" aria-label="Rated 5 out of 5 on Trustpilot">
           {[0, 1, 2, 3, 4].map((i) => (
             <Star
               key={i}
@@ -334,18 +340,36 @@ export function TestimonialsSection({
    * It keeps the trackpad swipe, the touch fling and keyboard scrolling that a
    * hand rolled carousel throws away. The arrows only push the same scroller
    * along by one card, so there is one source of truth for position.
+   *
+   * !! COALESCED TO ONE CHECK PER PAINTED FRAME, NOT ONE PER SCROLL EVENT !!
+   *
+   * This is bound to onScroll on the rail below, and a native scroll fires
+   * far more often than the screen repaints, especially mid fling. Reading
+   * scrollLeft/clientWidth/scrollWidth on every one of those events, each
+   * followed by a setState, is the same shape of cost the pointer handlers
+   * in dot-matrix.tsx and cta-panel.tsx carried before they were fixed: a
+   * geometry read that can force a layout flush, paid far more often than
+   * the one frame a visitor actually sees. Same fix here.
    */
+  const edgeFrameRef = useRef(0);
   const syncEdges = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    setAtStart(el.scrollLeft <= 2);
-    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 2);
+    if (edgeFrameRef.current) return;
+    edgeFrameRef.current = requestAnimationFrame(() => {
+      edgeFrameRef.current = 0;
+      const el = trackRef.current;
+      if (!el) return;
+      setAtStart(el.scrollLeft <= 2);
+      setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 2);
+    });
   }, []);
 
   useEffect(() => {
     syncEdges();
     window.addEventListener("resize", syncEdges);
-    return () => window.removeEventListener("resize", syncEdges);
+    return () => {
+      window.removeEventListener("resize", syncEdges);
+      cancelAnimationFrame(edgeFrameRef.current);
+    };
   }, [syncEdges]);
 
   /*
@@ -472,7 +496,9 @@ export function TestimonialsSection({
                 </span>
                 <span className="text-muted-foreground">out of {trustpilotSnapshot.outOf}</span>
               </span>
+              {/* role="img": see the identical note on the per-card star row above. */}
               <span
+                role="img"
                 className="mt-2 flex gap-0.5"
                 aria-label={`${trustpilotSnapshot.label}, ${trustpilotSnapshot.score} out of ${trustpilotSnapshot.outOf}`}
               >

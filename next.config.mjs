@@ -11,6 +11,39 @@ const nextConfig = {
    */
   output: 'standalone',
 
+  /*
+   * !! THIS DROPS SUPPORT FOR PRE-2020 BROWSERS. THAT IS THE POINT !!
+   *
+   * Lighthouse's "Legacy JavaScript" finding kept naming
+   * Array.prototype.at/flat/flatMap, Object.hasOwn and String.prototype.
+   * trimStart/trimEnd after the browserslist field below was added, because
+   * that field does not control this: Next.js's own polyfill-module ships
+   * these unconditionally, to every browser, with no feature detection, and
+   * ignores browserslist entirely. Confirmed by inspecting the actual built
+   * output on 24 August 2026 - the file carrying them loads as a plain
+   * script for every visitor, not gated behind a `nomodule` fallback the
+   * way Next's *other* legacy bundle correctly is.
+   *
+   * Aliasing it to lib/modern-polyfill.js (empty) is the documented
+   * workaround, and it is a real trade-off rather than a free fix: every
+   * browser this polyfill module exists for - genuinely old Safari, IE11 -
+   * loses whichever of those methods this repo's own code happens to call.
+   * It is the same trade-off browserslist below already made on purpose, so
+   * this is consistent with that rather than a new risk on top of it.
+   *
+   * Both paths are aliased because Next resolves the module differently
+   * depending on where the import sits in its own build graph; aliasing
+   * only one left the other still shipping it. Uses internal Next.js paths
+   * that are not a public API and could move in a future Next upgrade -
+   * check this still resolves to the empty file after any Next.js bump.
+   */
+  turbopack: {
+    resolveAlias: {
+      '../build/polyfills/polyfill-module': './lib/modern-polyfill.js',
+      'next/dist/build/polyfills/polyfill-module': './lib/modern-polyfill.js',
+    },
+  },
+
   // Type and lint errors must fail the build. The repo is clean under
   // `strict: true`, so there is nothing to suppress.
   typescript: {
