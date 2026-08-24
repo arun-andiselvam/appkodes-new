@@ -56,13 +56,34 @@ export function HeroSection() {
           </Eyebrow>
         </div>
         
-        {/* Main headline */}
+        {/*
+          Main headline.
+
+          !! THIS ONE DOES NOT WAIT ON isVisible, AND USED TO !!
+
+          It carried the same opacity-0-until-hydrated treatment as the
+          eyebrow, description and CTAs below, on the same reasoning: the
+          server and the first client render have to agree, so the "before"
+          state has to be in the SSR'd HTML.
+
+          The cost of that agreement is what an invisible element cannot do:
+          be a Largest Contentful Paint candidate. This is the single
+          biggest thing on the page, in a font size up to 7rem, and Chrome
+          simply cannot count text sitting at opacity: 0. Confirmed live on
+          25 August 2026, after the Cloudflare RUM beacon (a separate issue)
+          was disabled and stopped masking it: LCP had quietly become the
+          header's small logo image instead, because that one paints at
+          full opacity immediately and this one does not paint as anything
+          for up to a second while its fade-in transition runs.
+
+          So the headline renders at full opacity from the first frame,
+          server side included, and everything under it still stages in on
+          the same duration-700/duration-1000 cascade it always did. The
+          arrival still reads as one, it just does not cost the metric that
+          exists to measure how fast the reader actually sees something.
+        */}
         <div className="mb-12">
-          <h1 
-            className={`text-[clamp(2.5rem,9vw,7rem)] font-display leading-[0.9] tracking-tight transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
+          <h1 className="text-[clamp(2.5rem,9vw,7rem)] font-display leading-[0.9] tracking-tight">
             <span className="block">{heroCopy.headline}</span>
             <span className="block">
               <span className="relative inline-block">
