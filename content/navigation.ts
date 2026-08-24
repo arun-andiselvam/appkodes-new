@@ -296,6 +296,14 @@ export const mainNav: NavItem[] = [
       },
     },
   },
+  /*
+   * The first external item in this menu. internship.hitasoft.com is the
+   * internship programme's own site rather than a page in this app, so it
+   * carries no panel and `external: true` so the click opens a new tab
+   * instead of routing away from the marketing site. Added 24 August 2026 at
+   * the client's request.
+   */
+  { name: "Academy", href: "https://internship.hitasoft.com", external: true },
   { name: "Contact", href: "/contact" },
 ];
 

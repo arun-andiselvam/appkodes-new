@@ -1,5 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /*
+   * Self-hosted from a Dokploy-managed droplet rather than Vercel, so this
+   * has to produce something a plain Node process can run. `standalone`
+   * traces the actual import graph and ships only those files plus a minimal
+   * server.js, rather than the full node_modules tree `next start` needs.
+   * Dokploy's default builder (Nixpacks) detects this setting and runs the
+   * standalone server instead of `next start`, which matters on a 4GB
+   * droplet already running Strapi and Postgres alongside it.
+   */
+  output: 'standalone',
+
   // Type and lint errors must fail the build. The repo is clean under
   // `strict: true`, so there is nothing to suppress.
   typescript: {

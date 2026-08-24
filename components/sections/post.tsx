@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { resourceCategories } from "@/content/resources";
 import { actions, site } from "@/content/site";
-import type { Block, Post } from "@/lib/posts";
+import type { Block, Inline, Post } from "@/lib/posts";
 
 /**
  * One article, built to docs/blog-structure.md.
@@ -453,10 +453,23 @@ function BodyBlock({ block }: { block: Block }) {
         </h3>
       );
 
+    /*
+      Two sources, one paragraph.
+
+      `rich` is present when the post came from the CMS, where CKEditor
+      produced real inline marks and lib/html-to-blocks.ts flattened them into
+      runs. `text` plus `links` is what a content file writes by hand, where
+      the copy stays readable as prose and the renderer finds the phrase.
+      Neither source is going away, so both paths stay live.
+    */
     case "p":
       return (
         <p className="mt-6 text-lg leading-[1.75] text-foreground/80 first:mt-0">
-          <Linked text={block.text} links={block.links} />
+          {block.rich ? (
+            <Runs runs={block.rich} />
+          ) : (
+            <Linked text={block.text} links={block.links} />
+          )}
         </p>
       );
 
@@ -560,6 +573,36 @@ function BodyBlock({ block }: { block: Block }) {
  * a stale link goes quiet instead of loud, which is the right trade for
  * copy but is worth knowing.
  */
+/**
+ * A paragraph that arrived from the CMS, as flat marked up runs.
+ *
+ * The link styling is the same declaration `Linked` below uses. Two link
+ * treatments in one article, depending on where the post was written, would be
+ * a tell that something is stitched together. If either changes, change both.
+ */
+function Runs({ runs }: { runs: Inline[] }) {
+  return (
+    <>
+      {runs.map((run, i) => {
+        if (run.mark === "link" && run.href) {
+          return (
+            <Link
+              key={i}
+              href={run.href}
+              className="underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground"
+            >
+              {run.text}
+            </Link>
+          );
+        }
+        if (run.mark === "strong") return <strong key={i} className="font-semibold">{run.text}</strong>;
+        if (run.mark === "em") return <em key={i}>{run.text}</em>;
+        return <span key={i}>{run.text}</span>;
+      })}
+    </>
+  );
+}
+
 function Linked({
   text,
   links,

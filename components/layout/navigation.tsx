@@ -150,6 +150,7 @@ export function Navigation() {
                 <Fragment key={item.name}>
                 <Link
                   href={item.href}
+                  {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   aria-current={active ? "page" : undefined}
                   aria-expanded={item.panel ? open : undefined}
                   aria-controls={item.panel ? panelKey(panelId, item.name) : undefined}
@@ -280,6 +281,7 @@ export function Navigation() {
                   <div className="flex items-center justify-between">
                     <Link
                       href={item.href}
+                      {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`py-4 text-3xl font-display transition-colors duration-300 ${

@@ -1,3 +1,5 @@
+import { parseFragment } from "parse5";
+
 /**
  * The house rules, as code.
  *
@@ -185,7 +187,15 @@ export type PostInput = {
   excerpt?: string;
   sendsTo?: string;
   takeaways?: { text?: string }[] | null;
-  body?: { __component?: string; [key: string]: unknown }[] | null;
+  /**
+   * The article, as CKEditor's HTML.
+   *
+   * This was an array of dynamic zone components until 24 August 2026. The
+   * checks below therefore parse rather than switch on `__component`. What
+   * they test has not changed: heading hierarchy, anchor text, alt and caption
+   * on figures, and the voice rules over every piece of prose.
+   */
+  body?: string | null;
   image?: unknown;
   imageAlt?: string | null;
 };
@@ -268,7 +278,7 @@ export function checkPost(post: PostInput): Issue[] {
     });
   }
 
-  if (Array.isArray(post.body)) {
+  if (typeof post.body === "string" && post.body.trim()) {
     issues.push(...checkBody(post.body));
   }
 
@@ -285,83 +295,109 @@ export function checkPost(post: PostInput): Issue[] {
 }
 
 /**
- * The body blocks.
+ * The article body, now that it is HTML rather than components.
  *
- * Heading hierarchy is the one worth being strict about. The contents panel is
- * built from the h2s and Google reads the same hierarchy to generate sitelinks,
- * so an article that opens on an h3 costs both.
+ * !! THE RULES DID NOT CHANGE. ONLY THE THING BEING READ DID !!
+ *
+ * This switched on `__component` while the body was a dynamic zone. CKEditor
+ * replaced that on 24 August 2026, so it parses instead. Heading hierarchy is
+ * still the one worth being strict about: the contents panel is built from the
+ * h2s and Google reads the same hierarchy for sitelinks, so an article opening
+ * on an h3 costs both.
+ *
+ * parse5 rather than a regular expression. The editor produces nested markup
+ * and pasted content arrives wrapped in whatever Word felt like emitting, and
+ * a pattern that reads "the first h2" out of that will be wrong on the first
+ * article somebody pastes.
  */
-function checkBody(body: NonNullable<PostInput["body"]>): Issue[] {
+function checkBody(html: string): Issue[] {
   const issues: Issue[] = [];
+  const root = parseFragment(html);
+
   let seenH2 = false;
   let linkCount = 0;
 
-  body.forEach((block, index) => {
-    const where = `body block ${index + 1}`;
+  /* Depth first, in source order, so "before the first h2" means what it says. */
+  const walk = (nodes: unknown[]) => {
+    for (const raw of nodes) {
+      const node = raw as {
+        tagName?: string;
+        childNodes?: unknown[];
+        attrs?: { name: string; value: string }[];
+      };
+      const tag = node.tagName;
 
-    switch (block.__component) {
-      case "content.heading": {
-        const level = String(block.level ?? "h2");
-        if (level === "h3" && !seenH2) {
+      if (tag === "h2") seenH2 = true;
+
+      if (tag === "h3" && !seenH2) {
+        issues.push({
+          severity: "error",
+          field: "body",
+          message:
+            "A level 3 heading appears before any level 2. Never skip the hierarchy: the contents panel and Google's sitelinks both read it.",
+        });
+      }
+
+      if (tag === "a") {
+        linkCount += 1;
+        const href = node.attrs?.find((a) => a.name === "href")?.value ?? "";
+        const phrase = textOf(node).trim();
+
+        if (WEAK_ANCHORS.includes(phrase.toLowerCase())) {
           issues.push({
             severity: "error",
-            field: where,
-            message:
-              "A level 3 heading before any level 2. Never skip the hierarchy: the contents panel and Google's sitelinks both read it.",
+            field: "body",
+            message: `"${phrase}" tells a reader nothing and passes no meaning to the page it points at. Use words that describe the destination.`,
           });
         }
-        if (level === "h2") seenH2 = true;
-        issues.push(...checkProse(String(block.text ?? ""), where));
-        break;
+
+        if (href && !href.startsWith("/") && !href.startsWith("http") && !href.startsWith("#")) {
+          issues.push({
+            severity: "error",
+            field: "body",
+            message: `"${href}" is neither a site path nor a full URL.`,
+          });
+        }
       }
 
-      case "content.paragraph": {
-        issues.push(...checkProse(String(block.text ?? ""), where));
-
-        const links = (block.links as { phrase?: string; href?: string }[] | undefined) ?? [];
-        linkCount += links.length;
-
-        for (const link of links) {
-          const phrase = (link.phrase ?? "").trim();
-          const href = (link.href ?? "").trim();
-
-          if (WEAK_ANCHORS.includes(phrase.toLowerCase())) {
-            issues.push({
-              severity: "error",
-              field: where,
-              message: `"${phrase}" tells a reader nothing and passes no meaning to the page it points at. Use words that describe the destination.`,
-            });
-          }
-
-          if (href && !href.startsWith("/") && !href.startsWith("http")) {
-            issues.push({
-              severity: "error",
-              field: where,
-              message: `"${href}" is neither a site path nor a full URL.`,
-            });
-          }
+      if (tag === "img") {
+        const alt = node.attrs?.find((a) => a.name === "alt")?.value ?? "";
+        if (!alt.trim()) {
+          issues.push({
+            severity: "error",
+            field: "body",
+            message:
+              "An image has no alt text. Select it in the editor and use the image toolbar to describe it.",
+          });
         }
-        break;
       }
 
-      case "content.quote":
-      case "content.callout":
-        issues.push(...checkProse(String(block.text ?? ""), where));
-        break;
-
-      case "content.figure": {
-        if (!String(block.alt ?? "").trim()) {
-          issues.push({ severity: "error", field: where, message: "The image has no alt text." });
+      if (tag === "figure") {
+        const hasImg = textOfTag(node, "img");
+        const caption = textOf(findTag(node, "figcaption")).trim();
+        if (hasImg && !caption) {
+          issues.push({
+            severity: "error",
+            field: "body",
+            message:
+              "An image has no caption. Turn the caption on from the image toolbar, because the article template shows one on every figure.",
+          });
         }
-        if (!String(block.caption ?? "").trim()) {
-          issues.push({ severity: "error", field: where, message: "The image has no caption." });
-        }
-        break;
       }
+
+      /* Prose gets the voice rules, one block at a time. */
+      if (tag === "p" || tag === "h2" || tag === "h3" || tag === "blockquote" || tag === "li") {
+        const text = textOf(node).replace(/\s+/g, " ").trim();
+        if (text) issues.push(...checkProse(text, `body <${tag}>`));
+      }
+
+      if (node.childNodes) walk(node.childNodes);
     }
-  });
+  };
 
-  if (body.length > 0 && !seenH2) {
+  walk(root.childNodes as unknown[]);
+
+  if (html.trim() && !seenH2) {
     issues.push({
       severity: "error",
       field: "body",
@@ -377,7 +413,7 @@ function checkBody(body: NonNullable<PostInput["body"]>): Issue[] {
    * is caught by `sendsTo` being required, which guarantees at least one route
    * out of every article.
    */
-  if (body.length > 0 && linkCount < 2) {
+  if (html.trim() && linkCount < 2) {
     issues.push({
       severity: "warning",
       field: "body",
@@ -386,6 +422,30 @@ function checkBody(body: NonNullable<PostInput["body"]>): Issue[] {
   }
 
   return issues;
+}
+
+/** All the text under a node, markup ignored. */
+function textOf(node: unknown): string {
+  if (!node) return "";
+  const n = node as { nodeName?: string; value?: string; childNodes?: unknown[] };
+  if (n.nodeName === "#text") return n.value ?? "";
+  return (n.childNodes ?? []).map(textOf).join("");
+}
+
+/** The first descendant with this tag, or undefined. */
+function findTag(node: unknown, tag: string): unknown {
+  const n = node as { tagName?: string; childNodes?: unknown[] };
+  if (n.tagName === tag) return n;
+  for (const child of n.childNodes ?? []) {
+    const hit = findTag(child, tag);
+    if (hit) return hit;
+  }
+  return undefined;
+}
+
+/** Whether a descendant with this tag exists. */
+function textOfTag(node: unknown, tag: string): boolean {
+  return Boolean(findTag(node, tag));
 }
 
 /** The blocking issues, formatted for the admin panel. */

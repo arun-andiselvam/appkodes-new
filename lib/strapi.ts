@@ -1,3 +1,4 @@
+import { htmlToBlocks } from "@/lib/html-to-blocks";
 import type { Block, Post } from "@/lib/posts";
 
 /**
@@ -79,20 +80,13 @@ type StrapiMedia = {
   alternativeText: string | null;
 } | null;
 
-/**
- * One entry of the body dynamic zone.
- *
- * Strapi tags every component in a dynamic zone with `__component`, which is
- * the discriminant our `Block` union needs. The names below are the component
- * UIDs defined in cms/src/components/content, and the two lists have to be
- * kept in step by hand. `mapBlock` throws on an unknown one rather than
- * dropping it silently, because a block that vanishes from an article is the
- * kind of bug nobody notices until a client asks where their table went.
+/*
+ * The body was a dynamic zone of seven components until 24 August 2026, and
+ * this file held a `mapBlock` that turned each `__component` into a `Block`.
+ * The client asked for a real rich text editor, so it is a CKEditor field now
+ * and arrives as one HTML string. The parsing moved to lib/html-to-blocks.ts,
+ * which produces the same `Block[]` the renderer always took.
  */
-type StrapiBlock = {
-  __component: string;
-  [key: string]: unknown;
-};
 
 type StrapiPost = {
   slug: string;
@@ -108,7 +102,8 @@ type StrapiPost = {
   image: StrapiMedia;
   imageAlt: string | null;
   sendsTo: string;
-  body: StrapiBlock[] | null;
+  /** CKEditor output. One HTML string, parsed in lib/html-to-blocks.ts. */
+  body: string | null;
 };
 
 /**
@@ -182,93 +177,9 @@ function mediaUrl(media: StrapiMedia): string | undefined {
   return media.url.startsWith("http") ? media.url : `${STRAPI_URL}${media.url}`;
 }
 
-/**
- * One dynamic zone entry to one Block.
- *
- * !! THROWS ON AN UNKNOWN COMPONENT, ON PURPOSE !!
- *
- * The tempting alternative is to return null and filter. That turns "somebody
- * added a component in the Strapi admin that this site does not render" into
- * an article with a hole in it that reads fine and is missing a paragraph.
- * Failing loudly puts the error in the build log where somebody sees it.
- */
-function mapBlock(block: StrapiBlock): Block {
-  switch (block.__component) {
-    case "content.paragraph":
-      return {
-        kind: "p",
-        text: String(block.text ?? ""),
-        ...(Array.isArray(block.links) && block.links.length > 0
-          ? {
-              links: (block.links as { phrase: string; href: string }[]).map((l) => ({
-                phrase: l.phrase,
-                href: l.href,
-              })),
-            }
-          : {}),
-      };
-
-    /*
-     * One component for both heading levels, with the level as a field. Two
-     * components would let an editor pick "Heading 3" first, and the contents
-     * panel and Google both read the h2/h3 hierarchy. A field with two options
-     * is no harder to author and keeps the pair visibly related.
-     */
-    case "content.heading":
-      return { kind: block.level === "h3" ? "h3" : "h2", text: String(block.text ?? "") };
-
-    case "content.list":
-      return {
-        kind: "list",
-        items: ((block.items as { text: string }[] | null) ?? []).map((i) => i.text),
-      };
-
-    case "content.quote":
-      return { kind: "quote", text: String(block.text ?? "") };
-
-    case "content.callout":
-      return { kind: "callout", text: String(block.text ?? "") };
-
-    /*
-     * Head and rows arrive as repeatable components of joined cells rather
-     * than as a JSON field. A JSON field would let an editor save a table with
-     * four headers and three cells in a row, and the renderer would draw a
-     * broken grid. This is not airtight either, but a repeatable row of text
-     * is something a non-technical editor can actually fill in.
-     */
-    case "content.table":
-      return {
-        kind: "table",
-        head: ((block.head as { text: string }[] | null) ?? []).map((c) => c.text),
-        rows: ((block.rows as { cells: { text: string }[] }[] | null) ?? []).map((r) =>
-          (r.cells ?? []).map((c) => c.text),
-        ),
-      };
-
-    /*
-     * alt and caption are both required on the Block type, deliberately, and
-     * they are required in the Strapi schema for the same reason. Strapi will
-     * not let an editor publish a figure without them, so the empty string
-     * fallbacks here should be unreachable.
-     */
-    case "content.figure":
-      return {
-        kind: "figure",
-        src: mediaUrl(block.file as StrapiMedia) ?? "",
-        alt: String(block.alt ?? ""),
-        caption: String(block.caption ?? ""),
-      };
-
-    default:
-      throw new Error(
-        `Unknown Strapi component "${block.__component}". Add it to mapBlock in lib/strapi.ts, or remove it from the Strapi content model.`,
-      );
-  }
-}
-
 /** One Strapi entry to one Post. */
 function mapPost(entry: StrapiPost): Post {
-  const body = (entry.body ?? []).map(mapBlock);
+  const body = htmlToBlocks(entry.body ?? "");
   const image = mediaUrl(entry.image);
 
   return {
@@ -311,10 +222,24 @@ export async function strapiPosts(): Promise<Post[] | null> {
   const query = [
     "sort=published:desc",
     "pagination[pageSize]=100",
-    "populate[body][populate]=*",
+    /*
+      `body` is a plain field now rather than a dynamic zone, so it comes back
+      without being asked for and needs no populate line of its own. It had
+      `populate[body][populate]=*` while it was components.
+    */
     "populate[takeaways]=*",
     "populate[faqs]=*",
-    "populate[image]=*",
+    /*
+      Not `=*`. A wildcard here asks Strapi to deep-populate the media
+      entry's own relations, which walks into the upload plugin's `related`
+      morph relation and 400s with "Invalid key related at image.related" on
+      this Strapi version. `image` is a single media field with no relations
+      of its own worth populating, so `true` (populate this field, one level)
+      is both correct and the thing that does not 400. Confirmed against a
+      running instance on 24 August 2026: `populate[image]=*` fails,
+      `populate[image]=true` returns the same media object.
+    */
+    "populate[image]=true",
   ].join("&");
 
   const json = await strapiFetch<StrapiList<StrapiPost>>(`posts?${query}`);

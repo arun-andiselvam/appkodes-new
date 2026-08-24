@@ -212,10 +212,17 @@ export type NavGroup = {
  * parent, which is still a real page a visitor can land on. Absent means a
  * plain link. Nothing here is allowed a `#` destination; see content/footer.ts
  * for why that rule exists.
+ *
+ * `external` marks a destination outside this app, so components/layout/
+ * navigation.tsx opens it in a new tab instead of routing to it, and a
+ * visitor never loses the site they were on to follow it. Academy is the
+ * first of these: internship.hitasoft.com is a real destination with no page
+ * behind it in this repository, which the rule above otherwise requires.
  */
 export type NavItem = {
   name: string;
   href: string;
+  external?: true;
   panel?: {
     groups: NavGroup[];
     /**

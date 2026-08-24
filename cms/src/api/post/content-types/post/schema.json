@@ -5,7 +5,7 @@
     "singularName": "post",
     "pluralName": "posts",
     "displayName": "Post",
-    "description": "One published article. Mirrors the Post type in lib/posts.ts, and the two have to be changed together."
+    "description": "One published article. Mirrors the Post type in lib/posts.ts, and the two have to be changed together. Field order here is the order of the form, so write first and keep the housekeeping at the bottom."
   },
   "options": {
     "draftAndPublish": true
@@ -32,20 +32,13 @@
       "required": true,
       "maxLength": 220
     },
-    "published": {
-      "type": "date",
-      "required": true
-    },
-    "updated": {
-      "type": "date"
-    },
-    "readingMinutes": {
-      "type": "integer",
-      "min": 1
-    },
-    "author": {
-      "type": "string",
-      "default": "Hitasoft"
+    "body": {
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "required": true,
+      "options": {
+        "preset": "Hitasoft article"
+      }
     },
     "takeaways": {
       "type": "component",
@@ -72,18 +65,20 @@
       "type": "string",
       "required": true
     },
-    "body": {
-      "type": "dynamiczone",
-      "components": [
-        "content.paragraph",
-        "content.heading",
-        "content.list",
-        "content.quote",
-        "content.callout",
-        "content.table",
-        "content.figure"
-      ],
+    "published": {
+      "type": "date",
       "required": true
+    },
+    "updated": {
+      "type": "date"
+    },
+    "readingMinutes": {
+      "type": "integer",
+      "min": 1
+    },
+    "author": {
+      "type": "string",
+      "default": "Hitasoft"
     }
   }
 }

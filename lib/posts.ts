@@ -42,6 +42,24 @@ import { strapiPosts } from "@/lib/strapi";
  * `h2` is what the table of contents is built from, so a post with no h2 gets
  * no contents panel, which is correct for a short one.
  */
+/**
+ * One run of text inside a paragraph, carrying at most one mark.
+ *
+ * !! ONE MARK PER RUN, NOT A TREE !!
+ *
+ * HTML nests: bold inside a link inside italic is legal and common. This is
+ * flat, because the article template renders a run as one element and a tree
+ * would mean a recursive renderer for a gain nobody has asked for. The parser
+ * in lib/html-to-blocks.ts keeps the innermost mark and drops the rest of the
+ * formatting rather than dropping the words.
+ */
+export type Inline = {
+  mark: "none" | "strong" | "em" | "link";
+  text: string;
+  /** Set when `mark` is "link". A site path or a full URL. */
+  href?: string;
+};
+
 export type Block =
   /**
    * A paragraph, optionally carrying links.
@@ -55,7 +73,34 @@ export type Block =
    * how a post pays its way: an article nobody follows out of is a page that
    * spends attention and returns none.
    */
-  | { kind: "p"; text: string; links?: { phrase: string; href: string }[] }
+  | {
+      kind: "p";
+      text: string;
+      links?: { phrase: string; href: string }[];
+      /**
+       * The same paragraph with its inline formatting, when it came from the
+       * CMS rather than from a content file.
+       *
+       * !! ADDITIVE ON PURPOSE. `text` STAYS REQUIRED !!
+       *
+       * CKEditor arrived on 24 August 2026 and brought bold, italic and real
+       * anchors, none of which `text` plus `links` can express: that pair
+       * names a phrase and asks the renderer to find it, which works for prose
+       * written by hand and not for arbitrary marked up runs.
+       *
+       * Rather than convert the ten sample posts and every future content file
+       * to a new shape, `rich` is optional and the renderer prefers it when it
+       * is there. A block with `rich` renders the runs. A block without falls
+       * back to `Linked`, exactly as before. Both paths stay live because both
+       * sources stay live.
+       *
+       * `text` is still filled in when `rich` is present, holding the same
+       * words with the marks stripped. Anything that needs the plain string,
+       * the reading time estimate and the editorial checks among them, keeps
+       * working without knowing which source a post came from.
+       */
+      rich?: Inline[];
+    }
   | { kind: "h2"; text: string }
   /**
    * A sub-heading.
