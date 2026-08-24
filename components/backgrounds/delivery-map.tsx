@@ -144,7 +144,7 @@ export function DeliveryMap() {
         <path
           d={landPath}
           stroke="currentColor"
-          className="text-brand-blue/55"
+          className="text-emphasis-accent/55"
           strokeWidth={2.4}
           strokeLinecap="round"
           fill="none"
@@ -170,7 +170,7 @@ export function DeliveryMap() {
           No animation and no filter on these, so forty eight static paths
           cost a paint and nothing per frame.
         */}
-        <g fill="none" strokeLinecap="round" className="text-brand-blue/[0.18]">
+        <g fill="none" strokeLinecap="round" className="text-emphasis-accent/[0.18]">
           {arcs.map(({ d, path }) => (
             <path key={d.code} d={path} stroke="currentColor" strokeWidth={0.6} />
           ))}
@@ -181,7 +181,7 @@ export function DeliveryMap() {
           <g fill="none" strokeLinecap="round">
             <path
               d={activeArc.path}
-              className="text-brand-blue"
+              className="text-emphasis-accent"
               stroke="currentColor"
               strokeWidth={1.6}
             />
@@ -192,7 +192,7 @@ export function DeliveryMap() {
             <path
               d={activeArc.path}
               stroke="currentColor"
-              className="text-brand-blue motion-reduce:hidden"
+              className="text-emphasis-accent motion-reduce:hidden"
               strokeWidth={2.4}
               filter={`url(#${uid}-glow)`}
               style={{
@@ -240,12 +240,12 @@ export function DeliveryMap() {
               className="cursor-pointer"
             >
               <circle cx={p.x} cy={p.y} r={12} fill="transparent" />
-              <circle cx={p.x} cy={p.y} r={on ? 9 : 7} className="fill-brand-blue/20" />
+              <circle cx={p.x} cy={p.y} r={on ? 9 : 7} className="fill-emphasis-accent/20" />
               <circle
                 cx={p.x}
                 cy={p.y}
                 r={on ? 5 : 3}
-                className="fill-brand-blue"
+                className="fill-emphasis-accent"
                 filter={on ? `url(#${uid}-glow)` : undefined}
                 style={{ transition: "r 200ms" }}
               />
@@ -255,13 +255,13 @@ export function DeliveryMap() {
 
         {/* The hub, drawn last so it sits over every arc leaving it. */}
         <g>
-          <circle cx={hubPt.x} cy={hubPt.y} r={16} className="fill-brand-blue/15" />
-          <circle cx={hubPt.x} cy={hubPt.y} r={9} className="fill-brand-blue/30" />
+          <circle cx={hubPt.x} cy={hubPt.y} r={16} className="fill-emphasis-accent/15" />
+          <circle cx={hubPt.x} cy={hubPt.y} r={9} className="fill-emphasis-accent/30" />
           <circle
             cx={hubPt.x}
             cy={hubPt.y}
             r={4.5}
-            className="fill-brand-blue"
+            className="fill-emphasis-accent"
             filter={`url(#${uid}-glow)`}
           />
         </g>
@@ -304,26 +304,57 @@ export function DeliveryMap() {
  */
 const CHAR_W = 0.6;
 
+/**
+ * The name plate on the hub and on a hovered destination.
+ *
+ * !! THE COLOURS ARE THE PANEL'S, NOT THE PAGE'S !!
+ *
+ * This was `fill-secondary` with `fill-secondary-foreground` text, which reads
+ * off the page background. That was right while the map sat on a white
+ * section. It sits on the emphasis panel now, which is dark in both themes,
+ * and `--secondary` is a pale tint in light mode. The plate would have been a
+ * white lozenge with dark text in one theme and a dark one with light text in
+ * the other, on the same dark ground.
+ *
+ * `--emphasis-foreground` is light in both themes, so a wash of it is a plate
+ * in both and the text on top stays readable in both.
+ */
 function Pill({ x, y, text, size = 12 }: { x: number; y: number; text: string; size?: number }) {
   const padX = 9;
   const w = text.length * size * CHAR_W + padX * 2;
   const h = size + 11;
+
+  /*
+   * Clamped to the viewBox, not just centred on the point.
+   *
+   * !! A DOT NEAR AN EDGE WAS PLOTTING A LABEL PAST IT !!
+   *
+   * New Zealand projects to x=976 on a 1000 wide map, and "New Zealand" set
+   * in JetBrains Mono at this size is about 97 units wide. Centred on the
+   * dot, that runs to x=1025: the viewBox clips it and the plate reads
+   * "New Zeala". Shifting the centre in by half the overhang keeps the
+   * plate fully inside the frame without moving it for any label that
+   * already fits, and it costs nothing per-label since it is only ever a
+   * few pills on screen at once.
+   */
+  const cx = Math.min(Math.max(x, w / 2), VIEW_W - w / 2);
+
   return (
     <g style={{ pointerEvents: "none" }}>
       <rect
-        x={x - w / 2}
+        x={cx - w / 2}
         y={y - h / 2}
         width={w}
         height={h}
         rx={h / 2}
-        className="fill-secondary"
+        className="fill-emphasis-foreground/15"
       />
       <text
-        x={x}
+        x={cx}
         y={y}
         textAnchor="middle"
         dominantBaseline="central"
-        className="fill-secondary-foreground font-mono"
+        className="fill-emphasis-foreground font-mono"
         style={{ fontSize: size }}
       >
         {text}
