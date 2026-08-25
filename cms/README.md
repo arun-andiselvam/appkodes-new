@@ -273,15 +273,26 @@ to adopt the plugin's whole component.
 
 ## Caching, and the webhook that is not built yet
 
-`lib/strapi.ts` caches a fetched list for fifteen minutes, tagged `posts` or
+`lib/strapi.ts` caches a fetched list for sixty seconds, tagged `posts` or
 `jobs` depending which collection was fetched, so the two can be revalidated
 independently once something does that. Publishing in the admin does **not**
-appear on the site immediately, and fifteen minutes is the worst case.
+appear on the site immediately, and a minute is the worst case.
 
-The proper fix is a Strapi webhook pointing at a revalidation route on the
-site, which would make publishing appear within seconds and let the cache live
-much longer. It is not built. Until it is, `REVALIDATE_SECONDS` is a
+It was fifteen minutes until 26 August 2026, which was fine while posts were
+written by hand and arrived rarely. It stopped being fine the day an external
+tool started publishing here: somebody hits publish, looks at the site, sees
+nothing, and reasonably concludes it is broken.
+
+The proper fix is still a Strapi webhook pointing at a revalidation route on
+the site, which would make publishing appear within seconds and let the cache
+live much longer. It is not built. Until it is, `REVALIDATE_SECONDS` is a
 compromise between hitting Strapi on every request and editors waiting.
+
+**A published post also needs the site to be able to route to it.**
+`app/blog/[slug]` carries `dynamicParams = true` for that reason. With it
+false, only the slugs that existed at the last build would render, so every
+new article would 404 until somebody redeployed. Read the note in that file
+before changing it.
 
 ---
 

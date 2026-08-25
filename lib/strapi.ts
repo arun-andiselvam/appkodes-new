@@ -61,11 +61,25 @@ export function strapiConfigured(): boolean {
  * a site outage and makes every page render wait on a network call. Caching
  * forever means an editor publishes and nothing changes until the next deploy.
  *
- * Fifteen minutes is the compromise while there is no webhook. When somebody
- * wires Strapi's publish webhook to a revalidation route, this becomes a tag
- * based revalidate and the number stops mattering.
+ * !! SIXTY SECONDS, DOWN FROM FIFTEEN MINUTES ON 26 AUGUST 2026 !!
+ *
+ * Fifteen was picked when posts were written by hand and arrived rarely. It
+ * became the wrong number the day an external tool started publishing into
+ * this collection: somebody hits publish, looks at the site, and finds
+ * nothing there. That reads as broken, and the reasonable response to it is
+ * to hit publish again.
+ *
+ * A minute costs one request per tag per minute to a Strapi instance sitting
+ * on the same droplet, which is nothing, and it keeps every property this
+ * comment already argued for. An outage still serves the last good response
+ * rather than taking the site down, and a page render still does not wait on
+ * a network call.
+ *
+ * The real fix is still a Strapi publish webhook pointed at a revalidation
+ * route, at which point this becomes a tag based revalidate and the number
+ * stops mattering. See cms/README.md.
  */
-const REVALIDATE_SECONDS = 900;
+const REVALIDATE_SECONDS = 60;
 
 /** What Strapi returns for a collection query. Flat, per v5. */
 type StrapiList<T> = { data: T[] };

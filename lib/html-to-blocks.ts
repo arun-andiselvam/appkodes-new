@@ -282,7 +282,42 @@ function blockFrom(el: Element): Block[] {
 export function htmlToBlocks(html: string): Block[] {
   if (!html?.trim()) return [];
 
-  return parseFragment(html)
-    .childNodes.filter(isElement)
-    .flatMap(blockFrom);
+  const fragment = parseFragment(html);
+  const blocks = fragment.childNodes.filter(isElement).flatMap(blockFrom);
+  if (blocks.length > 0) return blocks;
+
+  /*
+   * !! NOTHING PARSED, BUT THERE IS TEXT. SHOW IT RATHER THAN LOSE IT !!
+   *
+   * Added 26 August 2026. An external content tool published into `body`,
+   * which is a CKEditor field and so an HTML string, and sent plain markdown
+   * instead: no tags at all, paragraphs separated by blank lines. parse5
+   * finds no elements in that, so every branch above returns nothing.
+   *
+   * The failure that caused was the worst kind. The post existed, was
+   * published, appeared on /blog and on its category page, and its own page
+   * returned 404, because postsWithBody in lib/posts.ts drops anything whose
+   * body parses to zero blocks. An article you can see listed and cannot
+   * open, with nothing anywhere saying why.
+   *
+   * So an unparseable body falls back to its own text, split on blank lines
+   * into paragraphs. Any markdown syntax inside it stays visible exactly as
+   * typed, which is deliberate rather than lazy: this is a repair, not a
+   * markdown renderer. "## Heading" showing on the page is the honest signal
+   * that the article still needs formatting in Strapi's editor, and the
+   * client asked for the body shown as stored so they can do that. Silently
+   * converting it would hide that the tool is sending the wrong format.
+   *
+   * If markdown ever needs to be a first class input, the answer is a real
+   * parser at the seam in lib/strapi.ts, not this.
+   */
+  const text = fragment.childNodes
+    .map((node) => ("value" in node ? String(node.value) : ""))
+    .join("");
+
+  return text
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map((paragraph) => ({ kind: "p" as const, text: paragraph }));
 }
