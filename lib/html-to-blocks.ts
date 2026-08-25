@@ -228,9 +228,35 @@ function blockFrom(el: Element): Block[] {
       return [{ kind: "h3", text: plain(childrenOf(el)) }];
 
     case "p": {
+      /*
+       * !! AN IMAGE INSIDE A PARAGRAPH WAS BEING THROWN AWAY !!
+       *
+       * inlineRuns walks a paragraph for text, strong, em, a and br. An img
+       * is none of those, so it returned nothing for it and the image
+       * vanished with no error anywhere.
+       *
+       * That is exactly how an external content tool writes them. It sends
+       * `<p><img src="..." alt="..."></p>` rather than the `<figure>` this
+       * file already handled, and the first article published that way lost
+       * all four of its in-body images: 46 paragraphs parsed, zero figures.
+       * Nothing failed loudly, the pictures were simply not there.
+       *
+       * So images are lifted out first, as figure blocks, and whatever text
+       * the paragraph also held still renders after them. A paragraph that
+       * was only an image produces just the figure rather than an empty
+       * paragraph alongside it.
+       */
+      const images = childrenOf(el)
+        .filter(isElement)
+        .filter((child) => child.tagName === "img")
+        .flatMap(blockFrom);
+
       const rich = tidy(inlineRuns(childrenOf(el)));
-      if (rich.length === 0) return [];
-      return [{ kind: "p", text: rich.map((r) => r.text).join(""), rich }];
+      if (rich.length === 0) return images;
+      return [
+        ...images,
+        { kind: "p", text: rich.map((r) => r.text).join(""), rich },
+      ];
     }
 
     case "ul":
