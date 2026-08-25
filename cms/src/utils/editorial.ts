@@ -241,7 +241,28 @@ export function checkPost(post: PostInput): Issue[] {
     issues.push(...checkProse(excerpt, "excerpt"));
   }
 
-  if (typeof post.sendsTo === "string") {
+  /*
+   * !! sendsTo AND takeaways ARE OPTIONAL SINCE 25 AUGUST 2026 !!
+   *
+   * Both were `required` in the schema and both are now not, at the client's
+   * request, so that an external content tool can publish into this
+   * collection without supplying them.
+   *
+   * The rules below did not need loosening, only the empty case. Each already
+   * ran conditionally, so a field that is absent is simply not checked. What
+   * had to change is what "absent" looks like coming back out of the
+   * database: Strapi hands back an empty string for an unset string and an
+   * empty array for an unset repeatable component, not undefined. The publish
+   * path in lifecycles.ts reloads the stored document and merges it under the
+   * incoming data, so without these guards every post saved without takeaways
+   * would fail on publish with "0 takeaways. Three is the count." - a rule
+   * firing on a field nobody filled in.
+   *
+   * The standard itself is unchanged. Skip them and nothing complains; supply
+   * them and they still have to be right, because two takeaways is a worse
+   * outcome than none.
+   */
+  if (typeof post.sendsTo === "string" && post.sendsTo.trim()) {
     const target = post.sendsTo.trim();
     if (!/^\/(services|industries)\//.test(target)) {
       issues.push({
@@ -252,7 +273,7 @@ export function checkPost(post: PostInput): Issue[] {
     }
   }
 
-  if (Array.isArray(post.takeaways)) {
+  if (Array.isArray(post.takeaways) && post.takeaways.length > 0) {
     if (post.takeaways.length !== 3) {
       issues.push({
         severity: "error",
@@ -409,9 +430,22 @@ function checkBody(html: string): Issue[] {
   /*
    * Two to three contextual links, per docs/blog-structure.md. A warning
    * rather than an error, because the count is a target and a genuinely short
-   * post with one good link is not broken. The zero case is different and it
-   * is caught by `sendsTo` being required, which guarantees at least one route
-   * out of every article.
+   * post with one good link is not broken.
+   *
+   * !! THE ZERO CASE USED TO BE COVERED HERE AND NO LONGER IS !!
+   *
+   * This said the zero case "is caught by `sendsTo` being required, which
+   * guarantees at least one route out of every article". `sendsTo` stopped
+   * being required on 25 August 2026, so that guarantee is gone: a post can
+   * now be published with no links in the body and no silo link either, and
+   * nothing will refuse it.
+   *
+   * Left as a warning rather than promoted to an error, because raising it
+   * would block the very tool the field was made optional for. It is a real
+   * gap rather than a tidy trade: an article nobody can follow out of spends
+   * a reader's attention and returns none of it, which is the whole argument
+   * for silo 7 in docs/hitasoft_ai_architecture_strategy.md. Worth watching
+   * what actually gets published before deciding whether it needs teeth.
    */
   if (html.trim() && linkCount < 2) {
     issues.push({

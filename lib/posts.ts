@@ -212,8 +212,22 @@ export type Post = {
    * Real artwork should always set this.
    */
   imageAlt?: string;
-  /** The silo page this post feeds. See the note on the type above. */
-  sendsTo: string;
+  /**
+   * The silo page this post feeds. See the note on the type above.
+   *
+   * !! OPTIONAL SINCE 25 AUGUST 2026, AND THAT IS A REAL LOSS !!
+   *
+   * It was required, and the note above still explains why it should be: a
+   * post that routes nowhere spends a reader's attention and returns none of
+   * it. The client made it optional in Strapi so an external content tool
+   * could publish without supplying one. Typing it as a guaranteed string
+   * after that would be a lie the renderer pays for - it drew
+   * `<Link href="">`, a dead link, on any post the tool wrote.
+   *
+   * components/sections/post.tsx now omits the silo link when this is absent
+   * rather than drawing one that goes nowhere.
+   */
+  sendsTo?: string;
   /**
    * The article itself.
    *

@@ -167,7 +167,11 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
           <div className="grid gap-12 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-20">
             <aside className="lg:sticky lg:top-32 h-fit">
               {headings.length > 1 && <Contents headings={headings} />}
-              <SiloLink href={post.sendsTo} className={headings.length > 1 ? "mt-10" : ""} />
+              {/* Omitted rather than drawn empty when a post has no silo
+                  target. See the note on `sendsTo` in lib/posts.ts. */}
+              {post.sendsTo && (
+                <SiloLink href={post.sendsTo} className={headings.length > 1 ? "mt-10" : ""} />
+              )}
             </aside>
 
             {/*

@@ -102,7 +102,9 @@ type StrapiPost = {
   faqs: { question: string; answer: string }[] | null;
   image: StrapiMedia;
   imageAlt: string | null;
-  sendsTo: string;
+  /* Optional in the schema since 25 August 2026, and Strapi returns null for
+     an unset string rather than omitting the key. See lib/posts.ts. */
+  sendsTo: string | null;
   /** CKEditor output. One HTML string, parsed in lib/html-to-blocks.ts. */
   body: string | null;
 };
@@ -207,7 +209,9 @@ function mapPost(entry: StrapiPost): Post {
     ...(entry.faqs && entry.faqs.length > 0 ? { faqs: entry.faqs } : {}),
     ...(image ? { image } : {}),
     ...(entry.imageAlt ? { imageAlt: entry.imageAlt } : {}),
-    sendsTo: entry.sendsTo,
+    /* Spread rather than assigned, so an unset one stays absent instead of
+       arriving as null and being rendered as an empty href. */
+    ...(entry.sendsTo ? { sendsTo: entry.sendsTo } : {}),
     ...(body.length > 0 ? { body } : {}),
   };
 }
