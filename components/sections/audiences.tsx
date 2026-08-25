@@ -169,8 +169,31 @@ export function AudiencesSection() {
           </div>
 
           {/* Right: the specifics for this segment */}
+          {/*
+            !! min-w-0 IS LOAD BEARING. WITHOUT IT THIS PANEL BREAKS MOBILE !!
+
+            A grid item defaults to `min-width: auto`, which means it refuses
+            to shrink below the intrinsic minimum width of its own content.
+            The tab strip below is `flex w-max`, so its intrinsic minimum is
+            the full width of all four tabs laid out in a row - about 572px.
+            That measurement propagated up and forced this grid column to
+            572px inside a 342px container on a 390px phone.
+
+            The damage was not a scrollbar, because the Section carries
+            `overflow-hidden`: the panel was simply cut off at the right edge
+            of the screen. Two of the four tabs were off-screen and
+            unreachable, and every value in the panel's right hand column
+            ("A working prototype", "A price agreed up front") was clipped
+            out of view. The page reported no horizontal overflow the whole
+            time, which is why an overflow check did not catch it.
+
+            min-w-0 lets the column shrink to its share of the grid, at which
+            point the strip's own `overflow-x-auto` finally has something to
+            scroll against and the tabs swipe sideways as intended. Found on
+            25 August 2026 during a mobile pass.
+          */}
           <div
-            className={`lg:sticky lg:top-32 transition-all duration-700 delay-200 ${
+            className={`min-w-0 lg:sticky lg:top-32 transition-all duration-700 delay-200 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
             }`}
           >
