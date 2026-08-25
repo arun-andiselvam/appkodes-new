@@ -286,13 +286,27 @@ export const mainNav: NavItem[] = [
             "What the work returned, and what clients say about it without us editing them.",
         },
       ],
-      /* The same strip as the Industries panel above, and for the reasons
-         recorded there. This one read "All resources" and went to /resources
-         until 24 August 2026. */
+      /*
+       * This strip read "All resources" and went to /resources until 24
+       * August 2026, then "How we work" until 25 August, when the client
+       * asked for it to point at a single paginated list of every post.
+       *
+       * /blog is that list, and it is deliberately not /resources: that page
+       * is the silo hub, whose job is to send a reader to the right category.
+       * See the note at the top of components/sections/blog-index.tsx for why
+       * the two coexist rather than one replacing the other.
+       *
+       * !! /how-we-work IS NOT ORPHANED BY THIS !!
+       *
+       * The Industries panel footer still points at it, which is where
+       * `allNavRoutes` picks it up for the sitemap, and content/footer.ts
+       * lists it again in the site footer. Check both before repointing that
+       * strip too.
+       */
       footer: {
-        name: "How we work",
-        href: "/how-we-work",
-        blurb: "How an engagement actually runs, week by week.",
+        name: "Show all resources",
+        href: "/blog",
+        blurb: "Every guide, newest first.",
       },
     },
   },

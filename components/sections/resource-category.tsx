@@ -193,7 +193,7 @@ export async function ResourceCategoryPage({
  * freshness off this list needs the attribute, since "25 Aug 2026" is not a
  * date to anything but a person.
  */
-function PostCard({ post }: { post: Post }) {
+export function PostCard({ post }: { post: Post }) {
   return (
     <li>
       {/*

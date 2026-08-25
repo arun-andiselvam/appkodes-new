@@ -277,6 +277,46 @@ export async function postsIn(category: string): Promise<Post[]> {
 }
 
 /**
+ * Every post, newest first, whatever category it is in.
+ *
+ * What /blog lists. The category pages exist because the silo needs them and
+ * because a reader arriving on "AI integration guides" should land somewhere
+ * about that; this is the other reader, the one who wants to see everything
+ * that has been written in the order it was written. Added 25 August 2026 at
+ * the client's request.
+ */
+export async function allPosts(): Promise<Post[]> {
+  return (await source()).sort((a, b) => b.published.localeCompare(a.published));
+}
+
+/**
+ * One page of the full list, same contract as pageOfPostsIn below.
+ */
+export async function pageOfAllPosts(
+  pageNumber: number,
+): Promise<{ posts: Post[]; total: number; totalPages: number }> {
+  return paginate(await allPosts(), pageNumber);
+}
+
+/**
+ * Shared by both pagers, so the two can never disagree about what page two
+ * means or about what an out of range page returns.
+ */
+function paginate(all: Post[], pageNumber: number) {
+  const totalPages = Math.max(1, Math.ceil(all.length / POSTS_PER_PAGE));
+  const start = (pageNumber - 1) * POSTS_PER_PAGE;
+
+  return {
+    posts:
+      pageNumber >= 1 && pageNumber <= totalPages
+        ? all.slice(start, start + POSTS_PER_PAGE)
+        : [],
+    total: all.length,
+    totalPages,
+  };
+}
+
+/**
  * One page of a category, plus what the pager needs to draw itself.
  *
  * `pageNumber` is 1 based, matching the URL. Anything out of range comes back
@@ -346,15 +386,5 @@ export async function pageOfPostsIn(
   category: string,
   pageNumber: number,
 ): Promise<{ posts: Post[]; total: number; totalPages: number }> {
-  const all = await postsIn(category);
-  const totalPages = Math.max(1, Math.ceil(all.length / POSTS_PER_PAGE));
-  const start = (pageNumber - 1) * POSTS_PER_PAGE;
-
-  return {
-    posts: pageNumber >= 1 && pageNumber <= totalPages
-      ? all.slice(start, start + POSTS_PER_PAGE)
-      : [],
-    total: all.length,
-    totalPages,
-  };
+  return paginate(await postsIn(category), pageNumber);
 }
