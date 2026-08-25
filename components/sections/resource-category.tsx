@@ -115,7 +115,7 @@ export async function ResourceCategoryPage({
               <Pagination base={path} current={pageNumber} totalPages={totalPages} />
             </>
           ) : (
-            <EmptyState planned={category.planned} />
+            <EmptyState />
           )}
         </Container>
       </Section>
@@ -283,42 +283,33 @@ function PostCard({ post }: { post: Post }) {
 /**
  * What sits where the index goes until there is something to put in it.
  *
- * Same row shape as a real post, so the page does not change layout the week
- * the first one lands. The titles are marked as unwritten in one line and are
- * not links, because a link is a promise of somewhere to go.
- * content/resources.ts carries the full reasoning: placeholder cards tell a
- * visitor the site is unfinished and waste the click as well.
+ * !! IT USED TO LIST THE TITLES BEING WRITTEN, AND NO LONGER DOES !!
+ *
+ * A `planned` array in content/resources.ts supplied three titles per
+ * category, rendered as plain grey text rather than links, under a "Being
+ * written" heading. The reasoning was sound on its own terms: a roadmap is
+ * more honest than a placeholder card, and it kept the page from changing
+ * shape the week the first real post landed.
+ *
+ * It came out on 25 August 2026 at the client's request, and the reason is
+ * worth recording. Those titles were the same strings as the ten invented
+ * sample posts that lib/posts.ts had been serving as real articles on
+ * production (see the note there). With the samples deleted, the roadmap
+ * list was the only thing left on the page, and it was indistinguishable
+ * from the bug that had just been fixed. Nobody reading the page can tell a
+ * deliberate roadmap from leftover fake content, and on a page whose whole
+ * problem had just been fake content, the benefit of the doubt is not
+ * available.
+ *
+ * So an empty category now says it is empty and stops. Anything added back
+ * here has to be something a visitor can actually read.
  */
-function EmptyState({ planned }: { planned: string[] }) {
+function EmptyState() {
   return (
-    <>
-      <div className="flex items-baseline justify-between gap-4 pb-2">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          Being written
-        </h2>
-      </div>
-      <p className="max-w-2xl pb-6 text-muted-foreground leading-relaxed">
-        Nothing is published here yet. These are the pieces being written first,
-        listed as titles rather than links because none of them exists.
-      </p>
-      {/* Two across on the same grid as the cards, so the page does not change
-          shape the week the first real post lands. */}
-      <ol className="mt-8 grid gap-x-10 gap-y-8 sm:grid-cols-2">
-        {planned.map((title, i) => (
-          <li
-            key={title}
-            className="grid grid-cols-[minmax(0,10rem)_1fr] items-start gap-5"
-          >
-            <span className="block border-t border-foreground/15 pt-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground tabular-nums">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span className="font-display text-xl tracking-tight leading-tight text-muted-foreground/70">
-              {title}
-            </span>
-          </li>
-        ))}
-      </ol>
-    </>
+    <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
+      Nothing is published here yet. The guides below the fold explain what
+      this category will cover.
+    </p>
   );
 }
 

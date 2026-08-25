@@ -14,9 +14,15 @@
  * wasting the click.
  *
  * Each category still sends the reader somewhere real, which is the silo an
- * article in it would have linked to anyway. `sends` is that list. Replace
- * `planned` with a post list the week the first three are written. The routes
- * and the menu entries are already here, so nothing else has to change.
+ * article in it would have linked to anyway. `sends` is that list.
+ *
+ * A `planned` array carried three working titles per category, shown under a
+ * "Being written" heading as plain text rather than links. It came out on 25
+ * August 2026 at the client's request: those titles were the same strings as
+ * the invented sample posts lib/posts.ts had been serving as real articles,
+ * and once the samples were deleted the roadmap was the only thing left on
+ * the page, indistinguishable from the bug that had just been fixed. See the
+ * note on EmptyState in components/sections/resource-category.tsx.
  */
 export type ResourceCategory = {
   title: string;
@@ -47,8 +53,6 @@ export type ResourceCategory = {
     body: string;
     points: { title: string; body: string }[];
   };
-  /** Working titles of the pieces being written. Not links, because they do not exist. */
-  planned: string[];
   /** Where to go in the meantime. Every one is a real page. */
   sends: { name: string; href: string; blurb: string }[];
 };
@@ -92,11 +96,6 @@ export const resourceCategories: Record<string, ResourceCategory> = {
         },
       ],
     },
-    planned: [
-      "What it actually takes to add AI to software you already run",
-      "API integration or a private model, and how to tell which you need",
-      "The questions to settle about your data before anybody builds",
-    ],
     sends: [
       {
         name: "Custom AI API & Software Integration",
@@ -144,11 +143,6 @@ export const resourceCategories: Record<string, ResourceCategory> = {
         },
       ],
     },
-    planned: [
-      "How to find the manual work that is already on your payroll",
-      "Automate the queue or automate the paperwork, and which pays back sooner",
-      "Keeping model spend flat while your usage grows",
-    ],
     sends: [
       {
         name: "AI Workflow Automation",
