@@ -26,7 +26,26 @@ export type Job = {
   title: string;
   department: string;
   location: string;
-  employmentType: "Full-time" | "Part-time" | "Contract" | "Internship";
+  /**
+   * !! THESE VALUES MIRROR THE STRAPI ENUM AND HAVE TO BE CHANGED TOGETHER !!
+   *
+   * The list lives twice: here, and as `employmentType.enum` in
+   * cms/src/api/job/content-types/job/schema.json. Adding one in the Strapi
+   * admin instead of in both files does not work and fails quietly in two
+   * ways. The Content-Type Builder writes to the container's own filesystem,
+   * so the next deploy rebuilds from this repository and drops it. And a
+   * value the CMS accepts but this union does not know about is a listing
+   * that typechecks nowhere and renders an unexpected string.
+   *
+   * "Freelance" added 25 August 2026, at the client's request, alongside the
+   * schema.
+   */
+  employmentType:
+    | "Full-time"
+    | "Part-time"
+    | "Contract"
+    | "Internship"
+    | "Freelance";
   /** The teaser shown on the /careers list and used as the meta description
    * on the listing's own page. */
   summary: string;
