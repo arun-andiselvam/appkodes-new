@@ -103,6 +103,44 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /*
+    Off-screen sections skip layout, style and paint until they are scrolled
+    near.
+
+    Added 25 August 2026. Lighthouse counted 126 animated elements on the home
+    page against maybe fifteen visible at once, and 599ms in Style & Layout.
+    Most of that is the browser laying out and painting sections nobody has
+    reached yet. This tells it not to bother until they matter.
+
+    !! THE FIRST THREE SECTIONS ARE EXCLUDED, AND THAT IS THE POINT !!
+
+    `nth-child(n+4)` starts at the fourth. Anything at or near the top of the
+    page is on screen immediately, so containing it buys nothing and risks the
+    one metric this site currently has perfect. The hero especially: it is the
+    LCP element (see the note in components/sections/hero.tsx) and nothing
+    should sit between it and being painted.
+
+    !! contain-intrinsic-size CARRIES `auto`, WHICH IS THE CLS INSURANCE !!
+
+    The plain `contain-intrinsic-size: 600px` version is what causes layout
+    shift: every un-rendered section claims exactly 600px, the scroll height is
+    wrong by however much each one is actually off by, and the page jumps as
+    they resolve. The `auto` keyword makes the browser remember each section's
+    real rendered size once it has seen it and use that instead, so the
+    estimate is only ever used before a section has been on screen. 600px is
+    the fallback for that first pass, roughly the shortest a section on this
+    site gets.
+
+    CLS was measured at 0 before and after this change, on both a cold load and
+    a full scroll to the footer. If a future section does shift, it is because
+    it is far taller than the estimate on first paint, and the fix is a
+    per-section intrinsic size rather than removing this.
+  */
+  main > section:nth-child(n + 4) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+  }
 }
 
 @layer utilities {

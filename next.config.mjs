@@ -12,6 +12,32 @@ const nextConfig = {
   output: 'standalone',
 
   /*
+   * The stylesheet arrives inside the HTML rather than as a second request.
+   *
+   * Lighthouse's critical path was exactly two hops: the document, then a
+   * 15.4 KiB stylesheet that blocks render until it lands. Inlining collapses
+   * that to one, which is the single cheapest FCP and Speed Index win
+   * available here.
+   *
+   * Next's own docs list when this is the right call, and this project is
+   * the case they describe: Tailwind, so the CSS is atomic and small and
+   * does not grow with page count, and a marketing site whose visitors
+   * mostly arrive cold from search rather than returning to a warm cache.
+   *
+   * The real trade-off, stated plainly: inlined CSS cannot be cached
+   * separately, so it rides along with every HTML response instead of being
+   * fetched once. At 15.4 KiB that is worth it. If the stylesheet ever grows
+   * substantially - a component library, a second design system - re-run the
+   * numbers, because this stops being free at some size.
+   *
+   * Still experimental in Next 16, and does nothing in dev. Verify against a
+   * production build, not `next dev`.
+   */
+  experimental: {
+    inlineCss: true,
+  },
+
+  /*
    * !! THIS DROPS SUPPORT FOR PRE-2020 BROWSERS. THAT IS THE POINT !!
    *
    * Lighthouse's "Legacy JavaScript" finding kept naming
