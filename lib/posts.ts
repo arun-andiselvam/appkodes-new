@@ -226,52 +226,41 @@ export type Post = {
 };
 
 /**
- * !! THE SAMPLES ARE NOW A FALLBACK, NOT THE SOURCE !!
+ * !! THE SAMPLES ARE GONE. THIS WAS THE FLAG THAT GATED THEM !!
  *
- * True still serves the ten invented posts in content/posts-sample.ts, and it
- * only takes effect when Strapi is not configured. Turned on 21 August 2026
- * for a design review, and demoted to a fallback on 24 August when Strapi was
- * wired up.
+ * True served the ten invented posts in content/posts-sample.ts as a
+ * fallback whenever Strapi was not configured or unreachable. Turned on 21
+ * August 2026 for a design review, demoted to a fallback on 24 August when
+ * Strapi was wired up, and turned off for good on 25 August once the site
+ * was genuinely live: a real visitor was seeing them, on production, under
+ * the company's own name, because a typo (`TRAPI_URL`) had left `STRAPI_URL`
+ * unset in the deployed environment the whole time. That is exactly the
+ * "CMS was unreachable" case this flag existed to survive gracefully for a
+ * developer's laptop, and exactly the case its own comment said would not be
+ * a defence anybody would accept in production. content/posts-sample.ts is
+ * deleted with it.
  *
- * Set STRAPI_URL and STRAPI_API_TOKEN and this flag stops mattering, because
- * `source` below never reaches it. Leave them unset, on a laptop with no CMS
- * to point at, and the site renders exactly as it did before.
- *
- * !! IT STILL HAS TO GO TO false BEFORE LAUNCH !!
- *
- * Production must not be able to fall back to invented articles if the CMS is
- * unreachable. An empty category page is honest. Ten fabricated ones under the
- * company's name are not, and "the CMS was down" is not a defence anybody
- * would accept. Cleanup is this boolean, the imports below, and deleting
- * content/posts-sample.ts.
+ * Set STRAPI_URL and STRAPI_API_TOKEN (or leave them unset on a machine with
+ * no CMS to point at) and `source` below now has exactly two states: real
+ * posts, or none.
  */
-const USE_SAMPLE_POSTS = true;
 
 /** How many posts a category page shows before paging. */
 export const POSTS_PER_PAGE = 4;
 
 /**
- * Every post, from whichever source is available.
- *
- * !! THE PRECEDENCE HERE IS THE WHOLE CMS INTEGRATION !!
- *
- * Strapi first when it is configured, samples second when the flag allows it,
- * and an empty list otherwise. Three states, one place, and everything below
- * reads from this rather than deciding for itself.
+ * Every post, from Strapi if it is configured and reachable, empty
+ * otherwise.
  *
  * A Strapi failure returns null rather than throwing, so an outage falls
  * through to the same branch as a laptop with no CMS. That is deliberate on a
  * marketing site: a visitor gets a page, and the error is in the server log
- * where somebody can act on it.
+ * where somebody can act on it. What used to sit in that branch was ten
+ * invented articles; now it is the category's own honest empty state. See
+ * the note above for why.
  */
 async function source(): Promise<Post[]> {
-  const fromStrapi = await strapiPosts();
-  if (fromStrapi) return fromStrapi;
-
-  if (!USE_SAMPLE_POSTS) return [];
-
-  const { samplePosts } = await import("@/content/posts-sample");
-  return samplePosts;
+  return (await strapiPosts()) ?? [];
 }
 
 /**
