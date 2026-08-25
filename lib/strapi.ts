@@ -228,7 +228,25 @@ function mapPost(entry: StrapiPost): Post {
     takeaways: (entry.takeaways ?? []).map((t) => t.text),
     ...(entry.faqs && entry.faqs.length > 0 ? { faqs: entry.faqs } : {}),
     ...(image ? { image } : {}),
-    ...(entry.imageAlt ? { imageAlt: entry.imageAlt } : {}),
+    /*
+     * The `imageAlt` field first, then the alt text on the uploaded file.
+     *
+     * Two places can hold this and they are filled by different people. An
+     * editor working in the admin types into the post's own `imageAlt`
+     * field. An external tool uploading through the API sets
+     * `alternativeText` on the media entry instead, and leaves `imageAlt`
+     * null, which is what happened to the first post published that way on
+     * 26 August 2026: Strapi held perfectly good alt text and the page
+     * rendered alt="" anyway, so the hero image was invisible to a screen
+     * reader for no reason.
+     *
+     * imageAlt wins when both are set, because that one is written about
+     * this article while the media alt describes the file wherever it is
+     * reused.
+     */
+    ...(entry.imageAlt || entry.image?.alternativeText
+      ? { imageAlt: entry.imageAlt || entry.image?.alternativeText || "" }
+      : {}),
     /* Spread rather than assigned, so an unset one stays absent instead of
        arriving as null and being rendered as an empty href. */
     ...(entry.sendsTo ? { sendsTo: entry.sendsTo } : {}),

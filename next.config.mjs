@@ -81,8 +81,34 @@ const nextConfig = {
   reactStrictMode: true,
 
   images: {
-    // Only ever load images we host ourselves.
-    remotePatterns: [],
+    /*
+     * Only images we host ourselves, which now includes the CMS.
+     *
+     * This was an empty list, written when every image on the site came out
+     * of public/. Strapi holds the article artwork now, and next/image
+     * refuses any host not named here: the optimizer answered 400 for the
+     * first post published with a hero image, so the page rendered a broken
+     * image box. The image itself was fine and served 200 from Strapi.
+     *
+     * !! THIS IS AN ALLOWLIST AND IT STAYS ONE !!
+     *
+     * The tempting fix is a wildcard, and it is the wrong one: it would let
+     * anybody who can set an image URL in the CMS point this site's
+     * optimizer at any host on the internet, and have it fetch and re-serve
+     * the result under our own domain. One hostname, our own CMS, no
+     * wildcards in it.
+     *
+     * pathname is scoped to /uploads/ because that is the only place Strapi
+     * writes media. Nothing else on cms.hitasoft.com should be reachable
+     * through the image optimizer.
+     */
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cms.hitasoft.com',
+        pathname: '/uploads/**',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
 
