@@ -6,7 +6,7 @@ import {
   Instrument_Serif,
   JetBrains_Mono,
 } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { ThemeProvider } from "@/components/theme-provider";
 import { organizationSchema } from "@/lib/organization-schema";
 import { Navigation } from "@/components/layout/navigation";
@@ -133,7 +133,12 @@ export default async function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
-        <Analytics />
+        {/*
+          Both tags carry the same per-request nonce the rest of the page
+          does. See the note in the component for why script-src needed no
+          widening and connect-src/img-src did.
+        */}
+        <GoogleAnalytics nonce={nonce} />
       </body>
     </html>
   );
