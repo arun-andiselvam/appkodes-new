@@ -627,7 +627,7 @@ export function TestimonialsSection({
             makes the halves unequal and the row jumps every loop, which is the
             same bug the integrations marquees had.
           */}
-          <div className="mt-10 flex overflow-hidden">
+          <div className="marquee-track mt-10 flex overflow-hidden">
             {[0, 1].map((setIndex) => (
               <div key={setIndex} className="flex items-center gap-16 pr-16 shrink-0 marquee">
                 {clientLogos.map((client) => (

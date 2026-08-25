@@ -35,7 +35,7 @@ function MarqueeRow({
           {label}
         </span>
       </Container>
-      <div className="mt-4 flex">
+      <div className="marquee-track mt-4 flex overflow-hidden">
         {[0, 1].map((setIndex) => (
           <div
             key={setIndex}

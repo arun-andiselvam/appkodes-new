@@ -176,7 +176,7 @@ export function HeroSection() {
           Every set after the first is aria-hidden: it is the same five
           figures again, and a screen reader should hear them once.
         */}
-        <div className="flex overflow-hidden">
+        <div className="marquee-track flex overflow-hidden">
           {[0, 1, 2, 3].map((setIndex) => (
             <div
               key={setIndex}

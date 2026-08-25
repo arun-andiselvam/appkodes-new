@@ -208,6 +208,38 @@
     .marquee-reverse {
       animation: none;
     }
+
+    /*
+      !! STOPPING THE ANIMATION HID CONTENT ON A PHONE. THIS IS THE FIX !!
+
+      The note above claimed translateX(0) was "a correct resting state in
+      both directions", and on a desktop it is: the row is wide enough that a
+      stopped marquee still shows most of a set. On a 390px screen it is not.
+      Two client logos fit, the animation that would have brought the rest
+      past is switched off, the parent is overflow-hidden, and the remaining
+      logos are simply unreachable. Reported from a real phone on 25 August
+      2026, where Android battery saver had set this media query without the
+      visitor ever asking for reduced motion.
+
+      So the row becomes swipeable exactly when it stops moving on its own.
+      Manual scrolling is not motion the visitor did not ask for, which is
+      what this query is meant to prevent - it is the visitor doing the
+      moving, which is the accessible answer rather than a workaround.
+
+      The class goes on the flex parent that wraps the duplicate sets, not on
+      the sets themselves. .marquee sits on each copy; this sits on the one
+      element that clips them.
+    */
+    .marquee-track {
+      overflow-x: auto;
+      /* The duplicate set is redundant once a person is scrolling by hand,
+         but leaving it costs nothing and removing it would need JS. */
+      scrollbar-width: none;
+    }
+
+    .marquee-track::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .line-reveal {

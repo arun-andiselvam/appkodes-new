@@ -452,7 +452,7 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
           </p>
         </Container>
 
-        <div className="mt-12 flex">
+        <div className="marquee-track mt-12 flex overflow-hidden">
           {[0, 1].map((setIndex) => (
             <div key={setIndex} className="flex gap-6 pr-6 shrink-0 marquee">
               {page.ecosystem.items.map((item) => (
