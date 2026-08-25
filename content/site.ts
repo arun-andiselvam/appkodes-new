@@ -11,8 +11,27 @@ export const site = {
    * appkodes.com, the old brand, which put the wrong origin on every canonical,
    * every Open Graph tag and every sitemap entry. That was the blocking launch
    * issue recorded in docs/page-progress.md.
+   *
+   * !! www SINCE 25 AUGUST 2026, AND THE PREFIX IS NOT COSMETIC !!
+   *
+   * The client chose the www host over the bare apex that day. Neither ranks
+   * better than the other - Google is explicit that it does not matter, only
+   * that one is chosen and used consistently - so the deciding reason is a
+   * technical one this deployment actually has: a cookie set on the bare apex
+   * is sent to every subdomain under it, and this domain also carries
+   * cms.hitasoft.com and internship.hitasoft.com. Serving the marketing site
+   * from www keeps its cookies out of the Strapi admin's requests.
+   *
+   * !! THIS STRING IS WHAT EVERY CANONICAL SAYS. IT MUST MATCH THE HOST THAT
+   * ACTUALLY SERVES THE PAGE !!
+   *
+   * A canonical naming a URL that immediately redirects elsewhere is worse
+   * than no canonical, so this value and the apex-to-www redirect at the edge
+   * are one decision in two places. Change either and the other has to move in
+   * the same deploy. See lib/site-url.ts for why production never derives this
+   * from the request host.
    */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitasoft.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.hitasoft.com",
   /**
    * The Hitasoft wordmark, replacing the Appkodes one on 20 August 2026.
    *
