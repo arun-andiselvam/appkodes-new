@@ -7,7 +7,7 @@ import { Eyebrow } from "@/components/primitives/eyebrow";
 import { SectionTitle } from "@/components/primitives/section-title";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Pagination } from "@/components/ui/pagination";
-import { pageOfPostsIn, type Post } from "@/lib/posts";
+import { pageOfPostsIn, postHref, type Post } from "@/lib/posts";
 import type { ResourceCategory } from "@/content/resources";
 
 /**
@@ -208,8 +208,10 @@ export function PostCard({ post }: { post: Post }) {
         full width row had, so the card keeps that reading while fitting two to
         a line.
       */}
+      {/* postHref, not a template here: an uncategorised post reads at
+          /blog/<slug> instead. See lib/posts.ts. */}
       <Link
-        href={`${post.category}/${post.slug}`}
+        href={postHref(post)}
         className="group/post grid grid-cols-[minmax(0,10rem)_1fr] items-start gap-5"
       >
         {post.image ? (

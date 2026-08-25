@@ -278,6 +278,29 @@ async function source(): Promise<Post[]> {
 }
 
 /**
+ * Where a post is read. Every post, categorised or not.
+ *
+ * !! THE CATEGORY IS NOT IN THE URL, AND USED TO BE !!
+ *
+ * Articles lived at /resources/<category>/<slug> until 25 August 2026, which
+ * made the category a structural fact rather than a label: it decided the
+ * URL, so it could not be optional, could not be changed after publishing
+ * without breaking the link, and left a post with no category with nowhere
+ * to live at all.
+ *
+ * The client's framing is the right one. A category is a tag. It decides
+ * which resource page lists a post and nothing else. So the URL is flat, one
+ * post has exactly one address whatever its category, and retagging an
+ * article in Strapi moves it between listings without touching where it
+ * lives.
+ *
+ * The old URLs 301 to the new ones. See the redirects in next.config.mjs.
+ */
+export function postHref(post: Post): string {
+  return `/blog/${post.slug}`;
+}
+
+/**
  * Posts in one category, newest first.
  *
  * Async on purpose since before there was anything to await. A CMS fetch is
@@ -358,18 +381,16 @@ export async function postsWithBody(): Promise<Post[]> {
 }
 
 /**
- * One post by its category and slug.
+ * One post by slug.
  *
- * Keyed on both, because slugs are only unique within a category. Two
- * categories are each free to publish something called "getting-started".
+ * Keyed on the slug alone since 25 August 2026, when the category came out of
+ * the URL. That is safe rather than lucky: `slug` is a uid field in Strapi,
+ * which is unique across the whole collection, so two posts cannot share one
+ * whatever categories they carry. cms/README.md recorded that as stricter
+ * than the old routing needed. The flat URL is what it was already ready for.
  */
-export async function postBySlug(
-  category: string,
-  slug: string,
-): Promise<Post | undefined> {
-  return (await postsWithBody()).find(
-    (post) => post.category === category && post.slug === slug,
-  );
+export async function postBySlug(slug: string): Promise<Post | undefined> {
+  return (await postsWithBody()).find((post) => post.slug === slug);
 }
 
 /**
@@ -381,18 +402,26 @@ export async function postBySlug(
  * being read.
  */
 export async function relatedPosts(
-  category: string,
   slug: string,
   // Three, which is what docs/blog-structure.md asks for and what fills a
   // row without leaving a widow on its own line.
   limit = 3,
 ): Promise<Post[]> {
   const all = await postsWithBody();
-  const others = all.filter((post) => !(post.category === category && post.slug === slug));
+  const current = all.find((post) => post.slug === slug);
+  const others = all.filter((post) => post.slug !== slug);
+
+  /*
+   * Same category first, everything else after. The category no longer routes
+   * anything, but it is still the best signal available for what a reader who
+   * finished this piece would want next. An uncategorised post has no
+   * preference to express, so it falls through to newest first.
+   */
+  if (!current?.category) return others.slice(0, limit);
 
   return [
-    ...others.filter((post) => post.category === category),
-    ...others.filter((post) => post.category !== category),
+    ...others.filter((post) => post.category === current.category),
+    ...others.filter((post) => post.category !== current.category),
   ].slice(0, limit);
 }
 

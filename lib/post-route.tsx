@@ -7,43 +7,50 @@ import { postBySlug, postsWithBody, relatedPosts } from "@/lib/posts";
 import { site } from "@/content/site";
 
 /**
- * One article, wired up from its category and slug.
+ * One article, wired up from its slug.
  *
- * Both category routes call this, so an article renders and reports itself the
- * same way whichever silo it sits in.
+ * !! IT TOOK A CATEGORY UNTIL 25 AUGUST 2026, AND ONE ROUTE CALLS IT NOW !!
+ *
+ * There were two near identical route files, one per category, because the
+ * URL was /resources/<category>/<slug>. That made the category structural:
+ * it decided the address, so it could not be optional, and retagging an
+ * article after publishing would have broken its link.
+ *
+ * Articles live at /blog/<slug> now and app/blog/[slug] is the only caller.
+ * The category is a tag deciding which resource page lists a post, which is
+ * all it was ever meant to be. See postHref in lib/posts.ts.
  */
-export function postRoute(category: string) {
+export function postRoute() {
   return {
     /**
-     * The slugs this category can render.
+     * Every slug that has a body.
      *
      * Reads postsWithBody rather than every post, so a draft with no body
      * never gets a URL. Paired with dynamicParams false in the route file,
-     * anything else is a 404 rather than an empty article.
+     * anything else is a 404 rather than an empty article. No category
+     * filter any more: one route serves them all, uncategorised included.
      */
     async generateStaticParams() {
       const posts = await postsWithBody();
-      return posts
-        .filter((post) => post.category === category)
-        .map((post) => ({ slug: post.slug }));
+      return posts.map((post) => ({ slug: post.slug }));
     },
 
     async generateMetadata(slug: string) {
-      const post = await postBySlug(category, slug);
+      const post = await postBySlug(slug);
       if (!post) return {};
 
       return pageMetadata({
         title: post.title,
         description: post.excerpt,
-        path: `${category}/${slug}`,
+        path: `/blog/${slug}`,
       });
     },
 
     async Page(slug: string) {
-      const post = await postBySlug(category, slug);
+      const post = await postBySlug(slug);
       if (!post) notFound();
 
-      const related = await relatedPosts(category, slug);
+      const related = await relatedPosts(slug);
       /*
         Absolute URLs in the schema below, from the request rather than a
         constant. See lib/site-url.ts.
@@ -77,7 +84,7 @@ export function postRoute(category: string) {
         "@type": "BlogPosting",
         headline: post.title,
         description: post.excerpt,
-        url: `${origin}${category}/${slug}`,
+        url: `${origin}/blog/${slug}`,
         ...(post.image ? { image: `${origin}${post.image}` } : {}),
         datePublished: post.published,
         dateModified: post.updated ?? post.published,
@@ -101,7 +108,7 @@ export function postRoute(category: string) {
         }, 0),
         author: { "@type": "Organization", name: site.name, url: origin },
         publisher: { "@type": "Organization", name: site.name, url: origin },
-        mainEntityOfPage: `${origin}${category}/${slug}`,
+        mainEntityOfPage: `${origin}/blog/${slug}`,
       };
 
       /*

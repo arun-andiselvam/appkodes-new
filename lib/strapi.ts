@@ -91,7 +91,10 @@ type StrapiMedia = {
 
 type StrapiPost = {
   slug: string;
-  category: string;
+  /* Optional in the schema since 25 August 2026, and Strapi returns null for
+     an unset enumeration. lib/posts.ts holds those posts back rather than
+     listing them, because the category is what builds the URL. */
+  category: string | null;
   title: string;
   excerpt: string;
   published: string;
@@ -192,7 +195,10 @@ function mapPost(entry: StrapiPost): Post {
 
   return {
     slug: entry.slug,
-    category: entry.category,
+    /* Empty string for an unset category rather than null, so the one place
+       that decides what to do about it is the filter in lib/posts.ts and
+       every consumer downstream still sees a plain string. */
+    category: entry.category ?? "",
     title: entry.title,
     excerpt: entry.excerpt,
     published: entry.published,

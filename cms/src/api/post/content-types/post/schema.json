@@ -5,7 +5,7 @@
     "singularName": "post",
     "pluralName": "posts",
     "displayName": "Post",
-    "description": "One published article. Mirrors the Post type in lib/posts.ts, and the two have to be changed together. Field order here is the order of the form, so write first and keep the housekeeping at the bottom. category is optional but carries a default rather than being left blank: it builds the post's URL, so an empty one produces an article with no page to live on."
+    "description": "One published article. Mirrors the Post type in lib/posts.ts, and the two have to be changed together. Field order here is the order of the form, so write first and keep the housekeeping at the bottom. category is optional so an external tool can publish without picking one, but a post stays off the site until somebody sets it here: the category builds the URL, so there is no page to put an uncategorised post on."
   },
   "options": {
     "draftAndPublish": true
@@ -24,8 +24,7 @@
     },
     "category": {
       "type": "enumeration",
-      "enum": ["/resources/integration-guides", "/resources/cost-reduction-strategies"],
-      "default": "/resources/integration-guides"
+      "enum": ["/resources/integration-guides", "/resources/cost-reduction-strategies"]
     },
     "excerpt": {
       "type": "text",

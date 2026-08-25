@@ -108,6 +108,34 @@ const nextConfig = {
       { source: '/ai-automation', destination: '/services', permanent: true },
       { source: '/results', destination: '/resources/case-studies', permanent: true },
       { source: '/case-studies', destination: '/resources/case-studies', permanent: true },
+      /*
+       * Articles moved from /resources/<category>/<slug> to /blog/<slug> on
+       * 25 August 2026, when the category stopped being part of the URL and
+       * went back to being a tag. See postHref in lib/posts.ts.
+       *
+       * These two patterns cover every article URL that has ever existed,
+       * since those were the only two categories. The category segment is
+       * matched and discarded rather than captured, because the slug alone
+       * identifies a post: `slug` is a uid in Strapi and unique across the
+       * whole collection.
+       *
+       * !! THE CATEGORY LANDING PAGES ARE NOT REDIRECTED, ON PURPOSE !!
+       *
+       * /resources/integration-guides and /resources/cost-reduction-strategies
+       * are still real pages with their own pillar copy, still in the menu and
+       * still listing the posts tagged to them. Only the article URLs beneath
+       * them moved.
+       */
+      {
+        source: '/resources/integration-guides/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
+      {
+        source: '/resources/cost-reduction-strategies/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
     ]
   },
 
