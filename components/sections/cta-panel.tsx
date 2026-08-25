@@ -104,10 +104,23 @@ export function CtaPanel({ children }: { children: React.ReactNode }) {
         It lives here rather than in the content, because it positions against
         this panel. Inside the padded inner div it would inset by the padding
         and stop touching the corner it is drawing.
+
+        !! DESKTOP ONLY, BECAUSE A CORNER RULE NEEDS A CORNER TO BE IN !!
+
+        Reported from a phone on 25 August 2026 as "an unwanted square". It
+        was. The rule is a fixed 128px square, which reads as a corner accent
+        against a panel several times that wide. On a 390px screen the panel
+        is 342px wide, so the square covers well over a third of it, and the
+        badge below the buttons is centred straight through it. The two lines
+        stop looking like they belong to the corner and start looking like a
+        box drawn around nothing.
+
+        Hidden rather than resized. It is decoration with no meaning to carry,
+        already aria-hidden, and the mobile panel is busy enough without it.
       */}
       <div
         aria-hidden
-        className="absolute bottom-0 left-0 h-32 w-32 border-t border-r border-foreground/10"
+        className="hidden lg:block absolute bottom-0 left-0 h-32 w-32 border-t border-r border-foreground/10"
       />
     </div>
   );
