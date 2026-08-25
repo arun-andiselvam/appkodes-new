@@ -45,9 +45,17 @@ export default async function ContactPage() {
     <main>
       <Section spacing="none" className="pt-32 lg:pt-40 pb-16 lg:pb-20">
         <Container>
-          <Breadcrumbs path="/contact" visible />
+          {/*
+            No `visible`, so this emits the BreadcrumbList schema and draws
+            nothing. The client asked for the trail off this page on 25 August
+            2026, which makes it eight of the eight places this component is
+            used and leaves the default (off) covering every one of them. See
+            the note on `visible` in components/layout/breadcrumbs.tsx for why
+            the schema still ships when the trail does not.
+          */}
+          <Breadcrumbs path="/contact" />
 
-          <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
               <Eyebrow className="mb-6">{contactCopy.eyebrow}</Eyebrow>
               <h1 className="text-5xl lg:text-6xl font-display tracking-tight leading-[0.98]">
