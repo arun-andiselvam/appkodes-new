@@ -6,7 +6,14 @@ import { Container } from "@/components/primitives/container";
 import { SectionTitle } from "@/components/primitives/section-title";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
-import { BodyBlock, slugify } from "@/components/primitives/rich-text";
+import { BodyBlock } from "@/components/primitives/rich-text";
+/*
+ * The contents panel is the one client component on this page. It follows the
+ * reader's position down the article, which cannot be done in CSS. Everything
+ * else here, this file included, stays server rendered. See the note at the
+ * top of that file for why the exception was worth making.
+ */
+import { Contents } from "@/components/sections/post-contents";
 import { resourceCategories } from "@/content/resources";
 import { actions, site } from "@/content/site";
 import { postHref, type Block, type Post } from "@/lib/posts";
@@ -94,14 +101,39 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
       <Section spacing="none" className="pb-20 lg:pb-28">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-20">
-            <aside className="lg:sticky lg:top-32 h-fit">
+            {/*
+              !! THE STICKY BOX IS THE INNER DIV, NOT THE WHOLE COLUMN !!
+
+              The entire aside was sticky and `h-fit` until 26 August 2026, and
+              on a real article that was worse than not sticky at all. This
+              piece has fourteen headings, so the facts plus the contents plus
+              the service card came to more than a screen. A sticky block
+              taller than the viewport pins its top and parks its bottom off
+              the end of the screen, where the only way to reach it is to
+              scroll the article to its finish - by which point nobody needs a
+              contents list.
+
+              So the column no longer sticks as one piece. The article facts
+              scroll away with the page, which is right: they are read once,
+              at the start, to decide whether to read the rest. Only the
+              contents and the service link travel, and they are capped to the
+              viewport with the list scrolling inside itself.
+
+              `h-fit` had to go with it. It made the aside only as tall as its
+              own content, and a sticky child can only travel inside its
+              parent's box, so the panel would have stuck for about eighty
+              pixels. The grid stretches the column to the row height instead,
+              which is as tall as the article.
+            */}
+            <aside>
               <Facts post={post} />
-              {headings.length > 1 && (
-                <Contents headings={headings} className="mt-10" />
-              )}
-              {/* Omitted rather than drawn empty when a post has no silo
-                  target. See the note on `sendsTo` in lib/posts.ts. */}
-              {post.sendsTo && <SiloLink href={post.sendsTo} className="mt-10" />}
+
+              <div className="mt-10 lg:sticky lg:top-32">
+                {headings.length > 1 && <Contents headings={headings} />}
+                {/* Omitted rather than drawn empty when a post has no silo
+                    target. See the note on `sendsTo` in lib/posts.ts. */}
+                {post.sendsTo && <SiloLink href={post.sendsTo} className="mt-10" />}
+              </div>
             </aside>
 
             {/*
@@ -442,75 +474,6 @@ function Facts({ post }: { post: Post }) {
   );
 }
 
-/**
- * The contents panel.
- *
- * Built from the heading blocks rather than declared separately, so it cannot
- * describe a structure the article does not have. h3 entries indent under
- * their h2, which is the hierarchy Google reads to build sitelinks.
- *
- * !! COLLAPSED ON MOBILE, OPEN ON DESKTOP, AND NO JAVASCRIPT !!
- *
- * The blueprint asks for an accordion on mobile and a sticky panel on desktop.
- * A <details> gives the accordion for free, and CSS forces it open on large
- * screens while hiding the summary. A client component to toggle one list
- * would be a bundle for nothing.
- *
- * !! `data-contents` IS LOAD BEARING. THE RULE LIVES IN globals.css !!
- *
- * The forcing-open half was a Tailwind arbitrary variant here,
- * `lg:[&:not([open])>div]:block`, and it stopped working in Chrome 131 without
- * anything failing: a closed details now hides its content through a
- * ::details-content pseudo-element, which no utility class can reach. The
- * desktop panel was invisible and, with the summary hidden too, unopenable.
- *
- * The replacement needs a pseudo-element selector, so it is real CSS in
- * globals.css keyed on this attribute. Read the note there before touching
- * either file - they are a pair, and the failure mode is silent.
- */
-function Contents({
-  headings,
-  className = "",
-}: {
-  headings: Extract<Block, { kind: "h2" | "h3" }>[];
-  className?: string;
-}) {
-  return (
-    <details open={false} data-contents className={`group/toc ${className}`}>
-      <summary className="flex cursor-pointer items-center justify-between gap-4 border-y border-foreground/10 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground list-none lg:hidden [&::-webkit-details-marker]:hidden">
-        On this page
-        <span
-          aria-hidden
-          className="text-lg leading-none transition-transform group-open/toc:rotate-45"
-        >
-          +
-        </span>
-      </summary>
-
-      <div>
-        <h2 className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground lg:block">
-          On this page
-        </h2>
-        <nav aria-label="On this page">
-          <ul className="mt-4 space-y-3 border-l border-foreground/15">
-            {headings.map((heading) => (
-              <li key={heading.text}>
-                <a
-                  href={`#${slugify(heading.text)}`}
-                  className={`-ml-px block border-l border-transparent text-sm leading-snug text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground ${
-                    heading.kind === "h3" ? "pl-8" : "pl-4"
-                  }`}
-                >
-                  {heading.text}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </details>
-  );
-}
 
 /**
  * The link down into the silo.
