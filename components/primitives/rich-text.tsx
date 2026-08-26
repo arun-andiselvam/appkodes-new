@@ -108,16 +108,91 @@ export function BodyBlock({ block }: { block: Block }) {
         </figure>
       );
 
-    case "quote":
+    /*
+      A pull quote, unless it is a summary wearing a pull quote's clothes.
+
+      !! THE TL;DR WAS BEING DRAWN AS A 100 WORD PULL QUOTE !!
+
+      The content tool writes the article summary as a <blockquote>, so it
+      arrived here as a quote block and got the quote treatment: display face,
+      text-2xl, no label. That styling is built for one arresting sentence
+      lifted out of the prose. A hundred word summary set that way fills half a
+      screen and reads as though the writer shouted the abstract.
+
+      A summary is a different kind of thing from a quote and wants the
+      opposite treatment: clearly labelled, set at reading size in the body
+      face, in a panel that says "skip this if you are reading on". So it is
+      detected and drawn as one. See summaryBody below for what counts.
+    */
+    case "quote": {
+      const summary = summaryBody(block.text);
+      if (summary !== null) return <Summary text={summary} />;
+
       return (
         <blockquote className="mt-10 border-l-2 border-foreground/25 pl-6 font-display text-xl lg:text-2xl tracking-tight leading-snug">
           {block.text}
         </blockquote>
       );
+    }
 
     case "callout":
       return <p className="mt-10 bg-foreground/[0.03] p-6 text-lg leading-[1.6] font-medium">{block.text}</p>;
   }
+}
+
+/**
+ * The summary's own text, with its label stripped, or null if this is not one.
+ *
+ * Writers and generators punctuate this half a dozen ways - "TL;DR:", "TL. DR:",
+ * "TLDR -", "tl;dr —" - and every one of them means the same thing, so the
+ * separator between the letters and after them is matched loosely rather than
+ * spelled out. The label is removed from the text because the panel prints its
+ * own; leaving it in renders "TL;DR" twice, which is exactly the sort of small
+ * wrongness that reads as nobody having looked at the page.
+ *
+ * !! IT HAS TO STILL BE A SUMMARY AFTER THE LABEL COMES OFF !!
+ *
+ * A quote that opens with those letters and then says nothing is a quote. The
+ * length floor keeps a stray "TL;DR" from turning an empty panel loose on the
+ * page.
+ */
+const SUMMARY_LABEL = /^\s*tl\s*[.;:,-]?\s*dr\s*[:.–—-]*\s*/i;
+
+function summaryBody(text: string): string | null {
+  const match = text.match(SUMMARY_LABEL);
+  if (!match) return null;
+
+  const body = text.slice(match[0].length).trim();
+  return body.length > 20 ? body : null;
+}
+
+/**
+ * The article summary, as a panel rather than as a quotation.
+ *
+ * !! THIS IS THE OTHER BLOCK AN ANSWER ENGINE WILL TAKE !!
+ *
+ * Same argument as the key takeaways in components/sections/post.tsx: a
+ * machine looking for a quotable answer takes the compressed version over the
+ * prose. Marked up as an <aside> with its own accessible name so it is
+ * identifiable as a summary rather than as the article's first paragraph.
+ *
+ * Set in the body face at reading size, deliberately. It is the one block on
+ * the page most likely to be read word for word by somebody deciding whether
+ * to read the rest, and display type at 24px is for looking at rather than
+ * reading. The brand rule and the tint do the work of separating it instead.
+ */
+function Summary({ text }: { text: string }) {
+  return (
+    <aside
+      aria-label="Summary"
+      className="mt-10 border-l-2 border-primary bg-foreground/[0.03] px-6 py-6 lg:px-8 lg:py-7"
+    >
+      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        TL;DR
+      </p>
+      <p className="mt-4 text-lg leading-[1.7] text-foreground/85">{text}</p>
+    </aside>
+  );
 }
 
 /**

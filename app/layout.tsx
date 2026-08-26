@@ -127,7 +127,40 @@ export default async function RootLayout({
             on every navigation, throwing away the header's scrolled state and
             flashing the menu on each click.
           */}
-          <div className="relative min-h-screen overflow-x-hidden noise-overlay">
+          {/*
+            !! `clip`, NOT `hidden`. THIS ONE WORD DISABLED position:sticky
+            ACROSS THE WHOLE SITE !!
+
+            `overflow-x: hidden` does not only clip. It makes the element a
+            scroll container, and the spec then forces the other axis from
+            `visible` to `auto`, so this div computed to `overflow: hidden auto`
+            and became a scrollport wrapping every page.
+
+            position:sticky sticks relative to its nearest scrollport. This one
+            never scrolls - it has no height limit, so the document scrolls
+            instead - so every sticky descendant had a frame of reference that
+            never moved, and simply scrolled away with the page. Nothing
+            errored and the CSS looked correct in devtools.
+
+            Five components ask for a sticky column: the article contents panel
+            in components/sections/post.tsx, plus silo-page, how-we-work,
+            case-study and industry-landing. None of them had ever worked.
+
+            Measured in Chrome 151 on 26 August 2026, driving the real page
+            over CDP. As shipped the article sidebar tracked the page exactly
+            1:1 (top 1165 -> -285 -> -935 -> -1585). Changing only this word
+            pinned it at the intended 128px for the length of its column.
+
+            `overflow: clip` clips without creating a scroll container, so the
+            nearest scrollport goes back to being the viewport. The horizontal
+            clipping this was added for still happens.
+
+            Safari 15 and older do not support `clip` and lose the horizontal
+            clipping, which is a stray sideways scroll on a page with
+            overflowing decoration rather than a broken layout. That is a
+            better trade than sticky being dead everywhere.
+          */}
+          <div className="relative min-h-screen overflow-x-clip noise-overlay">
             <Navigation />
             {children}
             <Footer />
