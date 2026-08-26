@@ -109,7 +109,48 @@ const nextConfig = {
         pathname: '/uploads/**',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    /*
+     * !! ONE FORMAT, SO ONE URL MEANS ONE FILE. THIS IS NOT A QUALITY CHOICE !!
+     *
+     * This was ['image/avif', 'image/webp'], which is the better setting on a
+     * host that can vary its cache. The optimizer picks per request from the
+     * browser's Accept header and says so with `Vary: Accept`, and on 26
+     * August 2026 one URL was measured returning three different bodies:
+     * avif at 25,404 bytes, webp at 42,088, and the original jpeg to anything
+     * asking for neither.
+     *
+     * Cloudflare ignores `Vary` on everything except Accept-Encoding. Varying
+     * the cache on a request header needs a custom cache key, which is an
+     * Enterprise feature, and this zone is on the free plan. So a cache rule
+     * over /_next/image stores whichever variant reached that edge first and
+     * serves it to everyone after. Safari 14 and 15 cannot decode avif, and
+     * `X-Content-Type-Options: nosniff` is set, so those visitors would get a
+     * broken hero image rather than a slow one. Silently, and only in some
+     * regions, depending on who happened to warm each edge.
+     *
+     * Pinning the format removes the variance the cache cannot model. The
+     * jpeg fallback still exists for a client asking for neither, but that
+     * failure mode is "larger than ideal" rather than "will not render".
+     *
+     * !! IT COSTS 16.7 KB AND BUYS BACK A ROUND TRIP. THAT IS THE TRADE !!
+     *
+     * webp is about 65 per cent larger than avif on the article hero. Against
+     * that, /_next/image was answering `cf-cache-status: DYNAMIC`, so every
+     * visitor in the world fetched the LCP element from the droplet in New
+     * York. Measured on the same connection: an edge cached 40 KB font took
+     * ~80ms, this 25 KB image took ~390ms. Lighthouse had Load Time at 65 per
+     * cent of a 5.1s mobile LCP, swinging between 1.7s and 3.3s depending on
+     * whether the origin happened to have that variant warm - a redeploy wipes
+     * that cache, so the first reader after every deploy paid the worst case.
+     *
+     * !! THIS SETTING AND THE CLOUDFLARE RULE ARE ONE CHANGE IN TWO PLACES !!
+     *
+     * Alone, this is a straight regression: bigger files, no caching gain. It
+     * only pays for itself with the cache rule over /_next/image, and the rule
+     * is only safe with this. If the zone ever moves to a plan with custom
+     * cache keys, put `Accept` in the key and this line can go back to avif.
+     */
+    formats: ['image/webp'],
   },
 
   /**
