@@ -77,14 +77,16 @@ export const caseStudies: CaseStudy[] = [
    *
    * !! THIS ONE IS THE CLIENT'S OWN ARTWORK, WHICH INVERTS THE USUAL RULE !!
    *
-   * public/case-studies/japan-pro.webp was a CC0 photograph of Chureito Pagoda
-   * by Dang Son until 26 August 2026, carried under the rule the other three
-   * studies still follow: a stock photograph illustrates the market and must
-   * never be read as the client's premises or product.
+   * This hero was a CC0 photograph of Chureito Pagoda by Dang Son, at the now
+   * retired path public/case-studies/japan-pro.webp, until 26 August 2026. It
+   * was carried under the rule the other three studies still follow: a stock
+   * photograph illustrates the market and must never be read as the client's
+   * premises or product.
    *
-   * The client supplied their own key art that day and it is what ships now.
-   * The same pagoda and the same mountain, with Japan Pro's four categories
-   * set over it in their own type: Experiences, Tours, Tickets, Restaurants.
+   * The client supplied their own key art that day and it is what ships now,
+   * at public/case-studies/japan-pro-2.webp. The same pagoda and the same
+   * mountain, with Japan Pro's four categories set over it in their own type:
+   * Experiences, Tours, Tickets, Restaurants.
    * So the caveat above does not apply here and the opposite one does. This
    * does depict the client's product, deliberately, and it is theirs to have
    * supplied. Anything written near it may say so.
@@ -98,13 +100,28 @@ export const caseStudies: CaseStudy[] = [
    * crop is made here, anchored left of centre, keeping every label with a
    * margin and giving up the right edge of the pagoda instead.
    *
-   * !! THE FILENAME DID NOT CHANGE, SO CACHES HOLD THE OLD PICTURE !!
+   * !! THE `-2` IS A CACHE BUST. REPLACE AN IMAGE, CHANGE THE FILENAME !!
    *
-   * Nothing under public/ is content hashed. next.config.mjs serves it with a
-   * week's cache and Cloudflare holds its own copy, so a returning visitor and
-   * every edge will keep serving the photograph until both expire. Purge the
-   * Cloudflare cache after deploying this. See the note on the cache header
-   * rule in next.config.mjs for why the lifetime is a week and not a year.
+   * The new artwork first shipped over the old filename and did not appear.
+   * The deploy was fine; the origin was serving 133,914 bytes while Cloudflare
+   * answered every request with the 310,410 byte photograph from its own edge
+   * cache, `cf-cache-status: HIT`.
+   *
+   * That is the cost of the cache rule added to /_next/image on 26 August 2026,
+   * and it is worth paying: it took the hero image on an article from 390ms to
+   * 90ms. Before it, the optimizer answered DYNAMIC and was never cached, so
+   * overwriting a file took effect immediately. Now it is cached at the edge
+   * for a year, and nothing under public/ is content hashed, so the old bytes
+   * outlive the deploy that replaced them.
+   *
+   * Purging Cloudflare fixes the edge and cannot fix a browser. next.config.mjs
+   * serves these with a week's cache, so anybody who had already seen the study
+   * would keep the old picture for up to a week however many times we purged.
+   *
+   * A new filename fixes both at once, because it is a URL nothing has ever
+   * cached. So: when an image here is replaced, rename it. The number is a
+   * version, not a second picture, and the alternative is a purge that only
+   * half works and a symptom that reads exactly like a failed deploy.
    */
   {
     slug: "japan-pro",
@@ -124,7 +141,8 @@ export const caseStudies: CaseStudy[] = [
     location: "Japan",
     summary:
       "The catalogue spoke two languages and its travellers did not. A listing now publishes in twelve, and no card is charged until the host accepts the booking.",
-    image: "/case-studies/japan-pro.webp",
+    /* -2 is a cache bust, not a second picture. See the note above. */
+    image: "/case-studies/japan-pro-2.webp",
     results: [
       { value: "12", label: "languages every listing publishes in" },
       { value: "Under 3 min", label: "from a submitted listing to all twelve live" },
