@@ -511,4 +511,157 @@ export const caseStudies: CaseStudy[] = [
 
     sendsTo: "/services/ai-workflow-automation",
   },
+
+  /*
+   * The low bandwidth super app, added 26 August 2026 from the client's
+   * account of the engagement.
+   *
+   * !! THE CONSTRAINT IS THE STORY, AND IT IS THE RAREST ONE ON THIS SITE !!
+   *
+   * Every other study here optimises for something a buyer already believes
+   * matters. This one optimises for a network that most engineering is allowed
+   * to assume away, and it is the only page on the site that proves we can
+   * build to a hostile constraint rather than a generous one. Keep the
+   * bandwidth in front of the reader in every act. A version of this study
+   * that leads on "chat, wallet and marketplace" is a feature list, and the
+   * feature list is the least interesting thing about it.
+   *
+   * !! WHAT IS THE CLIENT'S ACCOUNT AND WHAT IS INFERENCE !!
+   *
+   * From the client: a chat application for an African market where the
+   * internet is slow and unstable, built because WhatsApp is too heavy for it;
+   * the whole stack tuned so the app is usable down to 50 Kbps; no digital
+   * payment system and no established marketplace in the country, so the
+   * client wanted all of it in one place; a wallet and a marketplace shipped
+   * alongside the chat and events added later under the same constraint; a
+   * page inside the app that measures the user's own connection; promotion at
+   * national level; fifty thousand downloads across Android and iOS within a
+   * couple of weeks; more than a hundred reviews in the same period, and what
+   * they praise is the speed; a client team of five to ten people, mostly
+   * marketing; and several separate systems collapsed into one application.
+   *
+   * Inferred, and strike anything the client does not recognise: that the
+   * wallet had to be the payment system rather than a front end for an
+   * existing one, which follows from there being no digital payments in the
+   * country to integrate with. Nothing else here is inference.
+   *
+   * !! DELIBERATELY NOT PUBLISHED !!
+   *
+   * The client promoted the launch using their own country's president on
+   * Facebook. The client asked on 26 August 2026 for that to appear without
+   * the political association, so the copy says "at national level" and stops.
+   * Naming the office would identify the country, and through it the client,
+   * on a study whose `client` field reads Undisclosed.
+   *
+   * There is also a plan to add an FM system at a later user milestone. It is
+   * a plan, the milestone was given two different ways in the same sentence,
+   * and a case study reports what shipped. It is not here and should not be
+   * added until it has.
+   *
+   * !! `location` IS THE CONTINENT, WHICH IS WEAKER THAN THE OTHER THREE !!
+   *
+   * Japan, Dubai and the United States all name a market a reader can place.
+   * This one says Africa because the client chose that on 26 August 2026 when
+   * asked. It is honest and it is vague, and if a country or a region is ever
+   * cleared, this field is the only thing that has to change.
+   */
+  {
+    slug: "low-bandwidth-super-app",
+    /* 51 characters. The client is unnamed, so the title carries the
+       constraint rather than the usual "How <client> did <thing>". It names
+       what the app does rather than claiming a share of anybody's market. */
+    title: "How a chat app kept working where WhatsApp could not",
+    client: "Undisclosed",
+    industry: "Consumer messaging and payments",
+    companySize: "5 to 10",
+    location: "Africa",
+    summary:
+      "Chat, a wallet and a marketplace behind one login, for a country where the connection falls to 50 Kbps and there was no digital payment system to build on. Fifty thousand people downloaded it in the first couple of weeks.",
+    image: "/case-studies/low-bandwidth-super-app.webp",
+    results: [
+      { value: "50 Kbps", label: "the connection the app is still usable on" },
+      { value: "50,000", label: "downloads across both stores in the first weeks" },
+      { value: "4", label: "products behind one login: chat, wallet, marketplace, events" },
+    ],
+
+    challenge: {
+      body: "The client wanted several products in one app for a market where most of the usual assumptions do not hold. The hard part was never the feature list. It was that every one of those features had to work on a connection that modern software is built to ignore.",
+      points: [
+        {
+          title: "A connection that falls to 50 Kbps",
+          body: "Users are on networks that drop to a fraction of what an app of this kind assumes, and they drop unpredictably rather than staying low. WhatsApp is what people already had, and it is built for a connection that holds. On this one it does not.",
+        },
+        {
+          title: "No digital payments to plug into",
+          body: "The country had no established digital payment system. That removes the ordinary answer, which is to integrate a provider and put an interface on it. There was nothing underneath to integrate with.",
+        },
+        {
+          title: "No marketplace either",
+          body: "Buying and selling was happening across chat threads and in person, with no common place to list anything. The client wanted that in the same app rather than in a second one nobody would install.",
+        },
+        {
+          title: "Four products on one bandwidth budget",
+          body: "Chat, wallet and marketplace at launch, with events added later. Every one of them had to fit the same connection. A single heavy screen anywhere in the app undoes the work everywhere else, because the user judges the whole thing by the worst part of it.",
+        },
+        {
+          title: "Nobody can tell the app from the line",
+          body: "On an unstable network a user blames whatever is on screen. An app that is genuinely fast on a bad connection still gets uninstalled if the connection dies mid-message and the app is the only thing there to blame.",
+        },
+        {
+          title: "A client team of five to ten, mostly marketing",
+          body: "There was no engineering team on the client side to hand a fleet of systems to. Whatever shipped had to be something a small marketing team could run and promote without an operations department behind it.",
+        },
+      ],
+    },
+
+    approach: {
+      body: "Almost every decision here was settled by the same question: what does this cost on a 50 Kbps line. The answers run in the order the problems were listed.",
+      points: [
+        {
+          title: "The whole stack tuned to the network",
+          body: "This was not a matter of compressing images at the end. Every layer was chosen and tuned against the bandwidth budget, because on a connection this narrow the slowest part of the stack sets the speed of the product. That work is invisible when it succeeds and it is the entire engagement.",
+        },
+        {
+          title: "The wallet is the payment system",
+          body: "With no provider to sit in front of, the wallet had to be the thing that holds and moves the money rather than an interface onto something that already did. For a lot of users this is the first digital payment they have made.",
+        },
+        {
+          title: "A marketplace on the same budget",
+          body: "Listings, browsing and buying were built to the same constraint as the chat rather than treated as a richer surface that could afford more. A marketplace that only loads on a good connection is a marketplace for the people who already had one.",
+        },
+        {
+          title: "One download, four products",
+          body: "Chat, wallet and marketplace ship as one app, and events joined them later under the same rules. One install, one login, one thing to keep updated over a slow connection - which matters more here than it would anywhere else.",
+        },
+        {
+          title: "The app measures the connection itself",
+          body: "There is a page inside the app that tests the user's own network speed. It looks like a small feature and it settles an argument the product cannot otherwise win: it lets somebody see the line is at fault, rather than deciding the app is broken and removing it.",
+        },
+        {
+          title: "Several systems collapsed into one",
+          body: "Everything the client would otherwise have run separately sits in a single application. That is a smaller surface for a five to ten person team to operate, and it is the difference between a product they can manage and one they would need to hire for.",
+        },
+      ],
+    },
+
+    outcome: {
+      body: "The client promoted the launch at national level and the audience arrived within days. What the reviews talk about is not the feature list.",
+      points: [
+        {
+          title: "Fifty thousand downloads in the first weeks",
+          body: "Across Android and iOS, within a couple of weeks of launch, in a market where a heavy app would not have finished installing on most connections.",
+        },
+        {
+          title: "The reviews are about the speed",
+          body: "More than a hundred reviews arrived in the same period, and what users keep saying is that it works on their connection. That is the one piece of feedback that tells us the constraint was the right thing to build around.",
+        },
+        {
+          title: "Events shipped under the same constraint",
+          body: "Events were added after launch and had to meet the same bandwidth budget as everything before it. It went out without loosening the rule the rest of the app was built on, which is the test of whether that rule was real.",
+        },
+      ],
+    },
+
+    sendsTo: "/industries/media-and-communities",
+  },
 ];
