@@ -149,6 +149,41 @@ const nextConfig = {
      * only pays for itself with the cache rule over /_next/image, and the rule
      * is only safe with this. If the zone ever moves to a plan with custom
      * cache keys, put `Accept` in the key and this line can go back to avif.
+     *
+     * !! PINNING THE FORMAT DID NOT REMOVE THE SECOND VARIANT. IT CANNOT !!
+     *
+     * Worth knowing, because it caused a visible bug hours after this line was
+     * written. Next falls back to `image/jpeg` for any Accept header that does
+     * not name one of the formats above, and that fallback is not
+     * configurable: `formats: ['image/webp']` still answers jpeg to a client
+     * sending a wildcard Accept. Verified against a clean local optimizer on
+     * 26 August 2026: same URL, an Accept naming image/webp gives webp, a
+     * wildcard Accept gives jpeg.
+     *
+     * jpeg has no alpha channel. Seventeen assets under public/ carry real
+     * transparency - the client logos, the award badges, the eighteen years
+     * mark, and the site wordmark itself - and every one is flattened onto
+     * black in that fallback. The Handyfeet logo rendered as a grey slab on the
+     * live site because a request sending a wildcard Accept had reached the
+     * edge first and Cloudflare, which ignores `Vary: Accept`, served that
+     * jpeg to everybody after it.
+     *
+     * !! THE FIX IS IN THE CLOUDFLARE RULE, NOT IN THIS FILE !!
+     *
+     * The cache rule over /_next/image has to stop caching responses to
+     * requests that never asked for webp, so they cannot populate the edge for
+     * the ones that did:
+     *
+     *   starts_with(http.request.uri.path, "/_next/image")
+     *     and http.request.headers["accept"][0] contains "image/webp"
+     *
+     * Every current browser sends image/webp in Accept for an <img>, so real
+     * traffic still gets the cached copy. Anything sending only a wildcard
+     * bypasses the cache, gets its jpeg, and poisons nothing.
+     *
+     * components/sections/case-studies-index.tsx additionally marks the client
+     * logos `unoptimized`, which takes six of the seventeen out of the
+     * optimizer altogether. That is belt and braces rather than the fix.
      */
     formats: ['image/webp'],
   },

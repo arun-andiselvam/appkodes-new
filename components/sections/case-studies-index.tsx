@@ -65,6 +65,41 @@ export async function CaseStudiesIndex({ path }: { path: string }) {
             Clients
           </h2>
           <ul className="mt-6 grid grid-cols-2 items-center gap-x-8 gap-y-8 border-y border-foreground/10 py-8 sm:grid-cols-3 lg:grid-cols-6">
+            {/*
+              !! `unoptimized`, BECAUSE THE OPTIMIZER TURNS THESE BLACK !!
+
+              Handyfeet rendered as a grey slab on the live site on 26 August
+              2026 while the other five were fine. The file was not the
+              problem: it is a webp with 75 per cent of its pixels transparent
+              and it composites correctly.
+
+              /_next/image was answering `image/jpeg`. Next's optimizer falls
+              back to jpeg for any Accept header that does not name one of the
+              configured `formats`, and jpeg has no alpha channel, so the
+              transparent ground was flattened to black. Under this row's own
+              `opacity-55 grayscale` that reads as a grey box behind the mark.
+              Verified against a clean local optimizer: an Accept naming
+              image/webp gives webp, a wildcard Accept gives jpeg, same URL.
+
+              What made it stick was the Cloudflare rule caching /_next/image.
+              Cloudflare ignores `Vary: Accept`, so one request from a bot or a
+              crawler sending a wildcard Accept populates the edge with that
+              jpeg, and every browser after it gets the flattened copy.
+
+              These particular logos have nothing to gain from the optimizer -
+              the sources are around 272 by 48 and they draw at 32 pixels tall,
+              so it was saving about 140 bytes for the privilege of introducing
+              this. `unoptimized` serves the webp itself, which Cloudflare
+              caches correctly by extension and which has no negotiation to get
+              wrong.
+
+              !! THIS IS NOT THE WHOLE FIX. SEE THE NOTE IN next.config.mjs !!
+
+              Seventeen assets under public/ carry real transparency, including
+              the site wordmark. This only takes six of them out of the line of
+              fire; the rest need the cache rule to stop caching responses to
+              requests that did not ask for webp.
+            */}
             {clientLogos.map((client) => (
               <li key={client.name} className="flex items-center justify-center">
                 <Image
@@ -72,6 +107,7 @@ export async function CaseStudiesIndex({ path }: { path: string }) {
                   alt={client.name}
                   width={140}
                   height={44}
+                  unoptimized
                   className="h-8 w-auto object-contain opacity-55 grayscale transition-opacity hover:opacity-100 dark:invert"
                 />
               </li>
