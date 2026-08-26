@@ -224,12 +224,34 @@ export function Navigation() {
         >
           {/* Logo. Also the home link, which is why Home is not in the menu. */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
+            {/*
+              !! `priority` CAME OFF THIS ON 26 AUGUST 2026. HERE IS WHY !!
+
+              priority emits a `<link rel="preload" as="image">` into the head,
+              and this one landed *above* the article hero's preload on every
+              blog post. Two image preloads, both at high priority, and the
+              browser worked down the list: the wordmark at the top of the page
+              beat the picture that is actually the LCP element. Measured on
+              the live site, that hero spent 2.4 seconds in Load Delay having
+              been correctly preloaded the entire time.
+
+              `eager` keeps it fetched immediately rather than lazily, so the
+              header still paints with no pop-in. It just no longer claims a
+              preload slot and a high priority it does not deserve, for 137 by
+              28 pixels of wordmark.
+
+              `sizes` is a second, smaller point: without it Next builds a
+              1x/2x srcset off the declared 818px width, so a phone downloaded
+              the full size asset to draw a 137px mark.
+            */}
             <Image
               src={site.logo.src}
               alt={site.logo.alt}
               width={site.logo.width}
               height={site.logo.height}
-              priority
+              loading="eager"
+              fetchPriority="low"
+              sizes="140px"
               className={`w-auto transition-all duration-500 ${isScrolled ? "h-6" : "h-7"}`}
             />
           </Link>

@@ -47,14 +47,38 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
   return (
     <>
       {/*
-        afterInteractive rather than beforeInteractive. Analytics is never
-        worth delaying first paint for, and beforeInteractive would put this
-        ahead of the page the visitor came to read. It is also the strategy
-        Google's own snippet implies with `async`.
+        !! lazyOnload, AND IT WAS afterInteractive UNTIL 26 AUGUST 2026 !!
+
+        afterInteractive was chosen on the reasoning that analytics is never
+        worth delaying first paint for. The reasoning was right and the
+        strategy did not deliver it, because Next emits a
+        `<link rel="preload" as="script">` in the head for an afterInteractive
+        script. gtag.js is 169 KB. On Lighthouse's simulated mobile link that
+        is roughly 850ms of the entire connection, spent at high priority,
+        before the browser has finished fetching the article's own hero image.
+
+        Measured on the live site on 26 August 2026: LCP 5.2s, of which 2.4s
+        was Load Delay - the hero image was preloaded, correct, and simply
+        queued behind this and the header logo. gtag.js was also the single
+        largest entry under "reduce unused JavaScript" (99 KB) and the only
+        third party blocking the main thread (92ms of the 120ms TBT).
+
+        lazyOnload holds it until the window load event, which is after the
+        LCP image has been fetched and painted, so it competes with nothing.
+
+        !! THE TRADE-OFF, PLAINLY: A VISITOR WHO LEAVES BEFORE `load` IS NOT
+        COUNTED !!
+
+        That is a real cost and it is not zero. It is accepted because the
+        alternative is making every visitor's page slower to measure the ones
+        who do not stay, and because GA4 keeps sending on history changes once
+        it is up, so only a bounce inside the first second or two is lost.
+        If bounce numbers ever need to be exact, this is the line that made
+        them approximate.
       */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         nonce={nonce}
       />
       {/*
@@ -77,7 +101,7 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
         tracking, and `send_page_view: false` has to go into the config call
         below in the same change.
       */}
-      <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
+      <Script id="ga-init" strategy="lazyOnload" nonce={nonce}>
         {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());

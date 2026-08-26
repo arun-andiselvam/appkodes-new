@@ -242,7 +242,25 @@ export type NavItem = {
      * 24 August 2026 was to keep the description next to the link it
      * describes, which is why this is required rather than optional.
      */
-    footer?: { name: string; href: string; blurb: string };
+    footer?: {
+      name: string;
+      href: string;
+      blurb: string;
+      /**
+       * What a breadcrumb calls this destination, where the strip's own label
+       * would not work as one.
+       *
+       * `name` is a call to action, because that is what a strip along the
+       * bottom of a mega-menu is: "Show all resources", "All industries". A
+       * breadcrumb names a place, and "Home > Resources > Show all resources >
+       * How to Integrate LLM" reads like an instruction somebody left behind.
+       * Google also expects a crumb to name the page it points at, and the
+       * page behind that strip is titled Blog.
+       *
+       * Optional, and only worth setting where the two genuinely differ.
+       */
+      crumb?: string;
+    };
   };
 };
 

@@ -307,6 +307,9 @@ export const mainNav: NavItem[] = [
         name: "Show all resources",
         href: "/blog",
         blurb: "Every guide, newest first.",
+        /* The page behind this strip is titled Blog, and every article's
+           breadcrumb passes through it. See `crumb` in content/types.ts. */
+        crumb: "Blog",
       },
     },
   },
@@ -447,6 +450,21 @@ export function allNavPages(): NavPage[] {
  *
  * Returns just Home for anything not in the tree, which is the honest answer
  * for a page with no parent rather than a guessed one.
+ *
+ * !! IT WALKED groups AND NOT footer, AND THAT WAS A BUG !!
+ *
+ * `allNavRoutes` above walks both. This walked only the groups, so any page
+ * reachable through a panel's footer strip - /blog, and /how-we-work from the
+ * Industries panel - got the "not in the tree" answer and no trail at all.
+ * Nobody saw it, because components/layout/breadcrumbs.tsx draws nothing by
+ * default and a trail shorter than two crumbs suppresses the BreadcrumbList
+ * schema with it. So those pages had been shipping no breadcrumb markup at
+ * all, silently, and the article template found it the moment it asked for a
+ * visible trail on 26 August 2026.
+ *
+ * Two walks over the same tree that disagree about what is in it is the shape
+ * of the problem. Anything added to the tree from here on has to appear in
+ * both.
  */
 export function trailFor(href: string): { name: string; href: string }[] {
   const home = { name: "Home", href: "/" };
@@ -454,8 +472,9 @@ export function trailFor(href: string): { name: string; href: string }[] {
   for (const item of mainNav) {
     if (item.href === href) return [home, { name: item.name, href: item.href }];
 
+    const top = { name: item.name, href: item.href };
+
     for (const group of item.panel?.groups ?? []) {
-      const top = { name: item.name, href: item.href };
       if (group.href === href) return [home, top, { name: group.name, href: group.href }];
 
       for (const child of group.children ?? []) {
@@ -463,6 +482,14 @@ export function trailFor(href: string): { name: string; href: string }[] {
           return [home, top, { name: group.name, href: group.href }, { name: child.name, href: child.href }];
         }
       }
+    }
+
+    /* The footer strip, checked after the groups so a route listed in both
+       keeps the more specific parent. See `crumb` in content/types.ts for
+       why the label here is not always the strip's own. */
+    const footer = item.panel?.footer;
+    if (footer && footer.href === href) {
+      return [home, top, { name: footer.crumb ?? footer.name, href: footer.href }];
     }
   }
 

@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { BodyBlock, slugify } from "@/components/primitives/rich-text";
 import { resourceCategories } from "@/content/resources";
 import { actions, site } from "@/content/site";
-import type { Block, Post } from "@/lib/posts";
+import { postHref, type Block, type Post } from "@/lib/posts";
 
 /**
  * One article, built to docs/blog-structure.md.
@@ -27,14 +27,12 @@ import type { Block, Post } from "@/lib/posts";
  * travels back to the left margin, and the reader assumes they are bored when
  * they are actually just lost.
  *
- * Against the blueprint, in its order: breadcrumbs, h1, byline with both
- * dates and reading time, hero image, key takeaways box, sticky contents,
- * the body with a strict h2 and h3 hierarchy, an inline call to action, the
+ * Against the blueprint, in its order: breadcrumbs, h1, standfirst, the hero
+ * with the key takeaways laid over it, then a column holding the article
+ * facts and the contents beside the body, an inline call to action, the
  * author box, and related reading. The schema is emitted by the route.
  */
 export function PostPage({ post, related }: { post: Post; related: Post[] }) {
-  const path = `${post.category}/${post.slug}`;
-
   const headings = (post.body ?? []).filter(
     (block): block is Extract<Block, { kind: "h2" | "h3" }> =>
       block.kind === "h2" || block.kind === "h3",
@@ -42,7 +40,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
 
   return (
     <>
-      <Section spacing="none" className="pt-32 lg:pt-40 pb-12 lg:pb-16">
+      <Section spacing="none" className="pt-32 lg:pt-40 pb-10 lg:pb-14">
         <Container>
           {/*
             A real breadcrumb trail, which the blueprint asks for and which the
@@ -50,13 +48,32 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
             trail is the thing that makes the silo legible to a reader who
             arrived from search three levels down, and it reads off the same
             navigation tree the header does.
+
+            !! `visible` IS PASSED HERE AND ALMOST NOWHERE ELSE !!
+
+            The component draws nothing by default, because the client asked on
+            24 August 2026 for the trail off the service, industry and resource
+            pages. They asked for it back on an article on 26 August, and an
+            article is the right exception: it is the page most likely to be
+            somebody's first, landed on from a search result by a reader with
+            no idea what the rest of the site holds.
+
+            !! path IS "/blog", NOT post.category, AND THAT IS NOT COSMETIC !!
+
+            It was the category until the category became optional. trailFor
+            returns just Home for a path it cannot find in the menu, and the
+            component draws nothing when the trail is shorter than two, so an
+            uncategorised post had no trail and no BreadcrumbList schema at all.
+            /blog is where every article actually lives now, it is in the menu
+            tree, and it is the same for every post whatever it is tagged.
           */}
           <Breadcrumbs
-            path={post.category}
-            leaf={{ name: post.title, href: path }}
+            path="/blog"
+            visible
+            leaf={{ name: post.title, href: postHref(post) }}
           />
 
-          <h1 className="mt-8 max-w-4xl font-display text-4xl lg:text-6xl tracking-tight leading-[1.03]">
+          <h1 className="max-w-4xl font-display text-4xl lg:text-6xl tracking-tight leading-[1.03]">
             {post.title}
           </h1>
 
@@ -69,109 +86,22 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
           <p className="mt-8 max-w-3xl text-xl lg:text-2xl text-muted-foreground leading-relaxed">
             {post.excerpt}
           </p>
-
-          {/*
-            Byline and dates.
-
-            Both dates are shown when a piece has been revised, because the
-            blueprint is right that "last updated" is the stronger signal. A
-            reader deciding whether a technical article is still current wants
-            it more than they want the original date, and Google reads
-            dateModified for the same reason.
-          */}
-          <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-foreground/10 pt-6 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            <span className="text-foreground">{post.author}</span>
-            <Dot />
-            <time dateTime={post.published}>{formatDate(post.published)}</time>
-            {post.updated && (
-              <>
-                <Dot />
-                <span>
-                  Updated <time dateTime={post.updated}>{formatDate(post.updated)}</time>
-                </span>
-              </>
-            )}
-            <Dot />
-            <span>{post.readingMinutes} min read</span>
-          </div>
         </Container>
       </Section>
 
-      {post.image && (
-        <Section spacing="none" className="pb-12 lg:pb-16">
-          <Container>
-            <div className="relative aspect-[21/9] w-full overflow-hidden">
-              {/*
-                alt is empty unless the artwork has something to describe. See
-                the note on imageAlt in lib/posts.ts: the placeholders in
-                public/sample illustrate nothing, and inventing a description
-                for them would be worse than saying nothing.
-              */}
-              <Image
-                src={post.image}
-                alt={post.imageAlt ?? ""}
-                fill
-                priority
-                sizes="(min-width: 1400px) 1320px, 100vw"
-                className="object-cover"
-              />
-            </div>
-          </Container>
-        </Section>
-      )}
-
-      {/*
-        Key takeaways.
-
-        !! THIS IS THE BLOCK AN ANSWER ENGINE WILL TAKE !!
-
-        docs/blog-structure.md puts it immediately under the hero for exactly
-        that reason. Something looking for a quotable answer takes the
-        compressed version over the prose almost every time, so the compressed
-        version has to be the real claim rather than a teaser for it.
-
-        Set on a tint rather than a border, so it reads as a different kind of
-        thing from the article rather than as its first section.
-      */}
-      {post.takeaways.length > 0 && (
-        <Section spacing="none" className="pb-16 lg:pb-20">
-          <Container>
-            <aside
-              aria-labelledby="takeaways"
-              className="max-w-3xl bg-foreground/[0.03] p-8 lg:p-10"
-            >
-              <h2
-                id="takeaways"
-                className="font-mono text-xs uppercase tracking-widest text-muted-foreground"
-              >
-                Key takeaways
-              </h2>
-              <ul className="mt-6 space-y-4">
-                {post.takeaways.map((line) => (
-                  <li key={line} className="flex gap-4 text-lg leading-relaxed">
-                    <span
-                      aria-hidden
-                      className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40"
-                    />
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          </Container>
-        </Section>
-      )}
+      <Hero post={post} />
 
       <Section spacing="none" className="pb-20 lg:pb-28">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-20">
             <aside className="lg:sticky lg:top-32 h-fit">
-              {headings.length > 1 && <Contents headings={headings} />}
+              <Facts post={post} />
+              {headings.length > 1 && (
+                <Contents headings={headings} className="mt-10" />
+              )}
               {/* Omitted rather than drawn empty when a post has no silo
                   target. See the note on `sendsTo` in lib/posts.ts. */}
-              {post.sendsTo && (
-                <SiloLink href={post.sendsTo} className={headings.length > 1 ? "mt-10" : ""} />
-              )}
+              {post.sendsTo && <SiloLink href={post.sendsTo} className="mt-10" />}
             </aside>
 
             {/*
@@ -257,12 +187,19 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
           <Container>
             <SectionTitle>Read next</SectionTitle>
             <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+              {/*
+                !! THESE LINKS WERE BUILT BY HAND AND WERE BROKEN !!
+
+                The href was `${other.category}/${other.slug}`, from when the
+                category was part of the address. It stopped being that on 25
+                August 2026, and for an uncategorised post this produced
+                "/some-slug": a link off the front of the site to a page that
+                does not exist. postHref is the one place that knows where an
+                article lives; nothing here should be composing that string.
+              */}
               {related.map((other) => (
-                <li key={`${other.category}/${other.slug}`}>
-                  <Link
-                    href={`${other.category}/${other.slug}`}
-                    className="group/rel block"
-                  >
+                <li key={other.slug}>
+                  <Link href={postHref(other)} className="group/rel block">
                     {other.image && (
                       <span className="relative block aspect-[3/2] w-full overflow-hidden">
                         <Image
@@ -296,6 +233,194 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
 }
 
 /**
+ * The hero: the artwork, with the key takeaways laid over it.
+ *
+ * !! THIS IS THE BLOCK AN ANSWER ENGINE WILL TAKE !!
+ *
+ * docs/blog-structure.md puts the takeaways immediately under the hero for
+ * exactly that reason. Something looking for a quotable answer takes the
+ * compressed version over the prose almost every time, so the compressed
+ * version has to be the real claim rather than a teaser for it. The client
+ * asked on 26 August 2026 for it to sit on the picture instead of under it,
+ * which costs nothing here: it is still the first prose on the page, still
+ * an <h2> with a list under it, and still the first thing in the markup after
+ * the standfirst. Only its background changed.
+ *
+ * !! THE SCRIM IS NOT DECORATION. WITHOUT IT THIS IS UNREADABLE !!
+ *
+ * The artwork is whatever the CMS holds, so it can be a bright photograph on
+ * any given post and nothing here can predict it. A gradient alone leaves the
+ * top of the list sitting on the raw image, so the overlay carries a flat
+ * blur as well and the gradient only deepens it towards the text. That pairing
+ * is what makes white type safe against artwork nobody has seen yet.
+ *
+ * !! THE HEIGHT IS A MINIMUM, NOT AN ASPECT RATIO, WHEN TEXT IS ON IT !!
+ *
+ * The plain hero is 21:9, which is 156px tall on a phone and fine for a
+ * picture. Three takeaways do not fit in 156px, and a fixed ratio would clip
+ * them or spill them out of the frame. A min-height lets the block grow to
+ * whatever the takeaways need while the image covers it, and being a stated
+ * number rather than content-derived it costs no layout shift.
+ */
+function Hero({ post }: { post: Post }) {
+  const takeaways = post.takeaways;
+
+  /* Nothing to draw. A post with neither artwork nor takeaways goes straight
+     from the standfirst to the body. */
+  if (!post.image && takeaways.length === 0) return null;
+
+  /* No artwork, but there are takeaways: the tinted panel this used to be. */
+  if (!post.image) {
+    return (
+      <Section spacing="none" className="pb-16 lg:pb-20">
+        <Container>
+          <aside
+            aria-labelledby="takeaways"
+            className="max-w-3xl bg-foreground/[0.03] p-8 lg:p-10"
+          >
+            <TakeawaysHeading />
+            <ul className="mt-6 space-y-4">
+              {takeaways.map((line) => (
+                <li key={line} className="flex gap-4 text-lg leading-relaxed">
+                  <Bullet className="bg-foreground/40" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </Container>
+      </Section>
+    );
+  }
+
+  return (
+    <Section spacing="none" className="pb-14 lg:pb-20">
+      <Container>
+        <div className="relative isolate w-full overflow-hidden">
+          {/*
+            alt is empty unless the artwork has something to describe. See
+            the note on imageAlt in lib/posts.ts: the placeholders in
+            public/sample illustrate nothing, and inventing a description
+            for them would be worse than saying nothing.
+          */}
+          <Image
+            src={post.image}
+            alt={post.imageAlt ?? ""}
+            fill
+            priority
+            sizes="(min-width: 1400px) 1320px, 100vw"
+            className="object-cover"
+          />
+
+          {takeaways.length === 0 ? (
+            /* Spacer. `fill` needs the parent to have a height of its own,
+               and with no text in the box there is nothing to give it one. */
+            <div className="aspect-[21/9]" />
+          ) : (
+            <>
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/35 backdrop-blur-[2px]"
+              />
+              <aside
+                aria-labelledby="takeaways"
+                className="relative flex min-h-[26rem] sm:min-h-[28rem] lg:min-h-[34rem] flex-col justify-end p-6 sm:p-10 lg:p-14 text-white"
+              >
+                <TakeawaysHeading className="text-white/70" />
+                <ul className="mt-5 max-w-4xl space-y-4">
+                  {takeaways.map((line) => (
+                    <li
+                      key={line}
+                      className="flex gap-4 text-base sm:text-lg leading-relaxed [text-shadow:0_1px_3px_rgb(0_0_0/0.55)]"
+                    >
+                      <Bullet className="bg-white/70" />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            </>
+          )}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+function TakeawaysHeading({ className = "text-muted-foreground" }) {
+  return (
+    <h2
+      id="takeaways"
+      className={`font-mono text-xs uppercase tracking-widest ${className}`}
+    >
+      Key takeaways
+    </h2>
+  );
+}
+
+function Bullet({ className }: { className: string }) {
+  return (
+    <span
+      aria-hidden
+      className={`mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full ${className}`}
+    />
+  );
+}
+
+/**
+ * Who wrote it, when, and how long it takes to read.
+ *
+ * !! THIS WAS A BYLINE UNDER THE TITLE UNTIL 26 AUGUST 2026 !!
+ *
+ * One mono line of "Author · date · 12 min read" sat between the standfirst
+ * and the hero, which put three facts nobody reads in the way of the picture
+ * everybody does. The client asked for it moved into the column beside the
+ * article, in the same label-over-value rows the case study pages use for
+ * company facts. That layout is doing the same job in both places: a short
+ * list of specifics a reader scans to decide whether to spend the next twelve
+ * minutes, kept out of the reading line rather than across it.
+ *
+ * Both dates are shown when a piece has been revised, because the blueprint is
+ * right that "last updated" is the stronger signal. A reader deciding whether
+ * a technical article is still current wants it more than they want the
+ * original date, and Google reads dateModified for the same reason.
+ *
+ * <dl> rather than a stack of divs: these are literally name/value pairs, and
+ * the markup may as well say so.
+ */
+function Facts({ post }: { post: Post }) {
+  const rows: { label: string; value: React.ReactNode }[] = [
+    { label: "Author", value: post.author },
+    {
+      label: "Published",
+      value: <time dateTime={post.published}>{formatDate(post.published)}</time>,
+    },
+    ...(post.updated
+      ? [
+          {
+            label: "Updated",
+            value: <time dateTime={post.updated}>{formatDate(post.updated)}</time>,
+          },
+        ]
+      : []),
+    { label: "Read time", value: `${post.readingMinutes} min` },
+  ];
+
+  return (
+    <dl className="border-t border-foreground/10">
+      {rows.map((row) => (
+        <div key={row.label} className="border-b border-foreground/10 py-4">
+          <dt className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+            {row.label}
+          </dt>
+          <dd className="mt-1.5">{row.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/**
  * The contents panel.
  *
  * Built from the heading blocks rather than declared separately, so it cannot
@@ -311,13 +436,15 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
  */
 function Contents({
   headings,
+  className = "",
 }: {
   headings: Extract<Block, { kind: "h2" | "h3" }>[];
+  className?: string;
 }) {
   return (
     <details
       open={false}
-      className="group/toc lg:[&:not([open])>div]:block"
+      className={`group/toc lg:[&:not([open])>div]:block ${className}`}
     >
       <summary className="flex cursor-pointer items-center justify-between gap-4 border-y border-foreground/10 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground list-none lg:hidden [&::-webkit-details-marker]:hidden">
         On this page
@@ -423,14 +550,6 @@ function AuthorBox({ author }: { author: string }) {
         the integrations rather than by anybody in marketing.
       </p>
     </div>
-  );
-}
-
-function Dot() {
-  return (
-    <span aria-hidden className="text-foreground/25">
-      ·
-    </span>
   );
 }
 
