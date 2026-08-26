@@ -135,26 +135,45 @@
 
 /*
  * Dark counterpart, on the same 196deg teal. A saturated mid teal cannot
- * carry a dark theme - #146F90 is 1.8:1 on this background - so the roles
- * invert: a light teal becomes the fill and a near-black teal the text on it.
- * The mark keeps its own colours in both themes and is not redefined here.
+ * carry a dark theme - the light theme's #146F90 is 3.09:1 on this
+ * background, under the 4.5:1 body text needs - so the roles invert: a light
+ * teal becomes the fill and a near-black teal the text on it. The mark keeps
+ * its own colours in both themes and is not redefined here.
+ *
+ * That figure read 1.8:1 until 26 August 2026 and was wrong on the old
+ * background too, where it measured 2.99:1. Corrected while the background
+ * changed rather than carried forward. The conclusion it supports is
+ * unaffected: 3.09:1 still fails body text.
  */
 .dark {
   color-scheme: dark;
 
   /* --- 2. The anchors --------------------------------------------------- */
-  --brand-blue: #8bcce4; /* 9.55:1 on --background */
+  --brand-blue: #8bcce4; /* 9.89:1 on --background */
   --brand-blue-rgb: 139 204 228;
   --brand-blue-strong: #cee9f3;
-  --brand-red: #f4887b; /* 6.97:1 on --background */
+  --brand-red: #f4887b; /* 7.22:1 on --background */
   --brand-success: #6ee7b7; /* lifted for the dark ground */
 
-  --surface: #0e1f25; /* 196deg, L 10% */
+  /*
+   * Chosen by the client in devtools on 26 August 2026, where they set it on
+   * --background. It is set here instead, on the anchor, because in this block
+   * --surface feeds --background and nothing else, so the two are the same
+   * change and this is the one carrying the annotation. Note that the same
+   * move in the light block above would not be equivalent: --surface feeds
+   * --emphasis-foreground there as well.
+   *
+   * It was #0e1f25 - the same 196deg, a shade lighter at L 10%, and
+   * noticeably more saturated at S 45%. Being slightly darker, every measured
+   * ratio in this block improved rather than needing rebalancing, and the four
+   * of them are restated against the new ground.
+   */
+  --surface: #101b1f; /* 196deg, L 9.2%, S 32% */
   --surface-tint: #1d343d; /* L 17.5% */
   --surface-accent: #244049; /* L 21.5% */
   --surface-line: #2e4a55; /* L 25.5% */
-  --surface-ink: #e3f2f7; /* 14.75:1 on --surface */
-  --surface-ink-muted: #bbcdd3; /* 10.30:1 on --surface */
+  --surface-ink: #e3f2f7; /* 15.28:1 on --surface */
+  --surface-ink-muted: #bbcdd3; /* 10.67:1 on --surface */
   --surface-raised: #152c35; /* cards, popovers and the emphasis panel */
   --surface-deepest: #032430; /* text on a light teal fill, 9.13:1 */
 
