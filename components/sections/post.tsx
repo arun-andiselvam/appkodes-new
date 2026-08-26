@@ -582,6 +582,43 @@ function AuthorBox({ author }: { author: string }) {
           alt is empty on purpose. The name is the next thing in the markup, so
           a screen reader announcing the portrait as well would read the same
           person twice.
+
+          !! SQUARE, NOT A CIRCLE, AND THAT IS THE HOUSE STYLE !!
+
+          It shipped as `rounded-full` on 26 August 2026, copied from the
+          testimonial avatars, and the client corrected it the same day. Those
+          avatars sit in a slider of small round faces where the circle is the
+          motif. Everything on an article is square: the hero, the takeaways
+          panel, the service card, the tables and figures in the body. A lone
+          circle at the foot of it reads as borrowed from another page.
+
+          !! A FIXED SIDE, AND `self-stretch aspect-square` WAS TRIED FIRST !!
+
+          The obvious way to make the side equal the text block's height is to
+          stretch the portrait to the row and let the ratio give it its width.
+          Measured in Chrome 151, it fails in both directions. On desktop the
+          image's own 200px intrinsic height became the tallest thing in the
+          row, so it set the height rather than taking it - portrait and text
+          both came out 200 when the text wanted 118. On a phone the text wrapped
+          to 378, the image stretched to match, and the width stayed at 200
+          because the `width` attribute is a presentational hint the ratio does
+          not override. A 200 by 378 portrait is not a square.
+
+          Binding it to the text is also the wrong goal once the numbers are in
+          front of you. The block is 118px at every width from 600 up and 170px
+          at 412, where the bio wraps. Honouring that literally would put a
+          170px square on a 412px phone: two fifths of the viewport, given to a
+          headshot.
+
+          So the side is fixed. 120px is the 118px the text block actually
+          occupies, rounded to the spacing scale, which is why this reads as
+          aligned rather than approximate. Smaller on a phone, where the text
+          is taller and the screen is not.
+
+          !! IF THE BIO ABOVE CHANGES LENGTH, RE-MEASURE THIS !!
+
+          The match is to three lines of prose at this measure. A fourth line
+          or a shorter bio moves the block and this number stops lining up.
         */}
         {founder && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -589,9 +626,9 @@ function AuthorBox({ author }: { author: string }) {
             src="/author-arun.webp"
             alt=""
             loading="lazy"
-            width={64}
-            height={64}
-            className="h-16 w-16 shrink-0 rounded-full object-cover"
+            width={200}
+            height={200}
+            className="size-24 shrink-0 object-cover sm:size-30"
           />
         )}
 
