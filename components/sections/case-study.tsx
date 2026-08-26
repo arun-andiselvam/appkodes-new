@@ -63,10 +63,31 @@ export function CaseStudyPage({
             the right column exists, so the summary stays short above them.
           */}
           <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_minmax(0,22rem)] lg:gap-16">
+            {/*
+              !! THE ALT COMES FROM THE STUDY NOW, AND IT HAD TO !!
+
+              This was a hard coded alt="" and that was correct while every
+              hero was a photograph of the client's city: a skyline next to a
+              study that already names the country is decoration, and reading
+              it out loud helps nobody.
+
+              The clients supplied their own key art on 26 August 2026 and it
+              is not decoration. Each carries a headline and three or four
+              named capabilities set in type, and alt="" dropped every word of
+              that for anybody using a screen reader, with nothing anywhere
+              reporting a problem. See `imageAlt` in lib/case-studies.ts.
+
+              `priority` is left as it is rather than being modernised to
+              preload + fetchPriority. This is the LCP element on the page and
+              Next 16 deprecated `priority`, so it wants the same treatment the
+              article hero got in components/sections/post.tsx. That is a
+              performance change on a page nobody has asked about and it does
+              not belong in an accessibility fix.
+            */}
             <div className="relative aspect-[3/2] w-full overflow-hidden">
               <Image
                 src={study.image}
-                alt=""
+                alt={study.imageAlt}
                 fill
                 priority
                 sizes="(min-width: 1024px) 60rem, 100vw"
@@ -304,6 +325,20 @@ export function CaseStudyPage({
                     href={`/resources/case-studies/${other.slug}`}
                     className="group/rel block"
                   >
+                    {/*
+                      alt stays empty here while the hero above carries the
+                      real description, and that is deliberate rather than a
+                      spot that was missed.
+
+                      This image sits inside a link whose text is already the
+                      study's title. Giving it the study's `imageAlt` would
+                      make a screen reader read a headline and three or four
+                      capability descriptions before every card in the list,
+                      for a picture that is doing decorative work in a grid.
+                      The card's own text is the accessible content; the hero
+                      on the page it leads to is where the picture is the
+                      content.
+                    */}
                     <span className="relative block aspect-[16/9] w-full overflow-hidden">
                       <Image
                         src={other.image}

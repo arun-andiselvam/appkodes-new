@@ -50,6 +50,30 @@ export type CaseStudy = {
   /** Path under /public. */
   image: string;
   /**
+   * What the hero image says, for anybody who cannot see it.
+   *
+   * !! REQUIRED, AND "" IS A LEGITIMATE ANSWER !!
+   *
+   * Every hero was a photograph of the client's city until 26 August 2026, and
+   * every one rendered a hard coded `alt=""` in the template. That was right: a
+   * skyline beside a study that already names the country is decoration, and
+   * describing it would make a screen reader read out scenery.
+   *
+   * The clients then supplied their own key art, which is not decoration. Each
+   * carries a headline and three or four named capabilities set in type - live
+   * streaming, a digital wallet, AI audio generation - and under `alt=""` every
+   * word of that was dropped for anybody using a screen reader, silently.
+   *
+   * So it is a field now, and required rather than optional, because optional
+   * is how it ends up unset on the one study nobody checked. A study whose
+   * image genuinely is decoration sets "" on purpose, and the intent shows in
+   * the diff instead of looking like an oversight.
+   *
+   * Write what the image says, not what it is. "Key art showing" and "image of"
+   * are wasted words: a screen reader has already announced it as an image.
+   */
+  imageAlt: string;
+  /**
    * The figures.
    *
    * !! EVERY ONE OF THESE HAS TO COME FROM THE CLIENT !!

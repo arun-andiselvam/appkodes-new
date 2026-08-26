@@ -75,53 +75,37 @@ export const caseStudies: CaseStudy[] = [
    *
    * `location` is the country only. The client is getting the city.
    *
-   * !! THIS ONE IS THE CLIENT'S OWN ARTWORK, WHICH INVERTS THE USUAL RULE !!
+   * !! THE CLIENT'S OWN KEY ART, WHICH INVERTS THIS FILE'S USUAL RULE !!
    *
-   * This hero was a CC0 photograph of Chureito Pagoda by Dang Son, at the now
-   * retired path public/case-studies/japan-pro.webp, until 26 August 2026. It
-   * was carried under the rule the other three studies still follow: a stock
-   * photograph illustrates the market and must never be read as the client's
-   * premises or product.
+   * This hero was a CC0 photograph of Chureito Pagoda by Dang Son until 26
+   * August 2026, carried under the rule the file used to apply everywhere: a
+   * stock photograph illustrates the market and must never be read as the
+   * client's premises or product.
    *
-   * The client supplied their own key art that day and it is what ships now,
-   * at public/case-studies/japan-pro-2.webp. The same pagoda and the same
-   * mountain, with Japan Pro's four categories set over it in their own type:
-   * Experiences, Tours, Tickets, Restaurants.
-   * So the caveat above does not apply here and the opposite one does. This
-   * does depict the client's product, deliberately, and it is theirs to have
-   * supplied. Anything written near it may say so.
+   * The client supplied their own key art that day, and a final set for all
+   * four studies later the same day. So the caveat is replaced by its
+   * opposite: this does depict the client's product, deliberately, and it is
+   * theirs to have supplied. Anything written near it may say so.
    *
-   * !! IT IS CROPPED TO 3:2 IN THE FILE RATHER THAN BY THE TEMPLATE !!
+   * !! CROPPED TO 3:2 IN THE FILE, NOT BY THE TEMPLATE, AND IT MATTERS !!
    *
-   * The other heroes ship 16:9 and let `object-cover` crop them, which is fine
-   * for a photograph and would not be fine here. The source is 1376 by 768,
-   * the template's frame is 3:2, and the browser would have taken about 108px
-   * off each side - straight through the category labels on the left. So the
-   * crop is made here, anchored left of centre, keeping every label with a
-   * margin and giving up the right edge of the pagoda instead.
+   * The sources are 1376 by 768 against a 3:2 frame, so `object-cover` would
+   * take about 108px off each side. Every one of these has its headline
+   * starting around 78px from the left, so a centred crop cuts into the first
+   * word. They are cropped here instead, anchored hard left: the design keeps
+   * the margin it was given and the photograph gives up its right edge.
    *
-   * !! THE `-2` IS A CACHE BUST. REPLACE AN IMAGE, CHANGE THE FILENAME !!
+   * !! REPLACE AN IMAGE HERE, RENAME IT !!
    *
-   * The new artwork first shipped over the old filename and did not appear.
-   * The deploy was fine; the origin was serving 133,914 bytes while Cloudflare
-   * answered every request with the 310,410 byte photograph from its own edge
-   * cache, `cf-cache-status: HIT`.
+   * The first attempt shipped new artwork over an old filename and it did not
+   * appear. The deploy was fine; Cloudflare answered every request with the
+   * old bytes from its edge cache, cf-cache-status: HIT. That is the cost of
+   * the /_next/image cache rule added the same day, and it is worth paying:
+   * it took an article hero from 390ms to 90ms.
    *
-   * That is the cost of the cache rule added to /_next/image on 26 August 2026,
-   * and it is worth paying: it took the hero image on an article from 390ms to
-   * 90ms. Before it, the optimizer answered DYNAMIC and was never cached, so
-   * overwriting a file took effect immediately. Now it is cached at the edge
-   * for a year, and nothing under public/ is content hashed, so the old bytes
-   * outlive the deploy that replaced them.
-   *
-   * Purging Cloudflare fixes the edge and cannot fix a browser. next.config.mjs
-   * serves these with a week's cache, so anybody who had already seen the study
-   * would keep the old picture for up to a week however many times we purged.
-   *
-   * A new filename fixes both at once, because it is a URL nothing has ever
-   * cached. So: when an image here is replaced, rename it. The number is a
-   * version, not a second picture, and the alternative is a purge that only
-   * half works and a symptom that reads exactly like a failed deploy.
+   * Purging fixes the edge and cannot fix a browser, because next.config.mjs
+   * serves these with a week's cache. A new filename is a URL nothing has ever
+   * cached, so it fixes both at once and needs no dashboard step.
    */
   {
     slug: "japan-pro",
@@ -141,8 +125,9 @@ export const caseStudies: CaseStudy[] = [
     location: "Japan",
     summary:
       "The catalogue spoke two languages and its travellers did not. A listing now publishes in twelve, and no card is charged until the host accepts the booking.",
-    /* -2 is a cache bust, not a second picture. See the note above. */
-    image: "/case-studies/japan-pro-2.webp",
+    image: "/case-studies/japan-pro-key-art.webp",
+    imageAlt:
+      "Japan Tourism Project, elevating digital experiences. Experiences: curated cultural immersion and tailored itineraries. Events: local festivals, exhibitions and entertainment. Restaurants: from traditional izakayas to fine dining. Set over Chureito Pagoda with Mount Fuji behind it.",
     results: [
       { value: "12", label: "languages every listing publishes in" },
       { value: "Under 3 min", label: "from a submitted listing to all twelve live" },
@@ -277,25 +262,25 @@ export const caseStudies: CaseStudy[] = [
    * !! THE CLIENT'S OWN KEY ART, AND IT CARRIES NO NAME. KEEP IT THAT WAY !!
    *
    * This hero was Business Bay at night by Robert Bock, CC0 through Unsplash,
-   * at the retired path public/case-studies/short-video-platform.webp, until
-   * 26 August 2026. The client supplied their own key art that day: the same
-   * skyline with three features set over it, Live Streaming, Audio & Video
-   * Chat and Gifting System. It ships at
-   * public/case-studies/short-video-platform-2.webp.
+   * until 26 August 2026. It is now the client's own key art over the same
+   * skyline: Live Streaming, Voice & Video Hub and Virtual Gifts.
    *
-   * !! THE FILE IT ARRIVED AS WAS NAMED FOR THE PRODUCT. THAT MATTERS !!
+   * `client` on this study reads Undisclosed, and a filename is a public URL,
+   * so the file is named for the slug rather than for anything the client
+   * calls the product. An earlier version of this artwork arrived as
+   * chobi-app.png and shipping it under that name would have put the product
+   * name on the site while the copy carefully withholds it. The artwork itself
+   * carries no logo and no product name, which is the only reason it can be
+   * used on an undisclosed study at all. Check that before accepting the next
+   * one.
    *
-   * It came in as chobi-app.png. `client` on this study reads Undisclosed, and
-   * a filename is a public URL, so shipping it under that name would have put
-   * the client's product name on the site while the copy carefully withholds
-   * it. The artwork itself carries no logo and no product name, which is why
-   * it can be used at all. It is named for the slug instead, and anything that
-   * replaces it must be too.
-   *
-   * The image asserts a gifting system, which the copy below does not mention.
-   * That is the client's own claim about their own product and it needs no
+   * The image asserts virtual gifts, which the copy below does not mention.
+   * That is the client's own claim about their own product and needs no
    * hedging, but if gifting belongs in the study it has to be confirmed and
    * written like every other fact here rather than inferred from a picture.
+   *
+   * See the Japan Pro entry above for the crop and the renaming rule, which
+   * apply to all four.
    */
   {
     slug: "short-video-platform",
@@ -308,8 +293,9 @@ export const caseStudies: CaseStudy[] = [
     location: "Dubai, United Arab Emirates",
     summary:
       "A short video feed and live rooms in one app. It went past a million users after release, and the swipe never once asked anybody to wait for the next video.",
-    /* -2 is a cache bust, not a second picture. See the note above. */
-    image: "/case-studies/short-video-platform-2.webp",
+    image: "/case-studies/short-video-platform-key-art.webp",
+    imageAlt:
+      "A Dubai based live streaming application. Live streaming: real time broadcast in high definition video and audio. Voice and video hub: integrated calling and conferencing. Virtual gifts: gifts and animations that monetise the platform. Set over the Dubai skyline at night.",
     results: [
       { value: "1M+", label: "users on the platform after release" },
       { value: "15", label: "of our team working on site in Dubai" },
@@ -450,30 +436,22 @@ export const caseStudies: CaseStudy[] = [
    *
    * !! THE CLIENT'S OWN KEY ART, CARRYING NO NAME. KEEP IT THAT WAY !!
    *
-   * This hero was lower Manhattan at sunset from the Brooklyn side, by Matt
-   * Lamers, CC0 through Unsplash, at the retired path
-   * public/case-studies/content-production-platform.webp, until 26 August
-   * 2026. The client supplied their own key art that day: the same skyline
-   * with four capabilities set over it, AI Content Gen, AI Media Gen, AI Video
-   * Gen and AI Audio Gen. It ships at
-   * public/case-studies/content-production-platform-2.webp.
+   * This hero was lower Manhattan at sunset by Matt Lamers, CC0 through
+   * Unsplash, until 26 August 2026. It is now the client's own key art over
+   * the same skyline: AI Content, AI Images and AI Audio.
    *
    * `client` reads Undisclosed here as it does on the Dubai study, and the
    * artwork carries no logo and no product name, which is why it can be used.
-   * The file is named for the slug rather than for anything the client calls
-   * the product, because a filename is a public URL. Anything replacing it
-   * must be named the same way.
+   * The file is named for the slug for the same reason.
    *
    * !! THE COUNTRY PATTERN SURVIVED THE CHANGE, WHICH WAS NOT GUARANTEED !!
    *
    * Every study carried a photograph of the client's own country, which was
    * the pattern rather than a coincidence: read as a set on the index they say
    * the work travels. The client's own art happens to keep it - Manhattan
-   * here, Business Bay for Dubai, Chureito Pagoda for Japan - so the set still
-   * argues the same thing. The one exception is the African study, which uses
-   * a stock photograph because its country is not named. If a future client
-   * sends art shot somewhere else, that is a decision to make deliberately
-   * rather than to notice afterwards.
+   * here, Business Bay for Dubai, Chureito Pagoda for Japan, a city skyline
+   * for the African study. If a future client sends art shot somewhere else,
+   * that is a decision to make deliberately rather than to notice afterwards.
    */
   {
     slug: "content-production-platform",
@@ -488,8 +466,9 @@ export const caseStudies: CaseStudy[] = [
     location: "United States",
     summary:
       "A hundred and fifty writers produced every piece by hand. The system drafts, illustrates and narrates it now, and a person signs off before anything publishes.",
-    /* -2 is a cache bust, not a second picture. See the note above. */
-    image: "/case-studies/content-production-platform-2.webp",
+    image: "/case-studies/content-production-platform-key-art.webp",
+    imageAlt:
+      "A USA AI automation project, advanced content intelligence. AI content: automated text and copy generation. AI images: custom high fidelity visual assets. AI audio: intelligent voice and sound synthesis. Set over lower Manhattan at sunset.",
     results: [
       { value: "1 week", label: "for what had been a month of content" },
       { value: "Thousands", label: "of hours given back, by the client's own count" },
@@ -594,7 +573,7 @@ export const caseStudies: CaseStudy[] = [
    *
    * From the client: a chat application for an African market where the
    * internet is slow and unstable, built because WhatsApp is too heavy for it;
-   * the whole stack tuned so the app is usable down to 50 Kbps; no digital
+   * the whole stack tuned so the app is usable on 2G and 3G; no digital
    * payment system and no established marketplace in the country, so the
    * client wanted all of it in one place; a wallet and a marketplace shipped
    * alongside the chat and events added later under the same constraint; a
@@ -629,27 +608,29 @@ export const caseStudies: CaseStudy[] = [
    * asked. It is honest and it is vague, and if a country or a region is ever
    * cleared, this field is the only thing that has to change.
    *
-   * !! THE PHOTOGRAPH IS NAIROBI, AND THE CLIENT'S MARKET IS NOT NAMED !!
+   * !! THE CLIENT'S OWN KEY ART, AND THE SKYLINE NAMES NOTHING !!
    *
-   * public/case-studies/low-bandwidth-super-app.webp is downtown Nairobi at
-   * night from Utalii House, by Egotieno, own work, released CC0 through
-   * Wikimedia Commons. Public domain, no attribution required, recorded here
-   * so nobody has to trace it later.
+   * This hero was a stock photograph of Nairobi for a few hours on 26 August
+   * 2026, because the study's own `location` is a continent and there is no
+   * honest specific photograph of one. The client supplied their key art the
+   * same day and it replaced it: Secure Chat, Marketplace, Digital Wallet and
+   * Event Booking over a city skyline at dusk.
    *
-   * Kenya is not stated anywhere in the copy and must not be inferred from
-   * the picture. Same rule as the other three studies: it places the
-   * engagement on a continent and nothing more, and no caption may imply it
-   * shows the client, their market, their offices or their product. It is a
-   * placeholder the client intends to replace.
+   * The artwork's headline reads "Africa all-in-one platform" and names no
+   * country, which is exactly what this study needs. No country is stated in
+   * the copy and none may be inferred from the picture.
    *
-   * !! A GETTY IMAGE WAS OFFERED FOR THIS SLOT AND MUST NOT BE USED !!
+   * !! A GETTY IMAGE WAS OFFERED FOR THIS SLOT AND MUST NOT COME BACK !!
    *
-   * On 26 August 2026 a file named gettyimages-1240610226.jpg, carrying a BBC
-   * article's image id, was proposed for this hero. It is rights managed stock
-   * taken from a news page. This is a commercial site, Getty pursues exactly
-   * this, and the file was a 976px web thumbnail against a 1600px slot in any
-   * case. Anything that replaces the picture here needs a licence that covers
-   * commercial use, and the licence goes in this comment beside it.
+   * Before the key art arrived, a file named gettyimages-1240610226.jpg
+   * carrying a BBC article's image id was proposed for this hero. It is rights
+   * managed stock taken from a news page. This is a commercial site, Getty
+   * pursues exactly this, and it was a 976px web thumbnail against a 1600px
+   * slot in any case.
+   *
+   * The rule that comes out of it applies to every image in this file: a
+   * picture here needs a licence that covers commercial use, or it needs to be
+   * the client's own, and which of the two goes in the comment beside it.
    */
   {
     slug: "low-bandwidth-super-app",
@@ -662,10 +643,12 @@ export const caseStudies: CaseStudy[] = [
     companySize: "5 to 10",
     location: "Africa",
     summary:
-      "Chat, a wallet and a marketplace behind one login, for a country where the connection falls to 50 Kbps and there was no digital payment system to build on. Fifty thousand people downloaded it in the first couple of weeks.",
-    image: "/case-studies/low-bandwidth-super-app.webp",
+      "Chat, a wallet and a marketplace behind one login, for a country still on 2G and 3G where there was no digital payment system to build on. Fifty thousand people downloaded it in the first couple of weeks.",
+    image: "/case-studies/low-bandwidth-super-app-key-art.webp",
+    imageAlt:
+      "An all in one platform for Africa, connecting digital ecosystems. Secure chat: real time messaging. Marketplace: integrated commerce and trading. Digital wallet: payments and financial management. Event booking: discover and book local experiences. Set over a city skyline at dusk.",
     results: [
-      { value: "50 Kbps", label: "the connection the app is still usable on" },
+      { value: "2G and 3G", label: "the mobile networks it is built to work on" },
       { value: "50,000", label: "downloads across both stores in the first weeks" },
       { value: "4", label: "products behind one login: chat, wallet, marketplace, events" },
     ],
@@ -674,8 +657,8 @@ export const caseStudies: CaseStudy[] = [
       body: "The client wanted several products in one app for a market where most of the usual assumptions do not hold. The hard part was never the feature list. It was that every one of those features had to work on a connection that modern software is built to ignore.",
       points: [
         {
-          title: "A connection that falls to 50 Kbps",
-          body: "Users are on networks that drop to a fraction of what an app of this kind assumes, and they drop unpredictably rather than staying low. WhatsApp is what people already had, and it is built for a connection that holds. On this one it does not.",
+          title: "Phones on 2G and 3G",
+          body: "Users are on mobile networks a generation or two behind what an app of this kind assumes, and they are unstable as well as slow. WhatsApp is what people already had, and it is built for a connection that holds. On these it does not.",
         },
         {
           title: "No digital payments to plug into",
@@ -701,7 +684,7 @@ export const caseStudies: CaseStudy[] = [
     },
 
     approach: {
-      body: "Almost every decision here was settled by the same question: what does this cost on a 50 Kbps line. The answers run in the order the problems were listed.",
+      body: "Almost every decision here was settled by the same question: what does this cost on a 2G connection. The answers run in the order the problems were listed.",
       points: [
         {
           title: "The whole stack tuned to the network",
