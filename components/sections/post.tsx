@@ -453,8 +453,20 @@ function Facts({ post }: { post: Post }) {
  *
  * The blueprint asks for an accordion on mobile and a sticky panel on desktop.
  * A <details> gives the accordion for free, and CSS forces it open on large
- * screens by overriding the closed state's display and hiding the summary. A
- * client component to toggle one list would be a bundle for nothing.
+ * screens while hiding the summary. A client component to toggle one list
+ * would be a bundle for nothing.
+ *
+ * !! `data-contents` IS LOAD BEARING. THE RULE LIVES IN globals.css !!
+ *
+ * The forcing-open half was a Tailwind arbitrary variant here,
+ * `lg:[&:not([open])>div]:block`, and it stopped working in Chrome 131 without
+ * anything failing: a closed details now hides its content through a
+ * ::details-content pseudo-element, which no utility class can reach. The
+ * desktop panel was invisible and, with the summary hidden too, unopenable.
+ *
+ * The replacement needs a pseudo-element selector, so it is real CSS in
+ * globals.css keyed on this attribute. Read the note there before touching
+ * either file - they are a pair, and the failure mode is silent.
  */
 function Contents({
   headings,
@@ -464,10 +476,7 @@ function Contents({
   className?: string;
 }) {
   return (
-    <details
-      open={false}
-      className={`group/toc lg:[&:not([open])>div]:block ${className}`}
-    >
+    <details open={false} data-contents className={`group/toc ${className}`}>
       <summary className="flex cursor-pointer items-center justify-between gap-4 border-y border-foreground/10 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground list-none lg:hidden [&::-webkit-details-marker]:hidden">
         On this page
         <span

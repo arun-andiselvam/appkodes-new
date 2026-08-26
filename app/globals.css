@@ -141,6 +141,39 @@
     content-visibility: auto;
     contain-intrinsic-size: auto 600px;
   }
+
+  /*
+    The article's contents panel: an accordion on a phone, an open list on a
+    desktop, with no JavaScript.
+
+    !! THE OLD CSS TRICK FOR THIS STOPPED WORKING, AND SILENTLY !!
+
+    components/sections/post.tsx forces the panel open on large screens by
+    overriding the closed <details>'s child and hiding the <summary>. That
+    worked for as long as browsers hid a closed details by putting
+    `display: none` on its children, so `display: block` won the cascade.
+
+    Chrome 131 changed how it is hidden. The content now lives in a
+    `::details-content` pseudo-element carrying `content-visibility: hidden`,
+    and `display` on the child no longer has anything to say about it. So on
+    every current Chrome the desktop panel was hidden by the pseudo-element
+    and its summary was hidden by our own `lg:hidden` - an invisible contents
+    list with no way to open it, and a blank column where it should be.
+    Verified against Chrome 151 on the live site on 26 August 2026.
+
+    Both rules are here on purpose. The pseudo-element one is what current
+    Chrome and Safari read; the `display` one still covers any engine that
+    hides a closed details the old way. Neither is redundant, and a browser
+    that does not understand `::details-content` simply skips that line.
+  */
+  @media (min-width: 64rem) {
+    details[data-contents] > div {
+      display: block;
+    }
+    details[data-contents]::details-content {
+      content-visibility: visible;
+    }
+  }
 }
 
 @layer utilities {
