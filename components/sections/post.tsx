@@ -561,36 +561,75 @@ function AuthorBox({ author }: { author: string }) {
 
   return (
     <div className="mt-16 border-t border-foreground/10 pt-10">
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-        <h2 className="font-display text-xl tracking-tight">{author}</h2>
-        <a
-          href={
-            founder
-              ? "https://www.linkedin.com/in/arun-andiselvam/"
-              : "https://www.linkedin.com/company/hitasoft"
-          }
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-mono text-xs uppercase tracking-widest text-muted-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:text-foreground"
-        >
-          LinkedIn
-        </a>
-      </div>
-      <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
-        {founder ? (
-          <>
-            A startup veteran who has built five brands. He sold the first, an
-            SEO tool, for a six figure exit, and is building a product for link
-            builders now. Every one of them has been bootstrapped from day one.
-          </>
-        ) : (
-          <>
-            {site.name} has built software since 2008, for companies that mostly
-            do not have an IT department. These pieces are written by the people
-            who do the integrations rather than by anybody in marketing.
-          </>
+      <div className="flex gap-5">
+        {/*
+          The portrait, for the founder only.
+
+          !! A PLAIN <img>, WHICH IS THE CONVENTION HERE RATHER THAN A LAPSE !!
+
+          components/sections/testimonials.tsx draws its avatars the same way,
+          and the note in next.config.mjs lists them among the images that
+          deliberately skip next/image. The reasoning holds here: the file is
+          200 square and 3.2 KB, which is already the right size for a 64px
+          portrait at 3x, so the optimizer would add a request and a round trip
+          to hand back what it was given. The cache header rule in
+          next.config.mjs covers public/ either way.
+
+          width and height are set so the row reserves its space before the
+          file lands. Lazy because this sits at the foot of a long article and
+          nobody has ever seen it at first paint.
+
+          alt is empty on purpose. The name is the next thing in the markup, so
+          a screen reader announcing the portrait as well would read the same
+          person twice.
+        */}
+        {founder && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src="/author-arun.webp"
+            alt=""
+            loading="lazy"
+            width={64}
+            height={64}
+            className="h-16 w-16 shrink-0 rounded-full object-cover"
+          />
         )}
-      </p>
+
+        <div>
+          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <h2 className="font-display text-xl tracking-tight">{author}</h2>
+            <a
+              href={
+                founder
+                  ? "https://www.linkedin.com/in/arun-andiselvam/"
+                  : "https://www.linkedin.com/company/hitasoft"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs uppercase tracking-widest text-muted-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:text-foreground"
+            >
+              LinkedIn
+            </a>
+          </div>
+          <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
+            {founder ? (
+              <>
+                A startup veteran who has built five brands. He sold the first,
+                an SEO tool, for a six figure exit, and is building a product
+                for link builders now. Every one of them has been bootstrapped
+                from day one.
+              </>
+            ) : (
+              <>
+                {site.name} has built software since 2008, for companies that
+                mostly do not have an IT department. These pieces are written by
+                the people who do the integrations rather than by anybody in
+                marketing.
+              </>
+            )}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
