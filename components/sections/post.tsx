@@ -526,19 +526,31 @@ function SiloLink({ href, className = "" }: { href: string; className?: string }
 /**
  * The author box, which the blueprint asks for as an E-E-A-T signal.
  *
- * !! AN ORGANISATION, NOT A PERSON !!
+ * !! THE LINK IS PER AUTHOR. THE BIO IS STILL THE ORGANISATION'S !!
  *
- * The blueprint suggests a bio establishing an individual's technical
- * authority. There are no real bylines here, and a named engineer with an
- * invented biography and a fabricated LinkedIn is the kind of trust signal
- * that inverts the moment somebody checks it. docs/positioning.md's claims
- * discipline covers people as much as it covers figures.
+ * This was entirely about the company: the name came from Strapi and read as a
+ * person, while the link went to the company page and the paragraph described
+ * the company. The client asked on 26 August 2026 for both halves to be about
+ * the founder instead, and gave the profile URL, so the link is now his.
  *
- * The LinkedIn is real. It comes from the Organization schema hitasoft.com
- * publishes about itself, read on 21 August 2026. Note that
- * content/footer.ts still has an empty socialLinks array under a warning that
- * it stays empty until real accounts are supplied. They now exist and that
- * file could be filled from the same source.
+ * The paragraph is not, yet, and that is deliberate rather than unfinished
+ * work. LinkedIn answers HTTP 999 to anything that is not a signed-in browser,
+ * so the About text could not be read, and writing a plausible one from the
+ * company's positioning is the single worst thing this box could contain. A
+ * named person with an invented biography beside a real, checkable profile is
+ * a trust signal that inverts the moment somebody clicks it.
+ * docs/positioning.md's claims discipline covers people as much as figures.
+ *
+ * So it still says what can be backed. Replace the paragraph with the real
+ * intro when there is one; nothing else here needs to change.
+ *
+ * !! ONE PROFILE, AND STRAPI'S author FIELD IS FREE TEXT !!
+ *
+ * Every post is credited to the founder today, and the field is a plain string
+ * an editor can type anything into. A second real byline needs this to become
+ * a lookup rather than a constant, or the new author gets his profile. Not
+ * built ahead of time, because there is no second author and a registry with
+ * one row in it is a guess about the future.
  */
 function AuthorBox({ author }: { author: string }) {
   return (
@@ -546,7 +558,7 @@ function AuthorBox({ author }: { author: string }) {
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
         <h2 className="font-display text-xl tracking-tight">{author}</h2>
         <a
-          href="https://www.linkedin.com/company/hitasoft"
+          href="https://www.linkedin.com/in/arun-andiselvam/"
           target="_blank"
           rel="noopener noreferrer"
           className="font-mono text-xs uppercase tracking-widest text-muted-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:text-foreground"
