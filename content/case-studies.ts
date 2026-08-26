@@ -75,15 +75,36 @@ export const caseStudies: CaseStudy[] = [
    *
    * `location` is the country only. The client is getting the city.
    *
-   * !! THE PHOTOGRAPH IS NOT THE CLIENT'S PREMISES !!
+   * !! THIS ONE IS THE CLIENT'S OWN ARTWORK, WHICH INVERTS THE USUAL RULE !!
    *
-   * public/case-studies/japan-pro.webp is Chureito Pagoda with Mount Fuji
-   * behind it, by Dang Son, released CC0 on Wikimedia Commons. Public domain,
-   * no attribution required, and recorded here anyway so nobody has to work
-   * out later where it came from. It is editorial illustration of the market
-   * this product serves, in the way a magazine runs a photograph beside a
-   * piece. It does not depict Japan Pro, its offices or its listings, and no
-   * caption may imply that it does.
+   * public/case-studies/japan-pro.webp was a CC0 photograph of Chureito Pagoda
+   * by Dang Son until 26 August 2026, carried under the rule the other three
+   * studies still follow: a stock photograph illustrates the market and must
+   * never be read as the client's premises or product.
+   *
+   * The client supplied their own key art that day and it is what ships now.
+   * The same pagoda and the same mountain, with Japan Pro's four categories
+   * set over it in their own type: Experiences, Tours, Tickets, Restaurants.
+   * So the caveat above does not apply here and the opposite one does. This
+   * does depict the client's product, deliberately, and it is theirs to have
+   * supplied. Anything written near it may say so.
+   *
+   * !! IT IS CROPPED TO 3:2 IN THE FILE RATHER THAN BY THE TEMPLATE !!
+   *
+   * The other heroes ship 16:9 and let `object-cover` crop them, which is fine
+   * for a photograph and would not be fine here. The source is 1376 by 768,
+   * the template's frame is 3:2, and the browser would have taken about 108px
+   * off each side - straight through the category labels on the left. So the
+   * crop is made here, anchored left of centre, keeping every label with a
+   * margin and giving up the right edge of the pagoda instead.
+   *
+   * !! THE FILENAME DID NOT CHANGE, SO CACHES HOLD THE OLD PICTURE !!
+   *
+   * Nothing under public/ is content hashed. next.config.mjs serves it with a
+   * week's cache and Cloudflare holds its own copy, so a returning visitor and
+   * every edge will keep serving the photograph until both expire. Purge the
+   * Cloudflare cache after deploying this. See the note on the cache header
+   * rule in next.config.mjs for why the lifetime is a week and not a year.
    */
   {
     slug: "japan-pro",
