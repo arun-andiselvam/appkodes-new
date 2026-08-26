@@ -274,10 +274,28 @@ export const caseStudies: CaseStudy[] = [
    * used on an undisclosed study at all. Check that before accepting the next
    * one.
    *
-   * The image asserts virtual gifts, which the copy below does not mention.
-   * That is the client's own claim about their own product and needs no
-   * hedging, but if gifting belongs in the study it has to be confirmed and
-   * written like every other fact here rather than inferred from a picture.
+   * !! VIRTUAL GIFTS CAME FROM THE PICTURE, THEN FROM THE CLIENT !!
+   *
+   * The key art advertises virtual gifts and the copy did not mention them,
+   * which was flagged here rather than quietly written up: a feature read off
+   * an image is not a fact, and this file does not publish claims about a
+   * client that the client has not made. The client confirmed it on 26 August
+   * 2026 and asked for it in the study, so it is now the sixth problem and the
+   * sixth answer.
+   *
+   * From the client, by way of their own artwork: virtual gifts and their
+   * animations exist, and they are how the platform makes money.
+   *
+   * Inferred, and strike it if the client does not recognise it: that a gift
+   * settles as a transaction independently of its animation, that the
+   * catalogue is priced data rather than code, and that the animation is drawn
+   * on the viewer's device rather than composited into the stream. All three
+   * are the ordinary way to build what the artwork describes, and the last is
+   * the one worth checking, because compositing into the stream is a real
+   * choice some platforms make and it would make that sentence wrong.
+   *
+   * Nothing was added to `results`. Gifting is the revenue mechanism and
+   * revenue is exactly the figure nobody has given us.
    *
    * See the Japan Pro entry above for the crop and the renaming rule, which
    * apply to all four.
@@ -325,6 +343,10 @@ export const caseStudies: CaseStudy[] = [
           body: "The client was launching into a market they knew and could not say how fast it would arrive. A platform built only for launch week is a platform that dies in its second month. Build for a number nobody reaches and the budget that belonged in the product is gone.",
         },
         {
+          title: "A live room that also takes money",
+          body: "Virtual gifts are how a broadcast pays for itself, and they arrive in the middle of one. Every gift is a real payment and a piece of theatre at the same moment: it has to settle correctly, and it has to appear on screen while the thing it was sent for is still happening.",
+        },
+        {
           title: "A small client team, a large platform",
           body: "The client runs businesses in several sectors and the internal IT team is a small one. Nobody there was going to absorb a platform of this size from documents and a weekly call.",
         },
@@ -353,6 +375,10 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "Capacity that follows demand",
           body: "The platform grows with the load rather than sitting at a size somebody guessed in advance. That is the only version of this that survives both a quiet launch and a loud one. The million users that arrived turned out to be an operations day rather than a rebuild.",
+        },
+        {
+          title: "Gifts that settle first and perform second",
+          body: "A gift is treated as a transaction before it is treated as an animation, because one of those is somebody's money and the other is four seconds of screen. The catalogue is priced items rather than something an engineer has to extend every time the client wants a new one, and the animation is drawn on the viewer's own device rather than burnt into the stream, so a generous room does not cost every viewer in it more bandwidth.",
         },
         {
           title: "Fifteen of us in the room",
