@@ -545,14 +545,35 @@ function SiloLink({ href, className = "" }: { href: string; className?: string }
  * answers HTTP 999 to anything that is not a signed in browser, so the profile
  * could not be fetched and inventing a plausible biography beside a real,
  * clickable profile was never an option. Every claim below is his and none has
- * been added to: five brands, the first an SEO tool sold for six figures, a
- * product for link builders now, bootstrapped throughout.
+ * been added to: five brands, the first an SEO tool sold for six figures, AI
+ * automation products now, bootstrapped throughout.
+ *
+ * The current product read "a product for link builders", which is what the
+ * headline said. He replaced it the same day with the AI automation line, so
+ * this is his correction rather than the site's positioning quietly rewriting
+ * his history into something more on-message.
  *
  * What did change is the register. It arrived as a LinkedIn headline, emoji
  * and exclamation marks included, and that punctuation is written for a feed
  * rather than for the foot of a technical article. docs/positioning.md's voice
  * rules apply to a biography the same as to any other copy on the site, and
  * there is no emoji anywhere else on it. The facts are untouched.
+ *
+ * !! FIRST PERSON, AND IT IS THE ONLY COPY ON THE SITE THAT IS !!
+ *
+ * Everything else here speaks as the company, in the third person, because a
+ * service page has no author. This paragraph does: it sits under a named
+ * byline and a photograph of the person who wrote the article above it, and he
+ * asked on 26 August 2026 for it to read as his own introduction. "He sold the
+ * first" under a portrait of the man who sold it is a strange sentence.
+ *
+ * Watch that if this box is ever reused somewhere without a byline. The
+ * organisation fallback below stays third person for exactly that reason.
+ *
+ * It closed on "Every one of them has been bootstrapped from day one", and the
+ * passive there did real damage in a bio: it hid who did the thing, in the one
+ * paragraph whose whole job is to say who did the thing. Every verb now has
+ * him behind it - built, sold, build, bootstrapped.
  */
 const FOUNDER = "Arun Andiselvam";
 
@@ -651,10 +672,10 @@ function AuthorBox({ author }: { author: string }) {
           <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
             {founder ? (
               <>
-                A startup veteran who has built five brands. He sold the first,
-                an SEO tool, for a six figure exit, and is building a product
-                for link builders now. Every one of them has been bootstrapped
-                from day one.
+                I am a startup veteran who has built five brands. I sold the
+                first, an SEO tool, for a six figure exit, and now build AI
+                automation products for businesses. I bootstrapped every one of
+                them from day one.
               </>
             ) : (
               <>
