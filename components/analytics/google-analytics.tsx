@@ -1,7 +1,9 @@
-import Script from "next/script";
+"use client";
+
+import { useEffect } from "react";
 
 /**
- * Google Analytics 4.
+ * Google Analytics 4, held back until the reader does something.
  *
  * Added 25 August 2026, against the existing property the client already
  * runs. It replaced @vercel/analytics, which had been in the root layout
@@ -27,86 +29,114 @@ import Script from "next/script";
  * against it. Analytics that counts the people building the site is worse
  * than no analytics, because it is wrong in a direction nobody checks.
  *
- * !! NO SCRIPT-SRC CHANGE WAS NEEDED IN proxy.ts, AND HERE IS WHY !!
+ * !! THIRD STRATEGY IN TWO DAYS, AND EACH ONE FIXED THE LAST ONE'S DAMAGE !!
  *
- * The CSP is nonce based with 'strict-dynamic'. Both tags below carry the
- * per-request nonce, and strict-dynamic extends that trust to the further
- * scripts gtag.js loads for itself. Under strict-dynamic a host allowlist in
- * script-src is ignored outright, so adding googletagmanager.com there would
- * have been a no-op that looked like it was doing something. connect-src and
- * img-src are a different matter: strict-dynamic does not apply to them, and
- * both had to be widened for the collect calls and the image beacon
- * fallback. Same reasoning as the Turnstile note in proxy.ts.
+ * afterInteractive first, which was wrong because Next preloads such a script
+ * in the head: 169 KB at high priority, ahead of the article's own hero image,
+ * costing roughly 850ms of a simulated mobile connection.
+ *
+ * Then next/script's lazyOnload, which fixed the preload and left the
+ * execution. Measured on the live site on 26 August 2026 at a 4x CPU throttle,
+ * gtag.js was still the largest single contributor to Total Blocking Time:
+ * two long tasks of 101ms and 82ms, against 113ms for all of this site's own
+ * JavaScript put together. Blocking time is counted from first paint until the
+ * main thread goes quiet, and a script that runs on the load event is inside
+ * that window rather than after it.
+ *
+ * So it is not scheduled any more, it is triggered. Nothing is requested until
+ * the reader scrolls, points, taps or types, or six seconds pass with none of
+ * that. All of those land after the page has settled, so the 169 KB and its
+ * execution are outside the window entirely.
+ *
+ * !! WHAT THIS COSTS, PLAINLY !!
+ *
+ * A visit that ends with no interaction at all inside six seconds is not
+ * counted. That is a narrower loss than it sounds - `scroll` is in the list,
+ * and a reader who opens an article and reads one line has already scrolled -
+ * but it is a real one, and bounce figures are where it shows.
+ *
+ * It is also worth being honest that the lab metric improves more than the
+ * experience does. A real reader scrolls within a second or two and gets gtag
+ * about when lazyOnload would have given it to them. What changed is that the
+ * work no longer lands in the middle of the page becoming usable.
  */
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-NBZXFWV6LY";
 
+/** Anything that means a person is present rather than a page merely loading. */
+const WAKE_EVENTS = ["scroll", "pointerdown", "keydown", "touchstart"] as const;
+
+/** Load it anyway after this long, so a still, silent visit is still counted. */
+const FALLBACK_MS = 6000;
+
 export function GoogleAnalytics({ nonce }: { nonce?: string }) {
-  if (!GA_ID || process.env.NODE_ENV !== "production") return null;
+  useEffect(() => {
+    if (!GA_ID || process.env.NODE_ENV !== "production") return;
 
-  return (
-    <>
-      {/*
-        !! lazyOnload, AND IT WAS afterInteractive UNTIL 26 AUGUST 2026 !!
+    let started = false;
 
-        afterInteractive was chosen on the reasoning that analytics is never
-        worth delaying first paint for. The reasoning was right and the
-        strategy did not deliver it, because Next emits a
-        `<link rel="preload" as="script">` in the head for an afterInteractive
-        script. gtag.js is 169 KB. On Lighthouse's simulated mobile link that
-        is roughly 850ms of the entire connection, spent at high priority,
-        before the browser has finished fetching the article's own hero image.
+    /* Both of these are function declarations so they can name each other and
+       the timer below, whichever order they are read in. Neither runs before
+       the setup at the foot of this effect has finished. */
+    function stopListening() {
+      clearTimeout(timer);
+      for (const event of WAKE_EVENTS) window.removeEventListener(event, start);
+    }
 
-        Measured on the live site on 26 August 2026: LCP 5.2s, of which 2.4s
-        was Load Delay - the hero image was preloaded, correct, and simply
-        queued behind this and the header logo. gtag.js was also the single
-        largest entry under "reduce unused JavaScript" (99 KB) and the only
-        third party blocking the main thread (92ms of the 120ms TBT).
+    function start() {
+      if (started) return;
+      started = true;
+      stopListening();
 
-        lazyOnload holds it until the window load event, which is after the
-        LCP image has been fetched and painted, so it competes with nothing.
+      /*
+       * The queue first, then the script. This is Google's own snippet, and
+       * the order matters: gtag.js drains whatever is already in dataLayer
+       * when it arrives, so the page view is recorded for the moment the
+       * reader arrived rather than the moment they happened to scroll.
+       */
+      const w = window as unknown as { dataLayer?: unknown[] };
+      w.dataLayer = w.dataLayer || [];
+      const push = (...args: unknown[]) => w.dataLayer!.push(args);
+      push("js", new Date());
+      push("config", GA_ID);
 
-        !! THE TRADE-OFF, PLAINLY: A VISITOR WHO LEAVES BEFORE `load` IS NOT
-        COUNTED !!
+      const script = document.createElement("script");
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+      script.async = true;
+      /*
+       * The CSP is nonce based with 'strict-dynamic', which trusts scripts
+       * inserted by an already trusted script, so this would load without a
+       * nonce. It is set anyway: strict-dynamic is what makes it work today
+       * and the nonce is what makes it work if that policy is ever tightened.
+       * It has to be the property rather than setAttribute, because the DOM
+       * hides the attribute after parse.
+       */
+      if (nonce) script.nonce = nonce;
+      document.head.appendChild(script);
+    }
 
-        That is a real cost and it is not zero. It is accepted because the
-        alternative is making every visitor's page slower to measure the ones
-        who do not stay, and because GA4 keeps sending on history changes once
-        it is up, so only a bounce inside the first second or two is lost.
-        If bounce numbers ever need to be exact, this is the line that made
-        them approximate.
-      */}
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-        strategy="lazyOnload"
-        nonce={nonce}
-      />
-      {/*
-        The init snippet, byte for byte the one the GA property hands out,
-        apart from carrying the nonce.
+    for (const event of WAKE_EVENTS) {
+      window.addEventListener(event, start, { once: true, passive: true });
+    }
+    const timer = setTimeout(start, FALLBACK_MS);
 
-        !! PAGE VIEWS AFTER THE FIRST COME FROM GA, NOT FROM CODE HERE !!
+    return stopListening;
+  }, [nonce]);
 
-        This is an App Router site, so a click on a menu item is a history
-        change rather than a document load, and `gtag('config', ...)` fires
-        exactly one page_view: the first. GA4's Enhanced Measurement has
-        "Page changes based on browser history events" on by default and
-        picks up the rest.
-
-        The alternative is a client component watching usePathname and
-        sending page_view itself. It is deliberately not done, because both
-        mechanisms firing at once double counts every navigation, and the
-        dashboard setting wins by default. If Enhanced Measurement is ever
-        turned off for this property, that is the moment to add manual
-        tracking, and `send_page_view: false` has to go into the config call
-        below in the same change.
-      */}
-      <Script id="ga-init" strategy="lazyOnload" nonce={nonce}>
-        {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_ID}');`}
-      </Script>
-    </>
-  );
+  /*
+   * Page views after the first come from GA, not from code here.
+   *
+   * This is an App Router site, so a click on a menu item is a history change
+   * rather than a document load, and `gtag('config', ...)` fires exactly one
+   * page_view: the first. GA4's Enhanced Measurement has "Page changes based
+   * on browser history events" on by default and picks up the rest.
+   *
+   * The alternative is watching usePathname and sending page_view here. It is
+   * deliberately not done, because both mechanisms firing at once double counts
+   * every navigation and the dashboard setting wins by default. If Enhanced
+   * Measurement is ever turned off for this property, that is the moment to add
+   * manual tracking, and `send_page_view: false` has to go into the config call
+   * above in the same change.
+   */
+  return null;
 }
