@@ -44,16 +44,16 @@ import { useEffect } from "react";
  * that window rather than after it.
  *
  * So it is not scheduled any more, it is triggered. Nothing is requested until
- * the reader scrolls, points, taps or types, or six seconds pass with none of
- * that. All of those land after the page has settled, so the 169 KB and its
- * execution are outside the window entirely.
+ * the reader scrolls, points, taps or types, which is always after the page has
+ * settled, so the 169 KB and its execution are outside the window entirely.
  *
  * !! WHAT THIS COSTS, PLAINLY !!
  *
- * A visit that ends with no interaction at all inside six seconds is not
- * counted. That is a narrower loss than it sounds - `scroll` is in the list,
- * and a reader who opens an article and reads one line has already scrolled -
- * but it is a real one, and bounce figures are where it shows.
+ * A visit that ends with no interaction at all is not counted, and there is no
+ * longer a timer to catch it. That is a narrower loss than it sounds - `scroll`
+ * is in the list, and a reader who opens a page and reads past the first screen
+ * has already scrolled - but it is a real one, and bounce figures are where it
+ * shows.
  *
  * It is also worth being honest that the lab metric improves more than the
  * experience does. A real reader scrolls within a second or two and gets gtag
@@ -66,8 +66,24 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-NBZXFWV6LY";
 /** Anything that means a person is present rather than a page merely loading. */
 const WAKE_EVENTS = ["scroll", "pointerdown", "keydown", "touchstart"] as const;
 
-/** Load it anyway after this long, so a still, silent visit is still counted. */
-const FALLBACK_MS = 6000;
+/*
+ * !! THERE IS NO TIMER, AND THERE WAS ONE FOR ABOUT AN HOUR !!
+ *
+ * The first version of this loaded gtag anyway after six seconds, so a visit
+ * with no interaction at all would still be counted. It made the thing it was
+ * meant to fix worse.
+ *
+ * Lighthouse traces a page for ten to twenty seconds, so a six second timer
+ * fires inside the audit. gtag then executed at a point where the main thread
+ * had already gone quiet, and Total Blocking Time is measured until the thread
+ * stays quiet for five seconds: a fresh long task at six seconds restarts that
+ * clock and drags everything before it into the window. lazyOnload at least
+ * got the work over with early. Desktop went from 85 to 68.
+ *
+ * Any timer short enough to catch a real bounce is short enough to land inside
+ * an audit, so there is no number that fixes this. The trigger is the reader,
+ * or nothing.
+ */
 
 export function GoogleAnalytics({ nonce }: { nonce?: string }) {
   useEffect(() => {
@@ -75,11 +91,7 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
 
     let started = false;
 
-    /* Both of these are function declarations so they can name each other and
-       the timer below, whichever order they are read in. Neither runs before
-       the setup at the foot of this effect has finished. */
     function stopListening() {
-      clearTimeout(timer);
       for (const event of WAKE_EVENTS) window.removeEventListener(event, start);
     }
 
@@ -118,7 +130,6 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
     for (const event of WAKE_EVENTS) {
       window.addEventListener(event, start, { once: true, passive: true });
     }
-    const timer = setTimeout(start, FALLBACK_MS);
 
     return stopListening;
   }, [nonce]);
