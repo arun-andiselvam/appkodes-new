@@ -128,11 +128,27 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
             <aside>
               <Facts post={post} />
 
-              <div className="mt-10 lg:sticky lg:top-32">
+              {/*
+                !! THIS BOX IS THE ONLY THING BOUND TO THE VIEWPORT !!
+
+                It is a flex column capped at the screen height less the sticky
+                offset above it and a little air below. Its children then divide
+                that up between them: the contents list takes `flex-1` and
+                whatever is left, the service card takes the height it needs.
+
+                That replaced a fixed `calc(100vh - 24rem)` on the list itself,
+                which was a guess at how much room the label and the card wanted
+                and was wrong in both directions. An article with no `sendsTo`
+                reserved space for a card that did not exist and stopped its
+                list halfway up a screen with room for all of it.
+              */}
+              <div className="mt-10 lg:sticky lg:top-32 lg:flex lg:max-h-[calc(100vh-10rem)] lg:flex-col">
                 {headings.length > 1 && <Contents headings={headings} />}
                 {/* Omitted rather than drawn empty when a post has no silo
                     target. See the note on `sendsTo` in lib/posts.ts. */}
-                {post.sendsTo && <SiloLink href={post.sendsTo} className="mt-10" />}
+                {post.sendsTo && (
+                  <SiloLink href={post.sendsTo} className="mt-10 lg:shrink-0" />
+                )}
               </div>
             </aside>
 

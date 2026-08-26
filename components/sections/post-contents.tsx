@@ -49,7 +49,7 @@ export function Contents({
 }) {
   const ids = headings.map((heading) => slugify(heading.text));
   const [activeId, setActiveId] = useState<string | null>(null);
-  const scroller = useRef<HTMLElement | null>(null);
+  const scroller = useRef<HTMLDetailsElement | null>(null);
 
   /*
    * Which section the reader is in.
@@ -138,42 +138,57 @@ export function Contents({
     box.scrollTo({ top: box.scrollTop + delta, behavior: still ? "auto" : "smooth" });
   }, [activeId]);
 
+  /*
+   * A fragment, not a wrapper, and that is what makes the height work.
+   *
+   * !! THE PANEL USED TO RESERVE A FIXED 24rem AND GIVE BACK WHAT WAS LEFT !!
+   *
+   * The list was capped at calc(100vh - 24rem): the viewport less a guess at
+   * the sticky offset, this label, and the service card beneath. A guess is
+   * wrong in both directions. Too small and the card is pushed off the bottom
+   * of the screen; too large and the list stops halfway up a screen that has
+   * room for all of it, which is what an article with no `sendsTo` did - it
+   * reserved space for a card that was not there and left a third of the
+   * column empty under a cut-off list.
+   *
+   * So nothing is reserved. The sticky box in post.tsx is the one thing bound
+   * to the viewport, and these two are its flex children: the label and the
+   * service card take the height they need, and the list takes whatever is
+   * actually left. Nothing here has to know whether the card exists or how
+   * tall it is.
+   *
+   * The scroll box is the <details> itself rather than the <nav> inside it.
+   * The details is the flex item, so it is the element that receives the
+   * computed height, and putting the overflow anywhere deeper means passing
+   * that height down through ::details-content - the same pseudo-element that
+   * already broke this panel once. It is a flex *item* here and never a flex
+   * *container*, deliberately.
+   */
   return (
-    <details open={false} data-contents className={`group/toc ${className}`}>
-      <summary className="flex cursor-pointer items-center justify-between gap-4 border-y border-foreground/10 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground list-none lg:hidden [&::-webkit-details-marker]:hidden">
+    <>
+      <h2 className="hidden shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground lg:block">
         On this page
-        <span
-          aria-hidden
-          className="text-lg leading-none transition-transform group-open/toc:rotate-45"
-        >
-          +
-        </span>
-      </summary>
+      </h2>
 
-      <div>
-        <h2 className="hidden font-mono text-xs uppercase tracking-widest text-muted-foreground lg:block">
+      <details
+        ref={scroller}
+        open={false}
+        data-contents
+        className={`group/toc lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain ${className}`}
+      >
+        <summary className="flex cursor-pointer items-center justify-between gap-4 border-y border-foreground/10 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground list-none lg:hidden [&::-webkit-details-marker]:hidden">
           On this page
-        </h2>
-        {/*
-          Capped and scrollable on desktop only.
+          <span
+            aria-hidden
+            className="text-lg leading-none transition-transform group-open/toc:rotate-45"
+          >
+            +
+          </span>
+        </summary>
 
-          The number is the viewport less what sits around this: the sticky
-          offset above it, this panel's own label, and the service card under
-          it. Getting it wrong in one direction clips the card off the bottom
-          of the screen and in the other leaves the list shorter than it needs
-          to be, so it is worth keeping in step with lg:top-32 in post.tsx and
-          the card's height if either changes.
-
-          Unset on mobile, where the panel is an accordion the reader opened on
-          purpose and a scroll box inside a scroll box is nobody's idea of
-          usable.
-        */}
-        <nav
-          ref={scroller}
-          aria-label="On this page"
-          className="lg:max-h-[calc(100vh-24rem)] lg:overflow-y-auto lg:overscroll-contain"
-        >
-          <ul className="mt-4 space-y-3 border-l border-foreground/15">
+        <div>
+          <nav aria-label="On this page">
+            <ul className="mt-4 space-y-3 border-l border-foreground/15">
             {headings.map((heading, i) => {
               const id = ids[i];
               const active = id === activeId;
@@ -200,9 +215,10 @@ export function Contents({
                 </li>
               );
             })}
-          </ul>
-        </nav>
-      </div>
-    </details>
+            </ul>
+          </nav>
+        </div>
+      </details>
+    </>
   );
 }
