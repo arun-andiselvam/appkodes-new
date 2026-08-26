@@ -524,41 +524,51 @@ function SiloLink({ href, className = "" }: { href: string; className?: string }
 }
 
 /**
- * The author box, which the blueprint asks for as an E-E-A-T signal.
+ * The founder's byline, and the fallback for anything published without one.
  *
- * !! THE LINK IS PER AUTHOR. THE BIO IS STILL THE ORGANISATION'S !!
+ * !! THE NAME DECIDES BOTH THE LINK AND THE BIO, AND IT HAS TO !!
  *
- * This was entirely about the company: the name came from Strapi and read as a
- * person, while the link went to the company page and the paragraph described
- * the company. The client asked on 26 August 2026 for both halves to be about
- * the founder instead, and gave the profile URL, so the link is now his.
+ * `author` is free text in Strapi and lib/strapi.ts substitutes the literal
+ * string "Hitasoft" when an editor leaves it empty. So the box cannot simply
+ * hard code one person: a post published with no byline would print "Hitasoft"
+ * as the heading and a named individual's biography underneath it. Matching on
+ * the name keeps the two halves describing the same subject, and sends any
+ * future byline to the company profile rather than to somebody else's.
  *
- * The paragraph is not, yet, and that is deliberate rather than unfinished
- * work. LinkedIn answers HTTP 999 to anything that is not a signed-in browser,
- * so the About text could not be read, and writing a plausible one from the
- * company's positioning is the single worst thing this box could contain. A
- * named person with an invented biography beside a real, checkable profile is
- * a trust signal that inverts the moment somebody clicks it.
- * docs/positioning.md's claims discipline covers people as much as figures.
+ * A map keyed by name is where this goes if there is ever a third case. With
+ * two it would be a registry with one row in it, which is a guess about the
+ * future rather than a structure.
  *
- * So it still says what can be backed. Replace the paragraph with the real
- * intro when there is one; nothing else here needs to change.
+ * !! THE PERSONAL BIO IS THE CLIENT'S OWN CLAIMS, IN THIS SITE'S VOICE !!
  *
- * !! ONE PROFILE, AND STRAPI'S author FIELD IS FREE TEXT !!
+ * Supplied by him on 26 August 2026 after LinkedIn refused to be read - it
+ * answers HTTP 999 to anything that is not a signed in browser, so the profile
+ * could not be fetched and inventing a plausible biography beside a real,
+ * clickable profile was never an option. Every claim below is his and none has
+ * been added to: five brands, the first an SEO tool sold for six figures, a
+ * product for link builders now, bootstrapped throughout.
  *
- * Every post is credited to the founder today, and the field is a plain string
- * an editor can type anything into. A second real byline needs this to become
- * a lookup rather than a constant, or the new author gets his profile. Not
- * built ahead of time, because there is no second author and a registry with
- * one row in it is a guess about the future.
+ * What did change is the register. It arrived as a LinkedIn headline, emoji
+ * and exclamation marks included, and that punctuation is written for a feed
+ * rather than for the foot of a technical article. docs/positioning.md's voice
+ * rules apply to a biography the same as to any other copy on the site, and
+ * there is no emoji anywhere else on it. The facts are untouched.
  */
+const FOUNDER = "Arun Andiselvam";
+
 function AuthorBox({ author }: { author: string }) {
+  const founder = author === FOUNDER;
+
   return (
     <div className="mt-16 border-t border-foreground/10 pt-10">
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
         <h2 className="font-display text-xl tracking-tight">{author}</h2>
         <a
-          href="https://www.linkedin.com/in/arun-andiselvam/"
+          href={
+            founder
+              ? "https://www.linkedin.com/in/arun-andiselvam/"
+              : "https://www.linkedin.com/company/hitasoft"
+          }
           target="_blank"
           rel="noopener noreferrer"
           className="font-mono text-xs uppercase tracking-widest text-muted-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:text-foreground"
@@ -567,9 +577,19 @@ function AuthorBox({ author }: { author: string }) {
         </a>
       </div>
       <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
-        {site.name} has built software since 2008, for companies that mostly do
-        not have an IT department. These pieces are written by the people who do
-        the integrations rather than by anybody in marketing.
+        {founder ? (
+          <>
+            A startup veteran who has built five brands. He sold the first, an
+            SEO tool, for a six figure exit, and is building a product for link
+            builders now. Every one of them has been bootstrapped from day one.
+          </>
+        ) : (
+          <>
+            {site.name} has built software since 2008, for companies that mostly
+            do not have an IT department. These pieces are written by the people
+            who do the integrations rather than by anybody in marketing.
+          </>
+        )}
       </p>
     </div>
   );
