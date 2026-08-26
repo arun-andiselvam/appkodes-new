@@ -274,16 +274,28 @@ export const caseStudies: CaseStudy[] = [
    * certainly transcoding. The copy says compression and encoding, which is
    * true either way, and nothing here names a codec or a vendor.
    *
-   * !! THE PHOTOGRAPH IS NOT THE CLIENT'S PREMISES !!
+   * !! THE CLIENT'S OWN KEY ART, AND IT CARRIES NO NAME. KEEP IT THAT WAY !!
    *
-   * public/case-studies/short-video-platform.webp is Business Bay at night
-   * with the Burj Khalifa behind it, by Robert Bock, released CC0 through
-   * Unsplash and held on Wikimedia Commons. Public domain, no attribution
-   * required, recorded here so nobody has to trace it later.
+   * This hero was Business Bay at night by Robert Bock, CC0 through Unsplash,
+   * at the retired path public/case-studies/short-video-platform.webp, until
+   * 26 August 2026. The client supplied their own key art that day: the same
+   * skyline with three features set over it, Live Streaming, Audio & Video
+   * Chat and Gifting System. It ships at
+   * public/case-studies/short-video-platform-2.webp.
    *
-   * Same rule as the Japan Pro image above. It places the engagement and
-   * nothing more. No caption may imply it shows the client, their offices or
-   * their product.
+   * !! THE FILE IT ARRIVED AS WAS NAMED FOR THE PRODUCT. THAT MATTERS !!
+   *
+   * It came in as chobi-app.png. `client` on this study reads Undisclosed, and
+   * a filename is a public URL, so shipping it under that name would have put
+   * the client's product name on the site while the copy carefully withholds
+   * it. The artwork itself carries no logo and no product name, which is why
+   * it can be used at all. It is named for the slug instead, and anything that
+   * replaces it must be too.
+   *
+   * The image asserts a gifting system, which the copy below does not mention.
+   * That is the client's own claim about their own product and it needs no
+   * hedging, but if gifting belongs in the study it has to be confirmed and
+   * written like every other fact here rather than inferred from a picture.
    */
   {
     slug: "short-video-platform",
@@ -296,7 +308,8 @@ export const caseStudies: CaseStudy[] = [
     location: "Dubai, United Arab Emirates",
     summary:
       "A short video feed and live rooms in one app. It went past a million users after release, and the swipe never once asked anybody to wait for the next video.",
-    image: "/case-studies/short-video-platform.webp",
+    /* -2 is a cache bust, not a second picture. See the note above. */
+    image: "/case-studies/short-video-platform-2.webp",
     results: [
       { value: "1M+", label: "users on the platform after release" },
       { value: "15", label: "of our team working on site in Dubai" },
@@ -435,21 +448,32 @@ export const caseStudies: CaseStudy[] = [
    * is. A precise hours count from their records would be stronger and should
    * replace it if it ever arrives.
    *
-   * !! THE PHOTOGRAPH IS NOT THE CLIENT'S PREMISES !!
+   * !! THE CLIENT'S OWN KEY ART, CARRYING NO NAME. KEEP IT THAT WAY !!
    *
-   * public/case-studies/content-production-platform.webp is lower Manhattan at
-   * sunset from the Brooklyn side, by Matt Lamers, released CC0 through
-   * Unsplash and held on Wikimedia Commons. Public domain, no attribution
-   * required, recorded here so nobody has to trace it later.
+   * This hero was lower Manhattan at sunset from the Brooklyn side, by Matt
+   * Lamers, CC0 through Unsplash, at the retired path
+   * public/case-studies/content-production-platform.webp, until 26 August
+   * 2026. The client supplied their own key art that day: the same skyline
+   * with four capabilities set over it, AI Content Gen, AI Media Gen, AI Video
+   * Gen and AI Audio Gen. It ships at
+   * public/case-studies/content-production-platform-2.webp.
    *
-   * All three studies now carry a photograph of the country the client is in,
-   * which is the pattern rather than a coincidence. Read as a set on the index
-   * they say the work travels, and that argument is worth more than three
-   * unrelated stock desks. It also means the image has to change if a client's
-   * country turns out to be wrong.
+   * `client` reads Undisclosed here as it does on the Dubai study, and the
+   * artwork carries no logo and no product name, which is why it can be used.
+   * The file is named for the slug rather than for anything the client calls
+   * the product, because a filename is a public URL. Anything replacing it
+   * must be named the same way.
    *
-   * Same rule as the two studies above. It places the engagement and nothing
-   * more. No caption may imply it shows the client or their premises.
+   * !! THE COUNTRY PATTERN SURVIVED THE CHANGE, WHICH WAS NOT GUARANTEED !!
+   *
+   * Every study carried a photograph of the client's own country, which was
+   * the pattern rather than a coincidence: read as a set on the index they say
+   * the work travels. The client's own art happens to keep it - Manhattan
+   * here, Business Bay for Dubai, Chureito Pagoda for Japan - so the set still
+   * argues the same thing. The one exception is the African study, which uses
+   * a stock photograph because its country is not named. If a future client
+   * sends art shot somewhere else, that is a decision to make deliberately
+   * rather than to notice afterwards.
    */
   {
     slug: "content-production-platform",
@@ -464,7 +488,8 @@ export const caseStudies: CaseStudy[] = [
     location: "United States",
     summary:
       "A hundred and fifty writers produced every piece by hand. The system drafts, illustrates and narrates it now, and a person signs off before anything publishes.",
-    image: "/case-studies/content-production-platform.webp",
+    /* -2 is a cache bust, not a second picture. See the note above. */
+    image: "/case-studies/content-production-platform-2.webp",
     results: [
       { value: "1 week", label: "for what had been a month of content" },
       { value: "Thousands", label: "of hours given back, by the client's own count" },
