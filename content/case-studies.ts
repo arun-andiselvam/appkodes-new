@@ -564,6 +564,28 @@ export const caseStudies: CaseStudy[] = [
    * This one says Africa because the client chose that on 26 August 2026 when
    * asked. It is honest and it is vague, and if a country or a region is ever
    * cleared, this field is the only thing that has to change.
+   *
+   * !! THE PHOTOGRAPH IS NAIROBI, AND THE CLIENT'S MARKET IS NOT NAMED !!
+   *
+   * public/case-studies/low-bandwidth-super-app.webp is downtown Nairobi at
+   * night from Utalii House, by Egotieno, own work, released CC0 through
+   * Wikimedia Commons. Public domain, no attribution required, recorded here
+   * so nobody has to trace it later.
+   *
+   * Kenya is not stated anywhere in the copy and must not be inferred from
+   * the picture. Same rule as the other three studies: it places the
+   * engagement on a continent and nothing more, and no caption may imply it
+   * shows the client, their market, their offices or their product. It is a
+   * placeholder the client intends to replace.
+   *
+   * !! A GETTY IMAGE WAS OFFERED FOR THIS SLOT AND MUST NOT BE USED !!
+   *
+   * On 26 August 2026 a file named gettyimages-1240610226.jpg, carrying a BBC
+   * article's image id, was proposed for this hero. It is rights managed stock
+   * taken from a news page. This is a commercial site, Getty pursues exactly
+   * this, and the file was a 976px web thumbnail against a 1600px slot in any
+   * case. Anything that replaces the picture here needs a licence that covers
+   * commercial use, and the licence goes in this comment beside it.
    */
   {
     slug: "low-bandwidth-super-app",
