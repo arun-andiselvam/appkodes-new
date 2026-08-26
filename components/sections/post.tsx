@@ -303,11 +303,33 @@ function Hero({ post }: { post: Post }) {
             public/sample illustrate nothing, and inventing a description
             for them would be worse than saying nothing.
           */}
+          {/*
+            !! `priority` IS DEPRECATED IN NEXT 16 AND IT WAS COSTING US LCP !!
+
+            It was `priority`, which in every earlier Next did two jobs: put a
+            <link rel="preload"> in the head, and mark the request high
+            priority. Next 16 split them, deprecated `priority`, and the half
+            it kept doing here was the preload. Nothing was setting
+            fetchpriority, so the hero was preloaded and then queued at the
+            browser's ordinary image priority.
+
+            The waterfall from the live site on 26 August 2026 shows exactly
+            what that cost. Three font files, which the browser does treat as
+            High, opened at 515ms. The hero opened at 537ms, behind 85 KB of
+            them, and PageSpeed's own LCP request discovery audit failed on
+            "fetchpriority=high should be applied to the image preload
+            request" while passing both of its other checks.
+
+            preload puts the link back and fetchPriority puts the image in
+            front of the fonts. The article's own picture outranks the face it
+            is captioned in.
+          */}
           <Image
             src={post.image}
             alt={post.imageAlt ?? ""}
             fill
-            priority
+            preload
+            fetchPriority="high"
             sizes="(min-width: 1400px) 1320px, 100vw"
             className="object-cover"
           />
