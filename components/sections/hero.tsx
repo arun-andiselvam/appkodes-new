@@ -6,9 +6,10 @@ import { useInView } from "@/hooks/use-in-view";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { actions, heroWords as words, heroStats, heroCopy, site } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
@@ -130,10 +131,11 @@ export function HeroSection() {
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
             >
-              <Link href={actions.book}>
+              <QuoteLauncher>
+                <Sparkles aria-hidden />
                 {heroCopy.primaryCta}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </QuoteLauncher>
             </Button>
             <Button
               asChild

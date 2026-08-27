@@ -138,10 +138,20 @@ export const heroCopy = {
    */
   description:
     "Most AI projects never get past a demo. We build the ones that end up in daily use, which is a different job from building something impressive.",
-  // Changed 25 August 2026, from "Book an automation review". The offer was
-  // always free — docs/positioning.md had it flagged as an open decision
-  // ("if it is free, say so loudly") — confirmed by the client and now said
-  // outright rather than left for the FAQ to clarify.
+  /*
+   * Changed 25 August 2026, from "Book an automation review". The offer was
+   * always free — docs/positioning.md had it flagged as an open decision
+   * ("if it is free, say so loudly") — confirmed by the client and now said
+   * outright rather than left for the FAQ to clarify.
+   *
+   * !! IN-PAGE LABELS ARE NOT THE HEADER'S LABEL !!
+   *
+   * Flattened to the header's "Free quote" on 27 August 2026 and put back the
+   * same day. The header is a 12px button in a crowded bar and needs two
+   * words; a hero button has the width of a paragraph and should say what the
+   * offer actually is. Every one of these still opens the same assistant — the
+   * button says what you get, not which widget appears.
+   */
   primaryCta: "Book a free automation audit",
   secondaryCta: "See case studies",
 } as const;

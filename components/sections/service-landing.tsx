@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -14,7 +14,8 @@ import { TestimonialsSection } from "@/components/sections/testimonials";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { IntegrationDiagram } from "@/components/backgrounds/integration-diagram";
 import { childrenOf } from "@/content/navigation";
-import { actions, heroCopy } from "@/content/site";
+import { heroCopy } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import type { ServiceLanding } from "@/content/types";
 
 /**
@@ -86,10 +87,11 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
               >
-                <Link href={actions.book}>
+                <QuoteLauncher>
+                  <Sparkles aria-hidden />
                   {heroCopy.primaryCta}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                </QuoteLauncher>
               </Button>
               <Button
                 asChild

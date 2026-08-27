@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Phone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { SectionTitle } from "@/components/primitives/section-title";
-import { actions } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import type { CaseStudy } from "@/lib/case-studies";
 
 /**
@@ -176,19 +176,24 @@ export function CaseStudyPage({
                 verbatim on 24 August 2026. It is doing what a question does
                 well here, which is inviting a reply rather than announcing
                 something.
+
+                It was briefly replaced with a generic label on 27 August 2026
+                and restored the same hour. It stays.
+
+                The phone became a sparkle in that pass, and that part stays
+                too. Nothing here books a call any more - it opens the
+                assistant - and an icon that promises one is worse than no icon
+                at all.
               */}
-              <Link
-                href={actions.book}
-                className="group/call mt-8 inline-flex items-center gap-3 text-sm leading-snug transition-colors hover:text-primary"
-              >
-                <Phone
+              <QuoteLauncher className="group/call mt-8 inline-flex items-center gap-3 text-sm leading-snug transition-colors hover:text-primary">
+                <Sparkles
                   aria-hidden
-                  className="w-4 h-4 shrink-0 text-primary transition-transform group-hover/call:-rotate-12"
+                  className="w-4 h-4 shrink-0 text-primary transition-transform group-hover/call:rotate-12"
                 />
                 <span className="underline decoration-foreground/25 underline-offset-4 transition-colors group-hover/call:decoration-primary">
                   You want to know this story?
                 </span>
-              </Link>
+              </QuoteLauncher>
             </div>
 
             {/*

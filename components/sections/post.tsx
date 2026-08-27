@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { SectionTitle } from "@/components/primitives/section-title";
@@ -15,7 +15,8 @@ import { BodyBlock } from "@/components/primitives/rich-text";
  */
 import { Contents } from "@/components/sections/post-contents";
 import { resourceCategories } from "@/content/resources";
-import { actions, site } from "@/content/site";
+import { site } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import { postHref, type Block, type Post } from "@/lib/posts";
 
 /**
@@ -189,10 +190,11 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                   size="lg"
                   className="mt-6 h-14 rounded-full bg-primary px-8 text-base text-primary-foreground has-[>svg]:px-8 hover:bg-primary/90 group/cta"
                 >
-                  <Link href={actions.book}>
+                  <QuoteLauncher>
+                    <Sparkles aria-hidden />
                     Book a free automation audit
                     <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
-                  </Link>
+                  </QuoteLauncher>
                 </Button>
               </div>
 

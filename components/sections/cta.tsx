@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { actions, ctaCopy } from "@/content/site";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { ctaCopy } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
@@ -92,10 +93,17 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                     size="lg"
                     className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
                   >
-                    <Link href={actions.book}>
+                    {/*
+                      A client component inside this server component, which is
+                      allowed and does not convert the parent - see the shouted
+                      note at the top of this file. The rule it protects is
+                      unchanged: no hook and no handler goes in here.
+                    */}
+                    <QuoteLauncher>
+                      <Sparkles aria-hidden />
                       {panel.primaryCta}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
+                    </QuoteLauncher>
                   </Button>
                   {/* Points somewhere real, unlike the buttons it replaces. */}
                   <Button

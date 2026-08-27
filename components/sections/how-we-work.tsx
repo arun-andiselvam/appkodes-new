@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/primitives/section";
@@ -10,6 +10,7 @@ import { CardRow } from "@/components/sections/card-row";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { commitments, commitmentsLabel } from "@/content/security";
 import { actions } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import {
   comparison,
   faqs,
@@ -83,10 +84,16 @@ export function HowWeWorkPage() {
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
               >
-                <Link href={actions.book}>
+                {/*
+                  "Start a prototype", not the generic label. This page's whole
+                  argument is stop planning and start building, and the button
+                  is the last line of it.
+                */}
+                <QuoteLauncher>
+                  <Sparkles aria-hidden />
                   Start a prototype
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                </QuoteLauncher>
               </Button>
               <Button
                 asChild

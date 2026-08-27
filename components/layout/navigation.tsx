@@ -3,12 +3,14 @@
 import { Fragment, useState, useEffect, useId } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { actions, site } from "@/content/site";
 import { mainNav } from "@/content/navigation";
+import { quoteCtaLabel } from "@/content/quote-flow";
 import type { NavItem } from "@/content/types";
 
 /**
@@ -340,7 +342,16 @@ export function Navigation() {
               size="sm"
               className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
             >
-              <Link href={actions.book}>Book a call</Link>
+              <QuoteLauncher>
+                {/*
+                  The icon says the button opens an assistant rather than a
+                  form, which is the one thing the two words cannot. aria-hidden
+                  because the label already names the action - a screen reader
+                  announcing "sparkles free quote" is noise.
+                */}
+                <Sparkles aria-hidden />
+                {quoteCtaLabel}
+              </QuoteLauncher>
             </Button>
           </div>
 
@@ -500,7 +511,16 @@ export function Navigation() {
               className="flex-1 bg-primary text-primary-foreground rounded-full h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <Link href={actions.book}>Book a call</Link>
+              <QuoteLauncher>
+                {/*
+                  The icon says the button opens an assistant rather than a
+                  form, which is the one thing the two words cannot. aria-hidden
+                  because the label already names the action - a screen reader
+                  announcing "sparkles free quote" is noise.
+                */}
+                <Sparkles aria-hidden />
+                {quoteCtaLabel}
+              </QuoteLauncher>
             </Button>
           </div>
         </div>

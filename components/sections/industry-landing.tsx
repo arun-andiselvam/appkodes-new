@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { BrandMark } from "@/components/ui/brand-mark";
 import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
 import { RecordStack } from "@/components/backgrounds/record-stack";
-import { actions } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import type { IndustryLanding } from "@/content/types";
 
 /**
@@ -96,10 +96,26 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
                 >
-                  <Link href={actions.book}>
+                  {/*
+                    Each industry page names its own review - "Book a clinical
+                    AI review", "Book an inventory audit" and four more. That
+                    is what page.hero.cta is for, and it stays.
+
+                    Flattened to the header's short label on 27 August 2026 and
+                    put back the same hour. The header is a 12px button in a
+                    crowded bar and needs two words. A hero button has the
+                    width of a paragraph, and a fintech buyer should be offered
+                    a financial AI audit rather than a generic quote.
+
+                    The sparkle is the one thing kept from that pass: it says
+                    the button opens an assistant rather than loading a form,
+                    which is the single thing the wording cannot.
+                  */}
+                  <QuoteLauncher>
+                    <Sparkles aria-hidden />
                     {page.hero.cta}
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
+                  </QuoteLauncher>
                 </Button>
                 <Button
                   asChild

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -8,7 +8,8 @@ import { SectionTitle } from "@/components/primitives/section-title";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { childrenOf } from "@/content/navigation";
 import { implementationSteps } from "@/content/services";
-import { actions, heroCopy } from "@/content/site";
+import { heroCopy } from "@/content/site";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import type { ServicePage } from "@/content/types";
 
 /**
@@ -62,10 +63,11 @@ export function SiloPage({ page, path }: { page: ServicePage; path: string }) {
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
             >
-              <Link href={actions.book}>
+              <QuoteLauncher>
+                <Sparkles aria-hidden />
                 {heroCopy.primaryCta}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </QuoteLauncher>
             </Button>
             <Button
               asChild
