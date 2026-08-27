@@ -304,9 +304,18 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
  *
  * The artwork is whatever the CMS holds, so it can be a bright photograph on
  * any given post and nothing here can predict it. A gradient alone leaves the
- * top of the list sitting on the raw image, so the overlay carries a flat
- * blur as well and the gradient only deepens it towards the text. That pairing
- * is what makes white type safe against artwork nobody has seen yet.
+ * top of the list sitting on the raw image, so the overlay carries a blur as
+ * well and the gradient only deepens it towards the text. That pairing is what
+ * makes white type safe against artwork nobody has seen yet.
+ *
+ * !! IT IS ONLY OVER THE TEXT ON DESKTOP. THE PICTURE HAS TO SURVIVE IT !!
+ *
+ * Scrimming the whole frame is what a phone needs, where the list runs the
+ * full width, and it is what the client saw on 27 August 2026 on a desktop
+ * and reported as the takeaways hiding the artwork. From lg the list is held
+ * to the left column, the gradient runs left-to-right instead of bottom-up,
+ * and the blur is masked to the same column, so the right of the picture is
+ * untouched and whatever the illustration was drawn to show is still legible.
  *
  * !! THE HEIGHT IS A MINIMUM, NOT AN ASPECT RATIO, WHEN TEXT IS ON IT !!
  *
@@ -400,24 +409,38 @@ function Hero({ post }: { post: Post }) {
             <>
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/35 backdrop-blur-[2px]"
+                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/35 backdrop-blur-[2px] lg:bg-gradient-to-r lg:from-black/90 lg:via-black/55 lg:via-45% lg:to-transparent lg:backdrop-blur-none"
+              />
+              {/* The blur, desktop only, masked to the text column so it stops
+                  before the artwork instead of frosting all of it. Two
+                  declarations because Safari wanted the prefix until 15.4 and
+                  an unsupported mask-image there means an unmasked blur —
+                  the exact thing this layer exists to avoid. */}
+              <div
+                aria-hidden
+                className="absolute inset-0 hidden lg:block lg:backdrop-blur-[3px] [-webkit-mask-image:linear-gradient(to_right,#000_0%,#000_48%,transparent_70%)] [mask-image:linear-gradient(to_right,#000_0%,#000_48%,transparent_70%)]"
               />
               <aside
                 aria-labelledby="takeaways"
-                className="relative flex min-h-[26rem] sm:min-h-[28rem] lg:min-h-[34rem] flex-col justify-end p-6 sm:p-10 lg:p-14 text-white"
+                className="relative flex min-h-[26rem] sm:min-h-[28rem] lg:min-h-[34rem] flex-col justify-end p-6 sm:p-10 lg:justify-center lg:p-14 text-white"
               >
-                <TakeawaysHeading className="text-white/70" />
-                <ul className="mt-5 max-w-4xl space-y-4">
-                  {takeaways.map((line) => (
-                    <li
-                      key={line}
-                      className="flex gap-4 text-base sm:text-lg leading-relaxed [text-shadow:0_1px_3px_rgb(0_0_0/0.55)]"
-                    >
-                      <Bullet className="bg-white/70" />
-                      {line}
-                    </li>
-                  ))}
-                </ul>
+                {/* Held to roughly the left 45% on desktop, which is where the
+                    gradient and the mask above are cut. Move one and move all
+                    three, or the type runs out past its own scrim. */}
+                <div className="lg:max-w-xl">
+                  <TakeawaysHeading className="text-white/70" />
+                  <ul className="mt-5 max-w-4xl space-y-4">
+                    {takeaways.map((line) => (
+                      <li
+                        key={line}
+                        className="flex gap-4 text-base sm:text-lg leading-relaxed [text-shadow:0_1px_3px_rgb(0_0_0/0.55)]"
+                      >
+                        <Bullet className="bg-white/70" />
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </aside>
             </>
           )}
