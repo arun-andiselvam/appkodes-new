@@ -158,8 +158,11 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
               rest of the site uses.
             */}
             <article className="max-w-[68ch]">
+              {/* The 12px goes to the figures from here rather than being
+                  baked into the renderer, which the careers page also uses.
+                  See the note on figureClassName in rich-text.tsx. */}
               {(post.body ?? []).map((block, i) => (
-                <BodyBlock key={i} block={block} />
+                <BodyBlock key={i} block={block} figureClassName="rounded-[12px]" />
               ))}
 
               {/*
@@ -249,7 +252,10 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                 <li key={other.slug}>
                   <Link href={postHref(other)} className="group/rel block">
                     {other.image && (
-                      <span className="relative block aspect-[3/2] w-full overflow-hidden">
+                      /* Same 12px as the hero above and the cards on /blog.
+                         Read next is part of the article page, so its
+                         thumbnails follow the article's corners. */
+                      <span className="relative block aspect-[3/2] w-full overflow-hidden rounded-[12px]">
                         <Image
                           src={other.image}
                           alt=""
@@ -344,7 +350,11 @@ function Hero({ post }: { post: Post }) {
   return (
     <Section spacing="none" className="pb-14 lg:pb-20">
       <Container>
-        <div className="relative isolate w-full overflow-hidden">
+        {/* 12px corners on the hero, asked for on 27 August 2026. Arbitrary
+            value rather than rounded-xl, which is 8px against the --radius in
+            app/globals.css. On the clipping element so the takeaways gradient
+            and panel are cut to the same corners as the photograph. */}
+        <div className="relative isolate w-full overflow-hidden rounded-[12px]">
           {/*
             alt is empty unless the artwork has something to describe. See
             the note on imageAlt in lib/posts.ts: the placeholders in
@@ -613,6 +623,13 @@ function AuthorBox({ author }: { author: string }) {
           panel, the service card, the tables and figures in the body. A lone
           circle at the foot of it reads as borrowed from another page.
 
+          The corners are 12px as of 27 August 2026, which is the softening
+          the client asked for across the blog artwork - hero, body figures,
+          listing thumbnails - and not a return to the circle. Same arbitrary
+          value for the same reason as the rest: rounded-xl is 8px against the
+          --radius in app/globals.css. It is on the <img> itself here because
+          there is nothing layered over the portrait to clip.
+
           !! A FIXED SIDE, AND `self-stretch aspect-square` WAS TRIED FIRST !!
 
           The obvious way to make the side equal the text block's height is to
@@ -649,7 +666,7 @@ function AuthorBox({ author }: { author: string }) {
             loading="lazy"
             width={200}
             height={200}
-            className="size-24 shrink-0 object-cover sm:size-30"
+            className="size-24 shrink-0 rounded-[12px] object-cover sm:size-30"
           />
         )}
 

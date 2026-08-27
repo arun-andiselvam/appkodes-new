@@ -235,7 +235,24 @@ export function PostCard({ post }: { post: Post }) {
             name is already the headline, so describing the picture as well
             would have a screen reader announce the same item twice.
           */
-          <span className="relative block aspect-[4/3] w-full overflow-hidden">
+          /*
+            !! 12px, AND `rounded-xl` IS NOT 12px HERE !!
+
+            The client asked for 12px corners on the blog artwork on 27 August
+            2026. app/globals.css builds its radius scale off --radius: 0.25rem,
+            which makes rounded-xl 8px and rounded-lg 4px, so the arbitrary
+            value is the only one that says what was asked for.
+
+            It goes on this span rather than on the <Image> because the
+            gradient and the date are absolutely positioned inside the same
+            box: rounding the picture alone would leave square corners on the
+            overlay sitting proud of it. overflow-hidden was already here, so
+            the clip does the work for all three.
+
+            This card is only ever drawn by a blog listing - /blog and the two
+            resource category pages - so no other page picks the corners up.
+          */
+          <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-[12px]">
             <Image
               src={post.image}
               alt=""

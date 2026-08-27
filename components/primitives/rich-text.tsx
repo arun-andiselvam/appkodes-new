@@ -21,7 +21,27 @@ import type { Block, Inline } from "@/lib/posts";
  * post.tsx's heading styling ever needs to change, check whether the change
  * belongs here too or is specific to the article layout it sits inside.
  */
-export function BodyBlock({ block }: { block: Block }) {
+export function BodyBlock({
+  block,
+  figureClassName = "",
+}: {
+  block: Block;
+  /**
+   * Extra classes for the box a `figure` block's picture is clipped to.
+   *
+   * !! THIS EXISTS SO THE 12px CORNERS STAY ON THE BLOG !!
+   *
+   * The client asked for 12px corners on the blog artwork on 27 August 2026
+   * and was explicit that no other page should take it. This renderer is
+   * shared: components/sections/career-detail.tsx draws a job description
+   * through it, and a CKEditor field there can carry an image as easily as an
+   * article can. Rounding the figure case below outright would round that too.
+   *
+   * So the caller decides. post.tsx passes the radius, career-detail passes
+   * nothing, and the default leaves every other body square.
+   */
+  figureClassName?: string;
+}) {
   switch (block.kind) {
     case "h2":
       return (
@@ -101,7 +121,7 @@ export function BodyBlock({ block }: { block: Block }) {
     case "figure":
       return (
         <figure className="mt-10">
-          <div className="relative aspect-[16/9] w-full overflow-hidden">
+          <div className={`relative aspect-[16/9] w-full overflow-hidden ${figureClassName}`}>
             <Image src={block.src} alt={block.alt} fill sizes="(min-width: 1024px) 44rem, 100vw" className="object-cover" />
           </div>
           <figcaption className="mt-3 text-sm text-muted-foreground leading-relaxed">{block.caption}</figcaption>
