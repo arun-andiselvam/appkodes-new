@@ -409,7 +409,7 @@ function Hero({ post }: { post: Post }) {
             <>
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/35 backdrop-blur-[2px] lg:bg-gradient-to-r lg:from-black/90 lg:via-black/55 lg:via-45% lg:to-transparent lg:backdrop-blur-none"
+                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/35 backdrop-blur-[2px] lg:bg-gradient-to-r lg:from-black/90 lg:via-black/50 lg:via-40% lg:to-transparent lg:to-64% lg:backdrop-blur-none"
               />
               {/* The blur, desktop only, masked to the text column so it stops
                   before the artwork instead of frosting all of it. Two
@@ -418,16 +418,18 @@ function Hero({ post }: { post: Post }) {
                   the exact thing this layer exists to avoid. */}
               <div
                 aria-hidden
-                className="absolute inset-0 hidden lg:block lg:backdrop-blur-[3px] [-webkit-mask-image:linear-gradient(to_right,#000_0%,#000_48%,transparent_70%)] [mask-image:linear-gradient(to_right,#000_0%,#000_48%,transparent_70%)]"
+                className="absolute inset-0 hidden lg:block lg:backdrop-blur-[3px] [-webkit-mask-image:linear-gradient(to_right,#000_0%,#000_42%,transparent_58%)] [mask-image:linear-gradient(to_right,#000_0%,#000_42%,transparent_58%)]"
               />
               <aside
                 aria-labelledby="takeaways"
                 className="relative flex min-h-[26rem] sm:min-h-[28rem] lg:min-h-[34rem] flex-col justify-end p-6 sm:p-10 lg:justify-center lg:p-14 text-white"
               >
-                {/* Held to roughly the left 45% on desktop, which is where the
-                    gradient and the mask above are cut. Move one and move all
-                    three, or the type runs out past its own scrim. */}
-                <div className="lg:max-w-xl">
+                {/* 40% of the aside's content box, which with the p-14 either
+                    side puts the right edge of the type at about 41% of the
+                    hero at any desktop width. That is what the gradient and
+                    the mask above are cut to. Move one and move all three, or
+                    the type runs out past its own scrim. */}
+                <div className="lg:max-w-[40%]">
                   <TakeawaysHeading className="text-white/70" />
                   <ul className="mt-5 max-w-4xl space-y-4">
                     {takeaways.map((line) => (
