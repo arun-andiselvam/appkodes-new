@@ -16,7 +16,15 @@ import Link from "next/link";
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header className="border-b border-foreground/10 bg-foreground/[0.015] px-6 py-3">
+      {/*
+        The site's own Navigation is `fixed`, not part of document flow - see
+        components/layout/navigation.tsx - so without a top offset here this
+        bar renders right under it and the two overlap. mt-20 matches the
+        nav's own un-scrolled height (h-20); it shrinks to h-14 on scroll,
+        the same way every other page's own top padding is sized to the
+        larger of the two rather than tracking the nav pixel for pixel.
+      */}
+      <header className="mt-20 border-b border-foreground/10 bg-foreground/[0.015] px-6 py-3">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
           <nav className="flex items-center gap-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             <Link href="/admin" className="text-foreground transition-colors hover:text-primary">
