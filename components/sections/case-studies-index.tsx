@@ -188,11 +188,14 @@ function StudyRow({ study }: { study: CaseStudy }) {
           </span>
         </span>
 
-        {/* Decorative: the row is one link already named by the headline. */}
+        {/* The row is one link already named by the headline, so alt
+            repeats it for a screen reader either way - but real alt text
+            is what an image search crawler indexes the picture against,
+            same as the blog thumbnails. See lib/posts.ts. */}
         <span className="relative block aspect-[16/9] w-full overflow-hidden lg:aspect-[3/2]">
           <Image
             src={study.image}
-            alt=""
+            alt={study.title}
             fill
             sizes="(min-width: 1024px) 22rem, 100vw"
             className="object-cover transition-transform duration-500 group-hover/study:scale-[1.03]"
