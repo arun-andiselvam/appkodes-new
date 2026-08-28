@@ -193,9 +193,13 @@ export type Post = {
    * box. A post written in a hurry without artwork should still list cleanly,
    * and whatever CMS lands will let somebody publish without one.
    *
-   * On the index it is decorative: the row is a single link whose accessible
-   * name is already the post title, so it takes alt="" there and the date sits
-   * over it as real text rather than being baked into a bitmap.
+   * On the index the row is a single link whose accessible name is already
+   * the post title, so a screen reader gets the same words whether the
+   * picture's alt repeats the title or stays empty - it takes the title, on
+   * 28 August 2026, because that is real alt text an image search crawler
+   * can index the picture against, which an empty string never gave it. The
+   * date sits over the picture as real text rather than being baked into a
+   * bitmap either way.
    *
    * On the article itself it is the hero, and `imageAlt` describes it.
    */

@@ -60,10 +60,15 @@ export function Footer() {
         copy on top of it, and grayscale plus the panel's own dark teal
         showing through at this opacity is what gives it the brand tint
         rather than leaving it a flat grey.
+
+        alt names the photo rather than staying empty, for an image search
+        crawler to index it against. aria-hidden stays: a screen reader still
+        skips it, because at 0.35 opacity behind the brand copy it is a
+        backdrop rather than something to describe.
       */}
       <Image
         src="/team.webp"
-        alt=""
+        alt="The Hitasoft team"
         aria-hidden
         fill
         sizes="100vw"

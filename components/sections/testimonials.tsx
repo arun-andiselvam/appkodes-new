@@ -160,7 +160,7 @@ function Avatar({ name, photo, country }: { name: string; photo?: string; countr
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={photo}
-          alt=""
+          alt={name}
           loading="lazy"
           width={40}
           height={40}

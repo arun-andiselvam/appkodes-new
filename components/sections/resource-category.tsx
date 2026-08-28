@@ -231,9 +231,11 @@ export function PostCard({ post }: { post: Post }) {
             background is a coin toss. Black at 85 percent under white text
             clears 4.5:1 whatever the image does underneath.
 
-            alt is empty on purpose. The card is a single link whose accessible
-            name is already the headline, so describing the picture as well
-            would have a screen reader announce the same item twice.
+            alt is the post's title rather than empty. The card is a single
+            link whose accessible name is already the headline, so a screen
+            reader announces the same words twice either way - but the title
+            is real alt text an image search crawler can index the picture
+            against, which an empty string never gave it.
           */
           /*
             !! 12px, AND `rounded-xl` IS NOT 12px HERE !!
@@ -255,7 +257,7 @@ export function PostCard({ post }: { post: Post }) {
           <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-[12px]">
             <Image
               src={post.image}
-              alt=""
+              alt={post.title}
               fill
               sizes="10rem"
               className="object-cover transition-transform duration-500 group-hover/post:scale-[1.04]"
