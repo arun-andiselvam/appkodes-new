@@ -751,7 +751,20 @@ export const Chatbot = forwardRef<
             </ul>
           )}
 
-          <div className="flex items-end gap-2">
+          {/*
+            One bordered shell, not three - on the client's instruction of
+            28 August 2026. The pin and the send button were each their own
+            h-10 box with their own border, and the textarea's border sat
+            beside them at whatever height its own padding and line-height
+            produced - text-sm leading-relaxed alone is taller than 40px, so
+            the two buttons never actually lined up with it. Every border
+            below now lives on this outer shell instead, and the textarea's
+            line-height is set explicitly (leading-5, 20px) rather than left
+            to leading-relaxed, so 20px of padding plus a 20px line lands
+            exactly on the same 40px the buttons already are - not a
+            coincidence, the two are meant to match on purpose.
+          */}
+          <div className="flex items-end gap-1 rounded-lg border border-foreground/15 bg-background py-1 pr-1 pl-1 transition-colors focus-within:border-foreground/30">
             {/*
               The pin. Any lead, the moment they are sorted as one - never a
               student. See LEAD_PHASES above for exactly what that means and
@@ -764,7 +777,7 @@ export const Chatbot = forwardRef<
                 onClick={handlePaperclipClick}
                 disabled={uploading}
                 aria-label="Attach a file"
-                className="flex h-10 w-10 shrink-0 items-center justify-center border border-foreground/15 text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground disabled:opacity-50"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground disabled:opacity-50"
               >
                 <Paperclip aria-hidden className="h-4 w-4" />
               </button>
@@ -801,7 +814,7 @@ export const Chatbot = forwardRef<
                   ? "Or ask me anything first…"
                   : "Type your reply…"
               }
-              className="max-h-32 min-h-[40px] flex-1 resize-none border border-foreground/15 bg-transparent px-3 py-2.5 text-sm leading-relaxed placeholder:text-muted-foreground/70 focus:border-foreground/30 focus:outline-none"
+              className="max-h-32 min-h-[40px] flex-1 resize-none bg-transparent px-2 py-2.5 text-sm leading-5 placeholder:text-muted-foreground/70 focus:outline-none"
             />
             <button
               type="submit"
@@ -815,7 +828,7 @@ export const Chatbot = forwardRef<
                */
               disabled={!input.trim()}
               aria-label="Send"
-              className={`flex h-10 w-10 shrink-0 items-center justify-center bg-primary text-background transition-opacity disabled:opacity-30 ${busy ? "opacity-60" : ""}`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-background transition-opacity disabled:opacity-30 ${busy ? "opacity-60" : ""}`}
             >
               <Send aria-hidden className="h-4 w-4" />
             </button>
