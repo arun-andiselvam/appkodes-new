@@ -498,7 +498,18 @@ export function QuoteModal({
       >
         <DialogContent
           showCloseButton={false}
-          className="flex h-[600px] max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-0 overflow-hidden border-foreground/10 bg-background p-0 sm:max-w-lg max-sm:bottom-0 max-sm:top-auto max-sm:h-[88dvh] max-sm:max-h-none max-sm:w-full max-sm:max-w-none max-sm:translate-y-0 max-sm:rounded-b-none"
+          /*
+            A drawer stuck to the right edge, on the client's instruction of
+            28 August 2026 - not the centred dialog this started as. Radix's
+            own DialogContent (components/ui/dialog.tsx) positions and sizes
+            centred by default; every positioning/sizing utility below exists
+            to override one of those defaults, and relies on cn() there being
+            twMerge rather than plain clsx so the later class wins instead of
+            both fighting in the stylesheet. slide-in-from-right/slide-out-to-right
+            come from tw-animate-css, already used for the fade/zoom classes
+            Radix's own data-state attributes drive elsewhere in this file.
+          */
+          className="fixed inset-y-0 right-0 left-auto flex h-dvh w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 border-l border-foreground/10 bg-background p-0 shadow-xl data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:w-[440px] sm:max-w-[calc(100vw-2rem)]"
         >
           {/*
             Radix needs both of these for the dialog to be announced properly.
