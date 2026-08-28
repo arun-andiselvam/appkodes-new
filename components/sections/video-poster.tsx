@@ -34,10 +34,14 @@ export function VideoPoster({
       className="group relative block w-full aspect-video overflow-hidden bg-foreground/5"
       aria-label={`Play: ${title}`}
     >
+      {/* alt is the video's title rather than empty: the button's own
+          aria-label already carries it for a screen reader, so this is
+          for an image search crawler, the way the blog thumbnails and
+          testimonial photos take their alt now. See lib/posts.ts. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={poster}
-        alt=""
+        alt={title}
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
