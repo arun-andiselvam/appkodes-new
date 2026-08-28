@@ -508,8 +508,21 @@ export function QuoteModal({
             both fighting in the stylesheet. slide-in-from-right/slide-out-to-right
             come from tw-animate-css, already used for the fade/zoom classes
             Radix's own data-state attributes drive elsewhere in this file.
+
+            !! FLOATING, NOT EDGE-TO-EDGE - ON THE CLIENT'S INSTRUCTION OF 28 AUGUST 2026 !!
+
+            inset-4 alone gives the floating-card feel a reference design
+            asked to be matched: 16px of page visible on every side, rounded
+            corners all round rather than the flush sharp-cornered drawer
+            this was a moment ago. top and bottom both being set is what
+            defines the height - no separate h- utility needed for that.
+            sm:left-auto is what turns "floating card near the right edge"
+            into "docked to the right edge, fixed width" once there is room
+            for it; below that breakpoint the card stays close to full
+            width, inset on every side, which reads as a proper floating
+            panel on a phone rather than a sliver.
           */
-          className="fixed inset-y-0 right-0 left-auto flex h-dvh w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 border-l border-foreground/10 bg-background p-0 shadow-xl data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:w-[440px] sm:max-w-[calc(100vw-2rem)]"
+          className="fixed inset-4 flex w-auto max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-2xl border border-foreground/10 bg-background p-0 shadow-2xl data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:left-auto sm:w-[440px]"
         >
           {/*
             Radix needs both of these for the dialog to be announced properly.

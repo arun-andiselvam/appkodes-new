@@ -515,7 +515,7 @@ export const Chatbot = forwardRef<
 
       {/* -------------------------------------------------------- header */}
       <div className="flex shrink-0 items-center justify-between gap-4 border-b border-foreground/10 px-5 py-4">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           {/*
             The avatar.
 
@@ -530,22 +530,29 @@ export const Chatbot = forwardRef<
             theme. The badge itself is bg-primary - the same brand blue every
             button on this site already uses - rather than the flat black the
             file ships as, on the client's instruction the same day.
+
+            Sized up from h-8 to h-11 on 28 August 2026, matching a reference
+            design's larger, more present avatar - this header stays a
+            compact bar rather than that reference's full hero treatment
+            (there is a real conversation scrolling under it for the whole
+            time this is open, not a one-time launcher screen), but the
+            avatar itself earns the extra weight.
           */}
           <span
             aria-hidden
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary"
           >
             <Image
               src="/quotebot-icon.png"
               alt=""
               width={64}
               height={64}
-              className="h-[18px] w-[18px] brightness-0 invert"
+              className="h-6 w-6 brightness-0 invert"
             />
           </span>
           <div>
-            <p className="font-display text-sm tracking-tight">{greeting.title}</p>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="font-display text-base tracking-tight">{greeting.title}</p>
+            <p className="text-xs text-muted-foreground">
               {busy ? "Typing…" : greeting.subtitle}
             </p>
           </div>
@@ -752,37 +759,16 @@ export const Chatbot = forwardRef<
           )}
 
           {/*
-            One bordered shell, not three - on the client's instruction of
-            28 August 2026. The pin and the send button were each their own
-            h-10 box with their own border, and the textarea's border sat
-            beside them at whatever height its own padding and line-height
-            produced - text-sm leading-relaxed alone is taller than 40px, so
-            the two buttons never actually lined up with it. Every border
-            below now lives on this outer shell instead, and the textarea's
-            line-height is set explicitly (leading-5, 20px) rather than left
-            to leading-relaxed, so 20px of padding plus a 20px line lands
-            exactly on the same 40px the buttons already are - not a
-            coincidence, the two are meant to match on purpose.
+            One bordered shell, two rows - on the client's instruction of
+            28 August 2026, matching a reference design's composer: the
+            textarea gets a full-width line to itself, and the pin and send
+            live on their own row underneath rather than squeezed beside it.
+            The shell's own border and rounding replace what each control
+            used to carry separately (see the 28 August note this replaced,
+            still true of why the textarea's line-height is set explicitly
+            - leading-5, 20px - rather than left to leading-relaxed).
           */}
-          <div className="flex items-end gap-1 rounded-lg border border-foreground/15 bg-background py-1 pr-1 pl-1 transition-colors focus-within:border-foreground/30">
-            {/*
-              The pin. Any lead, the moment they are sorted as one - never a
-              student. See LEAD_PHASES above for exactly what that means and
-              the mix-up it corrects, and handlePaperclipClick for what a
-              click actually does before the address behind it is verified.
-            */}
-            {isLead && (
-              <button
-                type="button"
-                onClick={handlePaperclipClick}
-                disabled={uploading}
-                aria-label="Attach a file"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground disabled:opacity-50"
-              >
-                <Paperclip aria-hidden className="h-4 w-4" />
-              </button>
-            )}
-
+          <div className="flex flex-col gap-1.5 rounded-2xl border border-foreground/15 bg-background p-2 transition-colors focus-within:border-foreground/30">
             <textarea
               ref={inputRef}
               value={input}
@@ -814,24 +800,47 @@ export const Chatbot = forwardRef<
                   ? "Or ask me anything first…"
                   : "Type your reply…"
               }
-              className="max-h-32 min-h-[40px] flex-1 resize-none bg-transparent px-2 py-2.5 text-sm leading-5 placeholder:text-muted-foreground/70 focus:outline-none"
+              className="max-h-32 min-h-[24px] w-full resize-none bg-transparent px-1 py-0 text-sm leading-5 placeholder:text-muted-foreground/70 focus:outline-none"
             />
-            <button
-              type="submit"
-              /*
-               * Not `busy ||` here either, for the same reason as the
-               * textarea above - disabling this while it might be holding
-               * focus (a click, rather than Enter, is how this button gets
-               * pressed) blurs it mid-stream. `send()`'s own busy guard makes
-               * a click that lands while a reply is still coming in a safe
-               * no-op rather than a second request.
-               */
-              disabled={!input.trim()}
-              aria-label="Send"
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-background transition-opacity disabled:opacity-30 ${busy ? "opacity-60" : ""}`}
-            >
-              <Send aria-hidden className="h-4 w-4" />
-            </button>
+
+            {/* The pin and send, on their own row under the text. */}
+            <div className="flex items-center gap-2">
+              {/*
+                The pin. Any lead, the moment they are sorted as one - never a
+                student. See LEAD_PHASES above for exactly what that means and
+                the mix-up it corrects, and handlePaperclipClick for what a
+                click actually does before the address behind it is verified.
+                Labelled now rather than icon-only, matching the reference.
+              */}
+              {isLead && (
+                <button
+                  type="button"
+                  onClick={handlePaperclipClick}
+                  disabled={uploading}
+                  className="flex items-center gap-1.5 rounded-full border border-foreground/15 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground disabled:opacity-50"
+                >
+                  <Paperclip aria-hidden className="h-3.5 w-3.5" />
+                  Upload
+                </button>
+              )}
+
+              <button
+                type="submit"
+                /*
+                 * Not `busy ||` here either, for the same reason as the
+                 * textarea above - disabling this while it might be holding
+                 * focus (a click, rather than Enter, is how this button gets
+                 * pressed) blurs it mid-stream. `send()`'s own busy guard
+                 * makes a click that lands while a reply is still coming a
+                 * safe no-op rather than a second request.
+                 */
+                disabled={!input.trim()}
+                aria-label="Send"
+                className={`ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-background transition-opacity disabled:opacity-30 ${busy ? "opacity-60" : ""}`}
+              >
+                <Send aria-hidden className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
           <input
