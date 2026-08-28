@@ -419,7 +419,21 @@ async function writeEstimate(
       : brief,
   });
 
-  const message = await client.messages.create({
+  /*
+   * !! STREAMED, NOT client.messages.create() - SEEN FAILING ON 28 AUGUST 2026 !!
+   *
+   * Raising MAX_TOKENS to give thinking real headroom (see the note on it
+   * above) pushed the SDK's own estimate of how long this call could take
+   * past its ten-minute non-streaming ceiling, and every attempt failed
+   * outright with "Streaming is required for operations that may take
+   * longer than 10 minutes" - never even reaching the model. Nothing here
+   * reads the stream as it arrives; this job runs in the background with
+   * nobody watching a token appear, so `.stream()` is used purely as the
+   * transport the SDK requires at this size, and `.finalMessage()` is
+   * awaited for the same complete response `.create()` used to return
+   * directly.
+   */
+  const stream = client.messages.stream({
     model: MODEL,
     max_tokens: MAX_TOKENS,
     system: SYSTEM,
@@ -440,6 +454,8 @@ async function writeEstimate(
     },
     messages: [{ role: "user", content }],
   });
+
+  const message = await stream.finalMessage();
 
   if (message.stop_reason === "refusal") {
     throw new Error("The model declined to write this estimate.");
