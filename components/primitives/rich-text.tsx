@@ -187,6 +187,33 @@ function summaryBody(text: string): string | null {
 }
 
 /**
+ * The summary's body, cut into one point per sentence.
+ *
+ * !! THE CONTENT TOOL WRITES THREE POINTS AS ONE PARAGRAPH !!
+ *
+ * docs/blog-structure.md calls for the TL;DR as 3 bullet points, and that is
+ * how the content tool actually writes them - "Replace expensive answering
+ * SaaS: ... Unified multi-tenant control: ... Own 100% of your
+ * infrastructure: ..." - but it sends them as sentences in a single
+ * blockquote rather than as a list, and html-to-blocks.ts's plain() flattens
+ * blockquote contents to one string regardless. So the split happens here
+ * instead: on a period or other sentence end followed by a capital letter,
+ * which is where these always break because each point opens with a
+ * capitalised lead-in phrase.
+ *
+ * A summary that doesn't split into at least two pieces - one sentence, or
+ * prose with no clean sentence boundaries - renders as a paragraph rather
+ * than a list of one, which would look like a formatting mistake rather than
+ * a summary.
+ */
+function summaryPoints(text: string): string[] {
+  return text
+    .split(/(?<=[.!?])\s+(?=[A-Z(])/)
+    .map((point) => point.trim())
+    .filter(Boolean);
+}
+
+/**
  * The article summary, as a panel rather than as a quotation.
  *
  * !! THIS IS THE OTHER BLOCK AN ANSWER ENGINE WILL TAKE !!
@@ -202,6 +229,8 @@ function summaryBody(text: string): string | null {
  * reading. The brand rule and the tint do the work of separating it instead.
  */
 function Summary({ text }: { text: string }) {
+  const points = summaryPoints(text);
+
   return (
     <aside
       aria-label="Summary"
@@ -210,7 +239,18 @@ function Summary({ text }: { text: string }) {
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
         TL;DR
       </p>
-      <p className="mt-4 text-lg leading-[1.7] text-foreground/85">{text}</p>
+      {points.length > 1 ? (
+        <ul className="mt-4 space-y-3">
+          {points.map((point) => (
+            <li key={point} className="flex gap-3 text-lg leading-[1.7] text-foreground/85">
+              <span aria-hidden className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              {point}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-4 text-lg leading-[1.7] text-foreground/85">{text}</p>
+      )}
     </aside>
   );
 }
