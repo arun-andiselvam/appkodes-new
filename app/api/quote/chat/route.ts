@@ -396,6 +396,34 @@ export async function POST(request: Request) {
 
     const { control, rest } = parseControl(head);
 
+    /*
+     * A backstop for the greeting phase's two button labels, the same idea as
+     * the SERVICE one below.
+     *
+     * !! SEEN IN PRODUCTION ON 28 AUGUST 2026: THE GREETING BUTTONS LOOPING FOREVER !!
+     *
+     * A visitor pressed "I have a project" - the exact, fixed text of a
+     * button, not something they typed - and the model answered with a real
+     * follow-up question but never tagged KIND or PHASE. `phase` stayed
+     * `greeting`, so the greeting buttons kept rendering under every later
+     * message, the same choice on screen for as long as the conversation
+     * ran, no matter what was actually being discussed underneath them.
+     *
+     * Unlike free text, a button press is nothing to interpret - the two
+     * labels below are this software's own words, not the visitor's, so
+     * matching them exactly is not a guess the way inferring intent from
+     * prose would be. Only fires when the model did not already tag a
+     * phase itself, so a model that correctly read a button press some other
+     * way is never overridden.
+     */
+    if (session.phase === "greeting" && !control.phase) {
+      const pressed = greeting.choices.find((choice) => choice.label === message.trim());
+      if (pressed) {
+        control.kind = pressed.value;
+        control.phase = pressed.value === "student" ? "student" : "service";
+      }
+    }
+
     /* ------------------------------------------------- what the turn changed */
 
     /*
