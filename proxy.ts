@@ -107,11 +107,30 @@ export default async function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
 
+  /*
+   * !! BUILT AS TOKENS, NOT A TEMPLATE LITERAL WITH A CONDITIONAL EMPTY STRING !!
+   *
+   * The previous version was `` `script-src 'self' ... 'strict-dynamic' ${isDev ? "'unsafe-eval'" : ""}` ``,
+   * which in production evaluates to a directive ending in a literal trailing
+   * space before its semicolon: "...'strict-dynamic' ; style-src...". That is
+   * inside the grammar - CSP allows whitespace around semicolons - but it is
+   * exactly the one irregular byte in an otherwise clean policy, and it is
+   * what sat behind a real bug found on 28 August 2026: admin/login's native
+   * form POST was refused with a `form-action` violation even though the
+   * policy plainly says `form-action 'self'` and the form's own action was
+   * same-origin. Filtering to an array first and joining with a single space
+   * makes that trailing artifact structurally impossible rather than relying
+   * on the regex cleanup below to catch it after the fact.
+   */
+  const scriptSrc = ["'self'", `'nonce-${nonce}'`, "'strict-dynamic'", ...(isDev ? ["'unsafe-eval'"] : [])].join(
+    " ",
+  );
+
   const csp = [
     `default-src 'self'`,
     // 'strict-dynamic' lets Next's bootstrap script load its own chunks.
     // Dev additionally needs 'unsafe-eval' for React Refresh / HMR.
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${isDev ? "'unsafe-eval'" : ""}`,
+    `script-src ${scriptSrc}`,
     // Tailwind and Next inject <style> tags at runtime; there is no nonce path
     // for those, so inline styles stay allowed. Styles are not a script vector.
     `style-src 'self' 'unsafe-inline'`,
@@ -200,6 +219,8 @@ export default async function proxy(request: NextRequest) {
     `manifest-src 'self'`,
     ...(isDev ? [] : [`upgrade-insecure-requests`]),
   ]
+    /* Belt and braces alongside the scriptSrc fix above - see the note there. */
+    .map((line) => line.trim())
     .join("; ")
     .replace(/\s{2,}/g, " ")
     .trim();

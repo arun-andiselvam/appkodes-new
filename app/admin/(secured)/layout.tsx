@@ -19,7 +19,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <header className="border-b border-foreground/10 bg-foreground/[0.015] px-6 py-3">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
           <nav className="flex items-center gap-5 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            <span className="text-foreground">Hitasoft admin</span>
+            <Link href="/admin" className="text-foreground transition-colors hover:text-primary">
+              Hitasoft admin
+            </Link>
             <Link href="/admin/estimates" className="transition-colors hover:text-foreground">
               Estimates
             </Link>
