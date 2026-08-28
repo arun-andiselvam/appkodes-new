@@ -334,23 +334,20 @@ export function CaseStudyPage({
                     className="group/rel block"
                   >
                     {/*
-                      alt stays empty here while the hero above carries the
-                      real description, and that is deliberate rather than a
-                      spot that was missed.
-
-                      This image sits inside a link whose text is already the
-                      study's title. Giving it the study's `imageAlt` would
-                      make a screen reader read a headline and three or four
-                      capability descriptions before every card in the list,
-                      for a picture that is doing decorative work in a grid.
-                      The card's own text is the accessible content; the hero
-                      on the page it leads to is where the picture is the
-                      content.
+                      alt is the study's title, not its `imageAlt`. The full
+                      description belongs on the hero of the page this card
+                      leads to, where the picture is the content - reading a
+                      headline and three or four capability lines before
+                      every card in this grid would be exactly the noise the
+                      note here used to warn against. But the title is real
+                      alt text an image search crawler can index the picture
+                      against, same as the blog and case-study index cards.
+                      See lib/posts.ts.
                     */}
                     <span className="relative block aspect-[16/9] w-full overflow-hidden">
                       <Image
                         src={other.image}
-                        alt=""
+                        alt={other.title}
                         fill
                         sizes="(min-width: 640px) 33rem, 100vw"
                         className="object-cover transition-transform duration-500 group-hover/rel:scale-[1.03]"
