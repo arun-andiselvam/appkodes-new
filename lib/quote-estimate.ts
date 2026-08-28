@@ -165,6 +165,12 @@ const SYSTEM = [
   `- Never invent a statistic, a client name or a case study.`,
   `- No markdown. The fields are rendered into a PDF as plain text.`,
   ``,
+  `## When the brief marks a figure ADMIN-CORRECTED`,
+  ``,
+  `On the client's instruction of 28 August 2026. Everything above about the client's stated budget - estimate honestly, then say how it compares - describes a visitor's own guess, made before anyone here has looked at the work. An ADMIN-CORRECTED figure is a different thing entirely: somebody at Hitasoft has already reviewed this and decided what to quote, standing in place of what the visitor said. Price and schedule TO it rather than independently past it - cost.low and cost.high must sit within an admin-corrected budget (matching it directly if it is a single figure rather than a range), and timeline.total must fit inside an admin-corrected deadline. Do not derive your own number and then reconcile it against theirs in the basis; theirs is the number.`,
+  ``,
+  `If the scope genuinely will not fit - not "this is tight" but "this cannot be done for that in good conscience" - do not quietly inflate past the correction to make the numbers work. Hold the figures, say plainly in the basis what had to be trimmed or what risk that requires accepting to get there, and say directly in the reviewer notes that the scope does not comfortably support this price so whoever reads it can catch that before it goes out - that is what the review step is for. But an ADMIN-CORRECTED figure is not merely one more data point to weigh against everything else - it is the client-facing commitment, and only the reviewer notes are the place to flag a concern with it.`,
+  ``,
   `## Delivery ranges — background only, NOT the pace to price against`,
   ``,
   `This is what the website's own general assistant tells any visitor before a real conversation has happened, and content/delivery-estimates.ts documents why those ranges are deliberately padded: they have to hold for literally anyone, sight unseen, human-only staffing included. They are useful here only as an outside sanity check - if this estimate's timeline is not meaningfully faster than the band below for the same kind of work, the AI-augmented pricing above has not actually been applied.`,
@@ -215,17 +221,23 @@ export async function runEstimateQueue(max = 5) {
 /**
  * Rewrites one specific estimate, for the admin's "regenerate" button.
  *
- * !! THE ONLY DIFFERENCE FROM runNextEstimate IS WHICH ROW GETS CLAIMED !!
+ * !! THE ONLY DIFFERENCE FROM runNextEstimate IS WHICH ROW GETS CLAIMED, PLUS adminCorrected !!
  *
- * Everything after that - reading the session, writing the estimate,
- * rendering the PDF, marking it ready or failed - is processEstimate below,
- * shared with the cron path so the two can never quietly drift apart. The
- * caller (app/api/admin/estimates/[id]/route.ts) is expected to have already
- * corrected the session's budget or timeline before calling this, since
- * writeEstimate reads them straight from the session it is handed.
+ * Everything else - reading the session, writing the estimate, rendering
+ * the PDF, marking it ready or failed - is processEstimate below, shared
+ * with the cron path so the two can never quietly drift apart. The caller
+ * (handleRegenerate in app/api/admin/estimates/[id]/route.ts) is expected
+ * to have already written the corrected figure into the session's own
+ * budget/timeline columns via patchSession before calling this - what
+ * adminCorrected adds on top is telling writeEstimate WHICH of those two
+ * columns holds a correction rather than the visitor's original answer,
+ * since patchSession leaves no trace of that in the session itself. See the
+ * parameter's own note on writeEstimate for why this cannot be recovered
+ * from the session alone.
  */
 export async function regenerateEstimate(
   id: string,
+  adminCorrected: { budget?: boolean; timeline?: boolean } = {},
 ): Promise<{ ok: boolean; message?: string }> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) return { ok: false, message: "No Anthropic API key is configured." };
@@ -238,7 +250,7 @@ export async function regenerateEstimate(
     };
   }
 
-  const ok = await processEstimate(apiKey, job);
+  const ok = await processEstimate(apiKey, job, adminCorrected);
   return ok
     ? { ok: true }
     : { ok: false, message: "The model call failed. Check the server log and try again." };
@@ -250,14 +262,20 @@ export async function regenerateEstimate(
  * Split out of runNextEstimate on 28 August 2026 specifically so
  * regenerateEstimate above does not duplicate it - a second copy of this
  * try/catch is a second place the retry-then-fail logic can go out of step.
+ * runNextEstimate never has an adminCorrected figure to pass - the cron path
+ * only ever runs from what the visitor themselves said.
  */
-async function processEstimate(apiKey: string, job: EstimateRow): Promise<boolean> {
+async function processEstimate(
+  apiKey: string,
+  job: EstimateRow,
+  adminCorrected: { budget?: boolean; timeline?: boolean } = {},
+): Promise<boolean> {
   try {
     const session = await getSession(job.conversation_id);
     if (!session) throw new Error("The conversation is gone.");
 
     const files = await listFiles(job.conversation_id);
-    const estimate = await writeEstimate(apiKey, session, files);
+    const estimate = await writeEstimate(apiKey, session, files, adminCorrected);
 
     /*
      * The PDF is rendered and stored before the row is marked ready, so a
@@ -313,6 +331,17 @@ async function writeEstimate(
   apiKey: string,
   session: NonNullable<Awaited<ReturnType<typeof getSession>>>,
   files: FileRow[],
+  /*
+   * Set only from a regenerate that came with a corrected figure - see
+   * regenerateEstimate below and handleRegenerate in
+   * app/api/admin/estimates/[id]/route.ts. session.budget/session.timeline
+   * already hold the corrected value by the time this runs (patchSession
+   * wrote it before regenerateEstimate was called), so there is no way to
+   * tell from the session alone whether a figure is the visitor's own guess
+   * or somebody at Hitasoft's decision - that distinction has to travel as
+   * its own parameter, which is the entire reason this exists.
+   */
+  adminCorrected: { budget?: boolean; timeline?: boolean } = {},
 ): Promise<Estimate> {
   const client = new Anthropic({ apiKey });
 
@@ -338,8 +367,12 @@ async function writeEstimate(
     ``,
     `Name: ${session.name ?? "not given"}`,
     `Service area: ${service}`,
-    `Budget they stated: ${session.budget ?? "not stated"}`,
-    `Timeline they stated: ${session.timeline ?? "not stated"}`,
+    adminCorrected.budget
+      ? `Budget: ${session.budget} - ADMIN-CORRECTED, see the rule on this above. Not the visitor's guess.`
+      : `Budget they stated: ${session.budget ?? "not stated"}`,
+    adminCorrected.timeline
+      ? `Timeline: ${session.timeline} - ADMIN-CORRECTED, see the rule on this above. Not the visitor's guess.`
+      : `Timeline they stated: ${session.timeline ?? "not stated"}`,
     `WhatsApp given: ${session.whatsapp ? "yes" : "no"}`,
     `Documents uploaded: ${files.length}`,
     ``,

@@ -229,7 +229,19 @@ async function handleRegenerate(
     });
   }
 
-  const result = await regenerateEstimate(id);
+  /*
+   * What was actually typed here becomes the final, committed figure in the
+   * estimate rather than one more thing weighed against the visitor's own
+   * guess - see the ADMIN-CORRECTED rule in lib/quote-estimate.ts's SYSTEM
+   * prompt. Only true for whichever field the admin actually filled in this
+   * time; leaving one blank keeps the session's existing value but does NOT
+   * mark it as a correction - an untouched field is still just whatever the
+   * visitor originally said.
+   */
+  const result = await regenerateEstimate(id, {
+    budget: Boolean(budget),
+    timeline: Boolean(timeline),
+  });
 
   if (!result.ok) {
     return NextResponse.json(
