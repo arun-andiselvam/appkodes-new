@@ -11,7 +11,7 @@ import { readStoredFile } from "@/lib/quote-uploads";
  * the human gate - the figures a client reads are in the PDF, and that is what
  * has to be checked. This route is the link behind the preview.
  *
- * Behind the basic auth gate in proxy.ts, which covers /api/admin. Nothing
+ * Behind the session-cookie gate in proxy.ts, which covers /api/admin. Nothing
  * public reads it, and the path is not guessable to a stranger anyway since it
  * needs an estimate's uuid.
  *

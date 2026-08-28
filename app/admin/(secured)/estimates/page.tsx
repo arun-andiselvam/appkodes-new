@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
-import { ApproveButton } from "@/app/admin/estimates/approve-button";
+import { ApproveButton } from "@/app/admin/(secured)/estimates/approve-button";
+import { RegeneratePanel } from "@/app/admin/(secured)/estimates/regenerate-panel";
 import { databaseConfigured } from "@/lib/db";
 import type { Estimate } from "@/lib/quote-estimate-schema";
 import { currencySymbol } from "@/lib/quote-pdf";
-import { getSession, listEstimates } from "@/lib/quote-store";
+import { formatBytes } from "@/lib/quote-uploads";
+import { getSession, listEstimates, listFiles } from "@/lib/quote-store";
 
 /**
  * The approval queue.
@@ -86,16 +88,19 @@ export default async function EstimatesPage() {
   }
 
   /*
-   * The conversation behind each estimate, for the recipient and the brief.
-   * Fetched in parallel - there are never many rows, and doing it in sequence
-   * would make the page wait on one round trip per estimate.
+   * The conversation behind each estimate, for the recipient and the brief,
+   * and whatever they attached, so a reviewer does not have to leave this
+   * page to see what the estimate was actually written from. Both fetched in
+   * parallel - there are never many rows, and doing it in sequence would make
+   * the page wait on two round trips per estimate instead of one.
    */
-  const sessions = await Promise.all(
-    rows.map((row) => getSession(row.conversation_id).catch(() => null)),
-  );
+  const [sessions, files] = await Promise.all([
+    Promise.all(rows.map((row) => getSession(row.conversation_id).catch(() => null))),
+    Promise.all(rows.map((row) => listFiles(row.conversation_id).catch(() => []))),
+  ]);
 
   const sorted = rows
-    .map((row, index) => ({ row, session: sessions[index] }))
+    .map((row, index) => ({ row, session: sessions[index], files: files[index] }))
     .sort(
       (a, b) =>
         (STATUS_ORDER[a.row.status] ?? 9) - (STATUS_ORDER[b.row.status] ?? 9),
@@ -122,7 +127,7 @@ export default async function EstimatesPage() {
         </p>
       ) : (
         <div className="space-y-4">
-          {sorted.map(({ row, session }) => {
+          {sorted.map(({ row, session, files: attachments }) => {
             const content = row.content as Estimate | null;
             const reference = row.id.slice(0, 8).toUpperCase();
 
@@ -229,6 +234,39 @@ export default async function EstimatesPage() {
                     </p>
                   )}
 
+                  {/*
+                    What they actually sent in, on the client's instruction
+                    of 28 August 2026 - reading the estimate against the raw
+                    document it was written from used to mean leaving this
+                    page for /api/admin/files, unguessable path or not.
+                  */}
+                  <div>
+                    <h2 className="mb-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                      Attachments
+                    </h2>
+                    {attachments.length ? (
+                      <ul className="space-y-1">
+                        {attachments.map((file) => (
+                          <li key={file.id}>
+                            <a
+                              href={`/api/admin/files/${file.id}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+                            >
+                              {file.filename}
+                            </a>
+                            <span className="ml-2 font-mono text-xs text-muted-foreground">
+                              {formatBytes(file.bytes)}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-muted-foreground">Nothing attached.</p>
+                    )}
+                  </div>
+
                   <div className="flex flex-wrap items-center gap-4 border-t border-foreground/10 pt-5">
                     {row.pdf_path && (
                       <a
@@ -246,6 +284,14 @@ export default async function EstimatesPage() {
                         id={row.id}
                         reference={reference}
                         email={session.verifiedEmail}
+                      />
+                    )}
+
+                    {(row.status === "ready" || row.status === "failed") && (
+                      <RegeneratePanel
+                        id={row.id}
+                        initialBudget={session?.budget ?? ""}
+                        initialTimeline={session?.timeline ?? ""}
                       />
                     )}
 

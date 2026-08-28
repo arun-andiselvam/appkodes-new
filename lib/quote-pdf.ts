@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import PDFDocument from "pdfkit";
 
-import { channels } from "@/content/contact";
+import { channels, founderContact } from "@/content/contact";
 import { site } from "@/content/site";
 import type { Estimate } from "@/lib/quote-estimate-schema";
 
@@ -293,6 +293,29 @@ export function renderEstimatePdf(estimate: Estimate, meta: {
       .fillColor(MUTED)
       .text(
         "This is an estimate, not a fixed quote. It is based on the conversation and documents provided so far, and the figures above will move as the requirement is examined properly. Nothing here is a contractual commitment. The next step is a conversation with the person who would run the work — reply to this email and we will arrange one.",
+        { width, lineGap: 2, align: "left" },
+      );
+
+    doc.moveDown(0.6);
+
+    /*
+     * !! ALSO NOT BOILERPLATE. ON THE CLIENT'S INSTRUCTION OF 28 AUGUST 2026. !!
+     *
+     * The paragraph above says this is an estimate, not a quote. This one
+     * says something adjacent but different: the number was drafted by a
+     * model. A person at Hitasoft has read it before it reached this inbox -
+     * that is the entire reason app/admin/estimates exists - but "reviewed"
+     * is not "guaranteed correct", and a document that only says the former
+     * lets a reader assume the latter. founderContact is read from
+     * content/contact.ts rather than retyped so this line and the "talk to
+     * the founder" one QuoteBot itself can offer never drift apart.
+     */
+    doc
+      .font("Helvetica")
+      .fontSize(8.5)
+      .fillColor(MUTED)
+      .text(
+        `This estimate was drafted with AI assistance and reviewed before sending — it can still be wrong. For a detailed discussion, contact our founder & CEO directly: ${founderContact.email}, ${founderContact.phone}.`,
         { width, lineGap: 2, align: "left" },
       );
 

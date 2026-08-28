@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+import { ADMIN_COOKIE, verifySessionToken } from "@/lib/admin-auth";
+
 /**
  * Per-request nonce-based Content-Security-Policy.
  *
@@ -27,71 +29,51 @@ import type { NextRequest } from "next/server";
  * failure mode is being locked out of your own archive, which is recoverable
  * in the time it takes to set an environment variable.
  *
- * Basic auth is enough for what this is: one page, behind HTTPS, read by one
- * or two people. A session cookie and a login form would be more code
- * defending the same secret.
+ * !! A REAL LOGIN PAGE, ON THE CLIENT'S INSTRUCTION OF 28 AUGUST 2026 !!
  *
- * The comparison is constant time. A plain === on a secret leaks its length
- * and its matching prefix through how long it takes to fail. That is a
- * marginal risk here and it costs three lines to remove, so it is not worth
- * arguing about. Hashing both sides first also guarantees equal-length buffers,
- * which is the usual way timingSafeEqual gets called wrong.
+ * This used to be plain HTTP Basic Auth, with a comment here arguing it was
+ * enough - "a session cookie and a login form would be more code defending
+ * the same secret." Correct, and overridden anyway: the browser's own
+ * credential dialog is what was actually being objected to, not the strength
+ * of the scheme behind it. app/admin/login now renders a real page, and
+ * lib/admin-auth.ts is what verifies what it sets - see the shouted note
+ * there about why that file has to stay Edge-compatible rather than reaching
+ * for node:crypto the way most of this codebase does.
  */
-async function safeEqual(a: string, b: string) {
-  const encoder = new TextEncoder();
-  const [left, right] = await Promise.all([
-    crypto.subtle.digest("SHA-256", encoder.encode(a)),
-    crypto.subtle.digest("SHA-256", encoder.encode(b)),
-  ]);
-
-  const x = new Uint8Array(left);
-  const y = new Uint8Array(right);
-  let diff = 0;
-  for (let i = 0; i < x.length; i += 1) diff |= x[i] ^ y[i];
-  return diff === 0;
-}
-
 async function adminGate(request: NextRequest) {
   const user = process.env.ADMIN_USER;
   const password = process.env.ADMIN_PASSWORD;
 
-  const deny = (status: number) =>
-    new NextResponse(status === 401 ? "Authentication required." : "Not found.", {
-      status,
-      headers:
-        status === 401
-          ? {
-              "www-authenticate": 'Basic realm="Hitasoft admin", charset="UTF-8"',
-              /* Never let an authenticated page sit in a shared cache. */
-              "cache-control": "no-store",
-            }
-          : { "cache-control": "no-store" },
-    });
+  const noStore = { "cache-control": "no-store" };
 
   /*
-   * 404 rather than 401 when nothing is configured. A 401 advertises that
-   * there is something here worth guessing at.
+   * 404 rather than a login page when nothing is configured. A login form
+   * advertises that there is something here worth guessing credentials for.
    */
-  if (!user || !password) return deny(404);
-
-  const header = request.headers.get("authorization");
-  if (!header?.startsWith("Basic ")) return deny(401);
-
-  let decoded: string;
-  try {
-    decoded = atob(header.slice(6));
-  } catch {
-    return deny(401);
+  if (!user || !password) {
+    return new NextResponse("Not found.", { status: 404, headers: noStore });
   }
 
-  /* Only the first colon separates them; a password may contain more. */
-  const separator = decoded.indexOf(":");
-  if (separator < 0) return deny(401);
+  const token = request.cookies.get(ADMIN_COOKIE)?.value;
+  if (await verifySessionToken(token)) return null;
 
-  const okUser = await safeEqual(decoded.slice(0, separator), user);
-  const okPassword = await safeEqual(decoded.slice(separator + 1), password);
+  /*
+   * /api/admin is read by fetch() from the admin pages' own client
+   * components (approve-button.tsx and friends) - a redirect there lands as
+   * an opaque failed fetch, not a navigation, so it gets a plain 401 instead.
+   * /admin pages go to the login form, carrying where they were headed so a
+   * successful login lands back on it rather than always on the queue.
+   */
+  if (request.nextUrl.pathname.startsWith("/api/admin")) {
+    return NextResponse.json(
+      { error: "unauthenticated" },
+      { status: 401, headers: noStore },
+    );
+  }
 
-  return okUser && okPassword ? null : deny(401);
+  const login = new URL("/admin/login", request.url);
+  login.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
+  return NextResponse.redirect(login, { headers: noStore });
 }
 
 export default async function proxy(request: NextRequest) {
@@ -110,7 +92,14 @@ export default async function proxy(request: NextRequest) {
    */
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+  /*
+   * The login page and the route it posts to are the one place under /admin
+   * that has to be reachable without the cookie the gate checks for - a login
+   * form behind its own login gate is a locked door with the key inside it.
+   */
+  const isLoginRoute = pathname === "/admin/login" || pathname === "/api/admin/login";
+
+  if (!isLoginRoute && (pathname.startsWith("/admin") || pathname.startsWith("/api/admin"))) {
     const denied = await adminGate(request);
     if (denied) return denied;
   }

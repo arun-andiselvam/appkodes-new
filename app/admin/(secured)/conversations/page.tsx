@@ -6,11 +6,12 @@ import { listConversations, databaseConfigured } from "@/lib/db";
  *
  * !! THE PASSWORD IS NOT IN THIS FILE, AND MUST NOT BE !!
  *
- * proxy.ts gates everything under /admin with basic auth before a request ever
- * reaches a route. That is the only check, deliberately - a second one here
- * would be a second thing to keep right, and the middleware runs first for
- * static assets, API routes and pages alike. See the shouted note there for
- * why that gate fails closed when nothing is configured.
+ * proxy.ts gates everything under /admin with a signed session cookie before
+ * a request ever reaches a route - see lib/admin-auth.ts and app/admin/login.
+ * That is the only check, deliberately - a second one here would be a second
+ * thing to keep right, and the middleware runs first for static assets, API
+ * routes and pages alike. See the shouted note there for why that gate fails
+ * closed when nothing is configured.
  *
  * force-dynamic because this reads a table that changes every few minutes, and
  * a cached admin page showing yesterday's leads is worse than no admin page.
@@ -20,9 +21,9 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Conversations",
   /*
-   * Belt and braces. robots.ts already disallows /admin and basic auth means a
-   * crawler is refused before it sees anything, but a page holding other
-   * people's email addresses should carry its own noindex regardless.
+   * Belt and braces. robots.ts already disallows /admin and the login gate
+   * means a crawler is refused before it sees anything, but a page holding
+   * other people's email addresses should carry its own noindex regardless.
    */
   robots: { index: false, follow: false, nocache: true },
 };

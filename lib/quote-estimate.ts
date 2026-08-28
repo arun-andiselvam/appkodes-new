@@ -9,10 +9,12 @@ import { ESTIMATE_SCHEMA, type Estimate } from "@/lib/quote-estimate-schema";
 import { renderEstimatePdf } from "@/lib/quote-pdf";
 import {
   claimEstimate,
+  claimEstimateById,
   failEstimate,
   finishEstimate,
   getSession,
   listFiles,
+  type EstimateRow,
   type FileRow,
 } from "@/lib/quote-store";
 import { readStoredFile, storeFile } from "@/lib/quote-uploads";
@@ -135,6 +137,12 @@ const SYSTEM = [
   ``,
   `Say what produced it, though. The cost basis must state plainly that the figure reflects Hitasoft's AI-augmented delivery process, materially faster and cheaper than a traditional human-only build - so the reader understands why the number is what it is, rather than wondering if it is a lowball.`,
   ``,
+  `## Why this price, and not one person alone with an AI coding tool`,
+  ``,
+  `On the client's instruction of 28 August 2026: the obvious comparison for anybody reading this in 2026 is not a traditional agency, it is themselves - or a freelancer - building it solo with Claude Code, Cursor or the like. That comparison is fair and worth answering directly rather than ignoring, because a client who is quietly wondering "why not just do this myself" and never hears an answer will act on the question instead of asking it.`,
+  ``,
+  `Answer it in the basis, briefly, when the estimate is the kind of project somebody could plausibly attempt alone - most of them are. Do NOT invent or state a solo-developer market rate; that is a number this company cannot verify and stating one as fact is exactly the kind of invented statistic the rules below forbid. Instead say what the price is actually buying beyond the code itself: a second set of eyes on the work before it ships, accountability if something is wrong after it does, a team that does not disappear mid-project, and review of the parts - like an AI evaluation or scoring pipeline, where this project has one - where a plausible-looking answer and a correct one are not the same thing. Two or three sentences, factual and undefensive, never framed as a warning against going solo.`,
+  ``,
   `## Rules`,
   ``,
   `- Ground everything in what they actually said. If something was not discussed, it goes in assumptions or in questions — never invent a requirement, a system, a team size or a constraint.`,
@@ -178,6 +186,61 @@ export async function runNextEstimate(): Promise<
   const job = await claimEstimate();
   if (!job) return { ran: false };
 
+  const ok = await processEstimate(apiKey, job);
+  return { ran: true, id: job.id, ok };
+}
+
+/** Drains the queue, with a ceiling so a poisoned row cannot spin forever. */
+export async function runEstimateQueue(max = 5) {
+  let ran = 0;
+  for (let i = 0; i < max; i += 1) {
+    const result = await runNextEstimate();
+    if (!result.ran) break;
+    ran += 1;
+  }
+  return ran;
+}
+
+/**
+ * Rewrites one specific estimate, for the admin's "regenerate" button.
+ *
+ * !! THE ONLY DIFFERENCE FROM runNextEstimate IS WHICH ROW GETS CLAIMED !!
+ *
+ * Everything after that - reading the session, writing the estimate,
+ * rendering the PDF, marking it ready or failed - is processEstimate below,
+ * shared with the cron path so the two can never quietly drift apart. The
+ * caller (app/api/admin/estimates/[id]/route.ts) is expected to have already
+ * corrected the session's budget or timeline before calling this, since
+ * writeEstimate reads them straight from the session it is handed.
+ */
+export async function regenerateEstimate(
+  id: string,
+): Promise<{ ok: boolean; message?: string }> {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) return { ok: false, message: "No Anthropic API key is configured." };
+
+  const job = await claimEstimateById(id);
+  if (!job) {
+    return {
+      ok: false,
+      message: "That estimate is not in a state that can be regenerated.",
+    };
+  }
+
+  const ok = await processEstimate(apiKey, job);
+  return ok
+    ? { ok: true }
+    : { ok: false, message: "The model call failed. Check the server log and try again." };
+}
+
+/**
+ * The actual work behind a claimed row: write it, render it, store it.
+ *
+ * Split out of runNextEstimate on 28 August 2026 specifically so
+ * regenerateEstimate above does not duplicate it - a second copy of this
+ * try/catch is a second place the retry-then-fail logic can go out of step.
+ */
+async function processEstimate(apiKey: string, job: EstimateRow): Promise<boolean> {
   try {
     const session = await getSession(job.conversation_id);
     if (!session) throw new Error("The conversation is gone.");
@@ -217,7 +280,7 @@ export async function runNextEstimate(): Promise<
       bytes: pdf.byteLength,
     });
 
-    return { ran: true, id: job.id, ok: true };
+    return true;
   } catch (cause) {
     const message = cause instanceof Error ? cause.message : String(cause);
     console.error("[quote/estimate] failed", { id: job.id, message });
@@ -229,19 +292,8 @@ export async function runNextEstimate(): Promise<
      * never happened.
      */
     await failEstimate(job.id, message, MAX_ATTEMPTS);
-    return { ran: true, id: job.id, ok: false };
+    return false;
   }
-}
-
-/** Drains the queue, with a ceiling so a poisoned row cannot spin forever. */
-export async function runEstimateQueue(max = 5) {
-  let ran = 0;
-  for (let i = 0; i < max; i += 1) {
-    const result = await runNextEstimate();
-    if (!result.ran) break;
-    ran += 1;
-  }
-  return ran;
 }
 
 /* ---------------------------------------------------------------- the model */

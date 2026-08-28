@@ -390,6 +390,15 @@ export async function countFiles(conversationId: string): Promise<number> {
   return rows[0]?.n ?? 0;
 }
 
+/** One file by its own id, for app/api/admin/files/[id]/route.ts. */
+export async function getFile(id: string): Promise<FileRow | null> {
+  const rows = await queryStrict<FileRow>(
+    `SELECT * FROM quote_files WHERE id = $1`,
+    [id],
+  );
+  return rows[0] ?? null;
+}
+
 /* ------------------------------------------------------------ the estimate */
 
 export type EstimateStatus =
@@ -474,6 +483,35 @@ export async function claimEstimate(): Promise<EstimateRow | null> {
     )
     RETURNING *
     `,
+  );
+  return rows[0] ?? null;
+}
+
+/**
+ * Claims one specific estimate for the admin's "regenerate" button, rather
+ * than the oldest queued row.
+ *
+ * !! ONLY 'ready' OR 'failed' - NEVER A ROW THAT IS ALREADY OUT THE DOOR !!
+ *
+ * The cron path in claimEstimate() above picks up fresh work; this picks up
+ * work a person is deliberately redoing, after correcting the budget or the
+ * deadline the visitor gave - see app/api/admin/estimates/[id]/route.ts.
+ * Restricting the WHERE clause to 'ready'/'failed' means an 'approved' or
+ * 'sent' row can never be silently rewritten out from under a PDF a client
+ * may already have, and a 'running' or 'queued' row (another worker's) is
+ * left alone rather than claimed twice.
+ */
+export async function claimEstimateById(id: string): Promise<EstimateRow | null> {
+  const rows = await queryStrict<EstimateRow>(
+    `
+    UPDATE quote_estimates SET
+      status     = 'running',
+      attempts   = attempts + 1,
+      updated_at = now()
+    WHERE id = $1 AND status IN ('ready', 'failed')
+    RETURNING *
+    `,
+    [id],
   );
   return rows[0] ?? null;
 }
