@@ -12,7 +12,109 @@ import type { NextRequest } from "next/server";
  * generation. See docs/security.md for the static-CSP alternative if you would
  * rather keep the page fully cacheable at the edge.
  */
-export default function proxy(request: NextRequest) {
+/**
+ * The gate on /admin.
+ *
+ * !! THIS ONE FAILS CLOSED, UNLIKE EVERY OTHER INTEGRATION HERE !!
+ *
+ * The rule everywhere else on this site is that a missing key means a feature
+ * is absent rather than broken - no Resend key, no email; no Anthropic key, no
+ * assistant. Applying that rule here would mean an unconfigured admin page is
+ * an OPEN admin page, publishing every conversation anybody has had with the
+ * assistant, along with their name and email address.
+ *
+ * So: no ADMIN_USER or no ADMIN_PASSWORD means nobody gets in, ever. The
+ * failure mode is being locked out of your own archive, which is recoverable
+ * in the time it takes to set an environment variable.
+ *
+ * Basic auth is enough for what this is: one page, behind HTTPS, read by one
+ * or two people. A session cookie and a login form would be more code
+ * defending the same secret.
+ *
+ * The comparison is constant time. A plain === on a secret leaks its length
+ * and its matching prefix through how long it takes to fail. That is a
+ * marginal risk here and it costs three lines to remove, so it is not worth
+ * arguing about. Hashing both sides first also guarantees equal-length buffers,
+ * which is the usual way timingSafeEqual gets called wrong.
+ */
+async function safeEqual(a: string, b: string) {
+  const encoder = new TextEncoder();
+  const [left, right] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(a)),
+    crypto.subtle.digest("SHA-256", encoder.encode(b)),
+  ]);
+
+  const x = new Uint8Array(left);
+  const y = new Uint8Array(right);
+  let diff = 0;
+  for (let i = 0; i < x.length; i += 1) diff |= x[i] ^ y[i];
+  return diff === 0;
+}
+
+async function adminGate(request: NextRequest) {
+  const user = process.env.ADMIN_USER;
+  const password = process.env.ADMIN_PASSWORD;
+
+  const deny = (status: number) =>
+    new NextResponse(status === 401 ? "Authentication required." : "Not found.", {
+      status,
+      headers:
+        status === 401
+          ? {
+              "www-authenticate": 'Basic realm="Hitasoft admin", charset="UTF-8"',
+              /* Never let an authenticated page sit in a shared cache. */
+              "cache-control": "no-store",
+            }
+          : { "cache-control": "no-store" },
+    });
+
+  /*
+   * 404 rather than 401 when nothing is configured. A 401 advertises that
+   * there is something here worth guessing at.
+   */
+  if (!user || !password) return deny(404);
+
+  const header = request.headers.get("authorization");
+  if (!header?.startsWith("Basic ")) return deny(401);
+
+  let decoded: string;
+  try {
+    decoded = atob(header.slice(6));
+  } catch {
+    return deny(401);
+  }
+
+  /* Only the first colon separates them; a password may contain more. */
+  const separator = decoded.indexOf(":");
+  if (separator < 0) return deny(401);
+
+  const okUser = await safeEqual(decoded.slice(0, separator), user);
+  const okPassword = await safeEqual(decoded.slice(separator + 1), password);
+
+  return okUser && okPassword ? null : deny(401);
+}
+
+export default async function proxy(request: NextRequest) {
+  /*
+   * !! /api/admin IS GATED HERE TOO, AND IT IS NOT OPTIONAL !!
+   *
+   * The pages under /admin only read. The routes under /api/admin act: they
+   * approve an estimate and email a price to a lead. Left ungated, anybody who
+   * guessed the path could send a generated figure to a real client under this
+   * company's name, which is a worse outcome than the archive leaking.
+   *
+   * Checked here rather than inside each route for the reason the note above
+   * gives for the pages: one gate that runs before anything else is one thing
+   * to keep right, and a per-route check is the one somebody forgets on the
+   * route they add next.
+   */
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    const denied = await adminGate(request);
+    if (denied) return denied;
+  }
+
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
 

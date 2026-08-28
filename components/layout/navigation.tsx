@@ -342,7 +342,7 @@ export function Navigation() {
               size="sm"
               className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
             >
-              <QuoteLauncher>
+              <QuoteLauncher placement="header">
                 {/*
                   The icon says the button opens an assistant rather than a
                   form, which is the one thing the two words cannot. aria-hidden
@@ -511,7 +511,7 @@ export function Navigation() {
               className="flex-1 bg-primary text-primary-foreground rounded-full h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <QuoteLauncher>
+              <QuoteLauncher placement="mobile_menu">
                 {/*
                   The icon says the button opens an assistant rather than a
                   form, which is the one thing the two words cannot. aria-hidden

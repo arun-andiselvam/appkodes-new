@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 
 import { quoteSystemPrompt } from "@/lib/quote-corpus";
+import { recordTurns } from "@/lib/db";
 
 /**
  * One turn of the quote assistant, streamed.
@@ -27,16 +28,37 @@ import { quoteSystemPrompt } from "@/lib/quote-corpus";
  * thing being paid for, so its length is what gets measured.
  */
 
-/*
- * The model, and it is a deliberate pick rather than a default.
+/**
+ * The model.
  *
- * Effort is low because this is short grounded lookup, not reasoning, and
- * effort is where the cost lever lives - dropping the model tier would be the
- * cruder version of the same saving. Thinking stays on: it is on by default on
- * this model, and disabling it on Opus is a known trap that can leak internal
- * tags into the visible reply.
+ * Haiku, on the client's instruction of 27 August 2026 after a day of testing
+ * cost about two dollars. That bill was three things multiplied together, and
+ * it is worth writing them down because changing this line only fixes one:
+ *
+ *   1. The corpus is ~37k tokens, and it is re-read on every single turn.
+ *   2. The prompt cache lives about five minutes, so questions that arrive
+ *      minutes apart each pay to write it again rather than to read it.
+ *   3. A cache write on Opus was around twenty-five cents.
+ *
+ * Haiku takes roughly a fifth off every one of those numbers. The other two
+ * levers are still there if it is ever not enough: trim the corpus (the FAQs
+ * are the biggest block in lib/quote-corpus.ts), or accept that a quiet site
+ * mostly misses the cache.
+ *
+ * The job here is grounded lookup and a three-way classification, not
+ * reasoning, which is the kind of work this tier is for. Everything the
+ * guardrails depend on was re-tested against it rather than assumed - the
+ * price refusal, the delivery table, the HR routing, the off-topic tagging
+ * and the founder's number staying put.
+ *
+ * !! NO output_config.effort ON THIS MODEL !!
+ *
+ * Effort is rejected on Haiku 4.5 and would 400 every request. If QUOTE_MODEL
+ * is ever pointed at Sonnet 5 or Opus 5, add `output_config: { effort: "low" }`
+ * back to the call below or the request silently runs at the default high and
+ * costs more than it needs to.
  */
-const MODEL = "claude-opus-5";
+const MODEL = process.env.QUOTE_MODEL || "claude-haiku-4-5";
 
 /** Deliberately short. A few sentences in a 512px box, not an essay. */
 const MAX_TOKENS = 700;
@@ -101,7 +123,29 @@ function callerKey(request: Request) {
   return forwarded?.split(",")[0]?.trim() || request.headers.get("cf-connecting-ip") || "unknown";
 }
 
-type Turn = { role: "user" | "assistant"; content: string };
+/**
+ * How many off-topic replies before the assistant stops answering.
+ *
+ * Two: the first is a warning the model delivers itself, the second ends it.
+ *
+ * !! ENDING THE CHAT IS NOT LOCKING SOMEBODY OUT OF THE COMPANY !!
+ *
+ * Only the assistant stops. The scripted questions, the brief, the attachment
+ * and the contact page all stay open, because the cost of wrongly shutting the
+ * door on a real buyer is far higher than the couple of pence a time-waster
+ * spends. The classifier is told the same thing in the system prompt.
+ */
+const MAX_OFF_TOPIC = 2;
+
+/** What the model tags each reply with. See the system prompt. */
+type Flag = "WORK" | "HR" | "OFF";
+
+type Turn = {
+  role: "user" | "assistant";
+  content: string;
+  /** Set on assistant turns by this route, echoed back by the client. */
+  flag?: Flag;
+};
 
 function parseTurns(value: unknown): Turn[] | null {
   if (!Array.isArray(value)) return null;
@@ -109,12 +153,31 @@ function parseTurns(value: unknown): Turn[] | null {
   const turns: Turn[] = [];
   for (const entry of value) {
     if (typeof entry !== "object" || entry === null) return null;
-    const { role, content } = entry as Partial<Turn>;
+    const { role, content, flag } = entry as Partial<Turn>;
     if (role !== "user" && role !== "assistant") return null;
     if (typeof content !== "string") return null;
-    turns.push({ role, content: content.slice(0, MAX_INPUT_CHARS * 4) });
+    turns.push({
+      role,
+      content: content.slice(0, MAX_INPUT_CHARS * 4),
+      flag: flag === "WORK" || flag === "HR" || flag === "OFF" ? flag : undefined,
+    });
   }
   return turns;
+}
+
+/**
+ * Splits the tag off the front of the reply.
+ *
+ * The model is told to put `#WORK`, `#HR` or `#OFF` alone on the first line.
+ * Returns the flag and whatever text came after it. An untagged reply is read
+ * as WORK - a classifier that fails open is the right way round here, since
+ * the failure mode of the alternative is silently cutting off a real buyer
+ * because the model forgot a prefix.
+ */
+function splitFlag(head: string): { flag: Flag; rest: string } {
+  const match = /^\s*#(WORK|HR|OFF)\b[^\S\n]*\n?/.exec(head);
+  if (!match) return { flag: "WORK", rest: head };
+  return { flag: match[1] as Flag, rest: head.slice(match[0].length) };
 }
 
 /**
@@ -152,12 +215,20 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { messages?: unknown };
+  let body: { messages?: unknown; conversationId?: unknown; placement?: unknown };
   try {
-    body = (await request.json()) as { messages?: unknown };
+    body = (await request.json()) as typeof body;
   } catch {
     return NextResponse.json({ error: "Could not read that." }, { status: 400 });
   }
+
+  const conversationId =
+    typeof body.conversationId === "string" &&
+    /^[a-f0-9-]{8,64}$/i.test(body.conversationId)
+      ? body.conversationId
+      : null;
+  const placement =
+    typeof body.placement === "string" ? body.placement.slice(0, 40) : undefined;
 
   const turns = parseTurns(body.messages);
   if (!turns || turns.length === 0) {
@@ -190,6 +261,32 @@ export async function POST(request: Request) {
     );
   }
 
+  /*
+   * Strikes, counted from the transcript the client posted back.
+   *
+   * Checked here, before the model is called, so a conversation that has
+   * already used its warning costs nothing further to refuse.
+   *
+   * A hostile client could strip the flags to buy itself more turns. That is
+   * fine: MAX_TURNS still bounds it at six, and the point of this gate is to
+   * end a pointless conversation politely, not to defeat somebody determined
+   * to have one.
+   */
+  const offTopic = turns.filter(
+    (turn) => turn.role === "assistant" && turn.flag === "OFF",
+  ).length;
+
+  if (offTopic >= MAX_OFF_TOPIC) {
+    return NextResponse.json(
+      {
+        error: "closed",
+        message:
+          "I am going to leave it there. If you do have something you are building, the questions are still open and somebody will read what you send.",
+      },
+      { status: 403 },
+    );
+  }
+
   if (overRateLimit(callerKey(request))) {
     return NextResponse.json(
       { error: "Give me a moment - too many questions at once." },
@@ -205,10 +302,7 @@ export async function POST(request: Request) {
     const stream = client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
-      /*
-       * Effort low, thinking left at its default (on). See MODEL above.
-       */
-      output_config: { effort: "low" },
+      /* No effort parameter. See the note on MODEL above - Haiku rejects it. */
       /*
        * The system prompt is the same bytes on every request, so it caches.
        * Every visitor after the first reads the corpus at a tenth of the price,
@@ -242,17 +336,54 @@ export async function POST(request: Request) {
      * and the branch disappears instead of apologising.
      */
     const iterator = stream[Symbol.asyncIterator]();
-    const first = await iterator.next();
+
+    /*
+     * Read just far enough to have the whole first line, which is where the
+     * model puts its classification tag.
+     *
+     * Two things fall out of doing it here rather than in the browser. The tag
+     * never reaches the page, so it cannot flash up and vanish as the reply
+     * starts drawing. And the flag can travel as a response header, which is
+     * only possible because nothing has been sent yet.
+     *
+     * The 80 character ceiling is the guard against a model that forgets the
+     * newline: without it, a reply with no line break at all would be buffered
+     * to the end and streaming would silently stop being streaming.
+     */
+    let head = "";
+    let done = false;
+
+    while (!done && !head.includes("\n") && head.length < 80) {
+      const step = await iterator.next();
+      if (step.done) {
+        done = true;
+        break;
+      }
+      const event = step.value;
+      if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+        head += event.delta.text;
+      }
+    }
+
+    const { flag, rest } = splitFlag(head);
+
+    /* Everything after the first line, kept so the archive stores the whole reply. */
+    let tail = "";
 
     const readable = new ReadableStream<Uint8Array>({
       async start(controller) {
         try {
-          for (let step = first; !step.done; step = await iterator.next()) {
+          if (rest) controller.enqueue(encoder.encode(rest));
+
+          while (!done) {
+            const step = await iterator.next();
+            if (step.done) break;
             const event = step.value;
             if (
               event.type === "content_block_delta" &&
               event.delta.type === "text_delta"
             ) {
+              tail += event.delta.text;
               controller.enqueue(encoder.encode(event.delta.text));
             }
           }
@@ -281,7 +412,28 @@ export async function POST(request: Request) {
            * cache. It is that the corpus is too big for this traffic, and it
            * wants trimming or a cheaper model.
            */
+          /*
+           * Archived once the answer is complete, so the stored transcript
+           * holds the finished reply rather than a fragment. Awaited inside
+           * the stream, after the visitor already has their text, so a slow
+           * database costs nobody anything - and recordTurns swallows its own
+           * failures, because losing an archive row is never worth losing a
+           * conversation.
+           */
+          if (conversationId) {
+            const assistantText = rest + tail;
+            await recordTurns({
+              id: conversationId,
+              placement,
+              transcript: [
+                ...turns,
+                { role: "assistant", content: assistantText, flag },
+              ],
+            });
+          }
+
           console.info("[quote/ask] usage:", {
+            flag,
             cacheRead: message.usage.cache_read_input_tokens ?? 0,
             cacheWrite: message.usage.cache_creation_input_tokens ?? 0,
             uncachedIn: message.usage.input_tokens,
@@ -321,6 +473,12 @@ export async function POST(request: Request) {
         "cache-control": "no-store",
         /* Stops a proxy holding the whole answer back and defeating streaming. */
         "x-accel-buffering": "no",
+        /*
+         * How this reply was classified. The browser stores it against the
+         * turn and posts it back, which is how the strike count above survives
+         * a stateless route.
+         */
+        "x-quote-flag": flag,
       },
     });
   } catch (cause) {

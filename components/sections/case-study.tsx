@@ -185,7 +185,10 @@ export function CaseStudyPage({
                 assistant - and an icon that promises one is worse than no icon
                 at all.
               */}
-              <QuoteLauncher className="group/call mt-8 inline-flex items-center gap-3 text-sm leading-snug transition-colors hover:text-primary">
+              <QuoteLauncher
+                placement="case_study"
+                className="group/call mt-8 inline-flex items-center gap-3 text-sm leading-snug transition-colors hover:text-primary"
+              >
                 <Sparkles
                   aria-hidden
                   className="w-4 h-4 shrink-0 text-primary transition-transform group-hover/call:rotate-12"

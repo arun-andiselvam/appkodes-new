@@ -99,7 +99,7 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                       note at the top of this file. The rule it protects is
                       unchanged: no hook and no handler goes in here.
                     */}
-                    <QuoteLauncher>
+                    <QuoteLauncher placement="closing_panel">
                       <Sparkles aria-hidden />
                       {panel.primaryCta}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

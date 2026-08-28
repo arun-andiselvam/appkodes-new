@@ -190,7 +190,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                   size="lg"
                   className="mt-6 h-14 rounded-full bg-primary px-8 text-base text-primary-foreground has-[>svg]:px-8 hover:bg-primary/90 group/cta"
                 >
-                  <QuoteLauncher>
+                  <QuoteLauncher placement="blog_post">
                     <Sparkles aria-hidden />
                     Book a free automation audit
                     <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />

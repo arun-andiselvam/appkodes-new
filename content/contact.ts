@@ -92,6 +92,89 @@ export const channels: ContactChannel[] = [
   },
 ];
 
+/**
+ * Where students, applicants and colleges get sent.
+ *
+ * Supplied by the client on 27 August 2026, for the quote assistant. Somebody
+ * asking about a job, an internship or a course is a real person with a real
+ * question, and they are not a lead - answering them properly and pointing
+ * them at the person whose job it is beats either stringing them along or
+ * brushing them off.
+ *
+ * The phone number is the same one the channels list above already publishes
+ * as "College and student enquiries", split out on the client's instruction of
+ * 21 August 2026 so nobody routing a project enquiry lands in the student
+ * queue. One number, one meaning, defined once - if it ever changes, it
+ * changes in both places or in neither.
+ *
+ * hrd@hitasoft.com and the name are new here and appear nowhere else on the
+ * site. The claims discipline at the top of this file applies to them as much
+ * as to anything else: they are published because the client supplied them,
+ * and the assistant reads them out verbatim rather than paraphrasing an
+ * address into something that bounces.
+ */
+export const hrContact = {
+  name: "Mahalakshmi",
+  role: "HR",
+  email: "hrd@hitasoft.com",
+  phone: "+91 77080 06989",
+} as const;
+
+/**
+ * The direct line, for somebody who would rather talk than type.
+ *
+ * Supplied by the client on 27 August 2026. Plenty of buyers will not work
+ * through a form however short it is, and the ones who want a person on the
+ * other end are usually the serious ones. Making them fill in a modal to earn
+ * a phone number is the wrong way round.
+ *
+ * !! IT IS NOT OFFERED TO EVERYBODY, AND THAT IS THE POINT !!
+ *
+ * This is somebody's actual mobile. The modal shows it only once a visitor has
+ * answered a couple of questions, and the assistant is told never to hand it
+ * to an off-topic conversation or a student enquiry - those have their own
+ * routes. See components/quote/direct-line.tsx and lib/quote-corpus.ts.
+ *
+ * The number is the same one the channels list above publishes as "Project
+ * enquiries", split from the student line on 21 August 2026. Two places, one
+ * number: if it ever changes it changes in both, or in neither.
+ *
+ * `name` is deliberately empty. No founder is named anywhere on this site, and
+ * the rule at the top of this file - only confirmed details, never a
+ * placeholder - covers a person's name as much as a phone number. Fill it in
+ * and it appears; leave it and everything reads "the founder", which is
+ * accurate either way.
+ *
+ * `email` was supplied by the client on 28 August 2026, for the quote
+ * assistant specifically - it is given out under the same rule as the phone
+ * number above: only to a real project enquiry that has asked for contact
+ * details, and never to a student or an off-topic conversation. See
+ * lib/quote-chat-prompt.ts for where it is actually handed over.
+ *
+ * `linkedin` was supplied the same day, for one particular moment: the
+ * assistant hitting the edge of what it knows and offering to put somebody
+ * in front of the person who does, rather than leaving a gap. See the same
+ * file for where that offer is made and what it leads to if accepted.
+ */
+export const founderContact = {
+  name: "",
+  role: "the founder",
+  email: "aarun@hitasoft.com",
+  linkedin: "https://www.linkedin.com/in/arun-andiselvam/",
+  phone: "+91 77080 04693",
+  /* No spaces or brackets: a dialler parses the href, not the text. */
+  tel: "tel:+917708004693",
+  /*
+   * wa.me is WhatsApp's own short link and takes the number in full
+   * international form with no plus and no spaces. The prefilled text saves
+   * the visitor writing an opener and tells the person answering where the
+   * message came from, which a bare "hi" does not.
+   */
+  whatsapp: `https://wa.me/917708004693?text=${encodeURIComponent(
+    "Hi, I came from hitasoft.com and I would like to talk about a project.",
+  )}`,
+} as const;
+
 export const contactCopy = {
   eyebrow: "Contact",
   title: "How can we help?",

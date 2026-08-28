@@ -3,6 +3,7 @@
 import { useCallback, useState, type ComponentProps, type MouseEvent } from "react";
 import dynamic from "next/dynamic";
 import { actions } from "@/content/site";
+import { track, type QuotePlacement } from "@/lib/analytics";
 
 /**
  * The control every call to action on this site now uses.
@@ -50,8 +51,15 @@ const QuoteModal = dynamic(
 export function QuoteLauncher({
   children,
   onClick,
+  /*
+   * Which button this is. It is the whole point of the click event - "somebody
+   * opened the quote assistant" was already knowable, and "somebody opened it
+   * from the closing panel of a service page" is what tells you which page is
+   * doing the work.
+   */
+  placement = "header",
   ...rest
-}: ComponentProps<"a">) {
+}: ComponentProps<"a"> & { placement?: QuotePlacement }) {
   const [open, setOpen] = useState(false);
 
   /*
@@ -88,6 +96,7 @@ export function QuoteLauncher({
     }
 
     event.preventDefault();
+    track("quote_cta_click", { placement });
     setOpen(true);
   }
 
@@ -107,7 +116,7 @@ export function QuoteLauncher({
         along with it. Reopening starts a fresh conversation rather than
         resuming a half finished one somebody walked away from.
       */}
-      {open && <QuoteModal onClose={() => setOpen(false)} />}
+      {open && <QuoteModal placement={placement} onClose={() => setOpen(false)} />}
     </>
   );
 }

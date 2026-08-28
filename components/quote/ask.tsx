@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ArrowUp, CornerDownLeft, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { ArrowRight, ArrowUp, CornerDownLeft, Paperclip, Sparkles, X } from "lucide-react";
+import { track } from "@/lib/analytics";
+import { ATTACHMENT, quoteChrome } from "@/content/quote-flow";
 
 /**
  * The assistant, and the only part of this modal that talks to a model.
@@ -19,13 +21,90 @@ import { ArrowUp, CornerDownLeft, Sparkles } from "lucide-react";
 
 const MAX_TURNS = 6;
 
-type Turn = { role: "user" | "assistant"; content: string };
+/**
+ * Strips markdown the model was asked not to write.
+ *
+ * The system prompt forbids it in capitals, and the model mostly complies -
+ * but "mostly" is not a rendering strategy. Replies are drawn as text, so a
+ * stray pair of asterisks reaches the visitor as literal asterisks, which is
+ * exactly what happened on 27 August 2026: a question came through as
+ * "**What does your application do?**" and read like a bug, because it was.
+ *
+ * !! THIS UNWRAPS MARKERS, IT DOES NOT RENDER MARKDOWN !!
+ *
+ * Nothing here turns text into elements, and it must stay that way. Model
+ * output is never treated as markup in this component - no
+ * dangerouslySetInnerHTML, no markdown renderer - because the one thing worse
+ * than visible asterisks is a reply that can inject markup into the page.
+ */
+function stripMarkdown(text: string) {
+  return (
+    text
+      /*
+       * **bold** and __bold__.
+       *
+       * [\s\S] rather than . with the s flag: this project's tsconfig targets
+       * below es2018, where dotAll is not available, and bold can wrap a line
+       * break.
+       */
+      .replace(/\*\*([\s\S]+?)\*\*/g, "$1")
+      .replace(/__([\s\S]+?)__/g, "$1")
+      /* *italic* and _italic_, only when they wrap something */
+      .replace(/(^|\s)\*(\S[^*]*?\S|\S)\*(?=\s|$|[.,!?])/g, "$1$2")
+      .replace(/(^|\s)_(\S[^_]*?\S|\S)_(?=\s|$|[.,!?])/g, "$1$2")
+      /* `code` */
+      .replace(/`([^`]+)`/g, "$1")
+      /* Leading heading hashes and blockquote arrows. */
+      .replace(/^[ \t]*#{1,6}[ \t]+/gm, "")
+      .replace(/^[ \t]*>[ \t]?/gm, "")
+      /* Bullet markers become a proper bullet rather than an asterisk. */
+      .replace(/^[ \t]*[*+-][ \t]+/gm, "• ")
+  );
+}
+
+/** Matches MAX_OFF_TOPIC on the route, which is the half that is enforced. */
+const MAX_OFF_TOPIC = 2;
+
+type Flag = "WORK" | "HR" | "OFF";
+
+type Turn = { role: "user" | "assistant"; content: string; flag?: Flag };
 
 export function AskStep({
+  conversationId,
+  placement,
+  onTurn,
+  file,
+  onFileChange,
+  fileError,
+  onProceed,
   onLeave,
   onUnavailable,
   reduceMotion,
 }: {
+  /** Ties these turns to the same archive row as the scripted answers. */
+  conversationId: string;
+  placement: string;
+  /** Fired per question asked, so the shell knows there is something to lose. */
+  onTurn: () => void;
+  /**
+   * The attachment, owned by the shell.
+   *
+   * Deliberately the same file the brief step uses rather than a second one.
+   * Somebody who attaches a spec here and then walks back into the questions
+   * should not be asked for it again, and the submission has one place to look
+   * for it either way.
+   */
+  file: File | null;
+  onFileChange: (file: File | null) => void;
+  fileError: string;
+  /**
+   * Straight to the quote, handing the conversation over as the brief.
+   *
+   * The transcript is passed as plain text rather than left behind. It is
+   * already in Postgres, but the notification email reads from the submission
+   * - without this the inbox would get "Told us in the chat" and no chat.
+   */
+  onProceed: (brief: string) => void;
   /** Back to the scripted questions. */
   onLeave: () => void;
   /** No key configured: the caller drops this branch entirely. */
@@ -36,12 +115,30 @@ export function AskStep({
   const [draft, setDraft] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [failure, setFailure] = useState("");
+  /*
+   * Set when the route says the conversation is over. Only the assistant
+   * closes - onLeave below still works, so the quote questions are always one
+   * press away. Nobody is ever shut out of contacting the company.
+   */
+  const [closed, setClosed] = useState("");
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleFile(event: ChangeEvent<HTMLInputElement>) {
+    onFileChange(event.target.files?.[0] ?? null);
+    /* Lets the same file be re-picked after removing it. */
+    event.target.value = "";
+  }
 
   const asked = turns.filter((turn) => turn.role === "user").length;
-  const spent = asked >= MAX_TURNS;
+  const offTopic = turns.filter(
+    (turn) => turn.role === "assistant" && turn.flag === "OFF",
+  ).length;
+  /* One strike is a warning, and the visitor should be able to see it coming. */
+  const warned = offTopic === 1;
+  const spent = asked >= MAX_TURNS || Boolean(closed);
 
   /* Keep the newest text in view as it arrives. */
   useEffect(() => {
@@ -65,12 +162,13 @@ export function AskStep({
     setDraft("");
     setStreaming(true);
     setFailure("");
+    onTurn();
 
     try {
       const response = await fetch("/api/quote/ask", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, conversationId, placement }),
       });
 
       if (!response.ok || !response.body) {
@@ -89,9 +187,42 @@ export function AskStep({
           return;
         }
 
+        /*
+         * The warning was already given and this is the second strike. Drop
+         * the empty assistant bubble, say it plainly once, and close the
+         * input. The way out of this screen stays exactly where it was.
+         */
+        if (payload.error === "closed") {
+          setTurns(next);
+          setClosed(payload.message ?? "I am going to leave it there.");
+          return;
+        }
+
         setTurns(next);
         setFailure(payload.message ?? payload.error ?? "That did not work. Try again.");
         return;
+      }
+
+      /*
+       * How the route classified this reply. Kept against the turn and posted
+       * back on the next question - it is what lets a stateless route count
+       * strikes across a conversation.
+       */
+      const flag = response.headers.get("x-quote-flag") as Flag | null;
+      /*
+       * The flag on the event is what makes the assistant's cost legible: a
+       * month of mostly WORK is the feature earning its keep, and a month of
+       * mostly OFF is a bill for entertaining people who were never buying.
+       * Only the classification is sent, never what anybody typed.
+       */
+      track("quote_ask_message", { turn: asked + 1, flag: flag ?? "WORK" });
+      if (flag) {
+        setTurns((prior) => {
+          const copy = [...prior];
+          const tail = copy[copy.length - 1];
+          if (tail?.role === "assistant") copy[copy.length - 1] = { ...tail, flag };
+          return copy;
+        });
       }
 
       const reader = response.body.getReader();
@@ -164,7 +295,9 @@ export function AskStep({
                  * markdown renderer, so nothing the model writes can become an
                  * element. Paragraph breaks are the one thing worth honouring.
                  */
-                turn.content.split("\n\n").map((paragraph, part) => (
+                stripMarkdown(turn.content)
+                  .split("\n\n")
+                  .map((paragraph, part) => (
                   <span key={part} className={part > 0 ? "mt-2 block" : "block"}>
                     {paragraph}
                   </span>
@@ -193,16 +326,104 @@ export function AskStep({
 
       {/* ----------------------------------------------------- input */}
       <div className="shrink-0 space-y-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={ATTACHMENT.accept}
+          onChange={handleFile}
+          className="sr-only"
+          id="quote-ask-attachment"
+        />
+
+        {/*
+          The attached document, and the way out to a quote.
+
+          !! THIS IS THE FIX FOR A DEAD END !!
+
+          The chat could answer anything and collect nothing. Somebody arriving
+          with a written spec - the best qualified visitor this modal ever sees
+          - could ask about it here and then had no way to hand it over without
+          backing out to the questions and finding the brief step. Two modes,
+          one of which took documents and could not talk, the other of which
+          talked and could not take documents.
+
+          Now the file lives on the shell, so it is the same attachment either
+          route reaches, and the conversation itself counts as the brief.
+        */}
+        {file && (
+          <div className="flex items-center justify-between gap-3 border border-foreground/15 bg-foreground/[0.02] px-3 py-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <Paperclip aria-hidden className="h-3.5 w-3.5 shrink-0 text-primary" />
+              <span className="truncate text-xs">{file.name}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => onFileChange(null)}
+              aria-label={`${quoteChrome.attachRemove} ${file.name}`}
+              className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <X aria-hidden className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )}
+
+        {fileError && (
+          <p role="alert" className="text-xs text-brand-red">
+            {fileError}
+          </p>
+        )}
+
+        {(file || turns.length > 0) && !spent && (
+          <button
+            type="button"
+            onClick={() =>
+              onProceed(
+                turns
+                  .map(
+                    (turn) =>
+                      `${turn.role === "user" ? "They asked" : "Quotebot said"}: ${turn.content}`,
+                  )
+                  .join("\n\n"),
+              )
+            }
+            className="group/go inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            {file ? "Get a quote for this" : "Get my quote"}
+            <ArrowRight
+              aria-hidden
+              className="h-4 w-4 transition-transform group-hover/go:translate-x-1"
+            />
+          </button>
+        )}
         {spent ? (
           <p className="rounded-sm border border-foreground/10 bg-foreground/[0.02] px-3 py-2.5 text-sm leading-relaxed text-muted-foreground">
-            That is about as far as I can usefully take it. The rest is a
-            conversation for a person.
+            {closed ||
+              "That is about as far as I can usefully take it. The rest is a conversation for a person."}
           </p>
         ) : (
           <div className="flex items-end gap-2 border border-foreground/15 px-3 py-2 focus-within:border-foreground/50">
             <label htmlFor="quote-ask" className="sr-only">
               Ask a question
             </label>
+            {/*
+              The box is items-end so the controls stay put as the textarea
+              grows. That leaves a bare 16px icon sitting low against a ~24px
+              line box, which is what made it read as misaligned. Giving the
+              button the textarea's own min-height and centring the icon inside
+              it puts the two on the same optical line at one row, and keeps
+              them anchored to the bottom at three.
+            */}
+            {!file && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                aria-label={quoteChrome.attach}
+                title={quoteChrome.attach}
+                className="flex h-6 w-6 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Paperclip aria-hidden className="h-4 w-4" />
+              </button>
+            )}
             <textarea
               ref={inputRef}
               id="quote-ask"
@@ -226,7 +447,7 @@ export function AskStep({
               onClick={() => void send()}
               disabled={streaming || draft.trim().length === 0}
               aria-label="Send"
-              className="mb-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-30"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-30"
             >
               <ArrowUp aria-hidden className="h-4 w-4" />
             </button>
@@ -242,8 +463,13 @@ export function AskStep({
             <CornerDownLeft aria-hidden className="h-3 w-3" />
             {turns.length === 0 ? "Skip this and carry on" : "Carry on with the questions"}
           </button>
+          {/*
+            After a strike, the counter says what is actually about to run out.
+            Nobody should have the conversation end on them without having been
+            told, and the model has already said it in words above.
+          */}
           <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
-            {asked} of {MAX_TURNS}
+            {warned ? `${offTopic} of ${MAX_OFF_TOPIC}` : `${asked} of ${MAX_TURNS}`}
           </span>
         </div>
       </div>

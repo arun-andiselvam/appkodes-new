@@ -89,7 +89,7 @@ export function HowWeWorkPage() {
                   argument is stop planning and start building, and the button
                   is the last line of it.
                 */}
-                <QuoteLauncher>
+                <QuoteLauncher placement="how_we_work">
                   <Sparkles aria-hidden />
                   Start a prototype
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

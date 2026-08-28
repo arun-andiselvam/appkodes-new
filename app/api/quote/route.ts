@@ -39,6 +39,8 @@ import { NextResponse } from "next/server";
  */
 
 import { ATTACHMENT } from "@/content/quote-flow";
+import { founderContact } from "@/content/contact";
+import { recordSubmission } from "@/lib/db";
 
 /** Longest we accept in any one field, to keep a paste bomb out. */
 const LIMITS = { name: 120, email: 200, brief: 6000, answers: 4000 };
@@ -253,6 +255,136 @@ async function deliverViaResend(fields: Delivery) {
   return response.ok;
 }
 
+/**
+ * The acknowledgement, sent to the person who wrote in.
+ *
+ * !! THIS IS THE SECOND EMAIL, AND IT IS NOT OPTIONAL POLISH !!
+ *
+ * For a while the route sent one email, to us. Somebody described their
+ * business in a textarea, attached a document, pressed send, and got a line on
+ * a screen they were about to close. No record of what they said, no proof the
+ * file arrived, and nothing in their inbox to reply to until a person got
+ * round to it. A company selling automation that cannot manage an
+ * acknowledgement is a poor first impression.
+ *
+ * !! IT PROMISES NO RESPONSE TIME !!
+ *
+ * "We will reply within 24 hours" is exactly the kind of figure
+ * content/services.ts bans, and this is the worst place to publish one - it is
+ * a promise made to somebody's face, in writing, that somebody else has to
+ * keep. It says a person will read it and write back, which is a promise about
+ * form rather than a number to be held to.
+ *
+ * The attachment is named, not re-attached. They have their own copy; sending
+ * it back to them is bytes nobody needs.
+ *
+ * Failure here is logged and swallowed. The enquiry is already delivered by
+ * the time this runs, and telling somebody their message did not send because
+ * their own copy bounced would be a lie with consequences.
+ */
+async function acknowledgeToVisitor(fields: Delivery) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return;
+
+  const from = process.env.RESEND_FROM_EMAIL || "Hitasoft <contact@hitasoft.com>";
+  /* Replies come back to whoever handles enquiries, not into the void. */
+  const replyTo =
+    process.env.QUOTE_TO_EMAIL || process.env.CONTACT_TO_EMAIL || "info@hitasoft.com";
+
+  const rows = fields.answers
+    .map(
+      (answer) => `
+      <tr>
+        <td style="padding:8px 0;color:#6b7280;font-size:13px;width:120px;vertical-align:top;">${escapeHtml(answer.field)}</td>
+        <td style="padding:8px 0;font-size:15px;color:#1a1a1a;">${escapeHtml(answer.label)}</td>
+      </tr>`,
+    )
+    .join("");
+
+  const html = `
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;">
+  <div style="background:#146f90;padding:24px 32px;border-radius:8px 8px 0 0;">
+    <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ffffffb3;">Hitasoft</p>
+    <p style="margin:4px 0 0;font-size:20px;font-weight:600;color:#ffffff;">We have your enquiry</p>
+  </div>
+  <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;padding:24px 32px 28px;">
+    <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#1a1a1a;">
+      Thanks ${escapeHtml(fields.name.split(" ")[0] || fields.name)} — this is a copy of what you sent us, so you have it.
+      Someone will read it properly and write back to you here.
+    </p>
+
+    ${
+      rows
+        ? `<table role="presentation" style="width:100%;border-collapse:collapse;border-top:1px solid #e5e7eb;">${rows}</table>`
+        : ""
+    }
+
+    ${
+      fields.brief
+        ? `<div style="margin-top:16px;padding-top:20px;border-top:1px solid #e5e7eb;">
+      <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#6b7280;">What you told us</p>
+      <p style="margin:0;white-space:pre-wrap;line-height:1.6;font-size:15px;color:#1a1a1a;">${escapeHtml(fields.brief)}</p>
+    </div>`
+        : ""
+    }
+
+    ${
+      fields.attachment
+        ? `<p style="margin:16px 0 0;font-size:13px;color:#6b7280;">Your document <strong>${escapeHtml(fields.attachment.filename)}</strong> came through with it.</p>`
+        : ""
+    }
+
+    <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e5e7eb;">
+      <p style="margin:0 0 6px;font-size:13px;color:#6b7280;">If it is easier to talk it through:</p>
+      <p style="margin:0;font-size:15px;">
+        <a href="${founderContact.whatsapp}" style="color:#146f90;text-decoration:none;">WhatsApp</a>
+        &nbsp;·&nbsp;
+        <a href="${founderContact.tel}" style="color:#146f90;text-decoration:none;">${escapeHtml(founderContact.phone)}</a>
+      </p>
+    </div>
+  </div>
+  <p style="margin:16px 4px 0;font-size:12px;color:#9ca3af;">
+    You are getting this because you asked for a quote at hitasoft.com. We use your address to reply to you and nothing else — no list, no sequence.
+  </p>
+</div>`;
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        from,
+        to: fields.email,
+        reply_to: replyTo,
+        subject: "We have your enquiry — Hitasoft",
+        html,
+        text: [
+          `Thanks ${fields.name.split(" ")[0] || fields.name} — this is a copy of what you sent us.`,
+          ``,
+          ...fields.answers.map((answer) => `${answer.field}: ${answer.label}`),
+          ``,
+          fields.brief || "",
+          fields.attachment ? `\nAttached: ${fields.attachment.filename}` : "",
+          ``,
+          `Someone will read it and write back here.`,
+          `If it is easier to talk: ${founderContact.phone}`,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("[quote] Acknowledgement to visitor was rejected.");
+    }
+  } catch (cause) {
+    console.error("[quote] Acknowledgement to visitor failed:", cause);
+  }
+}
+
 export async function POST(request: Request) {
   let form: FormData;
 
@@ -454,11 +586,44 @@ export async function POST(request: Request) {
     );
   }
 
+  /*
+   * Their copy, after ours. Order matters: if this ran first and the
+   * notification then failed, somebody would hold a receipt for an enquiry
+   * nobody received.
+   */
+  await acknowledgeToVisitor({ name, email, brief, answers, attachment });
+
   console.info("[quote] Delivered:", {
     email,
     answers: answers.length,
     attachment: attachment ? `${attachment.filename} (${attachment.bytes} bytes)` : "none",
   });
+
+  /*
+   * Archived after delivery, deliberately.
+   *
+   * A row carrying submitted_at means the email actually went, which is the
+   * only reading of that column that is worth anything. Writing it first would
+   * leave the archive claiming enquiries were sent that were refused by Resend
+   * a moment later.
+   *
+   * recordSubmission swallows its own failures. The enquiry is already in the
+   * inbox by this point, and telling somebody their message did not send
+   * because a bookkeeping row failed would be the worst possible trade.
+   */
+  const conversationId = asString(form.get("conversationId"), 64);
+  if (/^[a-f0-9-]{8,64}$/i.test(conversationId)) {
+    await recordSubmission({
+      id: conversationId,
+      placement: asString(form.get("placement"), 40) || undefined,
+      answers,
+      brief,
+      name,
+      email,
+      attachmentName: attachment?.filename ?? null,
+      attachmentBytes: attachment?.bytes ?? null,
+    });
+  }
 
   return NextResponse.json({ ok: true });
 }

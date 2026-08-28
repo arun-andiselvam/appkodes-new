@@ -21,6 +21,18 @@ import {
 } from "@/content/quote-flow";
 import { BriefStep, ChoiceStep, DetailsStep } from "@/components/quote/steps";
 import { AskStep } from "@/components/quote/ask";
+import { Chatbot } from "@/components/quote/chatbot";
+import { DirectLine } from "@/components/quote/direct-line";
+import { track, type QuotePlacement } from "@/lib/analytics";
+
+/**
+ * How many questions somebody answers before the founder's mobile appears.
+ *
+ * Two. Enough to separate a visitor who has said what they are building from
+ * one who opened the modal by accident, and few enough that somebody who never
+ * wanted to type is not made to work for it. See direct-line.tsx.
+ */
+const DIRECT_LINE_AFTER = 2;
 
 /**
  * The quote assistant.
@@ -60,8 +72,33 @@ function shorten(label: string, max = 26) {
   return label.length <= max ? label : `${label.slice(0, max - 1).trimEnd()}…`;
 }
 
-export function QuoteModal({ onClose }: { onClose: () => void }) {
+export function QuoteModal({
+  onClose,
+  placement = "header",
+}: {
+  onClose: () => void;
+  placement?: QuotePlacement;
+}) {
   const reduceMotion = useReducedMotion();
+
+  /*
+   * One id for this visit, minted when the modal opens.
+   *
+   * It ties the scripted answers and the chat turns together in the archive,
+   * which are written by two different routes. Generated here rather than on
+   * the server because the chat starts before there is anything to submit, so
+   * there is no earlier moment that both halves share.
+   *
+   * Not a secret and not trusted: the worst somebody can do by posting a
+   * colliding id is muddle their own record. useState with an initialiser, so
+   * it is minted once rather than on every render.
+   */
+  const [conversationId] = useState(() =>
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : /* Older Safari. Only has to be unique, not unguessable. */
+        `${Date.now().toString(16)}-${Math.random().toString(16).slice(2, 10)}`,
+  );
 
   const [history, setHistory] = useState<Answer[]>([]);
   const [currentId, setCurrentId] = useState(firstStepId);
@@ -98,8 +135,38 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
    * broken path.
    */
   const [askAvailable, setAskAvailable] = useState(false);
+  /* null while the availability check is in flight. See the effect below. */
+  const [chatAvailable, setChatAvailable] = useState<boolean | null>(null);
   const [asking, setAsking] = useState(false);
   const [returnTo, setReturnTo] = useState(firstStepId);
+  /* How many questions have been put to the assistant, for the close guard. */
+  const [chatTurns, setChatTurns] = useState(0);
+
+  /*
+   * Whether closing would throw anything away.
+   *
+   * An untouched modal closes silently - asking somebody to confirm discarding
+   * nothing is the kind of dialog people learn to click through without
+   * reading, which is exactly how the guard stops working on the one occasion
+   * it matters.
+   */
+  const hasProgress =
+    history.length > 0 ||
+    chatTurns > 0 ||
+    briefText.trim().length > 0 ||
+    briefFile !== null;
+
+  const [confirmingClose, setConfirmingClose] = useState(false);
+
+  /*
+   * Opened. Fired from a mount effect rather than from the launcher's click,
+   * so it counts the modal actually appearing - the chunk could still be in
+   * flight, or fail to load, and a click that never became a modal should not
+   * be counted as one that did.
+   */
+  useEffect(() => {
+    track("quote_open", { placement });
+  }, [placement]);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -112,14 +179,109 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
     return () => abort.abort();
   }, []);
 
+  /*
+   * Is the conversational assistant reachable?
+   *
+   * It needs a model to think with AND a database to remember in - the route
+   * checks both - because the phase it walks a visitor through has to be a
+   * fact the server owns. Either one missing and this falls back to the
+   * scripted flow below.
+   *
+   * `null` until the answer arrives, which is what stops the scripted steps
+   * flashing up and being replaced a moment later.
+   */
+  useEffect(() => {
+    const abort = new AbortController();
+    fetch("/api/quote/chat", { signal: abort.signal })
+      .then((response) => (response.ok ? response.json() : { available: false }))
+      .then((payload: { available?: boolean }) =>
+        setChatAvailable(Boolean(payload.available)),
+      )
+      .catch(() => {
+        /*
+         * Unreachable is unavailable, and the scripted path is whole. Aborting
+         * on unmount lands here too, which is harmless - the component is
+         * going away and nothing reads the state after it.
+         */
+        setChatAvailable(false);
+      });
+    return () => abort.abort();
+  }, []);
+
   const step = quoteSteps[currentId];
 
+  /**
+   * Closing, with where they got to.
+   *
+   * !! THE ABANDON EVENT IS THE USEFUL ONE !!
+   *
+   * quote_submit counts the people who finished, which is the number that
+   * feels good and explains nothing. This counts the ones who did not, and
+   * says which question they were looking at when they left. If half of them
+   * are standing on the brief, the brief is too much work; if half are on the
+   * budget, the bands are wrong. Neither is visible from success alone.
+   *
+   * Not fired once the enquiry is away - closing a confirmation screen is not
+   * abandoning anything.
+   */
+  function discard() {
+    if (status !== "sent") {
+      track("quote_abandon", {
+        placement,
+        step: currentId,
+        stage: step.stage,
+        answers: history.length,
+        in_chat: asking,
+      });
+    }
+    onClose();
+  }
+
+  /**
+   * Closing, via a confirmation when there is something to lose.
+   *
+   * The X, the Escape key and a press on the backdrop all arrive here, because
+   * the accidental close this exists to prevent is far more often a stray
+   * click outside the panel than a deliberate press on the X.
+   *
+   * !! THE ANSWERS ARE GONE FROM THE SCREEN, NOT FROM THE ARCHIVE !!
+   *
+   * Anything already said to the assistant is in Postgres before this runs -
+   * lib/db.ts writes each turn as it completes. So the wording promises
+   * nothing about resuming, which the modal cannot do, and the enquiry that
+   * was never sent is still readable in the admin view. Two different losses,
+   * and only one of them is the visitor's.
+   */
+  function requestClose() {
+    /*
+     * Escape pressed while the guard is up backs out of the guard rather than
+     * out of the modal. Escape means "undo the last thing", and the last thing
+     * was opening this question - so it resolves the same way the primary
+     * button does, which is the safe direction.
+     */
+    if (confirmingClose) {
+      setConfirmingClose(false);
+      return;
+    }
+
+    if (status === "sent" || !hasProgress) {
+      discard();
+      return;
+    }
+    setConfirmingClose(true);
+  }
+
   /** Step somebody into the assistant, remembering where they were standing. */
-  const enterAsk = useCallback((from: string) => {
-    setReturnTo(from);
-    setAsking(true);
-    setFailure("");
-  }, []);
+  const enterAsk = useCallback(
+    (from: string) => {
+      /* Who actually wants the assistant, and from which question. */
+      track("quote_ask_open", { placement, from });
+      setReturnTo(from);
+      setAsking(true);
+      setFailure("");
+    },
+    [placement],
+  );
 
   function pick(option: QuoteOption) {
     if (step.kind !== "choice") return;
@@ -134,6 +296,18 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
      * is no key, resolves to the brief, which is where the detour would have
      * handed them anyway.
      */
+    /*
+     * One event per answer, carrying the stable `value` rather than the label.
+     * Labels get rewritten; a report keyed on them silently splits into two
+     * lines the week somebody improves the copy.
+     */
+    track("quote_step", {
+      step: step.id,
+      field: step.field,
+      answer: option.value,
+      stage: step.stage,
+    });
+
     if (option.next === ASK_STEP_ID) {
       if (askAvailable) enterAsk("brief");
       else setCurrentId("brief");
@@ -184,6 +358,17 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
     const label = briefText.trim()
       ? shorten(briefText.trim(), 40)
       : (briefFile?.name ?? "Attached");
+    /*
+     * Whether they typed, attached, or did both. The brief is the one step
+     * that asks for real effort and the likeliest place to lose somebody, so
+     * it is worth knowing which affordance is carrying it.
+     */
+    track("quote_brief", {
+      typed: briefText.trim().length > 0,
+      attached: briefFile !== null,
+      chars: briefText.trim().length,
+    });
+
     setHistory((prior) => [
       ...prior,
       { stepId: step.id, field: step.field, label, value: "provided" },
@@ -214,6 +399,8 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
     setFailure("");
 
     const body = new FormData();
+    body.set("conversationId", conversationId);
+    body.set("placement", placement);
     body.set("answers", JSON.stringify(history));
     body.set("brief", briefText.trim());
     body.set("name", name);
@@ -235,13 +422,29 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
       };
 
       if (!response.ok) {
+        /*
+         * Failures are tracked as carefully as successes. A silent 503 because
+         * somebody rotated a key is invisible in a funnel that only counts
+         * what worked, and this is the last step before a lead exists.
+         */
+        track("quote_submit_error", { status: response.status, placement });
         setFailure(payload.error ?? "That did not send. Please try again.");
         setStatus("idle");
         return;
       }
 
+      track("quote_submit", {
+        placement,
+        answers: history.length,
+        attached: briefFile !== null,
+        /* Which button, on which page, produced a real enquiry. */
+        goal: history.find((answer) => answer.stepId === "intent")?.value,
+        budget: history.find((answer) => answer.field === "Budget")?.value,
+      });
+
       setStatus("sent");
     } catch {
+      track("quote_submit_error", { status: 0, placement });
       setFailure("That did not send. Check your connection and try again.");
       setStatus("idle");
     }
@@ -249,11 +452,64 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
 
   const stage = status === "sent" ? QUOTE_STAGES : step.stage;
 
+  /* --------------------------------------------------------- the chatbot */
+
+  /*
+   * !! THE CONVERSATION IS THE FRONT DOOR NOW. THE SCRIPT IS THE FALLBACK. !!
+   *
+   * The client asked on 27 August 2026 for a real assistant that opens by
+   * introducing itself, so QuoteBot renders instead of the question graph
+   * whenever it is reachable. Everything below this branch - the steps, the
+   * brief, the attachment, the details form - is still here and still works,
+   * and it is what a visitor gets when ANTHROPIC_API_KEY or DATABASE_URL is
+   * unset. Same rule as every other integration on this site: a missing key
+   * means a feature is absent, never a wall somebody hits.
+   *
+   * Placed after every hook in this component, so the early return cannot
+   * change how many run. `null` means the check has not come back yet and
+   * renders an empty shell - a beat of nothing beats a flash of the scripted
+   * flow being replaced under somebody's cursor.
+   */
+  if (chatAvailable !== false) {
+    return (
+      <Dialog
+        open
+        onOpenChange={(next) => {
+          if (!next) onClose();
+        }}
+      >
+        <DialogContent
+          showCloseButton={false}
+          className="flex h-[600px] max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-0 overflow-hidden border-foreground/10 bg-background p-0 sm:max-w-lg max-sm:bottom-0 max-sm:top-auto max-sm:h-[88dvh] max-sm:max-h-none max-sm:w-full max-sm:max-w-none max-sm:translate-y-0 max-sm:rounded-b-none"
+        >
+          {/*
+            Radix needs both of these for the dialog to be announced properly.
+            QuoteBot draws its own visible header, so they are screen-reader
+            only rather than duplicated on screen.
+          */}
+          <DialogTitle className="sr-only">{quoteChrome.title}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {quoteChrome.description}
+          </DialogDescription>
+
+          {chatAvailable && (
+            <Chatbot
+              conversationId={conversationId}
+              placement={placement}
+              onClose={onClose}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
     <Dialog
       open
+      /* Escape and the backdrop press both land here, same as the X. */
       onOpenChange={(next) => {
-        if (!next) onClose();
+        if (!next) requestClose();
       }}
     >
       <DialogContent
@@ -279,7 +535,7 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
             </DialogTitle>
             <button
               type="button"
-              onClick={onClose}
+              onClick={requestClose}
               className="-mr-1 p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/30"
               aria-label="Close"
             >
@@ -308,6 +564,49 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
             ))}
           </div>
         </div>
+
+        {/*
+          The close guard.
+
+          Drawn over the body rather than replacing it, so what is about to be
+          discarded stays visible behind the question - somebody deciding
+          whether to throw away four answers should be able to see the four
+          answers.
+
+          "Keep going" is the primary and comes first, because the safe choice
+          should be the easy one and this dialog appears when somebody has
+          probably mis-clicked.
+        */}
+        {confirmingClose && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/85 p-6 backdrop-blur-[2px]">
+            <div className="w-full max-w-sm border border-foreground/15 bg-background p-5 shadow-lg">
+              <h2 className="font-display text-lg tracking-tight">
+                Leave this here?
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Your answers will be cleared and the conversation will not be on
+                screen if you come back.
+              </p>
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+                <button
+                  type="button"
+                  autoFocus
+                  onClick={() => setConfirmingClose(false)}
+                  className="h-11 flex-1 rounded-full bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  Keep going
+                </button>
+                <button
+                  type="button"
+                  onClick={discard}
+                  className="h-11 flex-1 rounded-full border border-foreground/20 px-5 text-sm transition-colors hover:bg-foreground/5"
+                >
+                  Discard
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ------------------------------------------------------ body */}
         <div
@@ -339,6 +638,40 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
             </div>
           ) : asking ? (
             <AskStep
+              conversationId={conversationId}
+              placement={placement}
+              onTurn={() => setChatTurns((n) => n + 1)}
+              file={briefFile}
+              onFileChange={chooseFile}
+              fileError={fileError}
+              /*
+                Out of the chat and into the quote, skipping the brief step.
+                Somebody who has just described their problem in their own
+                words, or handed over a spec, has already written the brief -
+                asking them to write it again in a textarea would be the modal
+                not listening.
+              */
+              onProceed={(chatBrief) => {
+                /* The conversation becomes the brief the notification carries. */
+                if (chatBrief) setBriefText(chatBrief);
+                track("quote_brief", {
+                  typed: false,
+                  attached: briefFile !== null,
+                  chars: 0,
+                  from_chat: true,
+                });
+                setHistory((prior) => [
+                  ...prior,
+                  {
+                    stepId: "brief",
+                    field: "The brief",
+                    label: briefFile ? briefFile.name : "Told us in the chat",
+                    value: "provided",
+                  },
+                ]);
+                setAsking(false);
+                setCurrentId("budget");
+              }}
               onLeave={() => {
                 setAsking(false);
                 setCurrentId(returnTo);
@@ -443,6 +776,14 @@ export function QuoteModal({ onClose }: { onClose: () => void }) {
                   {askInvite}
                 </button>
               )}
+
+              {/*
+                The direct line, once somebody has shown they are actually
+                here about work. Deliberately last on the screen: it is the
+                way out for a visitor who does not want a form, not a
+                competitor to the question in front of them.
+              */}
+              {history.length >= DIRECT_LINE_AFTER && <DirectLine className="mt-2" />}
             </div>
           )}
         </div>

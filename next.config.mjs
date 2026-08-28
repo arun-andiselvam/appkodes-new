@@ -38,6 +38,25 @@ const nextConfig = {
   },
 
   /*
+   * pdfkit is loaded with a native require instead of being bundled.
+   *
+   * !! WITHOUT THIS, ESTIMATE PDFs FAIL IN PRODUCTION AND WORK IN DEV. !!
+   *
+   * pdfkit reads its font metrics (.afm files for the standard 14 fonts) off
+   * disk from inside its own package directory at runtime. Bundling rewrites
+   * the paths those reads depend on, so the bundled copy throws ENOENT the
+   * first time it sets a font - which is the first line of every document.
+   * Route handlers are bundled by default, and dev resolves modules
+   * differently enough to hide it, so this is exactly the kind of bug that
+   * ships green and breaks on the droplet.
+   *
+   * Next auto-excludes a list of known-awkward packages (pg and sharp, both
+   * used here, are on it). pdfkit is not, so it is named here. See
+   * node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/serverExternalPackages.md
+   */
+  serverExternalPackages: ["pdfkit"],
+
+  /*
    * !! THIS DROPS SUPPORT FOR PRE-2020 BROWSERS. THAT IS THE POINT !!
    *
    * Lighthouse's "Legacy JavaScript" finding kept naming

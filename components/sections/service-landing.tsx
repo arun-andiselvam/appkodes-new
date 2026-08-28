@@ -87,7 +87,7 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
               >
-                <QuoteLauncher>
+                <QuoteLauncher placement="service_hero">
                   <Sparkles aria-hidden />
                   {heroCopy.primaryCta}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

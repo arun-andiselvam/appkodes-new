@@ -111,7 +111,7 @@ export function IndustryLandingPage({ page }: { page: IndustryLanding }) {
                     the button opens an assistant rather than loading a form,
                     which is the single thing the wording cannot.
                   */}
-                  <QuoteLauncher>
+                  <QuoteLauncher placement="industry_hero">
                     <Sparkles aria-hidden />
                     {page.hero.cta}
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
