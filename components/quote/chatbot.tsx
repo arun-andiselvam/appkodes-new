@@ -124,6 +124,12 @@ export const Chatbot = forwardRef<
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  /*
+   * Whether they have already said they do not know their budget, so the
+   * same six buttons never get put back in front of them - see the render
+   * below, on the client's instruction of 28 August 2026.
+   */
+  const [budgetUnsure, setBudgetUnsure] = useState(false);
 
   /*
    * The verification sub-state. See VerifyPanel below.
@@ -411,6 +417,20 @@ export const Chatbot = forwardRef<
 
   function submit(event: FormEvent) {
     event.preventDefault();
+    /*
+     * Typing "I have no idea" rather than tapping it does the same thing the
+     * button's own onPick does - see the budget render below. An exact,
+     * case-insensitive match against the button's own label, nothing fuzzier
+     * than that: this only has to catch someone typing the words already on
+     * screen, not guess at every way of saying "I don't know".
+     */
+    if (
+      phase === "budget" &&
+      input.trim().toLowerCase() ===
+        budgetOptions.find((option) => option.value === "unsure")?.label.toLowerCase()
+    ) {
+      setBudgetUnsure(true);
+    }
     void send(input);
   }
 
@@ -595,18 +615,28 @@ export const Chatbot = forwardRef<
           The budget ranges - "we had this before", on the client's
           instruction of 28 August 2026: the same five USD bands and the same
           "I have no idea" the scripted flow already asks with, see
-          budgetOptions in content/quote-chat.ts. Shown every time the
-          conversation is in `budget`, including a second time if the model
-          asks again after "I have no idea" - there is no separate "already
-          asked once" state to track here, the phase check alone is enough.
+          budgetOptions in content/quote-chat.ts.
+
+          !! NOT SHOWN AGAIN ONCE THEY HAVE PICKED "I have no idea" !!
+
+          That used to render a second time under the follow-up question,
+          on the theory that a range might still fit after all - overturned
+          on the client's instruction of 28 August 2026: putting the same six
+          buttons back in front of somebody who just told you they do not
+          know reads as the bot not having heard them. The follow-up is a
+          real question now, answered in their own words, not a second pass
+          at the same buttons.
         */}
-        {phase === "budget" && !busy && (
+        {phase === "budget" && !busy && !budgetUnsure && (
           <Choices
             options={budgetOptions.map((option) => ({
               value: option.value,
               label: option.label,
             }))}
-            onPick={(_, label) => void send(label)}
+            onPick={(value, label) => {
+              if (value === "unsure") setBudgetUnsure(true);
+              void send(label);
+            }}
           />
         )}
 
@@ -622,10 +652,21 @@ export const Chatbot = forwardRef<
           2026.
         */}
         {phase === "verify" && !verifyPanelOpen && (
-          <Choices
-            options={[{ value: "verify", label: "Verify email address" }]}
-            onPick={() => setVerifyPanelOpen(true)}
-          />
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            <Choices
+              options={[{ value: "verify", label: "Verify email address" }]}
+              onPick={() => setVerifyPanelOpen(true)}
+            />
+            {/*
+              What pressing the button actually unlocks, on the client's
+              instruction of 28 August 2026 - the button alone reads as one
+              more thing being asked of somebody, with no reason attached.
+            */}
+            <p className="max-w-[220px] text-[11px] leading-snug text-muted-foreground">
+              Unlocks file uploads, and lets me email you the finished
+              estimate.
+            </p>
+          </div>
         )}
 
         {phase === "verify" && verifyPanelOpen && (
