@@ -178,6 +178,23 @@ export default async function EstimatesPage() {
                     </p>
                   )}
 
+                  {/*
+                    A 'queued' row with an attempt behind it already failed
+                    once and is waiting for the next retry - either the cron,
+                    or the "Correct and regenerate" panel below, which can now
+                    claim a 'queued' row too. Without this, a failed attempt
+                    just made both action buttons vanish with nothing on
+                    screen explaining why - seen on 28 August 2026, read as
+                    the page being broken rather than a job retrying.
+                  */}
+                  {row.status === "queued" && row.attempts > 0 && (
+                    <p className="border border-foreground/20 bg-foreground/[0.02] px-3 py-2 text-muted-foreground">
+                      Attempt {row.attempts} failed and this is queued to try again
+                      {row.error ? `: ${row.error}` : "."} Regenerate below to retry now
+                      instead of waiting for the next pass.
+                    </p>
+                  )}
+
                   {content ? (
                     <>
                       {/*
@@ -287,7 +304,16 @@ export default async function EstimatesPage() {
                       />
                     )}
 
-                    {(row.status === "ready" || row.status === "failed") && (
+                    {/*
+                      'queued' included - see claimEstimateById in
+                      lib/quote-store.ts - so a fresh job waiting for its
+                      first pass can be corrected before it ever runs, and a
+                      failed attempt waiting for its next one can be retried
+                      immediately instead of sitting until the next cron pass.
+                    */}
+                    {(row.status === "ready" ||
+                      row.status === "failed" ||
+                      row.status === "queued") && (
                       <RegeneratePanel
                         id={row.id}
                         initialBudget={session?.budget ?? ""}

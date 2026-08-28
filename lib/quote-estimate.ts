@@ -77,8 +77,19 @@ import { readStoredFile, storeFile } from "@/lib/quote-uploads";
  */
 const MODEL = process.env.QUOTE_ESTIMATE_MODEL || "claude-sonnet-5";
 
-/** Generous. A full estimate with eight assumptions is a long document. */
-const MAX_TOKENS = 8_000;
+/**
+ * !! NOT AS GENEROUS AS THE OLD COMMENT HERE CLAIMED. SEEN FAILING ON 28 AUGUST 2026. !!
+ *
+ * This was 8_000, and a real regenerate job hit it exactly - `usage: { in:
+ * 4860, out: 8000 }` in the log, followed by `Unterminated string in JSON at
+ * position 11429` from writeEstimate's own JSON.parse. Adaptive thinking has
+ * no fixed budget, so on a turn where the model reasons hard - working out a
+ * traditional-team comparison, deciding how to word the cost basis - thinking
+ * and the JSON answer are competing for the SAME ceiling, and the API cuts off wherever
+ * that ceiling lands, mid-string if it has to. Tripled with real headroom for
+ * thinking rather than assuming a long document alone was the constraint.
+ */
+const MAX_TOKENS = 24_000;
 
 /**
  * Attempts before a job is marked failed for good.

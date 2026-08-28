@@ -491,15 +491,24 @@ export async function claimEstimate(): Promise<EstimateRow | null> {
  * Claims one specific estimate for the admin's "regenerate" button, rather
  * than the oldest queued row.
  *
- * !! ONLY 'ready' OR 'failed' - NEVER A ROW THAT IS ALREADY OUT THE DOOR !!
+ * !! NEVER 'approved' OR 'sent' - A ROW THAT IS ALREADY OUT THE DOOR !!
  *
  * The cron path in claimEstimate() above picks up fresh work; this picks up
  * work a person is deliberately redoing, after correcting the budget or the
  * deadline the visitor gave - see app/api/admin/estimates/[id]/route.ts.
- * Restricting the WHERE clause to 'ready'/'failed' means an 'approved' or
- * 'sent' row can never be silently rewritten out from under a PDF a client
- * may already have, and a 'running' or 'queued' row (another worker's) is
- * left alone rather than claimed twice.
+ * Excluding 'approved'/'sent' means a row can never be silently rewritten
+ * out from under a PDF a client may already have.
+ *
+ * 'queued' is included on purpose, added on 28 August 2026: a failed
+ * generation with retries left goes back to 'queued' to wait for the next
+ * cron pass, which can be ten minutes away - there is no reason to make an
+ * admin who already noticed and corrected the problem sit through that wait.
+ * Racing the cron for the same row is safe without any extra locking here:
+ * both claims are a single atomic `UPDATE ... WHERE status = 'queued'`, so
+ * whichever commits first is the one whose WHERE clause the other no longer
+ * matches - Postgres's own row lock is the only coordination this needs.
+ * 'running' is still left alone, the one status that really does mean
+ * somebody else has it right now.
  */
 export async function claimEstimateById(id: string): Promise<EstimateRow | null> {
   const rows = await queryStrict<EstimateRow>(
@@ -508,7 +517,7 @@ export async function claimEstimateById(id: string): Promise<EstimateRow | null>
       status     = 'running',
       attempts   = attempts + 1,
       updated_at = now()
-    WHERE id = $1 AND status IN ('ready', 'failed')
+    WHERE id = $1 AND status IN ('ready', 'failed', 'queued')
     RETURNING *
     `,
     [id],
