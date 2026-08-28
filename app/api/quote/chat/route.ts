@@ -428,7 +428,34 @@ export async function POST(request: Request) {
     const patch: SessionPatch = { phase };
 
     if (control.kind) patch.visitorKind = control.kind;
-    if (control.service) patch.service = control.service;
+
+    /*
+     * A backstop, not just a prompt instruction.
+     *
+     * !! SEEN ON 28 AUGUST 2026: A CONVERSATION STUCK AT `timeline` FOREVER !!
+     *
+     * A visitor picked "something else", the model moved PHASE:requirement
+     * without ever tagging SERVICE, and `service` stayed null for the rest of
+     * the conversation. missingForEstimate refused DONE on every later turn
+     * because of it - silently, since a refusal here does not undo the
+     * closing-sounding reply the model had already written. The visitor was
+     * told an estimate was on its way and nothing was ever queued.
+     *
+     * The prompt now says this tag is required, but a model that occasionally
+     * drops one instruction among many is exactly the failure this backstop
+     * exists for: leaving `service` is the one legal exit from this phase, so
+     * if the model did not name a value on the way out, "other" is always a
+     * correct one - never a guess that could be wrong the way a budget or a
+     * timeline figure could be.
+     */
+    if (control.service) {
+      patch.service = control.service;
+    } else if (session.phase === "service" && phase === "requirement") {
+      patch.service = "other";
+      console.warn("[quote/chat] SERVICE tag missing on service->requirement, defaulted to 'other'", {
+        conversationId,
+      });
+    }
 
     /*
      * The budget and the timeline are taken from what the visitor typed, not

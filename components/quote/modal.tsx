@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Sparkles, X } from "lucide-react";
 import {
   Dialog,
@@ -21,7 +21,7 @@ import {
 } from "@/content/quote-flow";
 import { BriefStep, ChoiceStep, DetailsStep } from "@/components/quote/steps";
 import { AskStep } from "@/components/quote/ask";
-import { Chatbot } from "@/components/quote/chatbot";
+import { Chatbot, type ChatbotHandle } from "@/components/quote/chatbot";
 import { DirectLine } from "@/components/quote/direct-line";
 import { track, type QuotePlacement } from "@/lib/analytics";
 
@@ -141,6 +141,14 @@ export function QuoteModal({
   const [returnTo, setReturnTo] = useState(firstStepId);
   /* How many questions have been put to the assistant, for the close guard. */
   const [chatTurns, setChatTurns] = useState(0);
+  /*
+   * The conversational assistant owns its own close guard - see ChatbotHandle
+   * in chatbot.tsx - because it is the one that knows whether anything has
+   * actually been said. This is how Escape and a backdrop press, which Radix
+   * routes through this Dialog rather than through Chatbot's own X button,
+   * reach that same guard instead of closing past it.
+   */
+  const chatbotRef = useRef<ChatbotHandle>(null);
 
   /*
    * Whether closing would throw anything away.
@@ -475,7 +483,17 @@ export function QuoteModal({
       <Dialog
         open
         onOpenChange={(next) => {
-          if (!next) onClose();
+          /*
+           * Escape and a backdrop press land here rather than on Chatbot's own
+           * X button, so they have to go through the same guard - see
+           * ChatbotHandle. No ref yet (the availability check is still in
+           * flight, so Chatbot has not mounted) means nothing has been said
+           * either, and closing straight away is correct.
+           */
+          if (!next) {
+            if (chatbotRef.current) chatbotRef.current.requestClose();
+            else onClose();
+          }
         }}
       >
         <DialogContent
@@ -494,6 +512,7 @@ export function QuoteModal({
 
           {chatAvailable && (
             <Chatbot
+              ref={chatbotRef}
               conversationId={conversationId}
               placement={placement}
               onClose={onClose}

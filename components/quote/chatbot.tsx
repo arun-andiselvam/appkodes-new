@@ -1,8 +1,10 @@
 "use client";
 
 import {
+  forwardRef,
   useCallback,
   useEffect,
+  useImperativeHandle,
   useRef,
   useState,
   type FormEvent,
@@ -90,15 +92,31 @@ const LEAD_PHASES = new Set<Phase>([
 
 type UploadedFile = { id: string; name: string; size: string };
 
-export function Chatbot({
-  conversationId,
-  placement,
-  onClose,
-}: {
-  conversationId: string;
-  placement: QuotePlacement;
-  onClose: () => void;
-}) {
+/**
+ * What the parent can ask this component to do, rather than reaching straight
+ * for `onClose`.
+ *
+ * !! THE PARENT'S ESCAPE/BACKDROP HANDLER GOES THROUGH THIS, NOT ONCLOSE DIRECT !!
+ *
+ * components/quote/modal.tsx renders the Dialog that actually owns Escape and
+ * a backdrop press, so the guard below has to be reachable from there too, not
+ * only from the X this component draws itself. `onClose` stays the real,
+ * unconditional close - the thing that unmounts this component - and nothing
+ * outside `requestClose` is allowed to call it while there is a conversation
+ * worth losing.
+ */
+export type ChatbotHandle = {
+  requestClose: () => void;
+};
+
+export const Chatbot = forwardRef<
+  ChatbotHandle,
+  {
+    conversationId: string;
+    placement: QuotePlacement;
+    onClose: () => void;
+  }
+>(function Chatbot({ conversationId, placement, onClose }, ref) {
   const [messages, setMessages] = useState<Message[]>([
     ...greeting.message.map((content) => ({ role: "assistant" as const, content })),
   ]);
@@ -137,7 +155,13 @@ export function Chatbot({
    * Follow the conversation as it grows.
    *
    * Depends on the message array AND on the last message's length, so it also
-   * fires while a reply streams in rather than only when one is added.
+   * fires while a reply streams in rather than only when one is added. It also
+   * has to depend on `phase` and `busy`: the choice buttons (greeting/service/
+   * budget/verify) render below the last message, gated on those two, not on
+   * anything that changes `messages` - a reply can finish streaming, the
+   * buttons can appear, and without this the scroll position never moves to
+   * show them. Seen on 28 August 2026: the budget buttons landed below the
+   * fold, sitting over the composer, with nothing to bring them into view.
    */
   const lastLength = messages[messages.length - 1]?.content.length ?? 0;
   useEffect(() => {
@@ -145,7 +169,7 @@ export function Chatbot({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages.length, lastLength]);
+  }, [messages.length, lastLength, phase, busy, verifyPanelOpen]);
 
   /**
    * Moves the phase, and tracks it moving.
@@ -393,8 +417,82 @@ export function Chatbot({
   const finished = FINISHED.has(phase);
   const isLead = LEAD_PHASES.has(phase);
 
+  /*
+   * Whether closing right now would throw away a real conversation.
+   *
+   * `messages` opens with the canned greeting, so its length alone is never
+   * zero - the visitor's own first reply is what actually means something was
+   * said. Once the conversation has reached a FINISHED phase there is nothing
+   * left to lose by closing: the student got their handoff, or the estimate is
+   * already queued and running without this window open.
+   */
+  const hasProgress = messages.some((message) => message.role === "user") && !finished;
+
+  const [confirmClose, setConfirmClose] = useState(false);
+
+  /**
+   * The guarded close, on the client's instruction of 28 August 2026.
+   *
+   * Both the X below and modal.tsx's Escape/backdrop handler call this rather
+   * than `onClose` directly - see the ChatbotHandle comment above. A second
+   * call while the guard is already up backs out of it rather than closing,
+   * the same "undo the last thing" behaviour the old scripted flow's close
+   * guard uses for Escape.
+   */
+  const requestClose = useCallback(() => {
+    if (confirmClose) {
+      setConfirmClose(false);
+      return;
+    }
+    if (!hasProgress) {
+      onClose();
+      return;
+    }
+    track("quote_abandon", { placement, phase, in_chat: true });
+    setConfirmClose(true);
+  }, [confirmClose, hasProgress, onClose, phase, placement]);
+
+  useImperativeHandle(ref, () => ({ requestClose }), [requestClose]);
+
   return (
-    <div className="flex h-full flex-col">
+    <div className="relative flex h-full flex-col">
+      {/*
+        The close guard.
+
+        Drawn over the whole window rather than replacing it, so the
+        conversation about to be discarded is still visible behind the
+        question - matching the overlay components/quote/modal.tsx already
+        uses for the scripted flow's own close guard.
+      */}
+      {confirmClose && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/85 p-6 backdrop-blur-[2px]">
+          <div className="w-full max-w-sm border border-foreground/15 bg-background p-5 shadow-lg">
+            <h2 className="font-display text-lg tracking-tight">End this conversation?</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              What you have told QuoteBot so far is already saved, but this window will not
+              remember it - you would start over from the beginning if you come back.
+            </p>
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+              <button
+                type="button"
+                autoFocus
+                onClick={() => setConfirmClose(false)}
+                className="h-11 flex-1 rounded-full bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                Keep talking
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="h-11 flex-1 rounded-full border border-foreground/20 px-5 text-sm transition-colors hover:bg-foreground/5"
+              >
+                Close anyway
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* -------------------------------------------------------- header */}
       <div className="flex shrink-0 items-center justify-between gap-4 border-b border-foreground/10 px-5 py-4">
         <div className="flex items-center gap-2.5">
@@ -434,7 +532,7 @@ export function Chatbot({
         </div>
         <button
           type="button"
-          onClick={onClose}
+          onClick={requestClose}
           aria-label="Close"
           className="-mr-1 p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/30"
         >
@@ -695,7 +793,7 @@ export function Chatbot({
       )}
     </div>
   );
-}
+});
 
 /* --------------------------------------------------------------- pieces */
 
