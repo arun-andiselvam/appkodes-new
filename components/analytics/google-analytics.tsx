@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 /**
- * Google Analytics 4, held back until the reader does something.
+ * Google Analytics 4, loaded after the page's own `load` event.
  *
  * Added 25 August 2026, against the existing property the client already
  * runs. It replaced @vercel/analytics, which had been in the root layout
@@ -29,7 +29,7 @@ import { useEffect } from "react";
  * against it. Analytics that counts the people building the site is worse
  * than no analytics, because it is wrong in a direction nobody checks.
  *
- * !! THIRD STRATEGY IN TWO DAYS, AND EACH ONE FIXED THE LAST ONE'S DAMAGE !!
+ * !! FOUR STRATEGIES IN FOUR DAYS - THE THIRD ONE TRADED CORRECTNESS FOR SPEED !!
  *
  * afterInteractive first, which was wrong because Next preloads such a script
  * in the head: 169 KB at high priority, ahead of the article's own hero image,
@@ -39,67 +39,33 @@ import { useEffect } from "react";
  * execution. Measured on the live site on 26 August 2026 at a 4x CPU throttle,
  * gtag.js was still the largest single contributor to Total Blocking Time:
  * two long tasks of 101ms and 82ms, against 113ms for all of this site's own
- * JavaScript put together. Blocking time is counted from first paint until the
- * main thread goes quiet, and a script that runs on the load event is inside
- * that window rather than after it.
+ * JavaScript put together.
  *
- * So it is not scheduled any more, it is triggered. Nothing is requested until
- * the reader scrolls, points, taps or types, which is always after the page has
- * settled, so the 169 KB and its execution are outside the window entirely.
+ * So on the 26th it stopped being scheduled and became triggered instead:
+ * nothing requested until the reader scrolled, pointed, tapped or typed. That
+ * fixed the Lighthouse number and broke the thing it was measuring a proxy
+ * for. GA4 Realtime went to zero active users within a day and stayed there -
+ * confirmed against the client's own dashboard on 29 August 2026, correlated
+ * to the hour against this file's own commit history. The reason isn't a bug
+ * in the trigger, it's what the trigger *is*: a visit that never scrolls,
+ * clicks, types or taps - which is not a rare visit, it's what "I opened the
+ * site to check something" looks like, along with every real bounce - never
+ * fires any of the four wake events, so gtag.js never loads, so nothing is
+ * ever sent. No amount of fixing how the hit is queued helps a hit that is
+ * never attempted.
  *
- * !! WHAT THIS COSTS, PLAINLY !!
- *
- * A visit that ends with no interaction at all is not counted, and there is no
- * longer a timer to catch it. That is a narrower loss than it sounds - `scroll`
- * is in the list, and a reader who opens a page and reads past the first screen
- * has already scrolled - but it is a real one, and bounce figures are where it
- * shows.
- *
- * It is also worth being honest that the lab metric improves more than the
- * experience does. A real reader scrolls within a second or two and gets gtag
- * about when lazyOnload would have given it to them. What changed is that the
- * work no longer lands in the middle of the page becoming usable.
+ * Back to lazyOnload, then, with the Total Blocking Time cost that implies.
+ * A site whose own owner cannot see traffic in it is a worse outcome than a
+ * few points off a lab score nobody but this file was reading.
  */
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-NBZXFWV6LY";
-
-/** Anything that means a person is present rather than a page merely loading. */
-const WAKE_EVENTS = ["scroll", "pointerdown", "keydown", "touchstart"] as const;
-
-/*
- * !! THERE IS NO TIMER, AND THERE WAS ONE FOR ABOUT AN HOUR !!
- *
- * The first version of this loaded gtag anyway after six seconds, so a visit
- * with no interaction at all would still be counted. It made the thing it was
- * meant to fix worse.
- *
- * Lighthouse traces a page for ten to twenty seconds, so a six second timer
- * fires inside the audit. gtag then executed at a point where the main thread
- * had already gone quiet, and Total Blocking Time is measured until the thread
- * stays quiet for five seconds: a fresh long task at six seconds restarts that
- * clock and drags everything before it into the window. lazyOnload at least
- * got the work over with early. Desktop went from 85 to 68.
- *
- * Any timer short enough to catch a real bounce is short enough to land inside
- * an audit, so there is no number that fixes this. The trigger is the reader,
- * or nothing.
- */
 
 export function GoogleAnalytics({ nonce }: { nonce?: string }) {
   useEffect(() => {
     if (!GA_ID || process.env.NODE_ENV !== "production") return;
 
-    let started = false;
-
-    function stopListening() {
-      for (const event of WAKE_EVENTS) window.removeEventListener(event, start);
-    }
-
-    function start() {
-      if (started) return;
-      started = true;
-      stopListening();
-
+    function load() {
       const w = window as unknown as { dataLayer?: unknown[] };
       w.dataLayer = w.dataLayer || [];
       const push = (...args: unknown[]) => w.dataLayer!.push(args);
@@ -118,30 +84,17 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
       if (nonce) script.nonce = nonce;
 
       /*
-       * !! FOURTH BUG IN FOUR DAYS, AND THE WORST ONE: IT SENT NOTHING !!
+       * !! PUSHED FROM onload, NOT QUEUED AHEAD OF THE SCRIPT !!
        *
-       * The previous version pushed 'js'/'config' to dataLayer BEFORE
-       * appending this script, on the theory that gtag.js drains whatever is
-       * already queued when it arrives - that is Google's own snippet order,
-       * and is how consent-mode defaults are documented to work. Confirmed
-       * live on www.hitasoft.com on 29 August 2026, repeatedly, across two
-       * capture methods (the Performance API and the devtools network log):
-       * a config queued ahead of the script produced the GET for gtag/js
-       * (200, dataLayer got gtm.dom/gtm.load) but never once produced a
-       * request to google-analytics.com over a clean 5-10 second window. No
-       * automatic page_view has gone out since the 26th's interaction-trigger
-       * rewrite.
-       *
-       * Moving the push here, so it only runs once gtag.js has actually
-       * executed, is the fix - it is what Google's queue-then-load ordering
-       * was trying to approximate, minus the part that silently didn't work.
-       * Full confidence needs a proper check after this deploys, with GA4
-       * Realtime or tagassistant.google.com rather than sniffing beacons by
-       * hand: manual dataLayer pushes made from the console during this same
-       * investigation sent inconsistently too, sometimes immediately,
-       * sometimes not at all, which reads more like a live GA4
-       * property/network quirk of the test session than something this
-       * component can fully control for.
+       * The obvious-looking alternative is pushing 'js'/'config' to dataLayer
+       * before this script exists, trusting gtag.js to drain the queue when
+       * it arrives - that is Google's own snippet order. On this site's CSP
+       * and script-injection setup it did not work: confirmed live on
+       * www.hitasoft.com on 29 August 2026, repeatedly, across two capture
+       * methods, that a config queued ahead of the script produced the GET
+       * for gtag/js but never once produced a request to google-analytics.com.
+       * Pushing from onload, once gtag.js has actually executed, avoids
+       * whatever that was rather than explaining it.
        */
       script.onload = () => {
         push("js", new Date());
@@ -150,11 +103,17 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
       document.head.appendChild(script);
     }
 
-    for (const event of WAKE_EVENTS) {
-      window.addEventListener(event, start, { once: true, passive: true });
+    /*
+     * The `load` event has already fired for a visitor who lands on a
+     * fast connection before this effect runs; `document.readyState` is
+     * how you ask for that rather than missing it.
+     */
+    if (document.readyState === "complete") {
+      load();
+      return;
     }
-
-    return stopListening;
+    window.addEventListener("load", load, { once: true });
+    return () => window.removeEventListener("load", load);
   }, [nonce]);
 
   /*
