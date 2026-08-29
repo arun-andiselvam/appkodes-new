@@ -214,6 +214,35 @@ function summaryPoints(text: string): string[] {
 }
 
 /**
+ * A point's own lead-in phrase, bolded.
+ *
+ * Every point the content tool writes opens with a short capitalised phrase
+ * naming the takeaway, then a colon, then the sentence that backs it up -
+ * "Eliminate Month-End Reconciliation: Use AI middleware to...". That phrase
+ * is the part worth reading first, so it is set in bold the way
+ * docs/blog-structure.md's own example does. The mark does not survive from
+ * the CMS: html-to-blocks.ts's plain() flattens the blockquote to a bare
+ * string, so there is no `<strong>` left to find by the time this runs, and
+ * the phrase is found by shape instead.
+ *
+ * The colon has to land in the first 60 characters. Past that it stops being
+ * a lead-in phrase and starts being a colon the sentence happens to contain -
+ * a ratio, a time, a quoted list - and bolding up to it would put half the
+ * sentence in bold instead of the label it opens with.
+ */
+function LeadIn({ point }: { point: string }) {
+  const at = point.indexOf(":");
+  if (at === -1 || at > 60) return <>{point}</>;
+
+  return (
+    <>
+      <strong className="font-semibold text-foreground">{point.slice(0, at + 1)}</strong>
+      {point.slice(at + 1)}
+    </>
+  );
+}
+
+/**
  * The article summary, as a panel rather than as a quotation.
  *
  * !! THIS IS THE OTHER BLOCK AN ANSWER ENGINE WILL TAKE !!
@@ -244,7 +273,9 @@ function Summary({ text }: { text: string }) {
           {points.map((point) => (
             <li key={point} className="flex gap-3 text-lg leading-[1.7] text-foreground/85">
               <span aria-hidden className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-              {point}
+              <span>
+                <LeadIn point={point} />
+              </span>
             </li>
           ))}
         </ul>
