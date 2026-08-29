@@ -100,17 +100,9 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
       started = true;
       stopListening();
 
-      /*
-       * The queue first, then the script. This is Google's own snippet, and
-       * the order matters: gtag.js drains whatever is already in dataLayer
-       * when it arrives, so the page view is recorded for the moment the
-       * reader arrived rather than the moment they happened to scroll.
-       */
       const w = window as unknown as { dataLayer?: unknown[] };
       w.dataLayer = w.dataLayer || [];
       const push = (...args: unknown[]) => w.dataLayer!.push(args);
-      push("js", new Date());
-      push("config", GA_ID);
 
       const script = document.createElement("script");
       script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
@@ -124,6 +116,37 @@ export function GoogleAnalytics({ nonce }: { nonce?: string }) {
        * hides the attribute after parse.
        */
       if (nonce) script.nonce = nonce;
+
+      /*
+       * !! FOURTH BUG IN FOUR DAYS, AND THE WORST ONE: IT SENT NOTHING !!
+       *
+       * The previous version pushed 'js'/'config' to dataLayer BEFORE
+       * appending this script, on the theory that gtag.js drains whatever is
+       * already queued when it arrives - that is Google's own snippet order,
+       * and is how consent-mode defaults are documented to work. Confirmed
+       * live on www.hitasoft.com on 29 August 2026, repeatedly, across two
+       * capture methods (the Performance API and the devtools network log):
+       * a config queued ahead of the script produced the GET for gtag/js
+       * (200, dataLayer got gtm.dom/gtm.load) but never once produced a
+       * request to google-analytics.com over a clean 5-10 second window. No
+       * automatic page_view has gone out since the 26th's interaction-trigger
+       * rewrite.
+       *
+       * Moving the push here, so it only runs once gtag.js has actually
+       * executed, is the fix - it is what Google's queue-then-load ordering
+       * was trying to approximate, minus the part that silently didn't work.
+       * Full confidence needs a proper check after this deploys, with GA4
+       * Realtime or tagassistant.google.com rather than sniffing beacons by
+       * hand: manual dataLayer pushes made from the console during this same
+       * investigation sent inconsistently too, sometimes immediately,
+       * sometimes not at all, which reads more like a live GA4
+       * property/network quirk of the test session than something this
+       * component can fully control for.
+       */
+      script.onload = () => {
+        push("js", new Date());
+        push("config", GA_ID);
+      };
       document.head.appendChild(script);
     }
 
