@@ -108,6 +108,34 @@ function inlineRuns(nodes: Node[], mark: Inline["mark"] = "none", href?: string)
       case "br":
         runs.push({ mark: "none", text: " " });
         break;
+      case "p":
+      case "div":
+      case "li":
+      case "h1":
+      case "h2":
+      case "h3":
+      case "h4":
+      case "h5":
+      case "h6":
+        /*
+         * !! A BLOCK BOUNDARY, NOT AN INLINE WRAPPER !!
+         *
+         * plain() flattens a blockquote (and table cells, headings, figcaptions)
+         * through this function into one string, with nothing between siblings.
+         * That is fine when the source is real text nodes, but the content tool
+         * writes the TL;DR as three separate <p> tags inside the blockquote, one
+         * per bullet, each already ending in a period. Falling into the default
+         * branch below joined them with no separator at all - "...CSV
+         * exports.Flawless Deterministic Math..." - which then fed
+         * summaryPoints in rich-text.tsx a single run-on sentence instead of
+         * three, so the TL;DR rendered as one paragraph with no bullets.
+         *
+         * A trailing space here is squashed to one by squash() and trimmed off
+         * the ends by tidy()/plain(), so it costs nothing when the block really
+         * was alone, and only matters at exactly the seam that was breaking.
+         */
+        runs.push(...inlineRuns(childrenOf(node), mark, href), { mark: "none", text: " " });
+        break;
       default:
         /* Any other inline wrapper contributes its text and nothing else. */
         runs.push(...inlineRuns(childrenOf(node), mark, href));
