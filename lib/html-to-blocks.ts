@@ -1,5 +1,6 @@
 import { parseFragment } from "parse5";
 import type { DefaultTreeAdapterTypes } from "parse5";
+import { imageSize } from "image-size";
 
 import type { Block, Inline } from "@/lib/posts";
 
@@ -183,16 +184,25 @@ function tidy(runs: Inline[]): Inline[] {
 }
 
 /**
- * An `<img>`'s own natural pixel size, if it has one.
+ * An `<img>`'s own natural pixel size, when the HTML already says so.
  *
- * CKEditor's Image plugin probes every image it inserts for
- * `naturalWidth`/`naturalHeight` and writes them straight onto the `<img>` as
- * `width`/`height` attributes - confirmed against the installed
- * @ckeditor/ckeditor5-image package on 30 August 2026, since nothing in
- * cms/src/admin/app.tsx asks for that behaviour and it would otherwise be an
- * assumption resting on nothing. So the attributes are trustworthy for
- * anything written through the editor. An `<img>` pasted or written by hand
- * may carry neither, and `undefined` is returned rather than a guess.
+ * !! THIS IS NOT WHERE MOST IMAGES GET THEIR SIZE FROM. SEE withImageDimensions !!
+ *
+ * The first version of this function claimed CKEditor's Image plugin stamps
+ * `width`/`height` onto every `<img>` it inserts, and cited the
+ * `naturalWidth`/`naturalHeight` write in @ckeditor/ckeditor5-image's source
+ * as proof. That code exists, but checking it against a live article on 30
+ * August 2026 showed every image in the body - all inserted through the
+ * Media Library, exactly the path that code claims to cover - with neither
+ * attribute set. The editing config in cms/src/admin/app.tsx does not include
+ * `ImageResizeEditing`, which is the plugin that write actually belongs to;
+ * base `Image` does not do it alone. So the earlier comment was an assumption
+ * that looked verified and was not: the source was read, the running system
+ * was not.
+ *
+ * The attribute check stays, because it costs nothing and is correct on the
+ * rare `<img>` that does carry one - written by hand, or by some other tool.
+ * It is the fallback in withImageDimensions that carries the real weight now.
  */
 function naturalSize(el: Element): { width: number; height: number } | undefined {
   const width = Number(attr(el, "width"));
@@ -232,29 +242,48 @@ function figureFrom(el: Element): Block | null {
 }
 
 /**
- * A blockquote's text, one real paragraph per line.
+ * A blockquote's text, one real paragraph per bullet.
  *
  * !! A BULLET WAS BEING SPLIT MID-SENTENCE !!
  *
- * The content tool writes the TL;DR as one `<p>` per bullet inside the
- * blockquote, and each of those bullets is often two sentences: a bold
- * lead-in clause, then a sentence backing it up. Flattening straight through
- * plain() joined every sentence in every bullet with the same single space,
- * so by the time rich-text.tsx's summaryPoints() went looking for bullet
- * boundaries, it had nothing to tell "end of bullet one" apart from "end of
- * the lead-in clause inside bullet one" and split on both - three bullets in
- * the CMS became five on the page, one of them cut in half.
+ * Each TL;DR bullet is often two sentences - a bold lead-in clause, then a
+ * sentence backing it up - and flattening the blockquote straight through
+ * plain() joined every sentence in every bullet with the same single space.
+ * rich-text.tsx's summaryPoints() then had nothing to tell "end of bullet
+ * one" apart from "end of the lead-in clause inside bullet one" and split on
+ * both: three bullets in the CMS became five on the page, one of them cut in
+ * half.
  *
- * So each `<p>` child keeps its own paragraph here, joined by a blank line
- * rather than a space. That is a boundary a sentence never contains, so
- * summaryPoints() can split on it and stop guessing. A blockquote with no
- * element children - a real pull quote, typed as bare text with no `<p>`
- * wrapper - has nothing to split on and falls back to the old flattening.
+ * !! THE FIRST FIX HERE ASSUMED THE WRONG SHAPE !!
+ *
+ * This originally only split on a direct `<p>` per bullet, on the belief that
+ * was how the content tool wrote them. Checking a live article's editor DOM
+ * on 30 August 2026 - the honest way to settle it, rather than another guess
+ * - showed the TL;DR is a `<p>TL;DR</p>` followed by one real `<ul>` with one
+ * `<li>` per bullet, which is exactly what the toolbar's own bulleted-list
+ * button produces and is a completely reasonable way to write one. A `<ul>`
+ * is one element to childrenOf(el), so the first fix's per-child split saw
+ * one paragraph, not three, and fell straight back to the same sentence
+ * guessing it was meant to replace.
+ *
+ * So a `<ul>`/`<ol>` child is expanded here into one paragraph per `<li>`,
+ * alongside any `<p>` sibling kept as its own paragraph as before. Both
+ * shapes - and a blockquote mixing them, `<p>TL;DR</p>` plus a list - resolve
+ * to the same bullet boundaries. A blockquote with no element children at all
+ * - a real pull quote, typed as bare text - has nothing to split on and
+ * falls back to the old flattening.
  */
 function blockquoteText(el: Element): string {
   const paragraphs = childrenOf(el)
     .filter(isElement)
-    .map((child) => plain(childrenOf(child)))
+    .flatMap((child) =>
+      child.tagName === "ul" || child.tagName === "ol"
+        ? childrenOf(child)
+            .filter(isElement)
+            .filter((li) => li.tagName === "li")
+            .map((li) => plain(childrenOf(li)))
+        : [plain(childrenOf(child))],
+    )
     .filter(Boolean);
 
   return paragraphs.length > 0 ? paragraphs.join("\n\n") : plain(childrenOf(el));
@@ -431,4 +460,61 @@ export function htmlToBlocks(html: string): Block[] {
     .map((paragraph) => paragraph.trim())
     .filter(Boolean)
     .map((paragraph) => ({ kind: "p" as const, text: paragraph }));
+}
+
+/**
+ * A figure's real size, fetched from the image itself.
+ *
+ * !! THE ONLY RELIABLE SOURCE. THE HTML ITSELF ALMOST NEVER SAYS !!
+ *
+ * naturalSize() above reads `width`/`height` off the `<img>` tag, and that
+ * comes back empty for nearly everything this CMS produces - see the note on
+ * it. Without a real size, components/primitives/rich-text.tsx has no way to
+ * tell a photo from a diagram and crops every figure to 16:9, which is how a
+ * twelve point checklist infographic lost its top and bottom rows of labels.
+ *
+ * So when a figure has no size, this downloads the image once and reads its
+ * header. `imageSize` only needs the file's own header bytes, not the whole
+ * decoded bitmap, so this is cheap even for a multi-megabyte photo. A fetch
+ * failure or a file the library does not recognise leaves the block exactly
+ * as it was - no width, no height, and rich-text.tsx's existing fallback to
+ * `object-cover` - rather than breaking the page over an image dimension.
+ */
+async function measuredSize(src: string): Promise<{ width: number; height: number } | undefined> {
+  try {
+    const res = await fetch(src, { next: { revalidate: 86400 } });
+    if (!res.ok) return undefined;
+
+    const { width, height } = imageSize(new Uint8Array(await res.arrayBuffer()));
+    return width && height ? { width, height } : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Every figure in a body, with a real width and height where one was missing.
+ *
+ * A separate pass over the finished blocks rather than done inline in
+ * blockFrom(), because blockFrom() and everything under it is synchronous -
+ * parse5's tree walk needs no network - and measuring an image does. Keeping
+ * htmlToBlocks() synchronous means every existing call site that does not
+ * care about image proportions (the reading time estimate in
+ * lib/strapi.ts among them) stays exactly as simple as it was; only
+ * mapPost() and mapJob(), which build what a reader actually sees, need to
+ * await this.
+ *
+ * Runs every figure's fetch in parallel rather than one after another, since
+ * an article with four images should not take four times as long to measure
+ * one.
+ */
+export async function withImageDimensions(blocks: Block[]): Promise<Block[]> {
+  return Promise.all(
+    blocks.map(async (block) => {
+      if (block.kind !== "figure" || (block.width && block.height)) return block;
+
+      const size = await measuredSize(block.src);
+      return size ? { ...block, ...size } : block;
+    }),
+  );
 }

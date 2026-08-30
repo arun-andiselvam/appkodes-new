@@ -179,27 +179,37 @@ export function BodyBlock({
  * an article reads as a steady column rather than a different-height picture
  * every time. `object-cover` fills that box by cropping whatever doesn't fit,
  * which is the right call for a photo - a 4:3 or 3:2 shot loses a sliver off
- * two edges and nobody notices. It is the wrong call for a diagram: a tall
- * circular checklist graphic force-cropped to 16:9 lost its top and bottom
- * rows of labels entirely, which is not a sliver, it is the content.
+ * two edges and nobody notices. It is the wrong call for a diagram: a
+ * "Twelve Point Checklist" infographic force-cropped to 16:9 lost its top and
+ * bottom rows of labels entirely, which is not a sliver, it is the content.
  *
  * `width`/`height` on the block (see the note on it in lib/posts.ts) are the
- * image's own natural size when CKEditor recorded one. Its ratio decides the
- * fit: close enough to 16:9 that a cover crop only trims a normal photo's
- * margin, or a genuine mismatch - portrait, square, or a very tall or wide
- * graphic - where cropping would remove something the reader needs. No
- * dimensions at all (a hand-written `<img>`) keeps the old cover behaviour,
- * since there is nothing here to say otherwise.
+ * image's own measured size - see withImageDimensions in
+ * lib/html-to-blocks.ts, which is where almost every figure actually gets
+ * one. Its ratio decides the fit. No dimensions at all (the measurement
+ * itself failed) keeps the old cover behaviour, since there is nothing here
+ * to say otherwise.
  *
- * The band is deliberately generous rather than tight around 16:9 (≈1.78):
- * ordinary photography spans roughly 1.3 (4:3) to low 2s (a wide landscape
- * crop), and only outside that does cropping start eating real content
- * instead of a photo's edge.
+ * !! THE FIRST BAND WAS TOO WIDE. IT LET THE ACTUAL CHECKLIST THROUGH !!
+ *
+ * The band this replaced was [1.3, 2.4], reasoned from where ordinary
+ * photography sits (4:3 up to a wide landscape crop) rather than from the
+ * image that prompted this function. That checklist infographic measures
+ * 979x641 - a 1.53 ratio, comfortably inside that band - and it is exactly
+ * the image the band was supposed to catch. Every in-article image on this
+ * site so far is a generated diagram or screenshot, not a photograph, and
+ * that kind of image tends to place content at its very edges the way a
+ * photo's own subject rarely does: a crop that looks like a normal trim on a
+ * photo can still slice through a diagram's top and bottom row. So the band
+ * is tight around 16:9 (≈1.78) rather than centred on what photography
+ * happens to look like - narrow enough to catch this image and diagrams like
+ * it, wide enough that an image already close to the box's own shape still
+ * gets the plain cover treatment.
  */
 function fitFor(width?: number, height?: number): "cover" | "contain" {
   if (!width || !height) return "cover";
   const ratio = width / height;
-  return ratio >= 1.3 && ratio <= 2.4 ? "cover" : "contain";
+  return ratio >= 1.6 && ratio <= 2.0 ? "cover" : "contain";
 }
 
 /**

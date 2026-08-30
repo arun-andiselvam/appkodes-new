@@ -1,4 +1,4 @@
-import { htmlToBlocks } from "@/lib/html-to-blocks";
+import { htmlToBlocks, withImageDimensions } from "@/lib/html-to-blocks";
 import type { Block, Post } from "@/lib/posts";
 import type { Job } from "@/lib/careers";
 
@@ -202,9 +202,15 @@ function mediaUrl(media: StrapiMedia): string | undefined {
   return media.url.startsWith("http") ? media.url : `${STRAPI_URL}${media.url}`;
 }
 
-/** One Strapi entry to one Post. */
-function mapPost(entry: StrapiPost): Post {
-  const body = htmlToBlocks(entry.body ?? "");
+/**
+ * One Strapi entry to one Post.
+ *
+ * Async since 30 August 2026, for the one line that awaits
+ * withImageDimensions() - see the note on it in lib/html-to-blocks.ts. Every
+ * other line here is exactly as synchronous as it always was.
+ */
+async function mapPost(entry: StrapiPost): Promise<Post> {
+  const body = await withImageDimensions(htmlToBlocks(entry.body ?? ""));
   const image = mediaUrl(entry.image);
 
   return {
@@ -293,7 +299,7 @@ export async function strapiPosts(): Promise<Post[] | null> {
   const json = await strapiFetch<StrapiList<StrapiPost>>(`posts?${query}`, "posts");
   if (!json) return null;
 
-  return json.data.map(mapPost);
+  return Promise.all(json.data.map(mapPost));
 }
 
 /*
@@ -320,8 +326,8 @@ type StrapiJob = {
   description: string | null;
 };
 
-/** One Strapi entry to one Job. */
-function mapJob(entry: StrapiJob): Job {
+/** One Strapi entry to one Job. Async for the same reason mapPost is above. */
+async function mapJob(entry: StrapiJob): Promise<Job> {
   return {
     slug: entry.slug,
     title: entry.title,
@@ -329,7 +335,7 @@ function mapJob(entry: StrapiJob): Job {
     location: entry.location,
     employmentType: entry.employmentType,
     summary: entry.summary,
-    description: htmlToBlocks(entry.description ?? ""),
+    description: await withImageDimensions(htmlToBlocks(entry.description ?? "")),
     applyEmail: entry.applyEmail,
     postedDate: entry.postedDate,
   };
@@ -348,5 +354,5 @@ export async function strapiJobs(): Promise<Job[] | null> {
   const json = await strapiFetch<StrapiList<StrapiJob>>(`jobs?${query}`, "jobs");
   if (!json) return null;
 
-  return json.data.map(mapJob);
+  return Promise.all(json.data.map(mapJob));
 }
