@@ -183,6 +183,24 @@ function tidy(runs: Inline[]): Inline[] {
 }
 
 /**
+ * An `<img>`'s own natural pixel size, if it has one.
+ *
+ * CKEditor's Image plugin probes every image it inserts for
+ * `naturalWidth`/`naturalHeight` and writes them straight onto the `<img>` as
+ * `width`/`height` attributes - confirmed against the installed
+ * @ckeditor/ckeditor5-image package on 30 August 2026, since nothing in
+ * cms/src/admin/app.tsx asks for that behaviour and it would otherwise be an
+ * assumption resting on nothing. So the attributes are trustworthy for
+ * anything written through the editor. An `<img>` pasted or written by hand
+ * may carry neither, and `undefined` is returned rather than a guess.
+ */
+function naturalSize(el: Element): { width: number; height: number } | undefined {
+  const width = Number(attr(el, "width"));
+  const height = Number(attr(el, "height"));
+  return width > 0 && height > 0 ? { width, height } : undefined;
+}
+
+/**
  * A figure, which CKEditor wraps rather than emitting a bare img.
  *
  * The caption is the `figcaption` and the alt is the img's own attribute. Both
@@ -194,6 +212,7 @@ function figureFrom(el: Element): Block | null {
   let src: string | undefined;
   let alt = "";
   let caption = "";
+  let size: { width: number; height: number } | undefined;
 
   while (stack.length > 0) {
     const node = stack.pop() as Node;
@@ -201,6 +220,7 @@ function figureFrom(el: Element): Block | null {
       if (node.tagName === "img") {
         src = src ?? attr(node, "src");
         alt = alt || attr(node, "alt") || "";
+        size = size ?? naturalSize(node);
       }
       if (node.tagName === "figcaption") caption = caption || plain(childrenOf(node));
     }
@@ -208,7 +228,7 @@ function figureFrom(el: Element): Block | null {
   }
 
   if (!src) return null;
-  return { kind: "figure", src, alt, caption };
+  return { kind: "figure", src, alt, caption, ...size };
 }
 
 /**
@@ -351,7 +371,9 @@ function blockFrom(el: Element): Block[] {
 
     case "img": {
       const src = attr(el, "src");
-      return src ? [{ kind: "figure", src, alt: attr(el, "alt") ?? "", caption: "" }] : [];
+      return src
+        ? [{ kind: "figure", src, alt: attr(el, "alt") ?? "", caption: "", ...naturalSize(el) }]
+        : [];
     }
 
     /*

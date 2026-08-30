@@ -118,15 +118,25 @@ export function BodyBlock({
         </div>
       );
 
-    case "figure":
+    case "figure": {
+      const fit = fitFor(block.width, block.height);
       return (
         <figure className="mt-10">
-          <div className={`relative aspect-[16/9] w-full overflow-hidden ${figureClassName}`}>
-            <Image src={block.src} alt={block.alt} fill sizes="(min-width: 1024px) 44rem, 100vw" className="object-cover" />
+          <div
+            className={`relative aspect-[16/9] w-full overflow-hidden ${fit === "contain" ? "bg-foreground/[0.03]" : ""} ${figureClassName}`}
+          >
+            <Image
+              src={block.src}
+              alt={block.alt}
+              fill
+              sizes="(min-width: 1024px) 44rem, 100vw"
+              className={fit === "contain" ? "object-contain" : "object-cover"}
+            />
           </div>
           <figcaption className="mt-3 text-sm text-muted-foreground leading-relaxed">{block.caption}</figcaption>
         </figure>
       );
+    }
 
     /*
       A pull quote, unless it is a summary wearing a pull quote's clothes.
@@ -158,6 +168,38 @@ export function BodyBlock({
     case "callout":
       return <p className="mt-10 bg-foreground/[0.03] p-6 text-lg leading-[1.6] font-medium">{block.text}</p>;
   }
+}
+
+/**
+ * How a figure's picture should fill its box: cropped to fit, or shown whole.
+ *
+ * !! A 12 POINT INFOGRAPHIC WAS BEING CROPPED TOP AND BOTTOM !!
+ *
+ * Every in-article figure sits in a fixed 16:9 box (aspect-[16/9] above) so
+ * an article reads as a steady column rather than a different-height picture
+ * every time. `object-cover` fills that box by cropping whatever doesn't fit,
+ * which is the right call for a photo - a 4:3 or 3:2 shot loses a sliver off
+ * two edges and nobody notices. It is the wrong call for a diagram: a tall
+ * circular checklist graphic force-cropped to 16:9 lost its top and bottom
+ * rows of labels entirely, which is not a sliver, it is the content.
+ *
+ * `width`/`height` on the block (see the note on it in lib/posts.ts) are the
+ * image's own natural size when CKEditor recorded one. Its ratio decides the
+ * fit: close enough to 16:9 that a cover crop only trims a normal photo's
+ * margin, or a genuine mismatch - portrait, square, or a very tall or wide
+ * graphic - where cropping would remove something the reader needs. No
+ * dimensions at all (a hand-written `<img>`) keeps the old cover behaviour,
+ * since there is nothing here to say otherwise.
+ *
+ * The band is deliberately generous rather than tight around 16:9 (≈1.78):
+ * ordinary photography spans roughly 1.3 (4:3) to low 2s (a wide landscape
+ * crop), and only outside that does cropping start eating real content
+ * instead of a photo's edge.
+ */
+function fitFor(width?: number, height?: number): "cover" | "contain" {
+  if (!width || !height) return "cover";
+  const ratio = width / height;
+  return ratio >= 1.3 && ratio <= 2.4 ? "cover" : "contain";
 }
 
 /**

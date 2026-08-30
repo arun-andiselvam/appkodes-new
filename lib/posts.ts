@@ -130,8 +130,15 @@ export type Block =
    * .md asks for descriptive alt and a visible caption on every in-article
    * image, and a type that lets either be forgotten is a type that will see
    * both forgotten.
+   *
+   * `width` and `height` are the image's own natural pixel size, when CKEditor
+   * recorded it (it does, on every image inserted through the editor - see the
+   * note in lib/html-to-blocks.ts). Optional because a bare `<img>` written by
+   * hand or by another tool may carry neither. The renderer uses the two to
+   * tell a photo from a diagram: something far from 16:9 gets shown whole
+   * rather than cropped to fit the article's usual frame.
    */
-  | { kind: "figure"; src: string; alt: string; caption: string };
+  | { kind: "figure"; src: string; alt: string; caption: string; width?: number; height?: number };
 
 /**
  * One published piece.
