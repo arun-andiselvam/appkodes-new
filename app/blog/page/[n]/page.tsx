@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { BlogIndex } from "@/components/sections/blog-index";
 import { CtaSection } from "@/components/sections/cta";
-import { pageOfAllPosts, POSTS_PER_PAGE, allPosts } from "@/lib/posts";
+import { pageOfAllPosts, BLOG_POSTS_PER_PAGE, allPosts } from "@/lib/posts";
 
 /*
  * Page two and beyond of the full list.
@@ -14,7 +14,7 @@ import { pageOfAllPosts, POSTS_PER_PAGE, allPosts } from "@/lib/posts";
  */
 export async function generateStaticParams() {
   const total = (await allPosts()).length;
-  const totalPages = Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(total / BLOG_POSTS_PER_PAGE));
   return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => ({
     n: String(i + 2),
   }));

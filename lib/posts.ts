@@ -267,6 +267,18 @@ export type Post = {
 export const POSTS_PER_PAGE = 4;
 
 /**
+ * How many posts /blog shows before paging.
+ *
+ * Deliberately its own constant rather than reusing POSTS_PER_PAGE: that one
+ * is tuned to the category pages' two-column grid (see the comment on it in
+ * resource-category.tsx), and changing it would resize those pages' pagers
+ * too, which nobody asked for. /blog gets a bigger page because it is the
+ * "everything, in order" list rather than one category's worth of posts, and
+ * ten stays even so the two-column grid still ends on a full row.
+ */
+export const BLOG_POSTS_PER_PAGE = 10;
+
+/**
  * Every post, from Strapi if it is configured and reachable, empty
  * otherwise.
  *
@@ -336,21 +348,23 @@ export async function allPosts(): Promise<Post[]> {
 export async function pageOfAllPosts(
   pageNumber: number,
 ): Promise<{ posts: Post[]; total: number; totalPages: number }> {
-  return paginate(await allPosts(), pageNumber);
+  return paginate(await allPosts(), pageNumber, BLOG_POSTS_PER_PAGE);
 }
 
 /**
  * Shared by both pagers, so the two can never disagree about what page two
- * means or about what an out of range page returns.
+ * means or about what an out of range page returns. Page size is a
+ * parameter, defaulted to the category pages' POSTS_PER_PAGE, because /blog
+ * uses its own, larger BLOG_POSTS_PER_PAGE.
  */
-function paginate(all: Post[], pageNumber: number) {
-  const totalPages = Math.max(1, Math.ceil(all.length / POSTS_PER_PAGE));
-  const start = (pageNumber - 1) * POSTS_PER_PAGE;
+function paginate(all: Post[], pageNumber: number, pageSize: number = POSTS_PER_PAGE) {
+  const totalPages = Math.max(1, Math.ceil(all.length / pageSize));
+  const start = (pageNumber - 1) * pageSize;
 
   return {
     posts:
       pageNumber >= 1 && pageNumber <= totalPages
-        ? all.slice(start, start + POSTS_PER_PAGE)
+        ? all.slice(start, start + pageSize)
         : [],
     total: all.length,
     totalPages,
