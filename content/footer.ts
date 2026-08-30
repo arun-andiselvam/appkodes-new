@@ -24,10 +24,14 @@ import type { SocialLink } from "./types";
  *
  * !! STILL TO ADD !!
  *
- * About, Careers, Privacy and Terms all belong in a footer and none of them
- * have a page yet. docs/positioning.md also wants the ready-made product
- * catalogue down here rather than in the main menu, which needs its own group
- * once somebody decides which products to list.
+ * About and Terms belong in a footer and neither has a page yet. docs/
+ * positioning.md also wants the ready-made product catalogue down here
+ * rather than in the main menu, which needs its own group once somebody
+ * decides which products to list.
+ *
+ * Privacy shipped 30 August 2026, in components/layout/footer.tsx's bottom
+ * bar next to the copyright line rather than in either group below. See the
+ * note there for why it is not repeated in this file.
  *
  * Rebuilt again on 20 August 2026 for the silo. The two groups are not the
  * main menu repeated. Services lists all five silo parents flat, since

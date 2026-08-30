@@ -166,14 +166,24 @@ export function Footer() {
       <div className="relative z-10 bg-background">
         <Container>
           {/*
-            The copyright line alone. A green "All systems operational" badge
-            sat opposite it until 21 August 2026, which promised a status page
-            we do not run and reported health nothing was actually measuring.
+            The copyright line, and now the privacy policy beside it.
 
-            One child now, so the row no longer needs flex to space two things
-            apart: it centres on small screens and sits left from md up.
+            A green "All systems operational" badge sat opposite the
+            copyright line until 21 August 2026, which promised a status page
+            we do not run and reported health nothing was actually measuring.
+            That is why this went back to flex rather than staying the single
+            centred line it was in between: a legal link belongs in the
+            bottom bar next to the copyright it is conventionally paired
+            with, not buried in the Company column above with the rest of the
+            site's navigation.
+
+            !! /privacy IS DELIBERATELY NOT ALSO IN footerLinks.Company !!
+
+            One link, one place. Repeating it up there would be the same
+            route twice in one footer for no reader's benefit, and the two
+            would drift the day only one of them gets relabelled.
           */}
-          <div className="py-8 border-t border-foreground/10 text-center md:text-left">
+          <div className="py-8 border-t border-foreground/10 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
             {/*
               suppressHydrationWarning covers the one edge case where the
               server and the visitor's clock straddle New Year across
@@ -182,6 +192,12 @@ export function Footer() {
             <p className="text-sm text-muted-foreground" suppressHydrationWarning>
               &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
             </p>
+            <Link
+              href="/privacy"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Privacy &amp; cookie policy
+            </Link>
           </div>
         </Container>
       </div>

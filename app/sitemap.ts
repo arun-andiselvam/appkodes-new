@@ -43,6 +43,12 @@ const extraRoutes: string[] = [
    * menu.
    */
   "/how-we-work",
+  /*
+   * Footer-only, added 30 August 2026 alongside the page itself. It carries
+   * no menu entry - components/layout/footer.tsx links it next to the
+   * copyright line instead - so `allNavRoutes` never finds it.
+   */
+  "/privacy",
 ];
 
 /**
