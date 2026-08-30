@@ -119,18 +119,59 @@ export function BodyBlock({
       );
 
     case "figure": {
-      const fit = fitFor(block.width, block.height);
+      const { width, height } = block;
+      const fit = fitFor(width, height);
+
+      /*
+        !! "contain" USED TO MEAN "cropped to 16:9 anyway, just not by
+        cover" !!
+
+        Both branches shared one box, `aspect-[16/9]`, and only the `Image`
+        inside it switched between `object-cover` and `object-contain`. That
+        stopped the checklist infographic fitFor's own comment describes
+        (979x641, a 1.53 ratio) from being cropped, but it did not show it
+        whole either: `object-contain` inside a fixed 16:9 frame shrinks a
+        squarer image to fit the frame's height and pillarboxes the sides,
+        so the picture rendered 51px narrower than the column on each edge
+        and the tint (`bg-foreground/[0.03]`) existed only to colour that
+        gap in. Confirmed live on the checklist figure on 30 August 2026:
+        a 725px wide column held a 622px wide image.
+        `fit === "contain"` is exactly the signal that the box's own shape
+        is wrong for this image, so the fix is to stop giving it one. The
+        `width`/`height` block already carries the image's real ratio -
+        that is what fitFor read to decide "contain" in the first place -
+        so `Image` takes them directly instead of `fill`, and CSS scales the
+        rendered box to the image's own shape at `w-full`. There is no
+        letterboxing left to tint, so the background colour goes with it.
+
+        The `cover` branch is untouched: a photo still crops to a steady
+        16:9 band, which is the point of that path.
+      */
+      if (fit === "contain" && width && height) {
+        return (
+          <figure className="mt-10">
+            <Image
+              src={block.src}
+              alt={block.alt}
+              width={width}
+              height={height}
+              sizes="(min-width: 1024px) 44rem, 100vw"
+              className={`h-auto w-full object-contain ${figureClassName}`}
+            />
+            <figcaption className="mt-3 text-sm text-muted-foreground leading-relaxed">{block.caption}</figcaption>
+          </figure>
+        );
+      }
+
       return (
         <figure className="mt-10">
-          <div
-            className={`relative aspect-[16/9] w-full overflow-hidden ${fit === "contain" ? "bg-foreground/[0.03]" : ""} ${figureClassName}`}
-          >
+          <div className={`relative aspect-[16/9] w-full overflow-hidden ${figureClassName}`}>
             <Image
               src={block.src}
               alt={block.alt}
               fill
               sizes="(min-width: 1024px) 44rem, 100vw"
-              className={fit === "contain" ? "object-contain" : "object-cover"}
+              className="object-cover"
             />
           </div>
           <figcaption className="mt-3 text-sm text-muted-foreground leading-relaxed">{block.caption}</figcaption>
@@ -153,13 +194,30 @@ export function BodyBlock({
       opposite treatment: clearly labelled, set at reading size in the body
       face, in a panel that says "skip this if you are reading on". So it is
       detected and drawn as one. See summaryBody below for what counts.
+
+      !! `lg:text-2xl` CAME OUT ON 30 AUGUST 2026 !!
+
+      A genuine pull quote is one sentence, and text-xl growing to text-2xl
+      at the desktop breakpoint is what a single arresting line wants. The
+      content tool also writes multi-sentence editorial asides as a
+      <blockquote> - a four-line "note for reviewers" is what flagged this -
+      and those got the same escalation, so a whole paragraph of prose
+      ballooned to 24px on a wide screen. Confirmed live: the client tried
+      overriding just the `lg:text-2xl` rule to the CSS keyword `larger` in
+      DevTools and it read right, which computes relative to the
+      blockquote's own parent rather than to `text-xl`, landing at 19.2px -
+      in effect, no growth at the desktop breakpoint at all. That is what
+      dropping `lg:text-2xl` does directly, so the base `text-xl` now holds
+      at every width instead of a keyword standing in for it. `text-xl` is
+      still `text-xl`, so an actual one-line pull quote is barely smaller
+      than before and still reads as one.
     */
     case "quote": {
       const summary = summaryBody(block.text);
       if (summary !== null) return <Summary text={summary} />;
 
       return (
-        <blockquote className="mt-10 border-l-2 border-foreground/25 pl-6 font-display text-xl lg:text-2xl tracking-tight leading-snug">
+        <blockquote className="mt-10 border-l-2 border-foreground/25 pl-6 font-display text-xl tracking-tight leading-snug">
           {block.text}
         </blockquote>
       );
