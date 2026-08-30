@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, Phone } from "lucide-react";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 import { founderContact } from "@/content/contact";
 import { track } from "@/lib/analytics";
 
@@ -67,6 +67,15 @@ export function DirectLine({ className = "" }: { className?: string }) {
             type it in.
           */}
           <span className="font-mono text-xs">{founderContact.phone}</span>
+        </a>
+
+        <a
+          href={`mailto:${founderContact.email}`}
+          onClick={() => track("quote_direct_line", { channel: "email" })}
+          className="inline-flex items-center gap-2 border border-foreground/15 px-3 py-2 text-sm transition-colors hover:border-foreground/40 hover:bg-foreground/[0.03] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/30"
+        >
+          <Mail aria-hidden className="h-4 w-4 shrink-0 text-primary" />
+          <span className="font-mono text-xs">{founderContact.email}</span>
         </a>
       </div>
     </div>
