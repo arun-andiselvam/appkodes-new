@@ -120,15 +120,21 @@ function inlineRuns(nodes: Node[], mark: Inline["mark"] = "none", href?: string)
         /*
          * !! A BLOCK BOUNDARY, NOT AN INLINE WRAPPER !!
          *
-         * plain() flattens a blockquote (and table cells, headings, figcaptions)
-         * through this function into one string, with nothing between siblings.
-         * That is fine when the source is real text nodes, but the content tool
-         * writes the TL;DR as three separate <p> tags inside the blockquote, one
-         * per bullet, each already ending in a period. Falling into the default
-         * branch below joined them with no separator at all - "...CSV
-         * exports.Flawless Deterministic Math..." - which then fed
-         * summaryPoints in rich-text.tsx a single run-on sentence instead of
-         * three, so the TL;DR rendered as one paragraph with no bullets.
+         * plain() flattens a nested block (table cells, headings, figcaptions,
+         * and a blockquote that has no <p> children of its own - see the
+         * fallback in blockquoteText below) through this function into one
+         * string, with nothing between siblings by default. That is fine when
+         * the source is real text nodes, but a paragraph or list item sitting
+         * next to another one needs a separator or their words run together -
+         * "...CSV exports.Flawless Deterministic Math..." - with no space at
+         * the seam.
+         *
+         * The TL;DR itself no longer depends on this: blockquoteText below
+         * keeps each of the content tool's per-bullet <p> tags as its own
+         * paragraph, which is a stronger guarantee than a single joining
+         * space. This case still matters for everything else that flattens
+         * through plain(), and for a blockquote written as bare text with
+         * nested block markup inside it.
          *
          * A trailing space here is squashed to one by squash() and trimmed off
          * the ends by tidy()/plain(), so it costs nothing when the block really
@@ -203,6 +209,35 @@ function figureFrom(el: Element): Block | null {
 
   if (!src) return null;
   return { kind: "figure", src, alt, caption };
+}
+
+/**
+ * A blockquote's text, one real paragraph per line.
+ *
+ * !! A BULLET WAS BEING SPLIT MID-SENTENCE !!
+ *
+ * The content tool writes the TL;DR as one `<p>` per bullet inside the
+ * blockquote, and each of those bullets is often two sentences: a bold
+ * lead-in clause, then a sentence backing it up. Flattening straight through
+ * plain() joined every sentence in every bullet with the same single space,
+ * so by the time rich-text.tsx's summaryPoints() went looking for bullet
+ * boundaries, it had nothing to tell "end of bullet one" apart from "end of
+ * the lead-in clause inside bullet one" and split on both - three bullets in
+ * the CMS became five on the page, one of them cut in half.
+ *
+ * So each `<p>` child keeps its own paragraph here, joined by a blank line
+ * rather than a space. That is a boundary a sentence never contains, so
+ * summaryPoints() can split on it and stop guessing. A blockquote with no
+ * element children - a real pull quote, typed as bare text with no `<p>`
+ * wrapper - has nothing to split on and falls back to the old flattening.
+ */
+function blockquoteText(el: Element): string {
+  const paragraphs = childrenOf(el)
+    .filter(isElement)
+    .map((child) => plain(childrenOf(child)))
+    .filter(Boolean);
+
+  return paragraphs.length > 0 ? paragraphs.join("\n\n") : plain(childrenOf(el));
 }
 
 function tableFrom(el: Element): Block | null {
@@ -298,7 +333,7 @@ function blockFrom(el: Element): Block[] {
     }
 
     case "blockquote": {
-      const text = plain(childrenOf(el));
+      const text = blockquoteText(el);
       return text ? [{ kind: "quote", text }] : [];
     }
 

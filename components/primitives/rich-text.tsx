@@ -187,19 +187,25 @@ function summaryBody(text: string): string | null {
 }
 
 /**
- * The summary's body, cut into one point per sentence.
+ * The summary's body, cut into one point per bullet.
  *
- * !! THE CONTENT TOOL WRITES THREE POINTS AS ONE PARAGRAPH !!
+ * !! PREFER THE REAL BOUNDARIES. GUESS ONLY WHEN THERE ARE NONE !!
  *
- * docs/blog-structure.md calls for the TL;DR as 3 bullet points, and that is
- * how the content tool actually writes them - "Replace expensive answering
- * SaaS: ... Unified multi-tenant control: ... Own 100% of your
- * infrastructure: ..." - but it sends them as sentences in a single
- * blockquote rather than as a list, and html-to-blocks.ts's plain() flattens
- * blockquote contents to one string regardless. So the split happens here
- * instead: on a period or other sentence end followed by a capital letter,
- * which is where these always break because each point opens with a
- * capitalised lead-in phrase.
+ * docs/blog-structure.md calls for the TL;DR as 3 bullet points, and the
+ * content tool writes each one as its own `<p>` inside the blockquote.
+ * html-to-blocks.ts's blockquoteText() keeps those apart with a blank line,
+ * so the first move here is to split on that and trust it - it is the actual
+ * bullet boundary, not a guess.
+ *
+ * The sentence-boundary regex below is what this function used to rely on
+ * for everything, splitting on a period or other sentence end followed by a
+ * capital letter. Kept as a fallback for a summary that arrives as one
+ * unbroken blockquote with no paragraph markers - hand-written content, or
+ * older posts - where it is the only boundary available. Using it whenever a
+ * bullet has more than one sentence in it is exactly what used to split a
+ * single point in half: "Sequence it: reconciliation and alerting before
+ * faster execution." and "You need to see the system clearly..." are one
+ * bullet, not two, and the blank-line split now keeps them that way.
  *
  * A summary that doesn't split into at least two pieces - one sentence, or
  * prose with no clean sentence boundaries - renders as a paragraph rather
@@ -207,6 +213,12 @@ function summaryBody(text: string): string | null {
  * a summary.
  */
 function summaryPoints(text: string): string[] {
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map((point) => point.trim())
+    .filter(Boolean);
+  if (paragraphs.length > 1) return paragraphs;
+
   return text
     .split(/(?<=[.!?])\s+(?=[A-Z(])/)
     .map((point) => point.trim())
