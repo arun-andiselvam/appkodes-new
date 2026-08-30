@@ -10,10 +10,11 @@ import {
   type FormEvent,
 } from "react";
 import Image from "next/image";
-import { Paperclip, Send, X } from "lucide-react";
+import { Paperclip, Phone, Send, X } from "lucide-react";
 
 import { budgetOptions, greeting, serviceOptions } from "@/content/quote-chat";
 import { track, type QuotePlacement } from "@/lib/analytics";
+import { DirectLine } from "@/components/quote/direct-line";
 
 /**
  * QuoteBot.
@@ -146,6 +147,19 @@ export const Chatbot = forwardRef<
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+
+  /*
+   * Whether the founder's direct contact card has been asked for.
+   *
+   * Its own boolean rather than a phase, because unlike everything else in
+   * this file it is not something the conversation reaches - it is a door a
+   * visitor opens themselves, on demand, from wherever they happen to be
+   * once they are a lead. Sits alongside `isLead` below (same gate as the
+   * paperclip: sorted as a project, not a student) but is not reset by phase
+   * changes, so once shown it stays in the transcript rather than
+   * disappearing the moment the conversation moves on.
+   */
+  const [talkToCeoOpen, setTalkToCeoOpen] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -594,6 +608,17 @@ export const Chatbot = forwardRef<
         ))}
 
         {/*
+          The founder's contact card, once asked for. Not one of the
+          phase-conditional affordances below - see the note on
+          `talkToCeoOpen` above - so it renders here, right after the
+          transcript and ahead of them, and stays up regardless of where the
+          conversation goes next. Reuses DirectLine rather than restating its
+          WhatsApp/call markup, same founderContact this window's transcript,
+          emails and PDFs already point everyone to.
+        */}
+        {talkToCeoOpen && <DirectLine />}
+
+        {/*
           The affordance for wherever the conversation is standing. Rendered
           under the messages rather than replacing them, so the reason it
           appeared is still on screen above it.
@@ -821,6 +846,28 @@ export const Chatbot = forwardRef<
                 >
                   <Paperclip aria-hidden className="h-3.5 w-3.5" />
                   Upload
+                </button>
+              )}
+
+              {/*
+                Same gate as the pin above - any lead, the moment they are
+                sorted as one, not gated on email verification. Filled green
+                rather than outlined like every other control in this row,
+                deliberately: this is the one button that hands somebody a
+                real phone number, and it should not read as one more form
+                field among the others.
+              */}
+              {isLead && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    track("quote_talk_to_ceo", { placement });
+                    setTalkToCeoOpen(true);
+                  }}
+                  className="flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-700"
+                >
+                  <Phone aria-hidden className="h-3.5 w-3.5" />
+                  Talk to the CEO
                 </button>
               )}
 
