@@ -86,12 +86,37 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                   they have the width of the paragraph to sit on. They still
                   stack on a phone, where two full width buttons side by side
                   would each be too narrow to read.
+
+                  !! whitespace-normal OVERRIDES THE BUTTON'S OWN whitespace-nowrap,
+                  AND THAT IS LOAD BEARING !!
+
+                  components/ui/button.tsx sets `whitespace-nowrap` and
+                  `shrink-0` on every button, and neither this row nor the
+                  button itself ever gave it a width. A flex item's default
+                  `min-width` is `auto`, which for nowrap text means "however
+                  wide the unwrapped label needs" - the item refuses to
+                  compress below that regardless of its container. cta-
+                  panel.tsx's own note already has the number this collides
+                  with: a 390px phone leaves 278px for this column once the
+                  panel's padding comes off, and "Book a free automation
+                  audit" plus a leading and trailing icon at the sizes below
+                  needs well over that on one line. Nothing here was
+                  preventing it, so it overflowed the panel and got cropped by
+                  cta.tsx's own `overflow-hidden` rather than wrapping or
+                  shrinking. Reported against a live phone on 31 August 2026.
+
+                  text-sm and tighter padding below the sm breakpoint make a
+                  single line the likely outcome on an ordinary phone; the
+                  wrap is what guarantees it can never happen again on
+                  whatever the narrowest phone turns out to be. Desktop is
+                  unaffected - `sm:flex-row` already has the room this needed,
+                  and text only wraps when the space to avoid it is missing.
                 */}
                 <div className="mt-10 flex flex-col sm:flex-row gap-4">
                   <Button
                     asChild
                     size="lg"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 has-[>svg]:px-6 sm:px-8 sm:has-[>svg]:px-8 h-auto min-h-14 py-3 text-sm sm:text-base whitespace-normal text-center leading-snug rounded-full group"
                   >
                     {/*
                       A client component inside this server component, which is
@@ -102,7 +127,7 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                     <QuoteLauncher placement="closing_panel">
                       <Sparkles aria-hidden />
                       {panel.primaryCta}
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-1" />
                     </QuoteLauncher>
                   </Button>
                   {/* Points somewhere real, unlike the buttons it replaces. */}
@@ -110,7 +135,7 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                     asChild
                     size="lg"
                     variant="outline"
-                    className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+                    className="h-auto min-h-14 py-3 px-6 sm:px-8 text-sm sm:text-base whitespace-normal text-center leading-snug rounded-full border-foreground/20 hover:bg-foreground/5"
                   >
                     <Link href={panel.secondaryHref}>{panel.secondaryCta}</Link>
                   </Button>
