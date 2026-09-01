@@ -212,12 +212,41 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                 dark copy, which left the badge with no accessible name at all
                 for anybody reading the site in dark mode.
               */}
+              {/*
+                !! `unoptimized`, BECAUSE THE OPTIMIZER TURNS THIS BLACK !!
+
+                Rendered as a black square in production on 1 September 2026.
+                This badge is one of the seventeen transparent assets named -
+                and left unfixed - in 344aa12 ("Stop the image optimizer
+                flattening transparent logos onto black"), which hit the
+                Handyfeet client logo the same way five days earlier. See the
+                same note in case-studies-index.tsx for the full mechanism:
+                short version, /_next/image falls back to jpeg (no alpha) for
+                any request whose Accept header does not name a configured
+                format, and Cloudflare's cache rule for /_next/image ignores
+                Vary and had let one such response stick at the edge for
+                everybody after it.
+
+                `unoptimized` serves each file exactly as it sits in public/ -
+                both are already the right pixels at the right size, so
+                nothing else changes - which takes the two files here out of
+                that negotiation entirely, same fix as the client logos.
+
+                !! THIS IS NOT THE WHOLE FIX. SEE THE NOTE IN next.config.js !!
+
+                Nine transparent assets under public/ still go through the
+                optimizer un-patched, the site wordmark among them. Each is
+                one incident away from the same bug until the Cloudflare rule
+                itself is fixed to stop caching a response that never asked
+                for webp.
+              */}
               <div className="shrink-0 flex justify-center lg:mr-6">
                 <Image
                   src="/18-years-of-excellence.webp"
                   alt="Eighteen years of excellence"
                   width={692}
                   height={604}
+                  unoptimized
                   className="w-48 sm:w-60 lg:w-72 h-auto dark:hidden"
                 />
                 <Image
@@ -225,6 +254,7 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                   alt="Eighteen years of excellence"
                   width={407}
                   height={355}
+                  unoptimized
                   className="hidden w-48 sm:w-60 lg:w-72 h-auto dark:block"
                 />
               </div>
