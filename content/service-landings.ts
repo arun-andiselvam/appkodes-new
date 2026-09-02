@@ -5963,14 +5963,22 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     metaTitle: "AI App Development Company | Mobile and Web",
     serviceType: "AI app development",
     /*
-     * 155. The hook is the H1's argument, the primary keyword is verbatim and
-     * early, the middle carries the two platforms the children own, and it
-     * closes on the action rather than on a description that stops
-     * describing. The brief's own version measured 144 and ended on a
-     * statement.
+     * 152. The hook is the H1's argument, the primary keyword is verbatim and
+     * early, the middle names what the build starts from, and it closes on the
+     * action rather than on a description that stops describing.
+     *
+     * !! THE OPENING IS NOT ABOUT SOFTWARE THAT ALREADY EXISTS !!
+     *
+     * It read "Most software should be improved, not replaced", which was the
+     * brief's own line and matched the H1 it was written for. The client read
+     * the page on 2 September 2026 and asked for the opposite: the top of this
+     * page is about building the product a client needs, and the argument
+     * against building belongs further down where it cannot be the first thing
+     * a search result says. Same change in the H1, the deck and the
+     * definition below.
      */
     metaDescription:
-      "Most software should be improved, not replaced. AI app development for the products that have to be built, on phones and in the browser. Start a prototype.",
+      "You need a product, not a demo. AI app development that starts from what your business needs and ships it for phones and the browser. Start a prototype.",
 
     hero: {
       eyebrow: "AI app development",
@@ -5978,9 +5986,16 @@ export const serviceLandings: Record<string, ServiceLanding> = {
        * The keyword is in the eyebrow and not in the H1, which is the rule the
        * briefs doc drew out of the two pages it read. It is why these pages do
        * not open the way an agency site opens.
+       *
+       * The H1 was "Most software should be improved. Some has to be built."
+       * That is the brief's line and it opens on somebody else's software,
+       * which the client rejected on 2 September 2026. This one is contrarian
+       * in the same way and points at the build instead. It also sets up the
+       * problem section directly, since the first failure card is a model that
+       * was the pitch rather than the product.
        */
-      title: "Most software should be improved. Some has to be built.",
-      lede: "We build the products that do not exist yet, for phones and for the browser. The model does the part it is genuinely good at, and everything around it is engineered rather than prompted.",
+      title: "You need a product, not a demo. We build the one your business runs on.",
+      lede: "We start from what your business actually needs and build the product that does it, for phones and for the browser. The model does the part it is genuinely good at, and everything around it is engineered rather than prompted.",
       /*
        * Not the eighteen years and the thousand clients. Those two are true
        * and they are on nine other pages, and a buyer who has read one of
@@ -5993,9 +6008,23 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       cta: "Start a prototype",
     },
 
+    /*
+     * The quotable definition, and the Service schema's description.
+     *
+     * Its second sentence used to define this service against adding
+     * intelligence to software that already runs, and to say the other route
+     * was often better. Both were true and both were in the wrong place. The
+     * client asked on 2 September 2026 for the top of the page to be about
+     * building the product a client needs, so the definition now says what the
+     * build starts from instead of what it is not.
+     *
+     * The boundary against silo 1 has not gone anywhere. It is in the reach
+     * section and in the last FAQ, which are the two places a reader reaches
+     * after the page has made its own case.
+     */
     summary: {
       heading: "What AI app development is",
-      body: "AI app development is the work of building a product from nothing, with a model doing one defined job inside it. That is different from adding intelligence to software that already runs, and the second route is often better. When a build really is the right call, custom AI application development ends with a working product. You hold the source code, the hosting and a written handover that somebody can act on.",
+      body: "AI app development is the work of building a product from nothing, with a model doing one defined job inside it. The starting point is what your business needs the product to do rather than what a model happens to be good at. Custom AI application development ends with something your team actually uses on a Monday morning. You hold the source code, the hosting and a written handover that somebody can act on.",
     },
 
     problem: {
@@ -6185,38 +6214,49 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      * already shipping, which is the rule on ArchitectureDiagram in
      * content/types.ts.
      *
-     * It opens on one node and then forks and never rejoins, which is the
-     * only page on the site where that is the truth. Every other service
-     * starts from something the client already has and converges on one
-     * answer. This one starts from an absence and splits: two platforms, two
-     * halves of the build, two things you are handed. A pipeline shape would
-     * have drawn a different page.
+     * It opens on one node and then forks and never rejoins, which is the only
+     * page on the site where that is the truth. Every other service converges
+     * on one answer because it starts from a system that already exists. A
+     * build starts from a need and splits: what it does and where it runs,
+     * then the model's job and the product around it, then a thing that ships
+     * and a thing you own. A pipeline shape would have drawn a different page.
+     *
+     * !! THE LABELS ARE THE BUILD, NOT AN ARGUMENT ABOUT INTEGRATION !!
+     *
+     * The first node read "Nothing to integrate with", and the caption opened
+     * "Nothing exists to integrate with". Both defined this page against silo
+     * 1 rather than describing anything, and the client said so on 2 September
+     * 2026: the diagram beside the headline has to be a general application
+     * build that a reader recognises. It now runs need, then scope and
+     * platform, then the two halves of the build, then ship and hand over.
+     * Anybody redrawing this should be able to point at each slab and name a
+     * week of the engagement.
      *
      * !! THE TONES ARE READ DIFFERENTLY HERE, ON PURPOSE !!
      *
      * Everywhere else blue is what the client already owns and red is what we
-     * add. There is nothing owned yet on a page about building from nothing,
-     * so blue is what ends up yours and red is the work in the middle. The
-     * first row is blue because the empty starting position is still theirs,
-     * and the last row is blue because both of those are handed over.
+     * add. Nothing is owned yet on a page about building from nothing, so blue
+     * is what is theirs at either end and red is the work in the middle. The
+     * first row is blue because the need is the client's, and the last row is
+     * blue because both of those are handed over.
      */
     diagram: {
       caption:
-        "Nothing exists to integrate with, so the build starts by settling what the product has to do and where it has to run. The model gets a narrowed job inside ordinary engineering, and what ships is handed over running.",
+        "The starting point is what the business needs the product to do, which settles the scope and the platform. The model then gets one narrow job inside ordinary engineering, and what ships is yours to run.",
       align: "sequence",
       rows: [
-        [{ label: "Nothing to integrate with", sub: "Where this starts", tone: "brand" }],
+        [{ label: "What your business needs", sub: "Where every build starts", tone: "brand" }],
         [
-          { label: "What it has to do", sub: "Settled before code", tone: "accent" },
-          { label: "Phone or browser", sub: "Where it has to run", tone: "accent" },
+          { label: "What it has to do", sub: "Scoped before any code", tone: "accent" },
+          { label: "Where it has to run", sub: "Phone, browser or both", tone: "accent" },
         ],
         [
-          { label: "The model's job", sub: "Narrowed on purpose", tone: "accent" },
-          { label: "Everything around it", sub: "Ordinary engineering", tone: "brand" },
+          { label: "The model's one job", sub: "Written down, and narrow", tone: "accent" },
+          { label: "The product around it", sub: "Ordinary engineering", tone: "accent" },
         ],
         [
-          { label: "Built and shipped", sub: "Stores or your servers", tone: "brand" },
-          { label: "Handed over", sub: "Running, and documented", tone: "brand" },
+          { label: "Shipped", sub: "Stores, or your servers", tone: "brand" },
+          { label: "Yours to run", sub: "Source, hosting, runbook", tone: "brand" },
         ],
       ],
     },

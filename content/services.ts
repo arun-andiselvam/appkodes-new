@@ -697,7 +697,11 @@ export const servicePages: Record<string, ServicePage> = {
     slug: "ai-app-development",
     title: "AI app development",
     eyebrow: "Silo 06",
-    lede: "Some software should be improved rather than replaced. When a product genuinely has to be built, we build it and hand it over running.",
+    /* Opened on software that already exists until 2 September 2026, when the
+       client asked for the silo to lead on the build instead. Changed here as
+       well as in the long form, because lib/quote-corpus.ts reads this file
+       and the assistant would otherwise still open on the old argument. */
+    lede: "You need a product, not a demo. We start from what your business actually needs and build the product that does it, for phones or for the browser.",
     metaTitle: "AI App Development",
     metaDescription:
       "AI app development for products that do not exist yet. We build mobile and web apps with a model doing one defined job, and hand over the source.",
