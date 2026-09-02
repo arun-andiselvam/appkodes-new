@@ -337,6 +337,21 @@ export type ServiceLanding = {
     lede: string;
     /** Short proof under the call to action. Backed claims only. */
     badges: string[];
+    /**
+     * Label on the primary button, where the site's own is wrong for the page.
+     *
+     * Optional, and it falls back to heroCopy.primaryCta, so the nineteen
+     * pages that shipped before it are untouched. IndustryLanding has carried
+     * the same field since 22 August 2026, and this is that argument arriving
+     * on the service side rather than a new idea.
+     *
+     * Added 2 September 2026 with the app development silo. The site button
+     * reads "Book a free automation audit", which is the right offer on a page
+     * about automating work somebody already does by hand. It is the wrong
+     * offer where the premise is that the product does not exist yet, because
+     * a visitor there has nothing to audit.
+     */
+    cta?: string;
   };
   /**
    * The friction, and what leaving it alone costs.
@@ -382,11 +397,28 @@ export type ServiceLanding = {
    * them made the reader work out what they had in common. The labels are the
    * questions a buyer actually arrives with, so the block reads as a spec
    * rather than as three assurances that happened to be grouped.
+   *
+   * `href` turns a point into a link, and it is optional because most of them
+   * are not one. Added 2 September 2026 for the app development hub, whose
+   * whole credibility rests on naming the two cases where a build is the wrong
+   * answer and sending the reader to the silo that handles each. A section
+   * that names another page and does not link to it asks a buyer to go and
+   * find it, and the silo wiring in
+   * docs/hitasoft_ai_architecture_strategy.md is the reason the page exists in
+   * that shape at all.
+   *
+   * !! THIS IS NOT A ROUTE FOR SIDEWAYS LINKS IN GENERAL !!
+   *
+   * components/sections/service-landing.tsx sets out why the children block
+   * points down and stays pointing down. This does not change that. It is one
+   * page's argument about when to leave, on a page that has to make it to be
+   * honest, and a page that fills all three points with links to siblings is
+   * doing something the review on 22 August 2026 already rejected.
    */
   reach: {
     heading: string;
     body: string;
-    points: { label: string; body: string }[];
+    points: { label: string; body: string; href?: string }[];
   };
   /**
    * What the integration is built from and plugs into.
@@ -467,6 +499,32 @@ export type ServiceLanding = {
     rows: { label: string; values: [string, string] }[];
   };
   faqs: { question: string; answer: string }[];
+  /**
+   * The closing panel's copy, where the site's own does not fit the page.
+   *
+   * Optional and partial. Anything left out falls back to ctaCopy in
+   * content/site.ts, which is what every page shipped before 2 September 2026
+   * still does. lib/service-landing-route.tsx hands it to CtaSection, and
+   * /how-we-work has passed the same prop since 24 August 2026.
+   *
+   * It exists for the same reason `hero.cta` above does. The site panel reads
+   * "Let AI do the repetitive half of the job", which is the automation pitch
+   * and is right on eighteen of these pages. A visitor on the app development
+   * silo has no repetitive half to hand over, because the software they came
+   * to talk about has not been written.
+   *
+   * Anything set here still has to pass docs/positioning.md. An override is a
+   * one line route around copy that was rewritten twice to be understood.
+   */
+  cta?: {
+    eyebrow?: string;
+    headline?: string;
+    headlineAccent?: string;
+    description?: string;
+    primaryCta?: string;
+    secondaryCta?: string;
+    secondaryHref?: string;
+  };
   /**
    * The architecture diagram beside the hero headline.
    *

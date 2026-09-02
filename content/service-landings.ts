@@ -5891,4 +5891,998 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       },
     ],
   },
+
+  /* ------------------------------------------------------------------
+   * Silo 6, AI App Development. Parent and two children, 2 September 2026.
+   *
+   * Built from two client documents that arrived together:
+   * hitasoft_ai_app_seo_strategy-v2.md, which sets the keywords and the silo
+   * wiring, and hitasoft-app-silo-page-briefs-v2.md, which was written after
+   * reading two shipped pages and matches this template slot for slot. Where
+   * the two disagree the strategy doc wins on keywords and the briefs doc
+   * wins on structure, which is what the client asked for.
+   *
+   * !! THIS SILO IS FOR BUILDS, AND IT MUST NOT EAT SILO 1 !!
+   *
+   * The strategy doc raises this itself and it is the whole risk in adding
+   * these three pages. /services/ai-software-integration owns everything that
+   * starts from software the buyer already runs. This silo owns net new
+   * products only. The boundary is enforced in three places rather than
+   * asserted once: the hub's reach section links out to the integration page
+   * by name, the hub's last FAQ sends that visitor away, and the web child's
+   * last FAQ does the same. None of the three carries "integration" in a
+   * title or a primary keyword.
+   *
+   * The same boundary runs the other way against silo 3. A buyer proving an
+   * idea wants /services/custom-ai-mvp-development, which is a smaller
+   * commitment, and the hub says so with a link rather than hoping.
+   *
+   * !! WHAT THE STRATEGY DOC ASKED FOR AND DID NOT GET !!
+   *
+   * "Enterprise AI app development services" as a hub keyword, and
+   * "custom enterprise AI applications" in the hub description. The word is
+   * banned outright in docs/positioning.md, which puts the audience at ten to
+   * five hundred people with no IT department. A page targeting that phrase
+   * would be written for a buyer this company has decided not to chase.
+   *
+   * "AI software development agency" as a hub keyword. Nothing on this site
+   * calls the company an agency, and a term earns its place here only when
+   * some section genuinely answers it. Chasing it would have meant writing a
+   * self description nobody uses. Replaced with "AI powered app development",
+   * which the FAQ answers.
+   *
+   * "Generative AI web platform builders" on the web child. Same problem in a
+   * different shape: "builders" is how a searcher describes the supplier, not
+   * anything a page can be about. The page carries "generative AI web
+   * platform" instead, in the scenario that earns it.
+   *
+   * Both briefs put "| Hitasoft" inside the title tags. app/layout.tsx
+   * appends " - Hitasoft" already, so every one of them would have shipped
+   * with the brand twice. Dropped, and the three titles measure 43, 43 and 44
+   * against the 49 that docs/seo-standards.md allows.
+   *
+   * The briefs doc's own open items are answered where they could be. The
+   * closing panel is overridden per page rather than left on the automation
+   * pitch, which was item 3. The mobile stack claims nothing beyond what
+   * content/integrations.ts already vets, which was item 2. Store review copy
+   * is item 4 and stays a standing risk: it is the only part of these pages
+   * that goes stale without anybody touching it.
+   * ------------------------------------------------------------------ */
+
+  "/services/ai-app-development": {
+    path: "/services/ai-app-development",
+    /*
+     * The parent owns "AI app development", the category term its own URL
+     * carries, and neither child's phrase appears in this title. That is rule
+     * 1 of docs/seo-standards.md, and it is the mistake silo 1 had to unpick.
+     *
+     * 43 characters, 54 rendered. "Mobile and Web" is the intent half and it
+     * is deliberately not "AI Mobile App Development", which belongs to the
+     * child below.
+     */
+    metaTitle: "AI App Development Company | Mobile and Web",
+    serviceType: "AI app development",
+    /*
+     * 155. The hook is the H1's argument, the primary keyword is verbatim and
+     * early, the middle carries the two platforms the children own, and it
+     * closes on the action rather than on a description that stops
+     * describing. The brief's own version measured 144 and ended on a
+     * statement.
+     */
+    metaDescription:
+      "Most software should be improved, not replaced. AI app development for the products that have to be built, on phones and in the browser. Start a prototype.",
+
+    hero: {
+      eyebrow: "AI app development",
+      /*
+       * The keyword is in the eyebrow and not in the H1, which is the rule the
+       * briefs doc drew out of the two pages it read. It is why these pages do
+       * not open the way an agency site opens.
+       */
+      title: "Most software should be improved. Some has to be built.",
+      lede: "We build the products that do not exist yet, for phones and for the browser. The model does the part it is genuinely good at, and everything around it is engineered rather than prompted.",
+      /*
+       * Not the eighteen years and the thousand clients. Those two are true
+       * and they are on nine other pages, and a buyer who has read one of
+       * those learns nothing from meeting them again. Both of these are
+       * claims this silo can carry on its own: ownership is a commitment
+       * repeated in the FAQ, and the case studies behind the scenarios are
+       * shipped products rather than pilots.
+       */
+      badges: ["You own the source and the hosting", "Shipped, not demonstrated"],
+      cta: "Start a prototype",
+    },
+
+    summary: {
+      heading: "What AI app development is",
+      body: "AI app development is the work of building a product from nothing, with a model doing one defined job inside it. That is different from adding intelligence to software that already runs, and the second route is often better. When a build really is the right call, custom AI application development ends with a working product. You hold the source code, the hosting and a written handover that somebody can act on.",
+    },
+
+    problem: {
+      heading: "Where AI products go wrong",
+      body: "Almost none of these failures are technical. They get decided in the first fortnight, by the people choosing what the AI is actually for. The bill for that arrives later, when real users have the product in their hands.",
+      points: [
+        {
+          title: "The AI was the pitch, not the product",
+          body: "A model in the demo raised the money and then had to do a job. Nothing underneath it was built to carry the weight, so the second month is where the product stops.",
+        },
+        {
+          title: "It was built for a connection that always holds",
+          body: "Every screen was drawn on the assumption of a good network and a fast answer. Real users are on a train or in a lift, and the product has no behaviour for either.",
+        },
+        {
+          title: "Nobody decided who runs it afterwards",
+          body: "The build finished on time, and the knowledge walked out with the people who wrote it. Six months later a model provider changes something and there is nobody in the building who can answer for it.",
+        },
+      ],
+    },
+
+    /*
+     * The mirror. Each card answers the problem card above it, in the same
+     * order, which is the rule the briefs doc names as the one that keeps the
+     * two sections from drifting into unrelated lists.
+     */
+    capabilities: {
+      heading: "How we build them",
+      items: [
+        {
+          title: "The model gets one job and it is written down",
+          body: "We name the single thing the model is responsible for before anybody opens an editor. Everything else in the product is ordinary software, which is the half that has to hold.",
+        },
+        {
+          title: "The bad case is designed, not discovered",
+          body: "No signal, a slow answer and a wrong answer are three states we draw first. Your product carries on through all three of them, degraded in a way somebody designed rather than broken.",
+        },
+        {
+          title: "Handover is a deliverable, not a phase",
+          body: "The keys and the runbook are written while the work is still happening, not after it. You finish able to hire somebody else entirely, which is the only version of ownership that means anything.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "An AI feature against an AI product",
+      body: "Both ship something with a model in it. They differ on what happens in the first week that real people are using it in earnest.",
+      columns: ["An AI feature", "An AI product"],
+      rows: [
+        {
+          label: "Where the model sits",
+          values: ["In a panel off to the side", "In the path the work runs through"],
+        },
+        {
+          label: "When the model fails",
+          values: ["The screen shows an error", "The product carries on degraded"],
+        },
+        {
+          label: "What the data does",
+          values: ["Goes wherever the API sends it", "Retention off, hosting you choose"],
+        },
+        {
+          label: "Who runs it after",
+          values: ["Whoever built it, indefinitely", "You do, and the handover is written"],
+        },
+        {
+          label: "What you own",
+          values: ["Access to somebody's platform", "The source and the infrastructure"],
+        },
+      ],
+    },
+
+    /*
+     * Three shipped products, one per child page's territory plus the
+     * marketplace that belongs to neither. Every figure here is already
+     * published in content/case-studies.ts and nothing is rounded up on the
+     * way across. The hard part of each one leads, because a feature list is
+     * the least interesting thing about all three.
+     */
+    scenarios: {
+      heading: "The products we build",
+      body: "Three products, and the hard part of each one named rather than its feature list. Not one of them was a model with an interface bolted onto the front of it.",
+      items: [
+        {
+          system: "Consumer, four products in one",
+          title: "Everything behind one login, on 2G",
+          body: "A wallet and a marketplace shipped behind the same login as the chat, for a market on old networks. The hard part was that a single heavy screen anywhere in it undoes the tuning everywhere else.",
+        },
+        {
+          system: "Internal, a person in the loop",
+          title: "A platform that stops and waits",
+          body: "A content team of a hundred and fifty writers had every piece drafted and illustrated by the system. It runs the whole pipeline and then halts, one step short of publishing, waiting for a person.",
+        },
+        {
+          system: "Marketplace, a million users",
+          title: "A feed that never asks anybody to wait",
+          body: "A short video product with live rooms behind the same login, past a million users after release. That benchmark had already been set by companies running thousands of engineers against the same problem.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We work out what it has to do",
+          body: "Two days on the product itself, and on the one job the model is there to do. Sometimes the honest answer is that you do not need a build at all, and we say so.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names what gets built first, and prices it against what you told us in week one. You keep the document either way, and it is specific enough that somebody else could price it.",
+        },
+        {
+          when: "From week 3",
+          title: "It gets built in slices you can see",
+          body: "Work starts once you approve the plan, and something runs at the end of every slice. What you look at is the real product rather than a status report about one.",
+        },
+      ],
+    },
+
+    /*
+     * The credibility slot, and the reason this silo can sit beside silo 1
+     * without arguing with it. Two of the three points link out, which is
+     * what `href` on a reach point was added for. See content/types.ts.
+     *
+     * A page that only ever says yes to a build is a page a careful buyer
+     * stops believing. Naming the two cases where somebody should leave is
+     * what makes the comparison table above read as an argument rather than
+     * as a sales sheet.
+     */
+    reach: {
+      heading: "When a build is the wrong answer",
+      body: "This page argues for building new software, so it is worth naming the times when that is wrong. Two of the three answers below are a different service, and each label links to it.",
+      points: [
+        {
+          label: "There is a system underneath already",
+          body: "Then the layer between that system and a model is weeks of work rather than a build. Our AI software integration page is the one you want.",
+          href: "/services/ai-software-integration",
+        },
+        {
+          label: "You are still proving the idea",
+          body: "Build the one slice that answers it and stop. Our custom AI MVP development page covers that, and it is a far smaller commitment.",
+          href: "/services/custom-ai-mvp-development",
+        },
+        {
+          label: "The product is the business",
+          body: "Then it gets built properly, by people who will still answer the phone in a year. That is what this page is for.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What an AI product is built from",
+      body: "Nothing here is a requirement, and the choice follows your product rather than our habits. What matters more is that all of it is ordinary technology somebody else can pick up.",
+      groups: [
+        {
+          label: "Where the thinking happens",
+          items: [
+            { name: "Claude", category: "Reading and drafting", icon: "siClaude" },
+            { name: "GPT", category: "General purpose work" },
+            { name: "Embeddings", category: "Search across your own content" },
+          ],
+        },
+        {
+          label: "What people touch",
+          items: [
+            { name: "React", category: "The browser half", icon: "siReact" },
+            { name: "Flutter", category: "iOS and Android from one build", icon: "siFlutter" },
+            { name: "Laravel", category: "Where the rules live", icon: "siLaravel" },
+          ],
+        },
+        {
+          label: "What it runs on",
+          items: [
+            { name: "PostgreSQL", category: "Your records, in your account", icon: "siPostgresql" },
+            { name: "AWS", category: "Hosting in your own name" },
+            { name: "Docker", category: "Same on any machine", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Twentieth shape, and the first 1-2-2-2. Checked against every diagram
+     * already shipping, which is the rule on ArchitectureDiagram in
+     * content/types.ts.
+     *
+     * It opens on one node and then forks and never rejoins, which is the
+     * only page on the site where that is the truth. Every other service
+     * starts from something the client already has and converges on one
+     * answer. This one starts from an absence and splits: two platforms, two
+     * halves of the build, two things you are handed. A pipeline shape would
+     * have drawn a different page.
+     *
+     * !! THE TONES ARE READ DIFFERENTLY HERE, ON PURPOSE !!
+     *
+     * Everywhere else blue is what the client already owns and red is what we
+     * add. There is nothing owned yet on a page about building from nothing,
+     * so blue is what ends up yours and red is the work in the middle. The
+     * first row is blue because the empty starting position is still theirs,
+     * and the last row is blue because both of those are handed over.
+     */
+    diagram: {
+      caption:
+        "Nothing exists to integrate with, so the build starts by settling what the product has to do and where it has to run. The model gets a narrowed job inside ordinary engineering, and what ships is handed over running.",
+      align: "sequence",
+      rows: [
+        [{ label: "Nothing to integrate with", sub: "Where this starts", tone: "brand" }],
+        [
+          { label: "What it has to do", sub: "Settled before code", tone: "accent" },
+          { label: "Phone or browser", sub: "Where it has to run", tone: "accent" },
+        ],
+        [
+          { label: "The model's job", sub: "Narrowed on purpose", tone: "accent" },
+          { label: "Everything around it", sub: "Ordinary engineering", tone: "brand" },
+        ],
+        [
+          { label: "Built and shipped", sub: "Stores or your servers", tone: "brand" },
+          { label: "Handed over", sub: "Running, and documented", tone: "brand" },
+        ],
+      ],
+    },
+
+    /*
+     * Six, and the split the briefs doc specifies. One to three are the
+     * objections a buyer raises out loud. Four and five carry the exact
+     * phrasings somebody types into a search box, which is where
+     * "AI powered app development", "custom AI application development" and
+     * "hire AI app developers" each appear verbatim and once.
+     *
+     * Six routes away, which is the pattern the fintech page already ships.
+     * It is also the strongest anti-cannibalisation device on the page: the
+     * visitor who wants silo 1 is told so by the page itself.
+     */
+    faqs: [
+      {
+        question: "Do we need AI in this at all?",
+        answer:
+          "Often not, and part of what the first week is for is finding that out. A model earns its place where the input is messy language or an image, and a rule cannot cope. Where the job is a calculation with a right answer, ordinary code does it better and costs less to run.",
+      },
+      {
+        question: "Who owns the code and where does it run?",
+        answer:
+          "You own the source, and it runs in cloud accounts that are already in your name. The repositories and the model provider accounts are set up as yours in the first week rather than handed over at the end. Nothing in that arrangement depends on us staying the people who maintain the product afterwards.",
+      },
+      {
+        question: "What happens when the model gets something wrong?",
+        answer:
+          "It will, so the product is drawn around that rather than around the good case. Anything with money or a customer's data on the other side of it stops for a person. Everything the model does is logged, so a wrong answer can be found and undone.",
+      },
+      {
+        question: "What does AI powered app development actually include?",
+        answer:
+          "It covers the product design and the build for whichever platforms it has to run on. The model work sits inside that rather than beside it, and so does store submission where there is an app. The handover documentation is part of the price rather than an extra at the end.",
+      },
+      {
+        question: "Is custom AI application development affordable for a mid sized company?",
+        answer:
+          "It depends on what gets built first, which is why week two ends with a price rather than a range. Companies of twenty to a hundred people are most of who we build for, and the scoping reflects that. Some of them hire AI app developers from us for part of the work and run the rest in house.",
+      },
+      {
+        question: "We already have an app and want to add AI to it. Is this the page?",
+        answer:
+          "Probably not. A model added to software that already runs is a different job, and it is usually faster. The AI software integration page covers it, and it is worth reading before you commit to a build.",
+      },
+    ],
+
+    /*
+     * The closing panel, overridden for the whole silo. The site version
+     * offers to take the repetitive half of a job away, and a visitor here
+     * has no job to hand over yet because the software does not exist.
+     *
+     * "Start a prototype" is not new wording. /how-we-work has closed on it
+     * since 24 August 2026, and reusing it keeps one offer rather than
+     * inventing a second name for the same first step.
+     */
+    cta: {
+      headline: "The product does not exist yet.",
+      headlineAccent: " Start with a prototype.",
+      description:
+        "Bring the idea and anything you have already written down about how it should work. Two weeks later you have a costed plan, and something running that you can look at.",
+      primaryCta: "Start a prototype",
+    },
+  },
+
+  /*
+   * First child of the app development silo, 2 September 2026.
+   *
+   * !! THE UPWARD LINK IS THE BREADCRUMB, AND THAT IS ON PURPose !!
+   *
+   * The strategy doc asks each spoke to link back to the hub early in the body
+   * text. Every child page in this repository does that through the trail at
+   * the top of the page, which components/layout/breadcrumbs.tsx builds from
+   * content/navigation.ts, and it lands above the H1 with the hub's own name
+   * as the anchor text. Writing a second link into a sentence would put the
+   * parent's phrase into the child's copy for no gain the trail does not
+   * already deliver. The other fourteen children work this way and none of
+   * them was changed for this silo.
+   *
+   * !! NOTHING HERE CLAIMS AN ON-DEVICE STACK !!
+   *
+   * The briefs doc flags this as an open item: anything mobile specific has to
+   * be confirmed with delivery before it ships. So the stack section lists
+   * only what content/integrations.ts already vets, and the copy says the
+   * on-device question gets settled in week one rather than naming a runtime
+   * we have not confirmed. Flutter is the one mobile entry in that file and it
+   * keeps the wording it carries there.
+   *
+   * !! THE STORE REVIEW ANSWER GOES STALE BY ITSELF !!
+   *
+   * Also from the briefs doc, and it is the only part of these three pages
+   * that rots without anybody touching it. Store policy changes on somebody
+   * else's schedule. The copy is written to survive that: it says the data
+   * questions are answered during the build, and it says outright that nobody
+   * controls a review outcome. No policy name, no console screen and no
+   * promise about approval. Re-read it if either store changes its data safety
+   * form.
+   *
+   * The brief's H1 and deck are kept almost whole. The second sentence of the
+   * deck ended at "discovering it at launch", which measured thirteen words
+   * and sat in the band docs/positioning.md keeps copy out of.
+   */
+  "/services/ai-mobile-app-development": {
+    path: "/services/ai-mobile-app-development",
+    /* 43 characters, 54 rendered. The child owns the specific phrase and the
+       hub above it owns "AI app development", which is rule 1 working the way
+       it was meant to rather than the way silo 1 first shipped. */
+    metaTitle: "AI Mobile App Development | iOS and Android",
+    serviceType: "AI mobile app development",
+    /* 155. Hook, primary keyword, the platform terms the page is written
+       around, then the action. The brief's own version measured 139 and its
+       middle clause landed in the eleven to fourteen word band the voice rules
+       keep every string out of, meta descriptions included. */
+    metaDescription:
+      "Every model call has to leave the phone. AI mobile app development for iOS and Android, built for real networks rather than office wifi. Start a prototype.",
+
+    hero: {
+      eyebrow: "AI mobile app development",
+      title: "An app that is slow gets uninstalled. An AI app is slow by default.",
+      lede: "Every model call from a phone is a network round trip, and the user blames your app rather than the line. We build the app around that fact rather than discovering it in the week after launch.",
+      /*
+       * Both are commitments this page makes further down rather than company
+       * facts borrowed from content/site.ts. The closed track one is the
+       * process step in week three, and the per feature one is the principle
+       * the whole page rests on.
+       */
+      badges: [
+        "Inference decided per feature, not per app",
+        "Built for a closed testing track first",
+      ],
+      cta: "Start a prototype",
+    },
+
+    summary: {
+      heading: "What AI mobile app development is",
+      body: "AI mobile app development is the work of building an iOS and Android product with a model doing real work inside it. The hard part is never the model itself. Artificial intelligence for iOS and Android runs into one wall, which is that every call to a model leaves the phone. Our AI mobile app development services settle where each feature runs before anybody draws a screen.",
+    },
+
+    problem: {
+      heading: "Where mobile AI apps fall over",
+      body: "Everything works in testing, and testing happens on office wifi with a charger plugged in. Then it ships, and the first thousand people to open it are somewhere else entirely.",
+      points: [
+        {
+          title: "Every feature became a round trip",
+          body: "Somebody wired each smart feature to an API call because that was the fastest thing to build. The app now waits on a server four times a screen, and it feels like the phone is broken.",
+        },
+        {
+          title: "There is no answer for no signal",
+          body: "The design covers what the screen shows once an answer has come back from the model. Nothing was drawn for the minute when it does not, so the user gets a spinner and then an error.",
+        },
+        {
+          title: "The data questions arrived at submission",
+          body: "The store asks what the app collects and where it goes, and it asks at the end. An answer worked out after the build means either a rushed rewrite or a form somebody filled in hopefully.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "How we build for a real network",
+      items: [
+        {
+          title: "On device or on the server, decided per feature",
+          body: "Each feature gets the question asked separately, on what it costs and how fast it has to answer. A small local model handles some of them, and the rest go out to a large one.",
+        },
+        {
+          title: "The degraded state is a design, not an error screen",
+          body: "We draw the screen for no signal at the same time as the screen for a good one. The app keeps doing what it can, queues the rest, and catches up when the line comes back.",
+        },
+        {
+          title: "What you collect gets settled in week two",
+          body: "The data questions get answered while there is still time to change what the answer is. That is a build decision, and it is much cheaper than a rewrite three days before submission.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A general mobile build against an AI mobile build",
+      body: "Both end with an app in both stores. They differ on what the app does at the moment the connection stops holding, which is often.",
+      columns: ["A general build", "An AI mobile build"],
+      rows: [
+        {
+          label: "Where inference runs",
+          values: ["Wherever the SDK defaults to", "Decided per feature, on cost and speed"],
+        },
+        {
+          label: "With no signal",
+          values: ["The feature is unavailable", "The app works, the model catches up"],
+        },
+        {
+          label: "What it costs the user",
+          values: ["Battery and data nobody measured", "Budgeted, and measured on 3G"],
+        },
+        {
+          label: "Store review",
+          values: ["Data questions answered at submission", "Answered during the build"],
+        },
+        {
+          label: "Who runs it after",
+          values: ["A team you have to keep", "Yours, with the handover written down"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "The mobile products we build",
+      body: "Three phone products, and in every one the network was the constraint that decided the architecture. The feature lists are the least interesting thing about them.",
+      items: [
+        {
+          system: "Consumer, 2G and 3G",
+          title: "Four products on one bandwidth budget",
+          body: "Chat and a wallet shipped as one install for a market where the usual assumptions do not hold. Every layer of the stack was tuned against the connection, because the slowest part sets the speed of the product.",
+        },
+        {
+          system: "Social, a million users",
+          title: "A swipe that never asks you to wait",
+          body: "A short video feed with live rooms behind the same login, past a million users after release. The next video has to be there before the thumb finishes moving, which is an infrastructure problem rather than an interface one.",
+        },
+        {
+          system: "Media and permissions",
+          title: "Anything that touches the camera or the microphone",
+          body: "A feature that reads an image or listens to a room is the one the store looks hardest at. What it collects and where that goes gets decided in the build, because the answer belongs in the app rather than in a form.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We find out where the app will actually be used",
+          body: "Two days on who opens this and on what their connection is doing at the time. That single answer shapes more of the architecture than the whole feature list put together.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names which features run on the phone and which go to a server, with a price on each. The data safety answers are written down in it too, months before anybody submits anything.",
+        },
+        {
+          when: "From week 3",
+          title: "It goes to a closed track early",
+          body: "Real devices on real networks get the build long before there is a store listing. Testers on a bad line find in a week what an office never finds at all.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "The line between the phone and the server",
+      body: "One decision shapes an AI mobile app more than any other, and it is where each piece of thinking happens. It is worth making deliberately rather than inheriting it from whatever an SDK defaults to.",
+      points: [
+        {
+          label: "The phone decides",
+          body: "Anything that has to answer with no signal, and anything private enough that it should never leave the device.",
+        },
+        {
+          label: "The server decides",
+          body: "Anything that needs a large model, or a model you intend to swap out later without shipping an update.",
+        },
+        {
+          label: "The line is written down",
+          body: "It is an architecture decision made once, rather than a default inherited from whichever SDK arrived first.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What an AI mobile app is built from",
+      body: "Everything here is what the product would have used anyway, and none of it is a requirement. Anything running on the device itself gets confirmed against your own hardware before it goes in the plan.",
+      groups: [
+        {
+          label: "Where the thinking happens",
+          items: [
+            { name: "Claude", category: "Reading what people write", icon: "siClaude" },
+            { name: "GPT", category: "General purpose work" },
+            { name: "Vision models", category: "Anything the camera sees" },
+          ],
+        },
+        {
+          label: "What the app is made of",
+          items: [
+            { name: "Flutter", category: "iOS and Android from one build", icon: "siFlutter" },
+            { name: "TypeScript", category: "Shared across both", icon: "siTypescript" },
+            { name: "React", category: "The web half of the same product", icon: "siReact" },
+          ],
+        },
+        {
+          label: "What it talks to",
+          items: [
+            { name: "Laravel", category: "Where your rules live", icon: "siLaravel" },
+            { name: "PostgreSQL", category: "Records, in your account", icon: "siPostgresql" },
+            { name: "Redis", category: "The queue a failed call waits in", icon: "siRedis" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Twenty-first shape, and the first 2-2-2-2. It was the last unused
+     * arrangement of ones and twos across four rows, which is worth recording
+     * because the next page on this template has to reuse one and say why.
+     *
+     * The right hand column is the spine the connectors thread down, so it
+     * carries the server path. The left hand node of each row is what the
+     * phone is doing at that same moment. That is the page's principle drawn
+     * rather than asserted: two lanes, held all the way to the bottom, and a
+     * line between them that somebody decided on purpose.
+     *
+     * It is not the "every row is a choice" reading that
+     * /services/custom-ai-models-voice uses for its 2-2-2. There a row is one
+     * decision with two answers and you pick one. Here both halves of every
+     * row happen, and the pairing is what makes the split visible.
+     *
+     * Blue is the phone and red is the network, which follows the house rule
+     * closely enough: red is the part we have to engineer around.
+     */
+    diagram: {
+      caption:
+        "Each tap decides whether the work happens on the device itself or out on the server. The call is sized to the connection, and the app keeps working when no answer comes back. Anything that does arrive gets cached, so the app never fetches the same answer twice.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "The tap", sub: "Whatever signal there is", tone: "brand" },
+          { label: "The decision", sub: "Device or server", tone: "accent" },
+        ],
+        [
+          { label: "On the device", sub: "Answers with no line", tone: "brand" },
+          { label: "The call, sized", sub: "Budgeted for 3G", tone: "accent" },
+        ],
+        [
+          { label: "No answer", sub: "The app keeps working", tone: "brand" },
+          { label: "Queued, then sent", sub: "It catches up later", tone: "accent" },
+        ],
+        [
+          { label: "Cached, not re-fetched", sub: "The second time is free", tone: "brand" },
+          { label: "Store review", sub: "Answered during the build", tone: "brand" },
+        ],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Does the AI run on the phone or on your servers?",
+        answer:
+          "Both, and the split is decided feature by feature rather than once for the whole app. A small model on the device answers instantly and works with no connection, at the cost of being weaker. The large models stay on a server, so anything that needs real reasoning goes out to one.",
+      },
+      {
+        question: "What does the app do with no connection?",
+        answer:
+          "It carries on, which is a thing somebody has to design rather than a property it gets for free. Work the phone can do itself still happens. Anything that needs the server is queued and sent when the line comes back, and the person using it is told which.",
+      },
+      {
+        question: "How do you handle app store review with AI features?",
+        answer:
+          "The data questions get answered during the build rather than on the submission form itself. What the app collects and where that data goes are both build decisions rather than paperwork. Nobody controls a review outcome, here or anywhere else, and a page that promises one is telling you something it cannot know.",
+      },
+      {
+        question: "What does AI powered mobile application development include?",
+        answer:
+          "The product build for iOS and Android, and the model work that sits inside it. Store submission is part of it, along with the data safety answers each store asks for. You get the source and a runbook at the end, in accounts that already carry your name.",
+      },
+      {
+        question: "Do you build native or cross platform?",
+        answer:
+          "Cross platform for most of it, using Flutter, which gives you iOS and Android from one build. Machine learning mobile apps are where that choice needs checking, because anything running on the device itself can be platform specific. That gets settled in week one rather than assumed at the start of the build.",
+      },
+      {
+        question: "We want to test the idea before building the whole app. Is this the page?",
+        answer:
+          "Probably not, and testing first is usually the better order. Our custom AI MVP development page covers the smaller version, which is one slice built far enough to answer the question. Come back here when the answer is yes.",
+      },
+    ],
+
+    cta: {
+      headline: "Build it for the worst connection.",
+      headlineAccent: " Not the office wifi.",
+      description:
+        "Tell us who opens this app, and what their connection is doing while they use it. Two weeks later you have a costed plan with the phone or server line already drawn.",
+      primaryCta: "Start a prototype",
+    },
+  },
+
+  /*
+   * Second child of the app development silo, 2 September 2026.
+   *
+   * !! DO NOT LINK THIS PAGE TO /services/private-llm-fine-tuning !!
+   *
+   * The client asked for this explicitly in the brief, on the grounds that the
+   * fine tuning page is being left undiluted until it ranks. So the tuning
+   * argument is made here in plain words, the case study behind it is fair to
+   * reference, and there is no link and no mention of that page. Anybody
+   * adding a "see also" here later is undoing a decision rather than filling a
+   * gap.
+   *
+   * !! THE CROSS-SILO LINK GOES TO SILO 1, NOT SILO 5 !!
+   *
+   * The last FAQ sends a visitor to /services/ai-software-integration, which
+   * is the boundary this whole silo has to hold. Somebody who already runs the
+   * software wants that page and will be happier there.
+   *
+   * "Generative AI web platform builders" was a briefed keyword and is not
+   * used. "Builders" describes the supplier a searcher is looking for rather
+   * than anything a page can be about, and docs/seo-standards.md only allows a
+   * secondary term that some section genuinely answers. The page carries
+   * "generative AI web platform" in the third scenario instead, which is a
+   * section that does answer it.
+   *
+   * "AI SaaS development company" is used once, in the FAQ about languages and
+   * offices, and it is used to draw a contrast rather than to claim the label.
+   * content/site.ts is clear that this is a services business with nothing to
+   * sign into, so a page that took that phrase as a self description would
+   * contradict the site around it.
+   */
+  "/services/ai-web-app-development": {
+    path: "/services/ai-web-app-development",
+    /* 44 characters, 55 rendered. */
+    metaTitle: "AI Web App Development | Custom AI Platforms",
+    serviceType: "AI web app development",
+    /* 154. */
+    metaDescription:
+      "A model in a side panel is a feature. AI web app development that puts it inside the workflow, with a person approving before anything leaves. Start here.",
+
+    hero: {
+      eyebrow: "AI web app development",
+      title: "A panel in the corner is a feature. The work happens somewhere else.",
+      lede: "We build the platform the team actually works in, with the model inside the job rather than beside it. A person approves before anything goes out, and that is architecture rather than a setting.",
+      badges: [
+        "Approval is a step, not a toggle",
+        "Retention off, private hosting where you need it",
+      ],
+      cta: "Start a prototype",
+    },
+
+    summary: {
+      heading: "What AI web app development is",
+      body: "AI web app development is the work of building a browser platform where a model does part of the job your team already does. What separates it from a tool with AI in it is where the model actually sits. Our AI web application development services put it inside the workflow, with a person approving before anything leaves the building. Custom AI web development ends with the whole platform running in hosting that you control.",
+    },
+
+    problem: {
+      heading: "Where AI platforms lose the team",
+      body: "The tool works in a demo with one user, and then it falls apart at forty. What breaks is rarely the model, and it is almost always something about how people use it together.",
+      points: [
+        {
+          title: "The output announces itself",
+          body: "The draft comes back competent, and every reader can still tell where it came from. Your customers buy judgement, and a paragraph that reads as generated takes the value out of the thing you sell.",
+        },
+        {
+          title: "Approval was a setting somebody turned off",
+          body: "There was a review step, and it lived in a preferences screen where anybody could reach it. Three weeks into a busy month somebody switched it off to go faster, and nothing in the system stopped them.",
+        },
+        {
+          title: "It was built for one team, then given to nine",
+          body: "The first version had five users, and every single one of them could do everything. Roles arrive later as a bolted on layer, and by then the schema has no idea who owns what.",
+        },
+      ],
+    },
+
+    capabilities: {
+      heading: "How we build them",
+      items: [
+        {
+          title: "Tuned against how your people already write",
+          body: "The model learns from your own material rather than from the whole of the internet. A draft arrives in your team's voice, and editing that is a different job from rewriting a stranger.",
+        },
+        {
+          title: "The system stops and waits for a person",
+          body: "The workflow runs to the last step and then halts, one move short of publishing. That stop is a state in the data rather than a preference, so nobody can switch it off in a hurry.",
+        },
+        {
+          title: "Roles and permissions from the first table",
+          body: "Who can see a draft and who can approve it are settled while the schema is being drawn. The same work at forty users is a migration, and at four hundred it is a rewrite.",
+        },
+      ],
+    },
+
+    comparison: {
+      heading: "A tool with AI in it against an AI platform",
+      body: "Both put a model in front of your team. They differ on whether anybody on that team is still opening it in month three.",
+      columns: ["A tool with AI in it", "An AI platform"],
+      rows: [
+        {
+          label: "Where the model sits",
+          values: ["A panel beside the work", "Inside the work"],
+        },
+        {
+          label: "Whose voice the output is in",
+          values: ["The model's", "Yours, tuned against your own material"],
+        },
+        {
+          label: "Approval",
+          values: ["A setting that can be turned off", "A step the workflow cannot skip"],
+        },
+        {
+          label: "At forty users",
+          values: ["Roles bolted on afterwards", "Permissions designed into the schema"],
+        },
+        {
+          label: "Where the data goes",
+          values: ["Wherever the API sends it", "Retention off, hosting you choose"],
+        },
+      ],
+    },
+
+    scenarios: {
+      heading: "The platforms we build",
+      body: "Three browser platforms, and in each one the model does a job somebody used to do by hand. What they have in common is a person standing between the output and the customer.",
+      items: [
+        {
+          system: "Content, a hundred and fifty writers",
+          title: "A month of output inside a week",
+          body: "The system drafts and illustrates a piece from the brief, then stops and waits for a writer to sign it. Two weeks went on documenting how the team already worked before anybody proposed a single feature.",
+        },
+        {
+          system: "Marketplace, twelve languages",
+          title: "A listing that publishes everywhere at once",
+          body: "A submitted listing goes live in twelve languages in under three minutes, and no card is charged until a host accepts. The translation is the easy half of that, and the money rules underneath it are not.",
+        },
+        {
+          system: "Internal, one platform for everybody",
+          title: "The tool the whole company works in",
+          body: "A generative AI web platform is one system rather than a tool for each office, and language is a property of the work. Permissions decide who approves what, which is the part that lets it survive being handed to nine teams.",
+        },
+      ],
+    },
+
+    process: {
+      heading: "How the first three weeks run",
+      steps: [
+        {
+          when: "Week 1",
+          title: "We write down how the work runs today",
+          body: "Two days inside the process as it actually happens, client by client and step by step. The parts nobody thinks are worth mentioning are usually the parts that decide the design.",
+        },
+        {
+          when: "End of week 2",
+          title: "You get a costed plan",
+          body: "The plan names where the model goes and where the person stays, with a price against each stage. That document is yours whatever you decide, and it is specific enough to build from.",
+        },
+        {
+          when: "From week 3",
+          title: "One workflow ships before the rest",
+          body: "We build the single busiest path end to end and put it in front of real users. What that week teaches changes the next one, which is the point of shipping a slice.",
+        },
+      ],
+    },
+
+    reach: {
+      heading: "The line between the model and the person",
+      body: "Every decision on a platform like this comes back to one question, which is what a machine should be allowed to finish. Draw that line once, early, and the rest of the design follows on from it.",
+      points: [
+        {
+          label: "The model drafts",
+          body: "Text and images, or anything else that is faster to edit than it is to start from nothing.",
+        },
+        {
+          label: "The person decides",
+          body: "Judgement is what your customers are paying for, so it is not the thing to automate away.",
+        },
+        {
+          label: "The stop is in the architecture",
+          body: "Approval is a step the workflow waits on rather than a preference somebody is able to switch off.",
+        },
+      ],
+    },
+
+    stack: {
+      heading: "What an AI web platform is built from",
+      body: "None of this is a requirement, and a platform that needs something else gets built with something else. Where the material cannot go to a third party, the same shape runs on hosting you own instead.",
+      groups: [
+        {
+          label: "Where the thinking happens",
+          items: [
+            { name: "Claude", category: "Drafting in your team's voice", icon: "siClaude" },
+            { name: "GPT", category: "General purpose work" },
+            { name: "Embeddings", category: "Finding your own past work" },
+          ],
+        },
+        {
+          label: "What the team works in",
+          items: [
+            { name: "React", category: "The screens people live in", icon: "siReact" },
+            { name: "Laravel", category: "Approvals and roles", icon: "siLaravel" },
+            { name: "TypeScript", category: "The half that is APIs", icon: "siTypescript" },
+          ],
+        },
+        {
+          label: "What it runs on",
+          items: [
+            { name: "PostgreSQL", category: "Drafts, versions and who signed", icon: "siPostgresql" },
+            { name: "pgvector", category: "Your own material, searchable" },
+            { name: "Docker", category: "Your servers or ours", icon: "siDocker" },
+          ],
+        },
+      ],
+    },
+
+    /*
+     * Twenty-second shape, and the first 2-2-1. Every four row arrangement is
+     * now used, so this one is three rows, and 2-2-1 was still free.
+     *
+     * Two lanes that converge, which is the only diagram on the site that
+     * ends narrower than it starts. The left column is the work moving
+     * through and the right column is the permission to move it, and they meet
+     * at the approval step because nothing on this platform gets past that
+     * point without both. `sequence` is what makes a pair rejoin into one node
+     * without the connector doubling back.
+     *
+     * Blue is what the client brings and already owns, red is what gets built,
+     * and the last node is blue again because the person signing is theirs.
+     */
+    diagram: {
+      caption:
+        "A brief and your own material go in, and the model drafts inside the tool your team already uses. Roles decide who is allowed to approve, and nothing leaves the building until a person has signed it.",
+      align: "sequence",
+      rows: [
+        [
+          { label: "A brief arrives", sub: "However it comes in", tone: "brand" },
+          { label: "Your own material", sub: "How your people write", tone: "brand" },
+        ],
+        [
+          { label: "The model drafts", sub: "Inside the tool", tone: "accent" },
+          { label: "Roles decide", sub: "Who may approve what", tone: "accent" },
+        ],
+        [{ label: "A person signs", sub: "Nothing leaves before this", tone: "brand" }],
+      ],
+    },
+
+    faqs: [
+      {
+        question: "Will the output read as machine written?",
+        answer:
+          "Not if the model is tuned on your own material, which is most of the work on a platform like this. A model trained on the internet writes like the internet, and your readers can hear it. Tuned against how your team already writes, a draft arrives close enough that editing it is quick.",
+      },
+      {
+        question: "Does this replace the team?",
+        answer:
+          "No, and a platform built that way tends to fail for commercial reasons rather than technical ones. Judgement is what a client is buying, so the design keeps a person in front of every piece of output. What goes is the production work around that judgement, which is where the hours were.",
+      },
+      {
+        question: "Where does our data go?",
+        answer:
+          "To whichever model you approve, with retention switched off, and that is a setting somebody has to turn on and check. Where the material cannot go to a third party at all, the platform runs against a model on hosting you own. That choice belongs in week two rather than after launch.",
+      },
+      {
+        question: "What does AI powered web application development include?",
+        answer:
+          "The platform build and the model work inside it, with hosting set up in accounts that are yours. Roles and approval are part of the schema from the start rather than a later addition. You get the source and a runbook, which is what makes hiring somebody else possible.",
+      },
+      {
+        question: "Can it work across several languages and offices?",
+        answer:
+          "Yes, and what you get is one system rather than a separate installation for each office. Language is a property of the piece of work, so a brief in one travels the same rails as the next. An AI SaaS development company would sell you seats for that, and this is a platform you own instead.",
+      },
+      {
+        question: "We want the model inside software we already run. Is this the page?",
+        answer:
+          "Probably not. Software that already runs is a different job, and the layer between it and a model is usually weeks rather than a build. The AI software integration page covers that, and it is the cheaper answer when it applies.",
+      },
+    ],
+
+    cta: {
+      headline: "Put the model inside the work.",
+      headlineAccent: " Keep the person in front.",
+      description:
+        "Bring us the workflow your team runs today, however undocumented it happens to be right now. Two weeks later you have the whole thing written down, and a costed plan against it.",
+      primaryCta: "Start a prototype",
+    },
+  },
 };

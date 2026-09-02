@@ -34,7 +34,8 @@ import type { SocialLink } from "./types";
  * note there for why it is not repeated in this file.
  *
  * Rebuilt again on 20 August 2026 for the silo. The two groups are not the
- * main menu repeated. Services lists all five silo parents flat, since
+ * main menu repeated. Services lists every silo parent flat, six of them since
+ * 2 September 2026, since
  * somebody who has read to the bottom of a page already knows which one they
  * want and should not have to open a menu to reach it. Company collects
  * everything that is not a service.

@@ -3,7 +3,7 @@ import type { ServicePage } from "./types";
 /**
  * The service silos, page by page.
  *
- * Five parents and fourteen children, laid out in
+ * Six parents and sixteen children, laid out in
  * docs/hitasoft_ai_architecture_strategy.md. Every one is built to the
  * conversion blueprint in section 4 of that file: the problem first, then what
  * we build, then the three steps, then what changes, then one way to start.
@@ -675,6 +675,123 @@ export const servicePages: Record<string, ServicePage> = {
       "Enquiries that used to reach voicemail reach a booking.",
       "Your calendar fills without anybody managing it.",
       "Every call has a transcript, so nothing is somebody's recollection.",
+    ],
+  },
+
+  /* ----------------------------- Silo 6 -----------------------------
+   * AI App Development, added 2 September 2026. One parent and two children,
+   * which takes this file to six silos and twenty-two pages.
+   *
+   * All three also have long form entries in content/service-landings.ts, and
+   * that is what the routes render. These stay for the reason the note on
+   * ServiceLanding in content/types.ts gives: the short form is what
+   * lib/quote-corpus.ts merges in for the solution block and the outcomes,
+   * and dropping it would hand the quote assistant a thinner account of the
+   * newest silo than it has of the other five.
+   *
+   * So the copy below is deliberately not the long form restated. The problem
+   * headings differ, and the solution and the outcomes exist nowhere else.
+   * ------------------------------------------------------------------ */
+
+  "/services/ai-app-development": {
+    slug: "ai-app-development",
+    title: "AI app development",
+    eyebrow: "Silo 06",
+    lede: "Some software should be improved rather than replaced. When a product genuinely has to be built, we build it and hand it over running.",
+    metaTitle: "AI App Development",
+    metaDescription:
+      "AI app development for products that do not exist yet. We build mobile and web apps with a model doing one defined job, and hand over the source.",
+    problem: {
+      heading: "The build nobody scoped properly",
+      body: "A model in a demo is a week of work. A product people rely on is a different thing, and the gap between them is where most AI projects stop.",
+      points: [
+        "The demo assumed a connection and a model that always answers.",
+        "Nobody wrote down what the model is allowed to decide alone.",
+        "The people who understood the build left with the build.",
+      ],
+    },
+    solution: {
+      heading: "A product, with a model doing one job in it",
+      body: "We settle what the model is for before anybody writes code, then build the rest as ordinary software. We draw the failure cases at the same time as the ones where everything works.",
+      points: [
+        "One job for the model, written down before the build starts.",
+        "Phones or the browser, decided on where it has to run.",
+        "Source and hosting in your own name from week one.",
+        "A handover written while the work happens, not after it.",
+      ],
+    },
+    outcomes: [
+      "You end with a product rather than a demo that impressed somebody.",
+      "The model does one job, so a bad answer has a boundary around it.",
+      "Somebody else could take it over, because the documentation exists.",
+    ],
+  },
+
+  "/services/ai-mobile-app-development": {
+    slug: "ai-mobile-app-development",
+    title: "AI mobile app development",
+    eyebrow: "AI App Development",
+    lede: "Every model call from a phone leaves the phone. We build iOS and Android products around that fact rather than around a good office connection.",
+    metaTitle: "AI Mobile App Development for iOS & Android",
+    metaDescription:
+      "AI mobile app development for iOS and Android. Inference decided per feature, a designed offline state, and store data questions answered in the build.",
+    problem: {
+      heading: "The app is fast until it leaves the building",
+      body: "Testing happens on a good line, with a charger plugged in and nothing else running. The people who install it are on a train, and every model call is a round trip they have to wait for.",
+      points: [
+        "Four API calls a screen, and the phone gets the blame.",
+        "No screen was drawn for the minute with no signal.",
+        "The store's data questions arrived after the build was finished.",
+      ],
+    },
+    solution: {
+      heading: "The connection decides the architecture",
+      body: "Each feature gets its own answer on where the thinking happens, weighed on cost and speed. What the app does with no line is designed rather than left to a spinner.",
+      points: [
+        "On device or on the server, decided per feature.",
+        "A queue for anything the phone could not send.",
+        "Data safety answers settled in week two, not at submission.",
+        "One Flutter build covering iOS and Android.",
+      ],
+    },
+    outcomes: [
+      "The app stays usable on a bad connection instead of stalling.",
+      "The store questions are answered months before anybody submits.",
+      "You can see what each smart feature costs you to run.",
+    ],
+  },
+
+  "/services/ai-web-app-development": {
+    slug: "ai-web-app-development",
+    title: "AI web app development",
+    eyebrow: "AI App Development",
+    lede: "A model in a side panel is a feature. We put it inside the work instead, with a person approving before anything goes out to a customer.",
+    metaTitle: "AI Web App Development & Custom Platforms",
+    metaDescription:
+      "AI web app development that puts the model inside the workflow. Approval as a step the system cannot skip, and permissions designed into the schema.",
+    problem: {
+      heading: "It demos well and dies at forty users",
+      body: "One person using a clever tool is not the same as a department using a platform. Approval and voice are the two things that decide whether anybody is still using it in month three.",
+      points: [
+        "The output reads as generated and the readers notice.",
+        "Approval lived in a settings screen and somebody switched it off.",
+        "Permissions were bolted on once nine teams were already inside.",
+      ],
+    },
+    solution: {
+      heading: "The model drafts and a person signs",
+      body: "The workflow runs to the last step and stops, waiting for somebody with the authority to release it. What stops a draft announcing itself is a model tuned against your own material rather than the internet.",
+      points: [
+        "Approval as a state in the data, not a preference.",
+        "Roles and permissions designed into the first schema.",
+        "The model tuned on how your team already writes.",
+        "Retention off, or a model on hosting you own.",
+      ],
+    },
+    outcomes: [
+      "The team is still using it in month three, which is the test.",
+      "Nothing reaches a customer without somebody putting their name on it.",
+      "Nine teams can share one platform without a rewrite.",
     ],
   },
 };

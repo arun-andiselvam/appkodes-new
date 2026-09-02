@@ -83,7 +83,50 @@ Each page below lists the terms it is written to rank for. These are on-page tar
 *   **AI Voice & Telephony** — `/services/ai-voice-telephony-automation`
     `AI voice agent integration`, `custom voice AI for small business`, `AI phone answering automation`
 
-### Silo 6: Industries / Use Cases — `/industries`
+### Silo 6: AI App Development — `/services/ai-app-development`
+*The products that do not exist yet, built for phones and for the browser.*
+`AI app development`, `custom AI application development`, `hire AI app developers`
+
+Added 2 September 2026 from two client documents, `hitasoft_ai_app_seo_strategy-v2.md` for the keywords and the wiring, and `hitasoft-app-silo-page-briefs-v2.md` for the page structure. It is the sixth silo and the last on the Services rail, which is deliberate: the five above it all start from something the visitor already runs, and this is the exception.
+
+*   **AI Mobile App Development** — `/services/ai-mobile-app-development`
+    `AI mobile app development`, `artificial intelligence for iOS and Android`, `machine learning mobile apps`
+*   **AI Web App Development** — `/services/ai-web-app-development`
+    `AI web app development`, `custom AI web development`, `AI SaaS development company`
+
+> **This silo is for net new builds, and it must not eat Silo 1.**
+>
+> `/services/ai-software-integration` owns everything that starts from software
+> the buyer already runs, and the whole app silo sits one careless sentence away
+> from competing with it. The boundary is held in three places rather than
+> asserted once. The hub's principle section links out to the integration page
+> by name, the hub's last FAQ sends that visitor there, and the web child's last
+> FAQ does the same. No page in this silo carries `integration` in a title or a
+> primary keyword.
+>
+> The boundary runs the other way against Silo 3 as well. A buyer still proving
+> an idea wants `/services/custom-ai-mvp-development`, which is a smaller
+> commitment, and the hub says so with a link rather than hoping.
+
+**Two children where the other silos carry three.** The client's brief asked for
+exactly this, on the grounds that enquiry volume should decide the third rather
+than a symmetry nobody is reading. The panel and the hub both render two cleanly.
+
+**Three briefed keywords were declined.** `Enterprise AI app development
+services` breaks the ban in `docs/positioning.md`, which puts the audience at ten
+to five hundred people. `AI software development agency` is a self description
+nothing else on the site uses. `Generative AI web platform builders` describes
+the supplier a searcher wants rather than anything a page can answer, so the web
+child carries `generative AI web platform` instead. The reasoning is repeated in
+`content/service-landings.ts` at the head of the silo, because a rejected
+suggestion comes back.
+
+**One item is left open on purpose.** The store review answer on the mobile page
+is the only copy on the site that goes stale without anybody touching it, since
+store policy changes on somebody else's schedule. It is written to survive that:
+no policy name, no console screen, and no promise about an approval outcome.
+
+### Silo 7: Industries / Use Cases — `/industries`
 Six pages, and deliberately not a claim to cover every sector. `content/site.ts` holds a longer list of industries for the home page; the gap between the two lists is the honest state of it. A page joins this silo once there is something specific to say about the work.
 
 These six own no child pages, so the header draws them as cards rather than as a rail, three to a row.
@@ -115,7 +158,7 @@ These six own no child pages, so the header draws them as cards rather than as a
 
     Added 21 August 2026. Boutique agencies and SaaS companies are under pressure to produce large volumes of content and run complex campaigns while holding costs down. The challenge: constant demand for high-resolution creative assets, fast app store localisation, and data-driven content marketing that proves ROI. The work: automated generative pipelines for branding and UI assets, programmatic SEO content generation, and intelligent ad-bidding integrations.
 
-### Silo 7: Resources / Blog (Top-of-Funnel) — `/resources`
+### Silo 8: Resources / Blog (Top-of-Funnel) — `/resources`
 *   **Role:** Capture "how-to" searches and link down into the parent service pages.
 *   **Integration Guides** — `/resources/integration-guides` — `AI integration guides`
 *   **Cost Reduction** — `/resources/cost-reduction-strategies` — `AI cost reduction strategies`
@@ -221,3 +264,4 @@ publish until the real ones exist.
 *   **21 Aug 2026** — Added the Media, Communities & Secure Consulting industry. Sections 2 and 3 rewritten to match what is actually built: the doc still described 2 service silos and 3 industries under their old names.
 *   **21 Aug 2026** — Added EdTech & Digital Learning Systems and Digital Marketing & AdTech, taking Industries to six. The header panel stays at three cards per row, so six fills two rows exactly.
 *   **21 Aug 2026** — Built the first long form service page at `/services/ai-software-integration`, to `service-page-architecture.md`. Added `BreadcrumbList` schema site wide, then a GEO pass adding the summary, comparison table and three passage-level questions. See section 5.
+*   **2 Sep 2026** — Services grew from 5 silos to 6 with AI App Development, its hub and two children built long form on the same day. Industries and Resources renumbered from 6 and 7 to 7 and 8; the numbers are labels in this file only and nothing in `content/` reads them. `ServiceLanding` gained three optional fields so a page can name its own hero button, link a principle out to another silo, and override the closing panel. The eighteen pages that set none of them render exactly as before.

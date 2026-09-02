@@ -139,7 +139,15 @@ export function serviceLandingRoute(path: string) {
             />
           ))}
           <ServiceLandingPage page={page} />
-          <CtaSection />
+          {/*
+            The site's closing panel unless the page overrides it, which is
+            what `cta` on ServiceLanding is for. Eighteen pages set nothing and
+            close on the automation pitch exactly as they did before. The app
+            development silo sets its own, because a visitor whose product does
+            not exist yet has no repetitive half of a job to hand over.
+            /how-we-work has passed this same prop since 24 August 2026.
+          */}
+          <CtaSection copy={page.cta} />
         </main>
       );
     },

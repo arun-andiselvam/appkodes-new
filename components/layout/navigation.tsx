@@ -533,7 +533,7 @@ export function Navigation() {
  * One menu item's panel.
  *
  * Two shapes, picked from the data rather than from a flag. Services holds
- * five silos with fourteen child pages between them, and five columns of that
+ * six silos with sixteen child pages between them, and six columns of that
  * is a wall. So a panel whose groups have children draws a rail of silo names
  * on the left, and the group under the pointer fills the right. Industries and
  * Resources hold no children under any group, so those draw as cards, three to

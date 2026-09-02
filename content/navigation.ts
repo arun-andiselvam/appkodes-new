@@ -5,7 +5,8 @@ import type { NavItem } from "./types";
  *
  * Built on 20 August 2026 from docs/hitasoft_ai_architecture_strategy.md, then
  * widened the same day when the strategy grew from two service silos to five.
- * Five parents own fourteen child pages between them. Industries owns six.
+ * Six parents own sixteen child pages between them, the sixth added on
+ * 2 September 2026. Industries owns six.
  * Resources owns three, and case studies is one of them rather than a menu
  * item of its own.
  *
@@ -148,6 +149,45 @@ export const mainNav: NavItem[] = [
             },
           ],
         },
+        /*
+         * Silo 6, added 2 September 2026. It is last on purpose.
+         *
+         * The five above it all start from something the visitor already runs,
+         * which is the argument the whole site leads with. This one is the
+         * exception, and a rail that opened on "we build new software" would
+         * contradict the home page before anybody scrolled.
+         *
+         * !! THE ANCHOR TEXT HERE IS THE SILO'S DOWNWARD LINK !!
+         *
+         * The hub renders these two names and blurbs again in its own "Go
+         * deeper on one part" section, which reads from childrenOf() below.
+         * That is the hub to spoke link the strategy doc asks for, with the
+         * child's exact phrase as the anchor, and it is why the names are the
+         * keyword rather than something shorter and friendlier.
+         *
+         * The panel grows by one rail row. It was five rows against a pane
+         * sized by the tallest silo, so the rail is now the taller side of the
+         * two. Worth a look at 1440 before this ships.
+         */
+        {
+          name: "AI App Development",
+          href: "/services/ai-app-development",
+          blurb:
+            "The products that do not exist yet, built for phones and for the browser.",
+          railNote: "New builds, mobile and web",
+          children: [
+            {
+              name: "AI Mobile App Development",
+              href: "/services/ai-mobile-app-development",
+              blurb: "Apps that hold up on a real network and get through store review.",
+            },
+            {
+              name: "AI Web App Development",
+              href: "/services/ai-web-app-development",
+              blurb: "Platforms with the model in the workflow and a person signing off.",
+            },
+          ],
+        },
       ],
       /*
        * No footer strip on this panel, removed 23 August 2026 at the client's
@@ -156,7 +196,13 @@ export const mainNav: NavItem[] = [
        *
        * The five silos took that height instead, as the railNote line above
        * plus wider spacing. Measured at 1440 wide, the panel was 329px before
-       * and is meant to stay there.
+       * and was meant to stay there.
+       *
+       * A sixth silo arrived on 2 September 2026 and the rail is now the
+       * taller side of the panel rather than the pane. The height is worked
+       * out from the content either way, so nothing snaps under the pointer,
+       * but the number above is no longer the one on screen. Re-measure before
+       * quoting it.
        *
        * How we work is still in the site footer and in the process section of
        * every service page, so it did not lose its only route in.

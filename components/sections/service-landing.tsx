@@ -87,9 +87,18 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
               >
+                {/*
+                  The site's own label unless the page names its own, which is
+                  what hero.cta on ServiceLanding is for. Eighteen pages set
+                  nothing and read "Book a free automation audit" exactly as
+                  before. The app development silo sets its own, because a
+                  visitor who has no software yet has nothing to audit. Same
+                  arrangement the industry pages have carried since 22 August
+                  2026.
+                */}
                 <QuoteLauncher placement="service_hero">
                   <Sparkles aria-hidden />
-                  {heroCopy.primaryCta}
+                  {page.hero.cta ?? heroCopy.primaryCta}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </QuoteLauncher>
               </Button>
@@ -385,11 +394,42 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
             {page.reach.body}
           </p>
 
+          {/*
+            A cell becomes a link when its point carries an href, which only
+            the app development hub does. See `reach` in content/types.ts for
+            why that field exists and why it is not an invitation to fill this
+            grid with sideways links.
+
+            The anchor is stretched over the whole cell rather than sitting on
+            the label alone, so the target is a card rather than four words of
+            small capitals. A dl may only hold div, dt and dd, so the cell
+            stays a div and the link is pinned inside it.
+          */}
           <dl className="mt-12 grid md:grid-cols-3 gap-px bg-foreground/10 border border-foreground/10">
             {page.reach.points.map((point) => (
-              <div key={point.label} className="bg-background p-6 lg:p-8">
-                <dt className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-                  {point.label}
+              <div
+                key={point.label}
+                className={`relative bg-background p-6 lg:p-8 ${
+                  point.href ? "group transition-colors hover:bg-foreground/[0.03]" : ""
+                }`}
+              >
+                <dt className="flex items-center gap-2 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                  {point.href ? (
+                    <>
+                      <Link
+                        href={point.href}
+                        className="after:absolute after:inset-0 group-hover:text-foreground transition-colors"
+                      >
+                        {point.label}
+                      </Link>
+                      <ArrowRight
+                        aria-hidden
+                        className="w-3.5 h-3.5 shrink-0 opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0"
+                      />
+                    </>
+                  ) : (
+                    point.label
+                  )}
                 </dt>
                 <dd className="mt-4 leading-relaxed">{point.body}</dd>
               </div>

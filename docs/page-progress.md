@@ -97,6 +97,9 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/services/custom-ai-models-voice` | `custom AI model development` | long form | 46 | 159 | Service + FAQ | 12 | 2,630 | **Done** |
 | `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | long form | 51 | 156 | Service + FAQ | 11 | 2,541 | **Done** |
 | `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | long form | 55 | 154 | Service + FAQ | 11 | 2,591 | **Done** |
+| `/services/ai-app-development` | `AI app development` | long form | 54 | 155 | Service + FAQ | 12 | 3,061 | **Done** |
+| `/services/ai-mobile-app-development` | `AI mobile app development` | long form | 54 | 155 | Service + FAQ | 11 | 3,039 | **Done** |
+| `/services/ai-web-app-development` | `AI web app development` | long form | 55 | 154 | Service + FAQ | 11 | 3,003 | **Done** |
 | `/industries/fintech-and-finance` | `AI automation for fintech SMBs` | long form | 52 | 152 | Service + FAQ | 9 | 1,897 | **Done** |
 | `/industries/retail-and-inventory` | `retail AI inventory automation` | long form | 50 | 154 | Service + FAQ | 9 | 1,769 | **Done** |
 | `/industries/healthcare-and-consulting` | `healthcare AI automation` | long form | 48 | 159 | Service + FAQ | 9 | 1,861 | **Done** |
@@ -104,11 +107,19 @@ not worth a column each. The only gap is `/how-we-work`, which renders no
 | `/industries/edtech-and-learning` | `edtech AI automation` | long form | 52 | 158 | Service + FAQ | 9 | 1,885 | **Done** |
 | `/industries/marketing-and-adtech` | `marketing AI automation` | long form | 51 | 160 | Service + FAQ | 9 | 1,888 | **Done** |
 
-**Totals.** 30 pages. 26 done, 4 live and awaiting an SEO pass, none left on
+**Totals.** 33 pages. 29 done, 4 live and awaiting an SEO pass, none left on
 the blueprint. No title is over 60. **Four descriptions outside 150 to 160**,
 and three of the four are pages awaiting the pass. The industries hub was at 182
 and being cut in results, and how we work was at 97. Both were fixed on 24
 August 2026.
+
+The three new rows are the AI App Development silo, added 2 September 2026 and
+measured against the running server the same day. They are the longest service
+pages on the site by about four hundred words, where the rest of the template
+sits between 2,531 and 2,756. That is one screen of difference rather than a
+different shape, and it comes from the FAQ answers and the process steps
+carrying a third sentence where the older pages carry two. Worth knowing before
+the next page is written, because the template norm is the shorter one.
 
 That count read "two" until 24 August 2026 and had been wrong for a while. The
 number was decremented by hand each time a page was marked Done, rather than
@@ -126,8 +137,8 @@ because two apostrophes render as `&#x27;` at six characters each. Decoded it
 is 159 and inside the range. Decode before counting, the same rule the title
 column already carries.
 
-**Every service and industry page is finished.** All five silos, their parents
-and all fourteen children, and all six industries. Nothing renders the
+**Every service and industry page is finished.** All six silos, their parents
+and all sixteen children, and all six industries. Nothing renders the
 generated silo page any more. The four awaiting an SEO pass are the home page,
 contact and the two hubs, and they are the whole remaining list.
 
@@ -164,6 +175,9 @@ to appear verbatim somewhere in the copy. Rule 2 of the standard.
 | `/services/custom-ai-models-voice` | `private AI model deployment`, `custom AI voice models`, `speech-to-text AI integration` |
 | `/services/private-llm-fine-tuning` | `custom AI model training`, `on-premise LLM deployment`, `secure AI model hosting` |
 | `/services/ai-voice-telephony-automation` | `AI phone agents`, `automated call center AI`, `Twilio AI voice integration` |
+| `/services/ai-app-development` | `custom AI application development`, `AI powered app development`, `hire AI app developers` |
+| `/services/ai-mobile-app-development` | `AI mobile app development services`, `artificial intelligence for iOS and Android`, `machine learning mobile apps`, `AI powered mobile application development` |
+| `/services/ai-web-app-development` | `AI web application development services`, `custom AI web development`, `AI SaaS development company`, `generative AI web platform` |
 | `/industries/fintech-and-finance` | `automated expense tracking`, `AI ledger management` |
 | `/industries/retail-and-inventory` | `smart inventory management`, `retail vision AI`, `automated stock forecasting` |
 | `/industries/healthcare-and-consulting` | `telehealth AI integration`, `secure medical AI apps`, `automated patient intake` |

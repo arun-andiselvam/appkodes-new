@@ -174,6 +174,9 @@ of content at two URLs is the thing paging must not create.
 | `/services/custom-ai-models-voice` | `custom AI model development` | Custom AI Model Development & Voice (35) |
 | `/services/private-llm-fine-tuning` | `private LLM fine-tuning` | Private LLM Fine-Tuning & Secure Hosting (40) |
 | `/services/ai-voice-telephony-automation` | `AI voice telephony automation` | AI Voice Telephony Automation & Phone Agents (44) |
+| `/services/ai-app-development` | `AI app development` | AI App Development Company \| Mobile and Web (43) |
+| `/services/ai-mobile-app-development` | `AI mobile app development` | AI Mobile App Development \| iOS and Android (43) |
+| `/services/ai-web-app-development` | `AI web app development` | AI Web App Development \| Custom AI Platforms (44) |
 | `/industries/fintech-and-finance` | `AI automation for fintech` | AI Automation for Fintech & Finance Teams (41) |
 | `/industries/retail-and-inventory` | `retail AI inventory automation` | Retail AI Inventory Automation & Vision (39) |
 | `/industries/healthcare-and-consulting` | `healthcare AI automation` | Healthcare AI Automation & Telehealth (37) |
@@ -207,6 +210,26 @@ of these is the other's parent.
 The line not to cross is the service page's own phrase. `custom AI MVP
 development` appears nowhere on `/how-we-work`, verified against the rendered
 HTML, and it must stay that way.
+
+### The app development silo, and the three phrases that share a stem
+
+Added 2 September 2026. `AI app development` sits above `AI mobile app
+development` and `AI web app development`, so the parent's phrase is a
+substring of both children's. That is rule 1 working rather than breaking it.
+
+The test rule 1 sets is whether one phrase appears as a `metaTitle` on more
+than one page, and none of these three does. The parent's title is
+"AI App Development Company | Mobile and Web", which carries neither child's
+phrase. Both children carry their own and not the parent's. Measured against
+the rendered HTML on 2 September 2026, and worth re-measuring if any of the
+three titles is ever rewritten, because the overlap is one careless word away.
+
+The larger risk in this silo is not internal. It is
+`/services/ai-software-integration`, which owns everything that starts from
+software the buyer already runs. Nothing in the app development silo may take
+`integration` into a title or a primary keyword, and all three pages route that
+visitor away in their own copy. See the note at the head of the silo in
+`content/service-landings.ts`.
 
 ---
 

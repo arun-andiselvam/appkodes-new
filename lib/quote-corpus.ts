@@ -42,10 +42,11 @@ function bullets(items: readonly string[]) {
 /**
  * One entry per service, at the best detail available.
  *
- * !! THE TWO FILES DESCRIBE THE SAME NINETEEN PAGES !!
+ * !! THE TWO FILES DESCRIBE THE SAME TWENTY-TWO PAGES !!
  *
  * `servicePages` is the short silo blueprint and `serviceLandings` is the long
- * form written to rank, and both are keyed by the same nineteen paths. Reading
+ * form written to rank, and both are keyed by the same twenty-two paths, which
+ * was nineteen until the app development silo landed on 2 September 2026. Reading
  * them as separate blocks would put every service into the prompt twice, in
  * two voices, which costs tokens to say the same thing and gives the model two
  * slightly different accounts to choose between.
