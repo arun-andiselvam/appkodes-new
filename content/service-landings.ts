@@ -6356,9 +6356,20 @@ export const serviceLandings: Record<string, ServiceLanding> = {
    * promise about approval. Re-read it if either store changes its data safety
    * form.
    *
-   * The brief's H1 and deck are kept almost whole. The second sentence of the
-   * deck ended at "discovering it at launch", which measured thirteen words
-   * and sat in the band docs/positioning.md keeps copy out of.
+   * !! THE HERO LEADS ON THE BUILD, NOT ON THE NETWORK PROBLEM !!
+   *
+   * The brief's H1 and deck shipped almost whole on 2 September 2026 and the
+   * client changed them the same day, for the reason the hub's hero was
+   * changed an hour earlier. They read "An app that is slow gets uninstalled.
+   * An AI app is slow by default", over a deck about round trips. Both are
+   * true and both are still on the page, but a visitor arriving at the top of
+   * a page about building mobile apps met a complaint about latency before
+   * anybody had said what gets built.
+   *
+   * The network argument is the spine of this page and it has not been
+   * softened. It runs the problem cards, the capabilities that mirror them,
+   * the comparison table and the principle. It starts one section lower than
+   * it used to, which is all that changed.
    */
   "/services/ai-mobile-app-development": {
     path: "/services/ai-mobile-app-development",
@@ -6367,17 +6378,24 @@ export const serviceLandings: Record<string, ServiceLanding> = {
        it was meant to rather than the way silo 1 first shipped. */
     metaTitle: "AI Mobile App Development | iOS and Android",
     serviceType: "AI mobile app development",
-    /* 155. Hook, primary keyword, the platform terms the page is written
-       around, then the action. The brief's own version measured 139 and its
-       middle clause landed in the eleven to fourteen word band the voice rules
-       keep every string out of, meta descriptions included. */
+    /* 153. Hook, primary keyword, the platform terms the page is written
+       around, then the action. It opened "Every model call has to leave the
+       phone", which put the technical complaint in the search result. The
+       hook now names what the client wants and the network answer follows it
+       inside the same sentence. */
     metaDescription:
-      "Every model call has to leave the phone. AI mobile app development for iOS and Android, built for real networks rather than office wifi. Start a prototype.",
+      "You need an app your customers keep. AI mobile app development for iOS and Android, built for the connection your users actually have. Start a prototype.",
 
     hero: {
       eyebrow: "AI mobile app development",
-      title: "An app that is slow gets uninstalled. An AI app is slow by default.",
-      lede: "Every model call from a phone is a network round trip, and the user blames your app rather than the line. We build the app around that fact rather than discovering it in the week after launch.",
+      /*
+       * Contrarian in the way the template asks for, and pointed at the build
+       * rather than at a fault. Downloads are what an app page usually
+       * promises and staying installed is the thing a business actually
+       * needs, so the contrast is real rather than decorative.
+       */
+      title: "You need an app your customers keep. We build the one that earns its place on the phone.",
+      lede: "We build the iOS and Android product your business needs, designed for the connection your users actually have. Every model call from a phone is a network round trip, and we build around that rather than discovering it at launch.",
       /*
        * Both are commitments this page makes further down rather than company
        * facts borrowed from content/site.ts. The closed track one is the
@@ -6559,40 +6577,49 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      * arrangement of ones and twos across four rows, which is worth recording
      * because the next page on this template has to reuse one and say why.
      *
-     * The right hand column is the spine the connectors thread down, so it
-     * carries the server path. The left hand node of each row is what the
-     * phone is doing at that same moment. That is the page's principle drawn
-     * rather than asserted: two lanes, held all the way to the bottom, and a
-     * line between them that somebody decided on purpose.
+     * !! THIS DRAWS THE BUILD, NOT ONE MODEL CALL !!
      *
-     * It is not the "every row is a choice" reading that
-     * /services/custom-ai-models-voice uses for its 2-2-2. There a row is one
-     * decision with two answers and you pick one. Here both halves of every
-     * row happen, and the pairing is what makes the split visible.
+     * It drew a single request: a tap, then device or server, then the queue,
+     * then the cache. Accurate, and the wrong subject. The client asked on
+     * 2 September 2026 for the diagram beside the headline to be a mobile app
+     * build somebody recognises, which is the same change the hub's diagram
+     * took an hour earlier. Every slab is now a stage of the engagement, and
+     * anybody redrawing this should be able to name the week each one sits in.
      *
-     * Blue is the phone and red is the network, which follows the house rule
-     * closely enough: red is the part we have to engineer around.
+     * The runtime flow was not deleted, it moved. Where inference runs, the
+     * offline state and the store answers are the three capability cards, the
+     * three comparison rows and the principle, which is where a reader wants
+     * that level of detail anyway.
+     *
+     * Rows read down as the build: what it has to do and who opens it, then
+     * the line between phone and server, then the two things designed during
+     * the build rather than discovered at submission, then what ships and what
+     * you are left holding.
+     *
+     * Blue is the client's at either end, the need at the top and the product
+     * at the bottom. Red is the work in the middle. Same reading the hub uses,
+     * so the silo's three diagrams are consistent with each other.
      */
     diagram: {
       caption:
-        "Each tap decides whether the work happens on the device itself or out on the server. The call is sized to the connection, and the app keeps working when no answer comes back. Anything that does arrive gets cached, so the app never fetches the same answer twice.",
+        "The build starts from what the app has to do and from who opens it. Where each feature runs gets decided from there, and the offline state is designed rather than discovered. The store's data answers are settled during the build, and what ships is yours to run.",
       align: "sequence",
       rows: [
         [
-          { label: "The tap", sub: "Whatever signal there is", tone: "brand" },
-          { label: "The decision", sub: "Device or server", tone: "accent" },
+          { label: "What the app has to do", sub: "Where the build starts", tone: "brand" },
+          { label: "Who opens it, and where", sub: "The connection they have", tone: "brand" },
         ],
         [
-          { label: "On the device", sub: "Answers with no line", tone: "brand" },
-          { label: "The call, sized", sub: "Budgeted for 3G", tone: "accent" },
+          { label: "On the device", sub: "Answers with no line", tone: "accent" },
+          { label: "On the server", sub: "When the model is large", tone: "accent" },
         ],
         [
-          { label: "No answer", sub: "The app keeps working", tone: "brand" },
-          { label: "Queued, then sent", sub: "It catches up later", tone: "accent" },
+          { label: "The offline state", sub: "Designed, not an error", tone: "accent" },
+          { label: "The store's questions", sub: "Answered in week two", tone: "accent" },
         ],
         [
-          { label: "Cached, not re-fetched", sub: "The second time is free", tone: "brand" },
-          { label: "Store review", sub: "Answered during the build", tone: "brand" },
+          { label: "Shipped to both stores", sub: "One Flutter build", tone: "brand" },
+          { label: "Yours to run", sub: "Source, hosting, runbook", tone: "brand" },
         ],
       ],
     },

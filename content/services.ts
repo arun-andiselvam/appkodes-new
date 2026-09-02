@@ -735,7 +735,11 @@ export const servicePages: Record<string, ServicePage> = {
     slug: "ai-mobile-app-development",
     title: "AI mobile app development",
     eyebrow: "AI App Development",
-    lede: "Every model call from a phone leaves the phone. We build iOS and Android products around that fact rather than around a good office connection.",
+    /* Opened on the round trip until 2 September 2026, when the client asked
+       the silo to lead on the build. Changed here too, since
+       lib/quote-corpus.ts reads this file and the assistant would otherwise
+       still open on the technical complaint. */
+    lede: "You need an app your customers keep. We build the iOS and Android product your business needs, designed for the connection your users actually have.",
     metaTitle: "AI Mobile App Development for iOS & Android",
     metaDescription:
       "AI mobile app development for iOS and Android. Inference decided per feature, a designed offline state, and store data questions answered in the build.",
