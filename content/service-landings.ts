@@ -6702,14 +6702,34 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     /* 44 characters, 55 rendered. */
     metaTitle: "AI Web App Development | Custom AI Platforms",
     serviceType: "AI web app development",
-    /* 154. */
+    /* 158. It opened "A model in a side panel is a feature", which spent the
+       hook on what somebody else builds badly. The hook now names the two
+       things a buyer wants at once, and the side panel argument lives in the
+       comparison table where it has a column to sit in. */
     metaDescription:
-      "A model in a side panel is a feature. AI web app development that puts it inside the workflow, with a person approving before anything leaves. Start here.",
+      "You need the output and you need the judgement. AI web app development that puts the model inside the workflow and a person in front of it. Start a prototype.",
 
     hero: {
       eyebrow: "AI web app development",
-      title: "A panel in the corner is a feature. The work happens somewhere else.",
-      lede: "We build the platform the team actually works in, with the model inside the job rather than beside it. A person approves before anything goes out, and that is architecture rather than a setting.",
+      /*
+       * !! THE HERO LEADS ON THE BUILD, NOT ON THE SIDE PANEL !!
+       *
+       * The H1 read "A panel in the corner is a feature. The work happens
+       * somewhere else." The client changed the hub and the mobile page for
+       * the same fault on 2 September 2026, and this is the third: a visitor
+       * arriving on a page about building platforms met a critique of a
+       * competing pattern before anybody said what gets built.
+       *
+       * The contrast survives whole in the comparison table, which is a
+       * column headed "A tool with AI in it" and is the right place for it.
+       *
+       * This H1 is contrarian in the template's sense because the usual pitch
+       * asks a buyer to trade the two things against each other. Output or
+       * judgement, volume or care. The page's argument is that the split is
+       * what lets you keep both, and the whole build follows from it.
+       */
+      title: "You need the output, and you need the judgement. We build the platform that gives you both.",
+      lede: "We build the platform your team works inside, with the model taking the production work off them. The judgement stays with a person, and that is built into the system rather than left to a setting.",
       badges: [
         "Approval is a step, not a toggle",
         "Retention off, private hosting where you need it",
@@ -6717,9 +6737,17 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       cta: "Start a prototype",
     },
 
+    /*
+     * The quotable definition, and the Service schema's description.
+     *
+     * Its second sentence defined this service against a tool with AI in it,
+     * which is the same fault the hub's definition had and was fixed for on
+     * 2 September 2026. It now states where the model sits, and the contrast
+     * is a clause on the end rather than the whole sentence.
+     */
     summary: {
       heading: "What AI web app development is",
-      body: "AI web app development is the work of building a browser platform where a model does part of the job your team already does. What separates it from a tool with AI in it is where the model actually sits. Our AI web application development services put it inside the workflow, with a person approving before anything leaves the building. Custom AI web development ends with the whole platform running in hosting that you control.",
+      body: "AI web app development is the work of building a browser platform where a model does part of the job your team already does. The model sits inside the workflow rather than in a panel beside it, which is what decides whether anybody keeps using it. Our AI web application development services put a person in the path, approving before anything leaves the building. Custom AI web development ends with the whole platform running in hosting that you control.",
     },
 
     problem: {
@@ -6884,30 +6912,43 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      * Twenty-second shape, and the first 2-2-1. Every four row arrangement is
      * now used, so this one is three rows, and 2-2-1 was still free.
      *
-     * Two lanes that converge, which is the only diagram on the site that
-     * ends narrower than it starts. The left column is the work moving
-     * through and the right column is the permission to move it, and they meet
-     * at the approval step because nothing on this platform gets past that
-     * point without both. `sequence` is what makes a pair rejoin into one node
-     * without the connector doubling back.
+     * !! THIS DRAWS THE BUILD, NOT ONE PIECE OF WORK GOING THROUGH !!
      *
-     * Blue is what the client brings and already owns, red is what gets built,
-     * and the last node is blue again because the person signing is theirs.
+     * It drew the runtime: a brief arrives, the model drafts, a person signs.
+     * Accurate, and the wrong subject for the picture beside the headline, the
+     * same fault the hub and the mobile page were corrected for on 2 September
+     * 2026. Every slab is now a stage of the engagement, and the three
+     * diagrams in this silo can be read side by side as one method.
+     *
+     * The runtime flow was not lost. Drafting, approval and roles are the
+     * three capability cards, three of the five comparison rows and the whole
+     * principle section, which is where a reader wants that detail.
+     *
+     * Two lanes that converge, still the only diagram on the site that ends
+     * narrower than it starts. The left column is the work itself and the
+     * right column is the authority over it, and they meet at the shipped
+     * platform because neither one is worth anything here without the other.
+     * `sequence` is what lets a pair rejoin into one node without the
+     * connector doubling back.
+     *
+     * Blue is the client's at either end, what they walk in with and what they
+     * end up owning. Red is the fortnight of design in the middle. Same
+     * reading as the other two pages in the silo.
      */
     diagram: {
       caption:
-        "A brief and your own material go in, and the model drafts inside the tool your team already uses. Roles decide who is allowed to approve, and nothing leaves the building until a person has signed it.",
+        "The build starts by writing down how the work runs today and who has to sign it off. Where the model goes and who is allowed to approve what are settled in the same fortnight. The busiest workflow ships first, and the platform ends up running in hosting you control.",
       align: "sequence",
       rows: [
         [
-          { label: "A brief arrives", sub: "However it comes in", tone: "brand" },
-          { label: "Your own material", sub: "How your people write", tone: "brand" },
+          { label: "How the work runs today", sub: "Written down first", tone: "brand" },
+          { label: "Who signs it off", sub: "Named before any schema", tone: "brand" },
         ],
         [
-          { label: "The model drafts", sub: "Inside the tool", tone: "accent" },
-          { label: "Roles decide", sub: "Who may approve what", tone: "accent" },
+          { label: "Where the model goes", sub: "Inside the job, not beside", tone: "accent" },
+          { label: "Roles and permissions", sub: "In the first table", tone: "accent" },
         ],
-        [{ label: "A person signs", sub: "Nothing leaves before this", tone: "brand" }],
+        [{ label: "The platform, yours", sub: "Busiest workflow first", tone: "brand" }],
       ],
     },
 

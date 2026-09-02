@@ -773,7 +773,11 @@ export const servicePages: Record<string, ServicePage> = {
     slug: "ai-web-app-development",
     title: "AI web app development",
     eyebrow: "AI App Development",
-    lede: "A model in a side panel is a feature. We put it inside the work instead, with a person approving before anything goes out to a customer.",
+    /* Opened on the side panel until 2 September 2026, when the client asked
+       the silo to lead on the build. Changed here too, since
+       lib/quote-corpus.ts reads this file and the assistant would otherwise
+       still open on a critique of somebody else's pattern. */
+    lede: "You need the output and you need the judgement. We build the platform your team works inside, with the model taking the production and a person signing off.",
     metaTitle: "AI Web App Development & Custom Platforms",
     metaDescription:
       "AI web app development that puts the model inside the workflow. Approval as a step the system cannot skip, and permissions designed into the schema.",
