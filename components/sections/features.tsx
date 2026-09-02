@@ -280,7 +280,10 @@ export function FeaturesSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            You do not need an IT team to automate.
+            {/* "to automate" came off on 2 September 2026. Same rhythm, one
+                word shorter, and it no longer scopes the whole capabilities
+                section to automation when builds sit under it too. */}
+            You do not need an IT team.
             <br />
             <span className="text-muted-foreground">Just a decision.</span>
           </SectionTitle>

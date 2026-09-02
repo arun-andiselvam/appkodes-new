@@ -30,7 +30,11 @@ const TestimonialsSection = dynamic(() =>
 export const metadata = pageMetadata({
   // The one page that leads with the company name. See lib/seo.ts.
   absoluteTitle: true,
-  title: `${site.name} - AI Automation for Growing Businesses`,
+  /* "AI Automation for Growing Businesses" until 2 September 2026. The title
+     tag is the narrowest statement of what this company sells anywhere on the
+     site and the first thing in a search result, and that one named only half
+     of it. 51 characters, inside the ~60 a SERP shows. */
+  title: `${site.name} - AI Automation and AI Product Development`,
   description:
     "We put AI into the systems you already run, or build the replacement, so your team spends less time on work software should be doing.",
   path: "/",

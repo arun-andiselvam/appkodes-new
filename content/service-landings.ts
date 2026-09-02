@@ -145,7 +145,11 @@ export const serviceLandings: Record<string, ServiceLanding> = {
      */
     problem: {
       heading: "Your software works. It just does not think yet.",
-      body: "A rebuild costs a year you do not have, and it needs an IT team you do not have either. The software already holds the data a model needs. What is missing is the layer between the two, and that is a project of weeks rather than a rewrite.",
+      /* Scoped to systems that already work on 2 September 2026. The line ran
+         "A rebuild costs a year you do not have, and it needs an IT team you do
+         not have either", which states it as a universal and so argues against
+         the builds this company sells. See the note on `comparison` below. */
+      body: "Rebuilding a system that already works costs a year, and it needs an IT team you may not have. The software already holds the data a model needs. What is missing is the layer between the two, and that is a project of weeks rather than a rewrite.",
       points: [
         {
           title: "The software records, nobody reads it back",
@@ -409,10 +413,23 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       body: "Hitasoft adds AI to existing software. It happens over the APIs those systems already expose, so no core code is rewritten. A system gains document summaries and search that understands a question rather than a keyword. The work runs against your own records rather than a public index, and the integration can be removed as cleanly as it went in.",
     },
 
+    /*
+     * !! THIS TABLE IS SCOPED TO "THE SYSTEM YOU ALREADY RUN" ON PURPOSE !!
+     *
+     * It read "Rebuild against integration" with a "Ground-up rebuild" column
+     * until 2 September 2026, which is a verdict on building software at all
+     * rather than a comparison of two routes for one buyer. Hitasoft sells
+     * builds, so the page was arguing against its own service two clicks away.
+     *
+     * The fix throughout is a qualifier, not a softer voice: every claim here
+     * is scoped to a system that already exists, which is the only situation
+     * this page's reader is actually in. Keep it that way if these rows are
+     * ever edited.
+     */
     comparison: {
-      heading: "Rebuild against integration",
-      body: "Both routes end with an intelligent platform. They differ in what happens to the system you run now, and in what your team has to absorb.",
-      columns: ["Ground-up rebuild", "AI API integration"],
+      heading: "Integration against rebuilding what you run",
+      body: "Both routes end with an intelligent platform. They differ in what happens to the system you run now, and in what your team has to absorb. Where there is no system underneath yet, or the one there cannot carry what you need, a build is the right answer and we do that too.",
+      columns: ["Rebuilding what you run", "AI API integration"],
       rows: [
         {
           label: "Time to live",
@@ -434,7 +451,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
           // with something nobody in house understands. The table answered
           // neither until this row.
           label: "Who runs it after",
-          values: ["Somebody you have to hire", "We do, and the handover is written down"],
+          values: ["A team you staff or contract", "We do, and the handover is written down"],
         },
         {
           label: "Data handling",
@@ -442,7 +459,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
         },
         {
           label: "If it underperforms",
-          values: ["You live with it", "The layer comes back out"],
+          values: ["Unwinding it is another project", "The layer comes back out"],
         },
       ],
     },

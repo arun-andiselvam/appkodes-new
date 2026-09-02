@@ -55,7 +55,12 @@ export async function generateMetadata(): Promise<Metadata> {
     // A template so each route supplies its own name and the brand is appended
     // once, rather than every page repeating the company name by hand.
     title: {
-      default: `${site.name} - AI Automation for Growing Businesses`,
+      /* Kept in step with app/page.tsx, which sets the same sentence as the
+         home page's own title. This is only the fallback for a route that
+         supplies none, but it is still the site's default statement of what
+         Hitasoft sells and it should not be the one the positioning work of
+         2 September 2026 removed everywhere else. */
+      default: `${site.name} - AI Automation and AI Product Development`,
       template: `%s - ${site.name}`,
     },
     description: site.description,

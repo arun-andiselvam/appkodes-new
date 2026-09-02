@@ -13,7 +13,7 @@ export const features: Feature[] = [
     number: "01",
     title: "We do the work, not your team",
     description:
-      "You do not have to staff a technology project. We fit the automation into the systems you already run, so your week carries on as normal.",
+      "You do not have to staff a technology project. We fit the work into the systems you already run, or build what is missing, so your week carries on as normal.",
     visual: "deploy",
   },
   {

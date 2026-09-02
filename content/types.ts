@@ -443,7 +443,7 @@ export type ServiceLanding = {
    */
   summary: { heading: string; body: string };
   /**
-   * Rebuild against integration, side by side.
+   * Integration against rebuilding what the buyer already runs, side by side.
    *
    * Answer engines synthesise comparison tables readily, which is why the
    * blueprint asks for one. Every cell is a characterisation rather than a
