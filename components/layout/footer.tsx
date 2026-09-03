@@ -92,11 +92,26 @@ export function Footer() {
               {/* Brand Column */}
               <div className="col-span-2">
                 <Link href="/" className="inline-flex items-center gap-2 mb-6">
+                  {/*
+                    unoptimized for the same reason the header's copy carries
+                    it, and the long version of why is in the note there. The
+                    short version: /_next/image falls back to jpeg for a
+                    wildcard Accept, jpeg has no alpha, and Cloudflare ignores
+                    Vary, so the keyed-out ground behind this mark flattens to
+                    a black slab for every reader once one crawler asks. Named
+                    as at risk in 344aa12 on 26 August 2026, fixed here on
+                    3 September after it was photographed on a phone.
+
+                    It shows worse here than in the header, because this copy
+                    sits on the dark emphasis panel with the team photograph
+                    behind it, where a black rectangle reads as a hole.
+                  */}
                   <Image
                     src={site.logo.src}
                     alt={site.logo.alt}
                     width={site.logo.width}
                     height={site.logo.height}
+                    unoptimized
                     className="h-8 w-auto"
                   />
                 </Link>

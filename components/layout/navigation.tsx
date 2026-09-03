@@ -246,11 +246,47 @@ export function Navigation() {
               1x/2x srcset off the declared 818px width, so a phone downloaded
               the full size asset to draw a 137px mark.
             */}
+            {/*
+              !! unoptimized IS LOad BEARING, IT IS WHAT KEEPS THE ALPHA !!
+
+              Commit 344aa12 on 26 August 2026 diagnosed this and named this
+              exact asset, "the site wordmark in the header of every page", as
+              one of seventeen transparent files at risk. It fixed the six
+              client logos and left the rest. The badge's turn came on
+              1 September in aefda69. This is the wordmark's, reported on
+              3 September as a black slab behind the mark on an iPhone.
+
+              /_next/image answers image/jpeg for any Accept header that does
+              not name a configured format, that fallback is not configurable,
+              and jpeg has no alpha, so the keyed-out ground flattens to black.
+              Cloudflare ignores Vary: Accept, so one crawler with a wildcard
+              Accept poisons the edge for every reader after it.
+
+              Measured on www.hitasoft.com the morning this was fixed: w=32,
+              64, 128, 640, 750 and 1080 were all cached as image/jpeg, while
+              48, 96, 256, 384 and 828 were webp. A phone at 3x draws this at
+              about 471 device pixels and picks 640 out of the srcset, which is
+              why it broke on a phone and looked fine on every desktop.
+
+              unoptimized points the tag at /hitasoft-logo.webp itself, so
+              there is no negotiation to get wrong and no poisoned URL to
+              purge. The file is 818x167 drawing at 137x28, so the optimizer
+              was saving a few hundred bytes for the privilege of this.
+
+              !! THIS IS BELT AND BRACES, NOT THE FIX !!
+
+              The fix is the Cloudflare rule written into next.config.mjs by
+              344aa12, which stops the edge caching responses to requests that
+              never asked for webp. That still has to be applied in the
+              dashboard, and until it is, every remaining transparent asset
+              under public/ can break the same way.
+            */}
             <Image
               src={site.logo.src}
               alt={site.logo.alt}
               width={site.logo.width}
               height={site.logo.height}
+              unoptimized
               loading="eager"
               fetchPriority="low"
               sizes="140px"
