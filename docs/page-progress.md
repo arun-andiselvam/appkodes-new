@@ -21,11 +21,15 @@ an answer. The India client is in the same position. The United States client
 is also unnamed, and that one is settled rather than pending. No study carries
 a client quote, because nobody has supplied words anyone has agreed to.
 
-The India study is the one that cannot ship yet. Its key art has not been
-supplied, so `image` points at a file that is not in `/public/case-studies` and
-the hero will 404 along with the index card. Its `sendsTo` is provisional for
-the same reason: the destination asked for on 3 September 2026 is not a route
-that exists. Both are written up in the comment above the entry.
+The India study is the only one whose hero is not the client's own. No art came
+with the engagement, so it was built to the same layout by
+`scripts/case-study-key-art.swift` over an Unsplash photograph of Mumbai. The
+provenance and the licence are recorded in the comment above the entry, which
+is what the rest of that file requires of any picture.
+
+Its `sendsTo` is still provisional. The destination asked for on 3 September
+2026 is not a route that exists, so it points at the voice automation page in
+the meantime.
 
 **Four Resources pages are live and are in neither list.** `/resources`,
 `/resources/case-studies`, `/resources/integration-guides` and

@@ -821,22 +821,39 @@ export const caseStudies: CaseStudy[] = [
    * and it carries the whole compliance argument by implication, which is the
    * strongest form available and the one most easily overstated in an edit.
    *
-   * !! THE KEY ART DOES NOT EXIST YET. DO NOT PUBLISH THIS STUDY WITHOUT IT !!
+   * !! THIS HERO IS OURS, NOT THE CLIENT'S, AND IT IS THE ONLY ONE !!
    *
-   * The other four heroes are the client's own artwork. This one is pending,
-   * and `image` points at a file that is not in /public/case-studies yet, so
-   * the hero will 404 and the index card with it.
+   * The other four are the client's own artwork. No art came with this
+   * engagement, so the hero was built here to the same layout: 1152 by 768 and
+   * already 3:2, a navy panel carrying the headline and four capability rows,
+   * and a photograph bleeding in from the right under a navy wash. The
+   * compositor is scripts/case-study-key-art.swift and it takes the photograph
+   * as an argument, so a second one can be made without redrawing anything.
    *
-   * `imageAlt` below is written to the spec the artwork has to hit rather than
-   * to a picture anybody has seen. Read it against the delivered file and
-   * correct it, because an alt describing art that was never made is worse
-   * than no study at all.
+   * It carries no client logo and no product name, which is the condition the
+   * Dubai entry above sets for any artwork on an undisclosed study.
    *
-   * The spec, matching the set: 1376 by 768, no client logo and no product
-   * name, headline starting around 78px from the left, and cropped to 3:2 in
-   * the file anchored hard left rather than left to `object-cover`. See the
-   * Japan Pro entry for why, and for the rule that replacing an image here
-   * means renaming it.
+   * !! WHERE THE PHOTOGRAPH CAME FROM, WHICH THIS FILE REQUIRES IN WRITING !!
+   *
+   * Mumbai, shot at Worli Sea Face, by Drone Master on Unsplash, photo id
+   * 1710582308582-55cc0c461c4e. Published under the Unsplash License, which
+   * covers commercial use and asks for no attribution. That is the licence
+   * half of the rule the Africa entry above lays down after a rights managed
+   * Getty file was proposed for its hero: a picture here is either the
+   * client's own or carries a licence that covers commercial use, and which of
+   * the two it is goes in the comment beside it.
+   *
+   * It is a photograph of the client's country and not of the client's
+   * premises, which is how all four of these started. Nothing near it may
+   * suggest otherwise.
+   *
+   * The country pattern the US entry describes holds: Mumbai here, a skyline
+   * for Africa, Business Bay for Dubai, Chureito Pagoda for Japan.
+   *
+   * `imageAlt` reads the four capability rows off the artwork itself. Re-read
+   * it against the file if the artwork is ever regenerated with different
+   * rows, and see the Japan Pro entry for the rule that replacing an image
+   * here means renaming it rather than overwriting it.
    */
   {
     slug: "abdm-health-platform",
@@ -853,7 +870,7 @@ export const caseStudies: CaseStudy[] = [
       "Patients describe what is wrong out loud. The system works out what they need and books it, and the record goes into India's national health programme.",
     image: "/case-studies/abdm-health-platform-key-art.webp",
     imageAlt:
-      "An India healthcare platform, connected to the national health record. AI voice intake: patients book by speaking. ABDM integration: records filed into the government system. Automated routing: requests sent to the right provider. Set over a city skyline.",
+      "India healthcare platform, connected to the national health record. AI voice intake: patients book by describing the problem. Smart routing: requests matched to the right provider. ABDM integration: records filed into the national system. Web and mobile: one platform behind both front doors. Set over the Mumbai skyline.",
     results: [
       { value: "ABDM", label: "the national health programme every record is filed into" },
       { value: "One call", label: "from a patient describing a problem to a booked provider" },
