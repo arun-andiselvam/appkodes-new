@@ -691,10 +691,59 @@ function MegaPanel({
     <div
       id={id}
       aria-hidden={!open}
+      /*
+        !! `invisible` ON THE CLOSED PANEL IS A CLS FIX, NOT A TIDY UP !!
+
+        PageSpeed reported CLS 0.199 on the desktop run, and every culprit it
+        named was in here: two of these panels' `font-display text-2xl` silo
+        names, the /resources trigger, a pair of eyebrows. Nothing from the
+        page itself appeared at all.
+
+        The panel is a child of <header>, which animates `top`, `left` and
+        `right` from 0 to 1rem over 500ms once the page scrolls past 24px. Those
+        are layout properties rather than transforms, so the bar genuinely
+        narrows by 32px and every frame is a real re-layout. This panel is
+        `left-0 right-0` inside it, so it narrows too and its three column card
+        grid reflows, moving every silo name sideways.
+
+        It was doing that while closed and invisible, because `opacity-0` does
+        not exempt an element from layout shift. Chrome's heuristic skips
+        `visibility: hidden` and `display: none` and nothing else, so a menu
+        nobody had opened was scoring most of the page's CLS. Lighthouse scrolls
+        during its run, which is what fires it.
+
+        !! `transition-all` STAYS. NAMING THE PROPERTIES HERE BROKE THE DROP !!
+
+        The first version of this fix replaced `transition-all` with
+        `transition-[opacity,transform,visibility]`, so that the closed branch
+        could give `visibility` a delay of its own. It shipped a panel that
+        snapped into place instead of easing down.
+
+        Tailwind 4 does not write these as `transform`. `-translate-y-2` emits
+        `translate: var(--tw-translate-x) var(--tw-translate-y)`, using the
+        separate `translate` property, and `scale` and `rotate` are separate in
+        the same way. A list naming `transform` therefore covers none of them,
+        the fade still ran, and the drop jumped. `all` covers whatever the
+        utilities happen to emit, which is the whole argument for keeping it.
+
+        !! THE FADE OUT SURVIVES BECAUSE visibility IS TRANSITIONED, NOT TOGGLED !!
+
+        A bare `visibility: hidden` on the closed branch would take the panel
+        away on the first frame of closing, with no fade at all. `transition-all`
+        covers `visibility` too, and a visibility transition holds the value at
+        `visible` for as long as either end of it is visible. So the panel keeps
+        its box for the full 300ms, fades out, and goes hidden only at the end.
+        Opening is immediate for the same reason, from the other direction.
+
+        That rule is what removes the need for a per-property delay, and so for
+        naming properties at all. If a future engine ever flips it early the
+        symptom is a fade that cuts short, which is worth knowing before
+        reaching for the property list again.
+      */
       className={`absolute left-0 right-0 top-full pt-2 transition-all duration-300 ${
         open
-          ? "opacity-100 translate-y-0 pointer-events-auto"
-          : "opacity-0 -translate-y-2 pointer-events-none"
+          ? "visible opacity-100 translate-y-0 pointer-events-auto"
+          : "invisible opacity-0 -translate-y-2 pointer-events-none"
       }`}
     >
       {/*
