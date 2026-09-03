@@ -776,10 +776,11 @@ export const servicePages: Record<string, ServicePage> = {
     title: "AI web app development",
     eyebrow: "AI App Development",
     /* Opened on the side panel until 2 September 2026, when the client asked
-       the silo to lead on the build. Changed here too, since
-       lib/quote-corpus.ts reads this file and the assistant would otherwise
-       still open on a critique of somebody else's pattern. */
-    lede: "You need the output and you need the judgement. We build the platform your team works inside, with the model taking the production and a person signing off.",
+       the silo to lead on the build, then on "You need the output and you
+       need the judgement" until 3 September, when the long form H1 was cut
+       for length. Kept in step here because lib/quote-corpus.ts reads this
+       file and the assistant should open the way the page does. */
+    lede: "More output, and the same judgement. We build the platform your team works inside, with the model taking the production and a person signing off.",
     metaTitle: "AI Web App Development & Custom Platforms",
     metaDescription:
       "AI web app development that puts the model inside the workflow. Approval as a step the system cannot skip, and permissions designed into the schema.",

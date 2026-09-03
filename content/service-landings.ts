@@ -6839,13 +6839,32 @@ export const serviceLandings: Record<string, ServiceLanding> = {
        * asks a buyer to trade the two things against each other. Output or
        * judgement, volume or care. The page's argument is that the split is
        * what lets you keep both, and the whole build follows from it.
+       *
+       * !! SAME ARGUMENT, HALF THE LENGTH !!
+       *
+       * It ran "You need the output, and you need the judgement. We build the
+       * platform that gives you both." The client kept the idea and cut the
+       * length on 3 September 2026, and the measurement backs them: dropped
+       * into the real H1 at 390 wide it set five lines, where the hub sets
+       * four and the mobile page sets three. Ninety-one characters made it the
+       * longest headline on the site.
+       *
+       * The short version keeps the pattern the other two pages open with, a
+       * statement about the client followed by what we build, and it sets
+       * three lines on a phone and three on a desktop.
        */
-      title: "You need the output, and you need the judgement. We build the platform that gives you both.",
+      title: "More output, and the same judgement. We build for both.",
       lede: "We build the platform your team works inside, with the model taking the production work off them. The judgement stays with a person, and that is built into the system rather than left to a setting.",
-      badges: [
-        "Approval is a step, not a toggle",
-        "Retention off, private hosting where you need it",
-      ],
+      /*
+       * Both chips were cut on 3 September 2026 for the same reason as the
+       * headline. The second one measured 48 characters and wrapped to two
+       * lines on a phone, which is the only chip on the site that did.
+       *
+       * "Retention off, hosting you choose" is not a new phrase. It is the
+       * last row of this page's own comparison table, word for word, so the
+       * chip and the table now make one claim instead of two versions of one.
+       */
+      badges: ["Approval cannot be skipped", "Retention off, hosting you choose"],
       cta: "Start a prototype",
     },
 
