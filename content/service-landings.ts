@@ -6368,7 +6368,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       {
         question: "What happens when the model gets something wrong?",
         answer:
-          "It will, so the product is drawn around that rather than around the good case. Anything with money or a customer's data on the other side of it stops for a person. Everything the model does is logged, so a wrong answer can be found and undone.",
+          "It will, so the product is drawn around that rather than around the good case. Anything with money or personal data on the other side of it stops for a person. Everything the model does is logged, so a wrong answer can be found and undone.",
       },
       {
         question: "What does AI powered app development actually include?",
@@ -6460,23 +6460,37 @@ export const serviceLandings: Record<string, ServiceLanding> = {
        it was meant to rather than the way silo 1 first shipped. */
     metaTitle: "AI Mobile App Development | iOS and Android",
     serviceType: "AI mobile app development",
-    /* 153. Hook, primary keyword, the platform terms the page is written
-       around, then the action. It opened "Every model call has to leave the
-       phone", which put the technical complaint in the search result. The
-       hook now names what the client wants and the network answer follows it
-       inside the same sentence. */
+    /* 152. Hook, primary keyword, the platform terms the page is written
+       around, then the action. It has been rewritten twice. It opened "Every
+       model call has to leave the phone", which put the technical complaint
+       in the search result, and then "You need an app your customers keep",
+       which assumed the app was customer facing. See the H1 below. */
     metaDescription:
-      "You need an app your customers keep. AI mobile app development for iOS and Android, built for the connection your users actually have. Start a prototype.",
+      "You know what it has to do. AI mobile app development for iOS and Android, built for the worst phone and the worst line it will meet. Start a prototype.",
 
     hero: {
       eyebrow: "AI mobile app development",
       /*
-       * Contrarian in the way the template asks for, and pointed at the build
-       * rather than at a fault. Downloads are what an app page usually
-       * promises and staying installed is the thing a business actually
-       * needs, so the contrast is real rather than decorative.
+       * !! NOTHING IN THIS HERO MAY ASSUME WHO OPENS THE APP !!
+       *
+       * The H1 read "You need an app your customers keep." The client
+       * rejected it on 3 September 2026 on two counts, and both were right.
+       *
+       * It assumed a consumer product. A client can ask for an app for any
+       * purpose, and plenty of them are for staff, for a field crew or for a
+       * partner rather than for anybody's customers. A headline that names
+       * customers quietly turns those enquiries away.
+       *
+       * It was also the longest headline in the silo. Measured by dropping
+       * candidates into the real H1 and counting line boxes: it set five lines
+       * on a 390 wide phone against four for the hub and three for this one.
+       *
+       * This version assumes nothing about the audience. "You know what it
+       * has to do" also concedes something true and slightly unusual, which
+       * is that the client arrives holding the requirement, and what they are
+       * buying is the part about the phone.
        */
-      title: "You need an app your customers keep. We build the one that earns its place on the phone.",
+      title: "You know what it has to do. We build it for the worst phone.",
       lede: "We build the iOS and Android product your business needs, designed for the connection your users actually have. Every model call from a phone is a network round trip, and we build around that rather than discovering it at launch.",
       /*
        * Both are commitments this page makes further down rather than company
@@ -6854,7 +6868,12 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       points: [
         {
           title: "The output announces itself",
-          body: "The draft comes back competent, and every reader can still tell where it came from. Your customers buy judgement, and a paragraph that reads as generated takes the value out of the thing you sell.",
+          /* "Your customers buy judgement" until 3 September 2026. Half the
+             platforms this page describes are internal, and the third
+             scenario is explicitly one system for a whole company, so a
+             sentence that assumes paying customers narrows the page for no
+             gain. The point holds for a colleague reading a draft too. */
+          body: "The draft comes back competent, and every reader can still tell where it came from. Judgement is what people are paying for, and a paragraph that reads as generated takes the value out of it.",
         },
         {
           title: "Approval was a setting somebody turned off",
@@ -6915,7 +6934,7 @@ export const serviceLandings: Record<string, ServiceLanding> = {
 
     scenarios: {
       heading: "The platforms we build",
-      body: "Three browser platforms, and in each one the model does a job somebody used to do by hand. What they have in common is a person standing between the output and the customer.",
+      body: "Three browser platforms, and in each one the model does a job somebody used to do by hand. What they have in common is a person standing between the output and whoever receives it.",
       items: [
         {
           system: "Content, a hundred and fifty writers",
@@ -6983,7 +7002,10 @@ export const serviceLandings: Record<string, ServiceLanding> = {
         },
         {
           label: "The person decides",
-          body: "Judgement is what your customers are paying for, so it is not the thing to automate away.",
+          /* Broadened with the problem card above it on 3 September 2026, and
+             reworded rather than copied, because the two sat two screens
+             apart and both opened on the same four words. */
+          body: "Nobody is paying for the draft itself, so the decision behind it is not the thing to automate away.",
         },
         {
           label: "The stop is in the architecture",
