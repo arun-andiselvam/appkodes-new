@@ -5995,7 +5995,42 @@ export const serviceLandings: Record<string, ServiceLanding> = {
        * was the pitch rather than the product.
        */
       title: "You need a product, not a demo. We build the one your business runs on.",
-      lede: "We start from what your business actually needs and build the product that does it, for phones and for the browser. The model does the part it is genuinely good at, and everything around it is engineered rather than prompted.",
+      /*
+       * !! "ENGINEERED RATHER THAN PROMPTED" IS GONE, AND SHOULD NOT COME BACK !!
+       *
+       * The deck ended on that phrase until 3 September 2026, when the client
+       * asked what it meant and whether it was about vibe coding. It was
+       * written about the runtime, meaning the model gets one job and the
+       * arithmetic and the permissions around it are ordinary code. Every
+       * other use of "prompting" on this site carries that sense, all of them
+       * in the custom models silo.
+       *
+       * The trouble is what a reader takes from it here, because this is the
+       * only place on the site where "prompted" sits opposite "engineered",
+       * and that pairing reads as a claim about how the code gets written.
+       *
+       * Read that way it contradicts the home page. content/integrations.ts
+       * publishes a marquee of Claude Code, Cursor, Copilot and v0, and the
+       * note on it says the row exists so a reader can see where the speed
+       * comes from: "We build at that speed and we catch what the machine gets
+       * wrong." A deck implying we do not prompt argues with that row.
+       *
+       * The client chose to claim the build process instead of the runtime,
+       * which turns the ambiguity into the differentiator and agrees with the
+       * marquee rather than fighting it. The architecture argument was never
+       * carried by this sentence alone: it is the summary paragraph, the first
+       * capability card and the first FAQ, all of which say it plainly.
+       *
+       * !! THE LAST CLAUSE IS NOT THE CLIENT'S DRAFT, AND HERE IS WHY !!
+       *
+       * Their version closed "which is the part that separates a product from
+       * a demo". That is the H1 one line above, word for word, and the note on
+       * the integration parent's H1 in this file is about exactly this failure:
+       * a hero that repeats itself reads as one idea said four times. The
+       * clause now points at whether the thing holds up, which is what the
+       * problem section goes on to argue.
+       */
+      lede: "We start from what your business actually needs and build the product that does it, for phones and for the browser. The model does the part it is genuinely good at. We build fast with AI tooling, and then we check what it wrote, which is the half that decides whether it holds up.",
       /*
        * Not the eighteen years and the thousand clients. Those two are true
        * and they are on nine other pages, and a buyer who has read one of
