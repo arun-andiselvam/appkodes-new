@@ -207,12 +207,27 @@ export function PostCard({ post }: { post: Post }) {
         Ten rem of thumbnail against the rest is close to the proportion the
         full width row had, so the card keeps that reading while fitting two to
         a line.
+
+        !! THAT REASONING HOLDS FROM sm UP AND FAILED BELOW IT !!
+
+        Both lists that draw this card are `sm:grid-cols-2`, so under 640px
+        there is one card to a row and the row layout had a fixed 10rem of
+        picture against whatever was left. On a 412px phone inside a px-6
+        container that leaves about 190px for the copy, and a real headline
+        breaks to one word per line: "Diabetes / Management / App /
+        Development:" was four lines before the colon.
+
+        So the card stacks below sm, which is what the client asked for on
+        3 September 2026 and what the width actually wants: picture across the
+        full column, then the headline, then the excerpt. The row returns at sm
+        where there are two cards to a line and the argument above applies
+        again.
       */}
       {/* postHref, not a template here: an uncategorised post reads at
           /blog/<slug> instead. See lib/posts.ts. */}
       <Link
         href={postHref(post)}
-        className="group/post grid grid-cols-[minmax(0,10rem)_1fr] items-start gap-5"
+        className="group/post grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,10rem)_1fr] sm:items-start sm:gap-5"
       >
         {post.image ? (
           /*
@@ -254,12 +269,26 @@ export function PostCard({ post }: { post: Post }) {
             This card is only ever drawn by a blog listing - /blog and the two
             resource category pages - so no other page picks the corners up.
           */
-          <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-[12px]">
+          /*
+            !! THE ASPECT AND `sizes` BOTH CHANGE AT sm, AND THEY HAVE TO !!
+
+            4:3 is right for a 10rem thumbnail and too tall across a phone: at
+            412px it is a 309px picture before the headline starts, which is
+            most of the screen for one card. 16:9 below sm keeps the artwork
+            full width without burying the writing under it.
+
+            `sizes` was a flat "10rem", so the srcset topped out around 256px
+            wide. Left alone, a full width phone card would stretch that across
+            412 CSS pixels on a 2x or 3x screen and look soft, which is the
+            usual way a responsive image regression ships unnoticed. The
+            container is px-6, so the card is the viewport less 3rem.
+          */
+          <span className="relative block aspect-[16/9] w-full overflow-hidden rounded-[12px] sm:aspect-[4/3]">
             <Image
               src={post.image}
               alt={post.title}
               fill
-              sizes="10rem"
+              sizes="(min-width: 640px) 10rem, calc(100vw - 3rem)"
               className="object-cover transition-transform duration-500 group-hover/post:scale-[1.04]"
             />
             <span
@@ -267,10 +296,16 @@ export function PostCard({ post }: { post: Post }) {
               className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/45 to-transparent"
             />
             {/* Stacked rather than on one line. At ten rem the two labels do
-                not sit side by side without wrapping mid word. */}
-            <span className="absolute inset-x-0 bottom-0 p-3 font-mono text-[10px] uppercase tracking-widest leading-tight text-white">
+                not sit side by side without wrapping mid word.
+
+                Across a full width phone card there is room to spare, and two
+                stacked labels in the corner of a wide picture read as a
+                mistake rather than a choice. So they sit on one line below sm
+                and stack again from sm up, where the 10rem constraint that
+                produced the rule is back. */}
+            <span className="absolute inset-x-0 bottom-0 flex items-baseline gap-2 p-3 font-mono text-[10px] uppercase tracking-widest leading-tight text-white sm:block">
               <time dateTime={post.published}>{formatDate(post.published)}</time>
-              <span className="mt-0.5 block text-white/75">
+              <span className="text-white/75 sm:mt-0.5 sm:block">
                 {post.readingMinutes} min read
               </span>
             </span>
