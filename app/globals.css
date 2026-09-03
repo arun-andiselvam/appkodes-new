@@ -431,6 +431,82 @@
   }
 
   /*
+   * The hero's staged entrance.
+   *
+   * !! THIS EXISTS TO KEEP LARGEST CONTENTFUL PAINT OFF THE HYDRATION CLOCK !!
+   *
+   * The hero used to stage itself in with React state. Every element below the
+   * headline rendered at `opacity-0` and a `useHydrated()` flag flipped them to
+   * `opacity-100`, so the fade could not start until 417KB of JavaScript had
+   * been fetched, parsed and run. Measured on the live site on 3 September 2026
+   * with Lighthouse under real mobile throttling: first paint at 1.07s,
+   * hydration tasks at 3.5s and 4.1s, and LCP recorded at 4.38s with 3.93s of
+   * it sitting in "element render delay".
+   *
+   * Chrome does not count an element at `opacity: 0` as a paint candidate, so
+   * the largest text on the page was invisible for three and a half seconds and
+   * the metric said so.
+   *
+   * The headline was exempted from that flag on 25 August 2026 for exactly this
+   * reason, and the problem simply moved one element down to the description
+   * paragraph, which is the next largest thing. That is the trap here: fixing
+   * one element at a time just hands LCP to whatever is next in the cascade.
+   * The starting gun has to change, not the running order.
+   *
+   * A CSS animation fires at first paint with no JavaScript involved, so the
+   * same cascade now begins about two and a half seconds earlier. The keyframes
+   * are identical to the transition they replace, `both` holds the opening
+   * frame through the delay exactly as `opacity-0` did, and the delays stay on
+   * the elements as inline `animationDelay` the way .animate-char-in above
+   * already does it.
+   *
+   * !! DO NOT PUT THESE BACK BEHIND A HYDRATION FLAG !!
+   *
+   * A staged entrance driven from React state is the same bug again, whatever
+   * it is called. Anything above the fold that starts invisible has to start
+   * itself from CSS.
+   */
+  .hero-rise {
+    animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* The stats marquee only ever faded. It carries no rise, so neither does
+     this, and the row does not start life 16px out of position. */
+  .hero-fade {
+    animation: hero-fade 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* No animation at all rather than a shortened one, matching .diagram-in and
+     .record-in above. With the animation gone the elements sit at their natural
+     opacity of 1, which is what the markup already says. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-rise,
+    .hero-fade {
+      animation: none;
+    }
+  }
+
+  /*
    * The process panel. These were a <style jsx> block inside the section until
    * its markup moved into the shared Section and Container primitives, which
    * put three of its elements outside styled-jsx's scope. The keyframes were

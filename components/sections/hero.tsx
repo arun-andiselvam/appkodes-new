@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useHydrated } from "@/hooks/use-hydrated";
 import { useInView } from "@/hooks/use-in-view";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import Link from "next/link";
@@ -15,9 +14,12 @@ import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 
 export function HeroSection() {
-  // The entrance animation has to start from its "before" state so the server
-  // and the first client render agree. It runs the moment React takes over.
-  const isVisible = useHydrated();
+  /*
+    The staged entrance is CSS now. See .hero-rise in app/globals.css for why,
+    and do not reintroduce a hydration flag here: this section used to hold
+    `const isVisible = useHydrated()` and gate four elements' opacity on it,
+    which kept Largest Contentful Paint waiting on the JavaScript bundle.
+  */
   const [wordIndex, setWordIndex] = useState(0);
 
   // Same guard as every other rotating section on the page (see
@@ -47,11 +49,7 @@ export function HeroSection() {
 
       <Container className="relative z-10 pt-24 pb-40 lg:pt-28 lg:pb-56">
         {/* Eyebrow */}
-        <div 
-          className={`mb-8 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
+        <div className="mb-8 hero-rise">
           <Eyebrow>
             {site.eyebrow}
           </Eyebrow>
@@ -60,28 +58,28 @@ export function HeroSection() {
         {/*
           Main headline.
 
-          !! THIS ONE DOES NOT WAIT ON isVisible, AND USED TO !!
+          !! THIS ONE CARRIES NO ENTRANCE AT ALL, AND THAT IS DELIBERATE !!
 
-          It carried the same opacity-0-until-hydrated treatment as the
-          eyebrow, description and CTAs below, on the same reasoning: the
-          server and the first client render have to agree, so the "before"
-          state has to be in the SSR'd HTML.
+          It used to fade in with everything else, gated on a hydration flag.
+          The cost of that is what an invisible element cannot do: be a
+          Largest Contentful Paint candidate. This is the single biggest thing
+          on the page, in a font size up to 7rem, and Chrome simply cannot
+          count text sitting at opacity: 0. Confirmed live on 25 August 2026,
+          after the Cloudflare RUM beacon (a separate issue) was disabled and
+          stopped masking it: LCP had quietly become the header's small logo
+          image instead, because that one paints at full opacity immediately
+          and this one did not paint as anything while its fade ran.
 
-          The cost of that agreement is what an invisible element cannot do:
-          be a Largest Contentful Paint candidate. This is the single
-          biggest thing on the page, in a font size up to 7rem, and Chrome
-          simply cannot count text sitting at opacity: 0. Confirmed live on
-          25 August 2026, after the Cloudflare RUM beacon (a separate issue)
-          was disabled and stopped masking it: LCP had quietly become the
-          header's small logo image instead, because that one paints at
-          full opacity immediately and this one does not paint as anything
-          for up to a second while its fade-in transition runs.
+          Exempting it fixed the headline and moved the problem one element
+          down, to the description paragraph below. That was measured on
+          3 September 2026 and is what .hero-rise in app/globals.css now
+          answers: the cascade begins at first paint rather than at hydration,
+          so it no longer matters much which element LCP picks.
 
-          So the headline renders at full opacity from the first frame,
-          server side included, and everything under it still stages in on
-          the same duration-700/duration-1000 cascade it always did. The
-          arrival still reads as one, it just does not cost the metric that
-          exists to measure how fast the reader actually sees something.
+          This one still starts at full opacity rather than joining that
+          cascade, because it is the largest text here and the safest place
+          for the metric to land is an element with no delay in front of it
+          at all. Everything under it stages in as it always did.
         */}
         <div className="mb-12">
           <h1 className="text-[clamp(2.5rem,9vw,7rem)] font-display leading-[0.9] tracking-tight">
@@ -112,19 +110,26 @@ export function HeroSection() {
         
         {/* Description */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-end">
-          <p 
-            className={`text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-xl transition-all duration-700 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
+          {/*
+            !! THIS PARAGRAPH IS USUALLY THE LCP ELEMENT, SO WATCH THE DELAY !!
+
+            Lighthouse picked it over the headline on 3 September 2026: it is
+            `text-xl lg:text-2xl` across `max-w-xl`, which is more painted text
+            than the two headline lines. Chrome cannot count it while it sits at
+            opacity 0, so whatever delay it carries is added to LCP directly.
+            200ms is affordable. A second would not be.
+          */}
+          <p
+            className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-xl hero-rise"
+            style={{ animationDelay: "200ms" }}
           >
             {heroCopy.description}
           </p>
           
           {/* CTAs */}
-          <div 
-            className={`flex flex-col sm:flex-row items-start gap-4 transition-all duration-700 delay-300 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
+          <div
+            className="flex flex-col sm:flex-row items-start gap-4 hero-rise"
+            style={{ animationDelay: "300ms" }}
           >
             <Button
               asChild
@@ -151,10 +156,9 @@ export function HeroSection() {
       </Container>
       
       {/* Stats marquee - full width outside container */}
-      <div 
-        className={`absolute bottom-12 left-0 right-0 transition-all duration-700 delay-500 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}
+      <div
+        className="absolute bottom-12 left-0 right-0 hero-fade"
+        style={{ animationDelay: "500ms" }}
       >
         {/*
           Identical sets, each carrying the animation and its own trailing gap
