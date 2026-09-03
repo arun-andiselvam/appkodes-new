@@ -53,12 +53,46 @@ export function Navigation() {
    */
   const solid = isScrolled || isMobileMenuOpen;
 
+  /*
+   * !! THE THRESHOLD HAS TWO VALUES, AND THAT IS THE POINT !!
+   *
+   * This read `setIsScrolled(window.scrollY > 20)` on every scroll event. One
+   * threshold means that at a scroll position of about twenty pixels, a
+   * movement of one pixel flips the state, and the header answers a flip by
+   * animating its width from 1400 to 1200, its height from 20 to 14, its
+   * border colour, its shadow and its blur. Momentum scrolling parks somebody
+   * on that boundary regularly, and a trackpad nudge there reads as the bar
+   * blinking.
+   *
+   * The blur is the part that shows worst. Look at the transition below: it
+   * switches backdrop-filter with a 1ms duration, so it is a hard on and off
+   * rather than a fade, deliberately. A state that thrashes therefore strobes
+   * the blur rather than easing it.
+   *
+   * So the bar goes solid above 24 and only goes back to transparent below 12.
+   * Anything inside that band leaves it where it is. Reported 3 September 2026.
+   *
+   * Coalesced into one rAF as well. The handler ran on every scroll event,
+   * which on a trackpad is far more often than the screen refreshes, and each
+   * one read window.scrollY and forced React through a state update that
+   * usually changed nothing. Passive, because nothing here calls
+   * preventDefault and the listener should never be able to hold up a scroll.
+   */
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      setIsScrolled((was) => (was ? window.scrollY > 12 : window.scrollY > 24));
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(read);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   /*
@@ -202,7 +236,41 @@ export function Navigation() {
           property named in the class but missing from this list would animate
           on its own default rather than on the timing declared here.
         */
+        /*
+          !! translateZ(0) IS NOT DECORATION, IT PINS THE BLUR TO ITS OWN LAYER !!
+
+          Added 3 September 2026, for a header reported as blinking in two
+          places: at the bottom of a long page, and while a carousel moved
+          behind it.
+
+          Those look like two bugs and they are one. backdrop-filter has to
+          re-sample and re-blur whatever is painted behind this bar on every
+          frame that the thing behind it changes. At the bottom of a page that
+          is the footer, where components/backgrounds/animated-wave.tsx runs a
+          canvas the whole time it is on screen. Beside a carousel it is the
+          marquee in app/globals.css, which never stops. Both hold the backdrop
+          in a permanent state of re-blur, and a bar being re-rasterised into
+          the page every frame is what reads as a blink.
+
+          An identity 3D transform forces this element onto its own compositing
+          layer, so the blurred result is kept as a texture instead of being
+          redrawn into whatever is beneath it. It is the ordinary workaround
+          for backdrop-filter flicker and it changes nothing visually, because
+          translating zero on the Z axis of an untransformed element is the
+          identity.
+
+          Safe against the two things a transform can break. The mega-menu
+          panel is `absolute` inside this element, which is already
+          `position: relative`, so its containing block does not move. The
+          full screen mobile menu is `position: fixed` and would be captured by
+          a transformed ancestor, but it is a sibling of this <nav> rather than
+          a child of it. Check that again before moving either one.
+
+          transform is deliberately absent from transitionProperty below. It
+          never changes, so it has nothing to animate.
+        */
         style={{
+          transform: "translateZ(0)",
           transitionProperty:
             "max-width, background-color, backdrop-filter, -webkit-backdrop-filter, border-color, box-shadow",
           transitionDuration: solid
