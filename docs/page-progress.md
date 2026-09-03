@@ -9,16 +9,23 @@ rendered HTML rather than the source files. Last measured 24 August 2026.
 and both have their category and detail templates built and approved.
 
 Case studies came off sample data on 24 August 2026. `content/case-studies.ts`
-holds three real engagements: Japan Pro in Japan, a short video platform in
-Dubai and a content production platform in the United States. The flag, the
-sample file and the four placeholder photographs are deleted. Blog articles
-still run on sample data behind `USE_SAMPLE_POSTS` in `lib/posts.ts`.
+holds five real engagements: Japan Pro in Japan, a short video platform in
+Dubai, a content production platform in the United States, a low bandwidth
+super app in Africa and a healthcare platform in India. The flag, the sample
+file and the four placeholder photographs are deleted. Blog articles still run
+on sample data behind `USE_SAMPLE_POSTS` in `lib/posts.ts`.
 
-Two things are outstanding on the studies themselves. The Dubai client is not
+Three things are outstanding on the studies themselves. The Dubai client is not
 named and nobody has asked, so its `client` field reads "Undisclosed" pending
-an answer. The United States client is also unnamed, and that one is settled
-rather than pending. No study carries a client quote, because nobody has
-supplied words anyone has agreed to.
+an answer. The India client is in the same position. The United States client
+is also unnamed, and that one is settled rather than pending. No study carries
+a client quote, because nobody has supplied words anyone has agreed to.
+
+The India study is the one that cannot ship yet. Its key art has not been
+supplied, so `image` points at a file that is not in `/public/case-studies` and
+the hero will 404 along with the index card. Its `sendsTo` is provisional for
+the same reason: the destination asked for on 3 September 2026 is not a route
+that exists. Both are written up in the comment above the entry.
 
 **Four Resources pages are live and are in neither list.** `/resources`,
 `/resources/case-studies`, `/resources/integration-guides` and

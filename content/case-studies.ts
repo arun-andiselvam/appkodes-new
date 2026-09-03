@@ -759,4 +759,208 @@ export const caseStudies: CaseStudy[] = [
 
     sendsTo: "/industries/media-and-communities",
   },
+
+  /*
+   * The Indian healthcare platform, added 3 September 2026 from the client's
+   * account of the engagement. Fifth real study, and the first one where a
+   * government defined what could be built.
+   *
+   * !! THE CLIENT IS NOT NAMED, AND NOBODY HAS BEEN ASKED YET !!
+   *
+   * `client` reads "Undisclosed" because the name did not come with the
+   * account, the same position the Dubai study is in. That is a gap rather
+   * than a decision, unlike the US study where the client settled it. The slug
+   * is the programme rather than the company, so a name can be added later
+   * without changing a URL.
+   *
+   * !! WHAT IS THE CLIENT'S ACCOUNT AND WHAT IS INFERENCE !!
+   *
+   * From the client: an Indian healthcare project integrated with Ayushman
+   * Bharat Digital Mission; the difficulty of working with the government
+   * system and having the build accepted by it; further audits covering
+   * quality and security among other things; a website and a mobile app; the
+   * platform connecting patients to the doctors they want; patient records and
+   * the rest of the data going into the government system; an AI audio call
+   * the patient starts, where they explain the problem and answer what the
+   * assistant asks; backend automation that triggers the booking once the
+   * details are collected; the system identifying what kind of request it is
+   * and routing it to the right channel, whether that is a doctor or a
+   * provider such as home care; the request then being placed by the system
+   * rather than by a person; and the platform being in production.
+   *
+   * Inferred, and strike anything the client does not recognise. That the
+   * classification happens once and in one place rather than at each hop, that
+   * the website and the app read one set of rules rather than each carrying a
+   * copy, and that a person still handles the cases the routing will not take.
+   * Each is the ordinary way to build what was described and none of it
+   * contradicts the account.
+   *
+   * !! DELIBERATELY NOT PUBLISHED: THE FUNDING ROUND !!
+   *
+   * The account included that the client is going out for a new level of
+   * funding. It is a strong outcome line and it is not ours to publish. A
+   * raise in progress is material information about somebody else's company,
+   * "going for" is not "closed", and a case study reports what shipped. The
+   * same reasoning kept the FM system off the Africa study above.
+   *
+   * If the client clears it, one line in `outcome` is where it goes, and it
+   * should say what closed rather than what was sought.
+   *
+   * !! NAMING ABDM IS ALLOWED. CLAIMING A CERTIFICATE IS NOT !!
+   *
+   * docs/positioning.md line 217 settles the shape of this. A regime may be
+   * named as the thing the work was built around, and claiming to hold or to
+   * grant a status may not. So the copy says the platform is in production and
+   * that records go where the programme says they go, both of which are the
+   * client's own account of it. Nothing here says the platform is certified,
+   * says Appkodes is certified, or names a milestone, an auditor or a standard
+   * that nobody has confirmed to us.
+   *
+   * The line worth re-reading before this ships is "the platform is in
+   * production and carrying real patient records". It is the client's account
+   * and it carries the whole compliance argument by implication, which is the
+   * strongest form available and the one most easily overstated in an edit.
+   *
+   * !! THE KEY ART DOES NOT EXIST YET. DO NOT PUBLISH THIS STUDY WITHOUT IT !!
+   *
+   * The other four heroes are the client's own artwork. This one is pending,
+   * and `image` points at a file that is not in /public/case-studies yet, so
+   * the hero will 404 and the index card with it.
+   *
+   * `imageAlt` below is written to the spec the artwork has to hit rather than
+   * to a picture anybody has seen. Read it against the delivered file and
+   * correct it, because an alt describing art that was never made is worse
+   * than no study at all.
+   *
+   * The spec, matching the set: 1376 by 768, no client logo and no product
+   * name, headline starting around 78px from the left, and cropped to 3:2 in
+   * the file anchored hard left rather than left to `object-cover`. See the
+   * Japan Pro entry for why, and for the rule that replacing an image here
+   * means renaming it.
+   */
+  {
+    slug: "abdm-health-platform",
+    /* 39 characters, 50 rendered. The client is unnamed, so the title carries
+       what the platform does. "Doctor" rather than "care" because it is the
+       headline case and the vaguer word tests worse, and home care is named
+       in the fifth problem and the fifth answer where it belongs. */
+    title: "How a phone call books the right doctor",
+    client: "Undisclosed",
+    industry: "Healthcare",
+    companySize: "Under 20",
+    location: "India",
+    summary:
+      "Patients describe what is wrong out loud. The system works out what they need and books it, and the record goes into India's national health programme.",
+    image: "/case-studies/abdm-health-platform-key-art.webp",
+    imageAlt:
+      "An India healthcare platform, connected to the national health record. AI voice intake: patients book by speaking. ABDM integration: records filed into the government system. Automated routing: requests sent to the right provider. Set over a city skyline.",
+    results: [
+      { value: "ABDM", label: "the national health programme every record is filed into" },
+      { value: "One call", label: "from a patient describing a problem to a booked provider" },
+    ],
+
+    challenge: {
+      body: "Two hard problems sat on this build. Software was only one of them. A national health programme decides what the platform is allowed to do, and a patient on the phone decides whether any of it gets used.",
+      points: [
+        {
+          title: "The government owns the specification",
+          body: "Ayushman Bharat Digital Mission sets the rules a health platform in India has to meet. Nothing here was ours to decide. The programme says what a record looks like and how it moves, and a build that disagrees with it does not go live.",
+        },
+        {
+          title: "Audits stand between the build and the patients",
+          body: "Acceptance is not a date somebody picks. Quality and security get examined first, and the standard is set by people who have never met the product. An ordinary internal review is a much lower bar than this one, and finding that out late costs a release.",
+        },
+        {
+          title: "The records belong somewhere else",
+          body: "Patient data does not stop at the client's database. It has to reach the national system in the shape that system expects, which is a harder problem than storing it well. A mismatch there is not a bug any user reports. It is a record the country cannot read.",
+        },
+        {
+          title: "A patient in trouble will not fill in a form",
+          body: "The people who most need this are the least likely to work through a booking screen. They know what is wrong and would rather say it out loud than type it. A form asks them to translate that into fields and dropdowns first, and plenty of them will not.",
+        },
+        {
+          title: "Nobody asks for the right service by name",
+          body: "A patient describes a problem rather than a product. Some of what arrives needs a specialist, some of it needs a home care visit, and the caller has no reason to know which. Something has to read the request and decide, before a booking can happen at all.",
+        },
+        {
+          title: "A finished call is not a booking",
+          body: "Details collected in a conversation do nothing on their own. Somebody still has to find a provider who can take the case and send the request to them. That step is where a system like this usually gives up and pushes the work back to a human queue.",
+        },
+        {
+          title: "Two front doors, one set of rules",
+          body: "The client wanted a website and a mobile app. Both write to the same records. A feature that behaves differently in one of them is not a difference in polish. It is two versions of a patient's history.",
+        },
+      ],
+    },
+
+    approach: {
+      body: "Everything here was built inward from the rules rather than outward from a feature list. The answers run in the order the problems were listed.",
+      points: [
+        {
+          title: "Built to the programme, not adapted to it",
+          body: "We designed the integration against the mission's own requirements before writing the product around it. The slow part came first, and that is the trade this kind of work rewards. A platform retrofitted to a government standard has to be opened up again everywhere, and the parts opened first have already moved on.",
+        },
+        {
+          title: "The audits were scheduled, not survived",
+          body: "Quality and security work sat in the plan next to the features rather than after them. The evidence an auditor asks for was produced as the thing it describes was being built. The platform is in production and carrying real patient records, which is the only proof that any of this landed.",
+        },
+        {
+          title: "The record is written where the country keeps it",
+          body: "A patient's history goes into the national system rather than sitting in one company's database. The next clinician they see can find it, and that is the whole reason the programme exists. Most of the work was in matching what that system expects rather than in storing anything.",
+        },
+        {
+          title: "The intake is a phone call",
+          body: "A patient starts an audio call and says what is wrong in their own words. The assistant keeps asking follow up questions until it has everything a booking actually needs. Nothing about it asks the caller to know the vocabulary, which is what a form quietly does.",
+        },
+        {
+          title: "The request is classified before it is routed",
+          body: "The system works out what kind of request this is before it looks for anybody to send it to. A specialist appointment goes one way. A home care visit goes another. That decision is made once and in one place rather than at every point the request passes through.",
+        },
+        {
+          title: "The booking is placed by the system",
+          body: "When the call ends the automation goes and finds a provider who can take it. The request reaches them without anybody at the client having to rekey a word of it. A person is still there for the cases that need one, which is a much smaller pile than it was.",
+        },
+        {
+          title: "One platform behind both",
+          body: "Website and app are two doors into one system. Rules live in one place and both surfaces read them, so neither can drift into a version of the truth the other does not have. On an ordinary product that is tidy engineering, and here it is a patient's medical history.",
+        },
+      ],
+    },
+
+    outcome: {
+      body: "The platform is live, and the people it was built for reach it by talking rather than by typing.",
+      points: [
+        {
+          title: "In production, inside the national system",
+          body: "The system runs in production and every record it creates goes where the programme says it goes. That was the condition the whole build answered to, and it held all the way through.",
+        },
+        {
+          title: "A patient talks and a booking appears",
+          body: "Somebody who would never have finished the form gets to describe the problem out loud instead. What arrives at the provider is a request with all the detail already in it. Nobody at the client touched it on the way.",
+        },
+        {
+          title: "The routing decides, not a queue",
+          body: "Requests reach the right kind of provider, and nobody has to read each one first. A doctor and a home care team get sent the cases that belong to them. The client runs it with under twenty people.",
+        },
+      ],
+    },
+
+    /*
+     * !! THIS DESTINATION IS UNSETTLED AND WAS ASKED ABOUT ON 3 SEPTEMBER 2026 !!
+     *
+     * The answer given was "healthcare-app-with-ai-automation", which is not a
+     * route in this repo. There is no such page under app/services or
+     * app/industries, and it is not in the app silo briefs either.
+     *
+     * `/services/ai-voice-telephony-automation` stands here in the meantime
+     * because it is the closest page that exists and the match is exact: that
+     * page already promises an agent that answers, works out what the caller
+     * wants and books the appointment, and this study is the evidence for it.
+     *
+     * Change it to `/industries/healthcare-and-consulting` if the study should
+     * read as sector credibility first. If a healthcare app page is actually
+     * being built, this line waits for it rather than pointing at a 404.
+     */
+    sendsTo: "/services/ai-voice-telephony-automation",
+  },
 ];
