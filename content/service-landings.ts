@@ -6161,18 +6161,65 @@ export const serviceLandings: Record<string, ServiceLanding> = {
       ],
     },
 
+    /*
+     * !! FOUR STEPS HERE, AND THREE ON THE OTHER NINETEEN PAGES !!
+     *
+     * Changed 3 September 2026 at the client's request, across all three
+     * pages of this silo and nowhere else. Two things were wrong with the
+     * three step version and only one of them was the repetition.
+     *
+     * Measured before changing it: nineteen of the twenty-two service pages
+     * carried the heading "How the first three weeks run" and the identical
+     * middle step titled "You get a costed plan". The client read it as
+     * boilerplate because at that point it was.
+     *
+     * The worse fault is that the shape belongs to a different sale. Week one
+     * across this site means watching the work somebody already does by hand,
+     * which is what content/how-it-works.ts describes. On a net new build
+     * there is nothing running to watch, so the step was a discovery phase
+     * with the discovery taken out.
+     *
+     * And the page promised something it never showed. The hero button reads
+     * "Start a prototype" and so does the closing panel, while the process
+     * handed over a document. The second step is that prototype.
+     *
+     * !! THE PROTOTYPE STEP IS A DELIVERY PROMISE, NOT A DESCRIPTION !!
+     *
+     * Approved by the client on 3 September 2026. It commits to clickable
+     * screens on a link by the end of week one, which is a commitment
+     * delivery has to be able to keep. The claim underneath it is already
+     * published: content/integrations.ts carries v0 as "Screens from a
+     * description" and Vercel as "Preview links you can click", both on the
+     * home page marquee. If that ever stops being true, this step goes before
+     * the marquee does.
+     *
+     * Nothing here says the two weeks are free. docs/positioning.md confirms
+     * the first step is, but that was settled about the automation audit and
+     * the client has not been asked whether it covers a build. Worth asking,
+     * because free plus "you keep the document either way" is the strongest
+     * sentence this section could carry.
+     *
+     * The middle step is no longer titled "You get a costed plan". That was
+     * the row shared with eighteen other pages, and pricing against something
+     * the reader has already opened is a better sentence anyway.
+     */
     process: {
       heading: "How the first three weeks run",
       steps: [
         {
           when: "Week 1",
           title: "We work out what it has to do",
-          body: "Two days on the product itself, and on the one job the model is there to do. Sometimes the honest answer is that you do not need a build at all, and we say so.",
+          body: "Time with whoever holds the idea, turning it into what the product has to do and for whom. Nothing is running yet for us to watch, so this is the week the guessing comes out.",
+        },
+        {
+          when: "End of week 1",
+          title: "You get screens you can click",
+          body: "The description becomes working screens on a link you can open, built fast with the AI tooling we build everything with. You use it and tell us where it is wrong, which costs nothing now and a fortnight later on.",
         },
         {
           when: "End of week 2",
-          title: "You get a costed plan",
-          body: "The plan names what gets built first, and prices it against what you told us in week one. You keep the document either way, and it is specific enough that somebody else could price it.",
+          title: "The plan is priced against the prototype",
+          body: "You are pricing something you have already opened rather than a description you had to picture. You keep the document either way, and it is specific enough that somebody else could price it.",
         },
         {
           when: "From week 3",
@@ -6539,14 +6586,30 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     process: {
       heading: "How the first three weeks run",
       steps: [
+        /*
+         * Four steps, matching the hub. The long note on the reasoning is on
+         * the hub's own process block, including what the prototype step
+         * commits delivery to.
+         *
+         * The prototype is a real phone here rather than a link, which is the
+         * one thing this page can offer that the other two cannot. A visitor
+         * whose whole worry is how the thing behaves on a bad connection
+         * learns more from two minutes holding it than from any document, and
+         * that is the argument the rest of the page makes anyway.
+         */
         {
           when: "Week 1",
           title: "We find out where the app will actually be used",
           body: "Two days on who opens this and on what their connection is doing at the time. That single answer shapes more of the architecture than the whole feature list put together.",
         },
         {
+          when: "End of week 1",
+          title: "You get it running on a real phone",
+          body: "The screens go on a device rather than into a deck, so the first thing you judge is the thing itself. A few minutes with it on your own connection answers questions a document never gets to.",
+        },
+        {
           when: "End of week 2",
-          title: "You get a costed plan",
+          title: "The plan is priced against the prototype",
           body: "The plan names which features run on the phone and which go to a server, with a price on each. The data safety answers are written down in it too, months before anybody submits anything.",
         },
         {
@@ -6875,14 +6938,31 @@ export const serviceLandings: Record<string, ServiceLanding> = {
     process: {
       heading: "How the first three weeks run",
       steps: [
+        /*
+         * Four steps, matching the hub. The reasoning is on the hub's own
+         * process block.
+         *
+         * !! THE SECOND STEP AND THE FOURTH ARE NOT THE SAME THING !!
+         *
+         * Both name the busiest workflow, which reads as a repeat until you
+         * notice that one is a prototype and the other is the build. The copy
+         * has to carry that difference or the section says one thing twice.
+         * Step two says outright that nothing behind the screens is real yet,
+         * which is also the honest version of what a week one prototype is.
+         */
         {
           when: "Week 1",
           title: "We write down how the work runs today",
           body: "Two days inside the process as it actually happens, client by client and step by step. The parts nobody thinks are worth mentioning are usually the parts that decide the design.",
         },
         {
+          when: "End of week 1",
+          title: "You get screens your team can try",
+          body: "The busiest workflow goes up as clickable screens with the approval step already in them. Nothing behind it is real yet, and that is the point, because changing it now is free.",
+        },
+        {
           when: "End of week 2",
-          title: "You get a costed plan",
+          title: "The plan is priced against the prototype",
           body: "The plan names where the model goes and where the person stays, with a price against each stage. That document is yours whatever you decide, and it is specific enough to build from.",
         },
         {
