@@ -165,7 +165,42 @@ export default async function RootLayout({
             overflowing decoration rather than a broken layout. That is a
             better trade than sticky being dead everywhere.
           */}
-          <div className="relative min-h-screen overflow-x-clip noise-overlay">
+          {/*
+            !! THE FOOTER IS PINNED LAST, AND THE UNIT IS svh NOT vh !!
+
+            This was `min-h-screen`, which is `min-height: 100vh` on a plain
+            block. Two things went wrong with that on a phone and the client
+            photographed the result on 3 September 2026: a tall band of empty
+            page below the footer.
+
+            First, `100vh` on iOS Safari is the *large* viewport, measured with
+            the address bar and the bottom toolbar collapsed. While either is on
+            screen, and one of them almost always is, 100vh is taller than the
+            area the reader can actually see. So the div is guaranteed to be
+            taller than the window by roughly the height of both bars. `svh` is
+            the small viewport, measured with the bars showing, which is the
+            unit that never overshoots. Chrome and Firefox treat all three the
+            same, so nothing changes there.
+
+            Second, and this is the half that made it visible: on a block
+            container the minimum height is applied after the children are laid
+            out, so any slack lands *below the last child*, and the last child
+            is the footer. A flex column with the page body growing puts the
+            slack above the footer instead, which is the ordinary sticky footer
+            arrangement and the thing this layout never had.
+
+            Measured before changing it, driving Chrome over CDP at 390x844
+            across ten page types, scrolled to the bottom: every one reported
+            exactly 0px below the footer. So this does not reproduce off iOS and
+            it cannot be confirmed from here. It is still wrong on both counts
+            above, and both fixes are safe on every other browser.
+
+            Navigation is `fixed`, so it is out of flow and takes no row here.
+            `[&>main]:grow` is what makes the page body take the slack. Every
+            route renders a <main>, directly or through a route helper in lib/.
+            A page that somehow does not just behaves as it did before.
+          */}
+          <div className="relative flex min-h-[100svh] flex-col overflow-x-clip noise-overlay [&>main]:grow">
             <Navigation />
             {children}
             <Footer />
