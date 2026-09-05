@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { organizationSchema } from "@/lib/organization-schema";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
+import { QuoteBubble } from "@/components/quote/bubble";
 import { site } from "@/content/site";
 import { siteOrigin } from "@/lib/site-url";
 import "./globals.css";
@@ -204,6 +205,17 @@ export default async function RootLayout({
             <Navigation />
             {children}
             <Footer />
+            {/*
+              Last in the tree, which is where a floating control belongs.
+
+              It is `fixed`, so document order does not decide where it is
+              drawn - z-30 does. What document order decides is the reading
+              order for a screen reader and the tab order for a keyboard, and
+              both are better with it here. Somebody tabbing through a page
+              reaches the navigation, the page and the footer before they are
+              offered a chat bubble, rather than meeting the bubble first.
+            */}
+            <QuoteBubble />
           </div>
         </ThemeProvider>
         {/*

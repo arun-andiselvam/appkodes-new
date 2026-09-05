@@ -45,7 +45,12 @@ export type QuotePlacement =
   | "industry_hero"
   | "blog_post"
   | "case_study"
-  | "how_we_work";
+  | "how_we_work"
+  /* The floating bubble in the corner, added 5 September 2026. It renders on
+     every page, so it is the one placement that cannot say which page did the
+     work. What it can say is how many people reach for the corner instead of
+     a call to action, which is the question worth having an answer to. */
+  | "floating";
 
 type Params = Record<string, string | number | boolean | undefined>;
 
