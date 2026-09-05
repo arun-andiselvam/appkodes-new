@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState, useEffect, useId, useCallback, type MouseEvent } from "react";
+import { Fragment, useState, useEffect, useId } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { QuoteLauncher } from "@/components/quote/launcher";
@@ -93,37 +93,6 @@ export function Navigation() {
       window.removeEventListener("scroll", handleScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
-
-  /*
-   * Which end of the hover rule stays put.
-   *
-   * The underline under each menu item is a full width line scaled on X, so
-   * `transform-origin` alone decides whether it opens from the left or the
-   * right. This picks the edge nearest the cursor and writes it to the link as
-   * a custom property, which the rule reads. Called on the way in and on the
-   * way out, so the line opens under the cursor and closes after it.
-   *
-   * !! WRITTEN TO THE DOM, NOT HELD IN STATE, AND THAT IS THE POINT !!
-   *
-   * Origin per item in React state would re-render the whole header on every
-   * mouse crossing of every link, to move one pixel line. Setting the property
-   * on the node the event already hands us costs nothing and re-renders
-   * nothing. It is presentation that the next render has no reason to know
-   * about.
-   *
-   * The `getBoundingClientRect` here is a layout read, which this file is
-   * otherwise careful about (see the scroll handler above). It is fine: it
-   * happens on a pointer crossing rather than per frame, and never during load.
-   *
-   * Untouched by a keyboard visitor, who has no pointer. The property stays
-   * unset and the rule falls back to `left`, the behaviour this always had.
-   */
-  const aimUnderline = useCallback((event: MouseEvent<HTMLElement>) => {
-    const link = event.currentTarget;
-    const box = link.getBoundingClientRect();
-    const fromLeft = event.clientX < box.left + box.width / 2;
-    link.style.setProperty("--underline-origin", fromLeft ? "left" : "right");
   }, []);
 
   /*
@@ -410,16 +379,7 @@ export function Navigation() {
                   aria-current={active ? "page" : undefined}
                   aria-expanded={item.panel ? open : undefined}
                   aria-controls={item.panel ? panelKey(panelId, item.name) : undefined}
-                  onMouseEnter={(event) => {
-                    aimUnderline(event);
-                    setOpenPanel(item.panel ? item.name : null);
-                  }}
-                  /*
-                    Leaving matters as much as arriving. The rule collapses
-                    towards whichever edge the pointer is heading for, so it
-                    follows the cursor out rather than retracting behind it.
-                  */
-                  onMouseLeave={aimUnderline}
+                  onMouseEnter={() => setOpenPanel(item.panel ? item.name : null)}
                   onFocus={() => setOpenPanel(item.panel ? item.name : null)}
                   /*
                     Weight stays at 400. It went to 600 for one revision, to
@@ -451,35 +411,9 @@ export function Navigation() {
                     active route it is already drawn, so the menu says where you
                     are without a second device competing with it.
                   */}
-                  {/*
-                    !! IT SCALES FROM AN EDGE. IT USED TO GROW ITS WIDTH. !!
-
-                    This was `w-0 group-hover:w-full` pinned to `left-0`, which
-                    animates the width and therefore always grows from the left
-                    and always retracts to the left. Sweeping the menu right to
-                    left, every rule grew away from the cursor and shrank back
-                    towards where the cursor was going. Left to right it looked
-                    correct, which is why it survived this long.
-
-                    A full width rule scaled on X fixes the direction, because
-                    `transform-origin` decides which end stays put. The origin
-                    is set per pointer event by aimUnderline: the edge the
-                    cursor arrived at on the way in, the edge it is leaving by
-                    on the way out. The rule now opens under the cursor and
-                    closes after it, whichever way the menu is being read.
-
-                    !! transition-[scale], NOT transition-all !!
-
-                    `transform-origin` is itself animatable. Under
-                    `transition-all` it would ease from one edge to the other
-                    over 300ms rather than switching, and the rule would crawl
-                    sideways on every hover. Only the scale may transition.
-                    Tailwind 4 writes `scale-x-*` to the `scale` property, so
-                    that is the property named here.
-                  */}
                   <span
-                    className={`absolute -bottom-1 left-0 h-px w-full bg-foreground transition-[scale] duration-300 [transform-origin:var(--underline-origin,left)] ${
-                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    className={`absolute -bottom-1 left-0 h-px bg-foreground transition-all duration-300 ${
+                      active ? "w-full" : "w-0 group-hover:w-full"
                     }`}
                   />
                 </Link>
