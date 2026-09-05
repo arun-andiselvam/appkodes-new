@@ -2,10 +2,13 @@ import { MessageCircle } from "lucide-react";
 import { QuoteLauncher } from "@/components/quote/launcher";
 
 /**
- * The floating chat button, bottom left of every page.
+ * The floating chat button, bottom right of every page.
  *
  * Asked for on 5 September 2026: a circular control that opens the quote
- * assistant and looks like it belongs to the rest of the site.
+ * assistant and looks like it belongs to the rest of the site. It sat bottom
+ * left for its first few hours, on the original brief, and moved to the right
+ * the same day. The right is also where a visitor expects to find one, so
+ * nothing about the change is a compromise.
  *
  * !! IT IS A QuoteLauncher, AND THAT IS THE WHOLE POINT !!
  *
@@ -56,7 +59,7 @@ export function QuoteBubble() {
         HTML, and this element is on every page of a `force-dynamic` site, so
         that whitespace ships on every request.
       */
-      className="group/bubble fixed bottom-6 left-6 z-30 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-foreground/10 transition-[background-color,transform,box-shadow] duration-300 hover:bg-primary/90 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-safe:hover:-translate-y-0.5 lg:bottom-8 lg:left-8 lg:h-16 lg:w-16"
+      className="group/bubble fixed bottom-6 right-6 z-30 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-foreground/10 transition-[background-color,transform,box-shadow] duration-300 hover:bg-primary/90 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-safe:hover:-translate-y-0.5 lg:bottom-8 lg:right-8 lg:h-16 lg:w-16"
     >
       {/*
         aria-hidden because the anchor is already named above. Without it a
