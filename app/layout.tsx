@@ -81,6 +81,25 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
     },
+    /*
+     * !! DO NOT ADD AN `icons` BLOCK HERE. IT REPLACES THE FILE CONVENTION. !!
+     *
+     * Tried on 6 September 2026 for the dark mode favicon, and measured
+     * against the rendered <head> rather than trusted. The docs do not say
+     * what happens when both mechanisms are used, and what happens is this:
+     *
+     *   before   favicon.ico 48x48, icon.png 256x256, apple-icon.png 180x180
+     *   after    favicon.ico 48x48, the one icon listed in the block
+     *
+     * A single entry in `icons.icon` took out app/icon.png and app/apple-icon
+     * .png with it, so the site lost its 256px icon and its iOS home screen
+     * icon to gain a dark mode one. Declaring all four here would fix that and
+     * cost the content hashes Next puts on convention URLs, which are what
+     * make a replaced icon reach a browser that has already cached one.
+     *
+     * The dark icon is a plain <link> in the tree below instead. React hoists
+     * it into <head> and the convention is left alone.
+     */
   };
 }
 
@@ -95,6 +114,38 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      {/*
+        The dark mode favicon, added 6 September 2026.
+
+        !! A BARE <link>, BECAUSE THE METADATA API TAKES THE OTHERS DOWN !!
+
+        React hoists this into <head>, so it lands beside the three links Next
+        generates from app/favicon.ico, app/icon.png and app/apple-icon.png
+        rather than in place of them. An `icons` block in generateMetadata does
+        replace them, which was measured and is written up there.
+
+        !! THE MEDIA QUERY IS NOT OPTIONAL. THE FILE IS WHITE ON WHITE. !!
+
+        public/icon-white-32x32.png is the same mark recoloured, so on a light
+        tab bar it is invisible. `media` is the only thing keeping it off one,
+        and a browser that ignores the attribute falls back to the colour icon
+        rather than to nothing, which is the right way round for this to fail.
+
+        Chrome and Edge honour it. Safari does not, and keeps the colour icon
+        in a dark tab bar, which is what it does today, so nothing is lost.
+        Fixing Safari needs an SVG carrying its own query, and that needs the
+        mark as vector art rather than the 256px raster this was cut from.
+
+        The 32px file rather than the 256: a favicon is drawn at 16 or 32 CSS
+        pixels, and it is 1.1KB against 21KB.
+      */}
+      <link
+        rel="icon"
+        href="/icon-white-32x32.png"
+        media="(prefers-color-scheme: dark)"
+        sizes="32x32"
+        type="image/png"
+      />
       <body
         className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
