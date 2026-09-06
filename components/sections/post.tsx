@@ -101,7 +101,30 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
 
       <Section spacing="none" className="pb-20 lg:pb-28">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-20">
+          {/*
+            !! THE MOBILE TRACK NEEDS minmax(0,1fr) AS MUCH AS THE lg ONE !!
+
+            With no template below lg this was a single implicit `auto` track,
+            and an auto track's floor is min-content. Any article carrying a
+            wide child therefore widened the entire column. The comparison
+            table in the staffing article is `min-w-[36rem]`, so the column
+            measured exactly 576px on a 390px phone, and overflow-x-clip on the
+            shell cut the body text off mid-word instead of letting it wrap.
+
+            Reported 6 September 2026 and measured over CDP at 390x844, where
+            <article> and <aside> both came back 576 wide while the document
+            itself was still 390. Nothing to do with the flex shell or the
+            footer pinning in 8b442ed, which were suspected first and cleared.
+
+            `minmax(0,1fr)` gives the track a floor of zero at every width, so
+            it takes the container's width and the table scrolls inside its own
+            `overflow-x-auto` wrapper, which is what that wrapper is for.
+
+            The items carry `min-w-0` as well. A track floor alone is not
+            enough: a grid item's own `min-width: auto` is content based and
+            would push the column back out.
+          */}
+          <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-20">
             {/*
               !! THE STICKY BOX IS THE INNER DIV, NOT THE WHOLE COLUMN !!
 
@@ -126,7 +149,9 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
               pixels. The grid stretches the column to the row height instead,
               which is as tall as the article.
             */}
-            <aside>
+            {/* min-w-0 for the same reason as the article. The contents links
+                inside are long enough to widen the column on their own. */}
+            <aside className="min-w-0">
               <Facts post={post} />
 
               {/*
@@ -158,7 +183,9 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
               than by a prose plugin, so the type scale is the same one the
               rest of the site uses.
             */}
-            <article className="max-w-[68ch]">
+            {/* min-w-0: see the note on the grid above. Without it this item's
+                own content based minimum widens the column again. */}
+            <article className="min-w-0 max-w-[68ch]">
               {/* The 12px goes to the figures from here rather than being
                   baked into the renderer, which the careers page also uses.
                   See the note on figureClassName in rich-text.tsx. */}
