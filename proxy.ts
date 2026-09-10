@@ -212,7 +212,13 @@ export default async function proxy(request: NextRequest) {
     // name. frame-src has no nonce mechanism, so this is the one directive
     // that genuinely needs the host added. See components/sections/
     // contact-form.tsx.
-    `frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com`,
+    //
+    // www.google.com was added 10 September 2026 for the two office maps on
+    // the contact page, which embed google.com/maps?q=...&output=embed with no
+    // API key. Unlike the video they load on scroll rather than on a click,
+    // so Google does see a visitor who scrolls down to them. The privacy
+    // policy in content/legal.ts does not name Google Maps yet.
+    `frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com https://www.google.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,

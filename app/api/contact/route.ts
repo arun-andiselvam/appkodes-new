@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { quoteSteps } from "@/content/quote-flow";
 
 /**
  * Where the contact form posts.
@@ -37,7 +38,22 @@ import { NextResponse } from "next/server";
  */
 
 /** Longest we will accept in any one field, to keep a paste bomb out. */
-const LIMITS = { name: 120, email: 200, company: 160, phone: 40, message: 4000 };
+const LIMITS = { name: 120, email: 200, company: 160, phone: 40, message: 4000, budget: 40 };
+
+/*
+ * Budget band value to the label a person reads, from the quote assistant's own
+ * step so the two forms agree. Added 10 September 2026 with the budget field on
+ * the contact form. Anything posted that is not one of these values is dropped
+ * rather than forwarded, since the field is a select and a value outside it
+ * means the request was not made by the form.
+ */
+const budgetStep = quoteSteps.budget;
+const BUDGET_LABELS = new Map(
+  (budgetStep && "options" in budgetStep ? budgetStep.options : []).map((option) => [
+    option.value,
+    option.label,
+  ]),
+);
 
 type Payload = Record<string, unknown>;
 
@@ -57,7 +73,15 @@ function looksLikeEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
 }
 
-type Fields = { name: string; email: string; company: string; phone: string; message: string };
+type Fields = {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  message: string;
+  /** The band's label, not its value. Empty when none was chosen. */
+  budget: string;
+};
 
 /** Escapes text dropped into the HTML email body. Every field here is user
  * supplied, so this is what stands between a submission and HTML injection
@@ -128,6 +152,7 @@ async function deliverViaResend(fields: Fields) {
       </tr>
       ${fieldRow("Company", fields.company)}
       ${fieldRow("Phone", fields.phone)}
+      ${fieldRow("Budget", fields.budget)}
     </table>
     <div style="margin-top:12px;padding-top:20px;border-top:1px solid #e5e7eb;">
       <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#6b7280;">Message</p>
@@ -158,6 +183,7 @@ async function deliverViaResend(fields: Fields) {
         `Email: ${fields.email}`,
         fields.company && `Company: ${fields.company}`,
         fields.phone && `Phone: ${fields.phone}`,
+        fields.budget && `Budget: ${fields.budget}`,
         "",
         fields.message,
       ]
@@ -239,6 +265,8 @@ export async function POST(request: Request) {
   const company = asString(body.company, LIMITS.company);
   const phone = asString(body.phone, LIMITS.phone);
   const message = asString(body.message, LIMITS.message);
+  // The label for a known band, or nothing. See BUDGET_LABELS above.
+  const budget = BUDGET_LABELS.get(asString(body.budget, LIMITS.budget)) ?? "";
 
   const errors: Record<string, string> = {};
   if (!name) errors.name = "Tell us who you are.";
@@ -273,7 +301,7 @@ export async function POST(request: Request) {
 
   try {
     const delivered = resendConfigured
-      ? await deliverViaResend({ name, email, company, phone, message })
+      ? await deliverViaResend({ name, email, company, phone, message, budget })
       : await (async () => {
           const forwarded = await fetch(webhook as string, {
             method: "POST",
@@ -284,6 +312,7 @@ export async function POST(request: Request) {
               company,
               phone,
               message,
+              budget,
               // Server side rather than from the client, so it cannot be spoofed.
               receivedAt: new Date().toISOString(),
               source: "hitasoft.com/contact",

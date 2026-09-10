@@ -40,6 +40,14 @@ export type ContactChannel = {
 };
 
 /**
+ * One string for the Madurai address, read by the list entry below, by the
+ * office card on the contact page and, through that list entry, by the
+ * Organization schema. Change it here and all three follow.
+ */
+const MADURAI_ADDRESS =
+  "Door No 9/1, Karthick Center, Kamala First Street, Chinna Chockikulam, Madurai 625002, Tamil Nadu, India";
+
+/**
  * !! ONLY CONFIRMED DETAILS. NEVER A PLACEHOLDER. !!
  *
  * A number that rings nowhere, on the page every call to action points at, is
@@ -84,11 +92,94 @@ export const channels: ContactChannel[] = [
     href: "tel:+917708006989",
   },
   {
-    // No href. A maps link would be guessing at a place ID, and the postal
-    // address is the thing somebody actually needs.
+    // Kept in this list although the contact page no longer draws it here.
+    // The page shows offices as cards with a map, built from `offices` below,
+    // and filters this entry out of the list. It stays because
+    // lib/organization-schema.ts reads the address from it by label.
     label: "Office",
-    value:
-      "Door No 9/1, Karthick Center, Kamala First Street, Chinna Chockikulam, Madurai 625002, Tamil Nadu, India",
+    value: MADURAI_ADDRESS,
+  },
+];
+
+/**
+ * The offices, drawn as cards with a map on the contact page. Added 10
+ * September 2026, with the Chennai address supplied by the client that day.
+ *
+ * !! CHENNAI IS A VIRTUAL OFFICE, TAGGED "SALES OFFICE" ON INSTRUCTION !!
+ *
+ * The client asked for it to read so a visitor understands there is an
+ * office in Chennai, and chose "Sales Office" on 10 September 2026. It sits
+ * in an Awfis centre, which the address now names, so a visitor who turns up
+ * knows to ask at the Awfis reception rather than looking for a Hitasoft
+ * sign.
+ *
+ * The Chennai street is kept as supplied: "Sipet" and "Thiruvika" are the
+ * client's spellings of SIPET and Thiru Vi Ka.
+ *
+ * !! THE MAP SEARCHES FOR THE PLACE, NOT THE ADDRESS !!
+ *
+ * The first version fed the postal address to the map and neither map drew
+ * a pin: Google centred on the area and marked nothing. `mapQuery` names the
+ * listing instead, so the embed resolves to a place and pins it. Madurai is
+ * the company's own Google Business Profile, searched by the name the client
+ * gave for it. Chennai is the Awfis centre the virtual office sits in, with
+ * the street kept in the query because Awfis runs several centres in the
+ * city. The displayed address stays the postal one either way.
+ */
+export type Office = {
+  city: string;
+  tag: string;
+  address: string;
+  /** What the map and the Maps link search for. A place name gets a pin. */
+  mapQuery: string;
+  /** A share link to the exact listing. Used for the Maps link when set. */
+  mapLink?: string;
+  /**
+   * A full Google embed URL, used for the map instead of the mapQuery search
+   * when set. The format is the one Share, then "Embed a map" produces.
+   */
+  embedSrc?: string;
+};
+
+export const offices: Office[] = [
+  {
+    city: "Madurai",
+    tag: "Head office",
+    address: MADURAI_ADDRESS,
+    mapQuery: "Hitasoft Technology Solution, Madurai",
+  },
+  {
+    city: "Chennai",
+    tag: "Sales Office",
+    address:
+      "Awfis, MF 7A8, Sipet Hostel Road, Thiruvika Industrial Estate, Ekkatuthangal, Guindy, Chennai 600032, Tamil Nadu, India",
+    // !! "Awfis Guindy" IN THE MIDDLE OF THE MAP, BY DECISION !!
+    //
+    // What the client asked for on 10 September 2026, after dropping the pin.
+    // Only a search makes Google draw the name: centring on the listing's
+    // coordinates with `ll` and no search left Google free to hide it, and at
+    // z=16 it did. The search draws the label with Google's small red dot and
+    // centres on it. It does not give the big pin or the card Madurai gets,
+    // because no Awfis name matches exactly one listing, and a coordinate
+    // query shows "Place info couldn't load". Both were tried.
+    //
+    // The note below, written before that decision, records that Google's
+    // address for this listing is 54, Industrial Area rather than MF 7A8. The
+    // client knows the office, so the map follows the client.
+    //
+    // Madurai gets a pin and a card because its name matches exactly one
+    // Google listing. No Awfis name did. "Awfis Guindy" returns three centres,
+    // and "Awfis Guindy (Vijay Enterprises)" is a different centre at 54,
+    // Industrial Area, about 1.3km from MF 7A8, so it drew a card on the wrong
+    // building. Chasing the exact listing ID was stopped on 10 September 2026
+    // in favour of naming Awfis in the address. The share link below is the
+    // client's own and lands on the right listing.
+    // A search for the listing, because only a search makes Google draw the
+    // "Awfis Guindy" name. See the note above.
+    mapQuery: "Awfis Guindy (Vijay Enterprises)",
+    // The client's own share link, so "Open in Google Maps" lands on the
+    // exact listing rather than on a search that could match another centre.
+    mapLink: "https://share.google/hCJthynd2Ra7z4PXp",
   },
 ];
 

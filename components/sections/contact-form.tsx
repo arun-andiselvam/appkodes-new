@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { ArrowRight, Check } from "lucide-react";
+import { quoteSteps } from "@/content/quote-flow";
 
 /**
  * The form every call to action on the site leads to.
@@ -34,6 +35,15 @@ import { ArrowRight, Check } from "lucide-react";
  */
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+/*
+ * The budget bands, read from the quote assistant rather than restated here,
+ * so the two forms file an enquiry under the same values. See the budget step
+ * in content/quote-flow.ts for why the bands are wide and why nothing on the
+ * site says what any of them buys. Added 10 September 2026.
+ */
+const budgetStep = quoteSteps.budget;
+const budgetOptions = budgetStep && "options" in budgetStep ? budgetStep.options : [];
 
 declare global {
   interface Window {
@@ -131,7 +141,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
 
   if (status === "sent") {
     return (
-      <div className="border border-foreground/15 p-8 lg:p-10">
+      <div className="self-start border border-foreground/15 p-6 lg:p-7">
         <span className="flex h-10 w-10 items-center justify-center border border-foreground/15">
           <Check className="h-5 w-5" aria-hidden />
         </span>
@@ -154,7 +164,13 @@ export function ContactForm({ nonce }: { nonce?: string }) {
     <form
       onSubmit={onSubmit}
       noValidate
-      className="border border-foreground/15 p-6 sm:p-8 lg:p-10"
+      /*
+        self-start, because this is a grid item beside the argument column and
+        grid items stretch. Once the founder block made that column taller, the
+        form stretched with it and ended in a band of empty border. It now
+        takes its own height. Tightened throughout on 10 September 2026.
+      */
+      className="self-start border border-foreground/15 p-5 sm:p-6 lg:p-7"
     >
       {TURNSTILE_SITE_KEY && (
         <Script
@@ -165,7 +181,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
         />
       )}
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field
           name="name"
           label="Your name"
@@ -196,7 +212,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
         />
       </div>
 
-      <div className="mt-5">
+      <div className="mt-4">
         <Field
           name="message"
           label="What is taking the longest?"
@@ -204,6 +220,42 @@ export function ContactForm({ nonce }: { nonce?: string }) {
           textarea
           error={errors.message}
         />
+      </div>
+
+      {/*
+        !! AFTER THE MESSAGE, AND OPTIONAL, BOTH ON PURPOSE !!
+
+        The quote assistant asks the brief before the budget, because somebody
+        who has just described their problem has invested something and will
+        answer the money question, while the same question asked cold reads as
+        a filter. Same order here. It is optional because a first message
+        should never be blocked on a number.
+
+        A native select, so it works with JavaScript off and on every phone.
+        bg-background rather than transparent, so the option list is readable
+        in dark mode where the browser draws it.
+      */}
+      <div className="mt-4">
+        <label
+          htmlFor="budget"
+          className="font-mono text-xs uppercase tracking-widest text-muted-foreground"
+        >
+          Budget, in US dollars
+          <span className="ml-2 normal-case tracking-normal">optional</span>
+        </label>
+        <select
+          id="budget"
+          name="budget"
+          defaultValue=""
+          className="mt-1.5 w-full border border-foreground/15 bg-background px-3.5 py-2.5 text-base outline-none transition-colors focus:border-foreground/50"
+        >
+          <option value="">Choose a range</option>
+          {budgetOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/*
@@ -225,7 +277,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
         once rendered, inside the <form>, so the existing FormData collection
         in onSubmit already picks it up without any change to it.
       */}
-      {TURNSTILE_SITE_KEY && <div ref={widgetContainerRef} className="mt-6" />}
+      {TURNSTILE_SITE_KEY && <div ref={widgetContainerRef} className="mt-3" />}
 
       {failure && (
         <p
@@ -239,7 +291,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
       <button
         type="submit"
         disabled={status === "sending" || !turnstileReady}
-        className="group/send mt-8 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-8 text-base text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+        className="group/send mt-5 inline-flex h-12 items-center gap-2 rounded-full bg-primary px-7 text-base text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
       >
         {status === "sending" ? "Sending" : "Send this"}
         <ArrowRight
@@ -248,7 +300,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
         />
       </button>
 
-      <p className="mt-5 text-xs text-muted-foreground leading-relaxed">
+      <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
         We use this to reply to you and nothing else. No list, no sequence.
       </p>
     </form>
@@ -285,7 +337,7 @@ function Field({
 }) {
   const errorId = `${name}-error`;
   const shared =
-    "mt-2 w-full border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground/50 " +
+    "mt-1.5 w-full border bg-transparent px-3.5 py-2.5 text-base outline-none transition-colors focus:border-foreground/50 " +
     (error ? "border-brand-red" : "border-foreground/15");
 
   return (
@@ -299,7 +351,7 @@ function Field({
         <textarea
           id={name}
           name={name}
-          rows={5}
+          rows={3}
           required={required}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
