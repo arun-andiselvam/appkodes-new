@@ -128,21 +128,28 @@ export function Navigation() {
     setOpenSection(null);
   }
 
-  /* The full-screen mobile menu scrolls the page underneath it otherwise. */
-  useEffect(() => {
-    if (!isMobileMenuOpen) return;
-    /*
-       Cleared rather than restored. This captured the previous value and put
-       it back, which sounds safer and is not: if anything else ever leaves
-       `hidden` on the body, the captured value is `hidden` and this puts the
-       page back into a state nothing will lift. Clearing the property is
-       idempotent, and the stylesheet decides what body overflow should be.
-    */
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.removeProperty("overflow");
-    };
-  }, [isMobileMenuOpen]);
+  /*
+    !! DO NOT LOCK BODY SCROLL HERE. IT BREAKS SCROLLING ON ANDROID. !!
+
+    This set `document.body.style.overflow = "hidden"` while the menu was open
+    and cleared it on close. The exact repro, from a OnePlus on Chrome, 10
+    September 2026: load the page and scroll and it is fine; reload, open the
+    menu and close it without scrolling first, and the page will not scroll
+    past the header afterwards.
+
+    The cause is the interaction with `content-visibility: auto`, which
+    app/globals.css puts on `main > section:nth-child(n + 4)`. The document's
+    height below the fold is an estimate from `contain-intrinsic-size` until a
+    section has been on screen once. Taking the body out of scrolling and
+    putting it back makes Chrome recompute that while nothing is rendered, and
+    the scroll range collapses to roughly the part that had been painted.
+
+    No lock is needed. The overlay is `fixed inset-0` and covers the page, it
+    scrolls itself, and `overscroll-contain` on it stops that scroll chaining
+    through to the document behind. Nothing touches the body at all now, so
+    there is no state to restore and nothing for content-visibility to get
+    wrong.
+  */
 
   return (
     <header
@@ -502,7 +509,7 @@ export function Navigation() {
           value stays `visible` for as long as either end of the transition is
           visible, so the box holds for the full 500ms and only then goes.
         */
-        className={`lg:hidden fixed inset-0 bg-background z-40 overflow-y-auto transition-all duration-500 ${
+        className={`lg:hidden fixed inset-0 bg-background z-40 overflow-y-auto overscroll-contain transition-all duration-500 ${
           isMobileMenuOpen
             ? "visible opacity-100 pointer-events-auto"
             : "invisible opacity-0 pointer-events-none"
