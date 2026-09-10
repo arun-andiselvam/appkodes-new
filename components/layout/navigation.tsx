@@ -281,7 +281,13 @@ export function Navigation() {
             : "0ms, 0ms, 0ms, 0ms, 0ms, 0ms",
           transitionTimingFunction: "ease",
         }}
-        className={`relative mx-auto rounded-2xl border ${
+        /*
+          z-50 keeps the bar above the mobile overlay, which is a sibling of
+          this <nav> inside <header> and carries z-40. Without it the overlay
+          paints over the bar and the close button under it stops receiving
+          taps: the menu opens and cannot be shut. Reported 10 September 2026.
+        */
+        className={`relative z-50 mx-auto rounded-2xl border ${
           solid
             ? "border-foreground/10 bg-background/80 backdrop-blur-xl shadow-lg max-w-[1200px]"
             : "border-transparent bg-transparent max-w-[1400px]"
