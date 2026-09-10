@@ -131,10 +131,16 @@ export function Navigation() {
   /* The full-screen mobile menu scrolls the page underneath it otherwise. */
   useEffect(() => {
     if (!isMobileMenuOpen) return;
-    const previous = document.body.style.overflow;
+    /*
+       Cleared rather than restored. This captured the previous value and put
+       it back, which sounds safer and is not: if anything else ever leaves
+       `hidden` on the body, the captured value is `hidden` and this puts the
+       page back into a state nothing will lift. Clearing the property is
+       idempotent, and the stylesheet decides what body overflow should be.
+    */
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = previous;
+      document.body.style.removeProperty("overflow");
     };
   }, [isMobileMenuOpen]);
 
@@ -281,13 +287,7 @@ export function Navigation() {
             : "0ms, 0ms, 0ms, 0ms, 0ms, 0ms",
           transitionTimingFunction: "ease",
         }}
-        /*
-          z-50 keeps the bar above the mobile overlay, which is a sibling of
-          this <nav> inside <header> and carries z-40. Without it the overlay
-          paints over the bar and the close button under it stops receiving
-          taps: the menu opens and cannot be shut. Reported 10 September 2026.
-        */
-        className={`relative z-50 mx-auto rounded-2xl border ${
+        className={`relative mx-auto rounded-2xl border ${
           solid
             ? "border-foreground/10 bg-background/80 backdrop-blur-xl shadow-lg max-w-[1200px]"
             : "border-transparent bg-transparent max-w-[1400px]"
@@ -487,13 +487,41 @@ export function Navigation() {
 
       {/* Mobile Menu - Full Screen Overlay */}
       <div
+        /*
+          !! `invisible` WHEN CLOSED, OR IT EATS THE PAGE'S SCROLL !!
+
+          This was `opacity-0 pointer-events-none` and stayed in the layout, a
+          full screen `fixed` box that is its own scroll container. On Android
+          Chrome that still swallowed touch scrolling once the menu had been
+          opened and closed, so the whole site became unscrollable until a
+          reload. `pointer-events: none` does not reliably keep a scroller out
+          of touch hit testing there. Reported 10 September 2026.
+
+          `visibility: hidden` takes it out of hit testing altogether, and
+          because visibility is in `transition-all` the fade still plays: the
+          value stays `visible` for as long as either end of the transition is
+          visible, so the box holds for the full 500ms and only then goes.
+        */
         className={`lg:hidden fixed inset-0 bg-background z-40 overflow-y-auto transition-all duration-500 ${
           isMobileMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            ? "visible opacity-100 pointer-events-auto"
+            : "invisible opacity-0 pointer-events-none"
         }`}
         style={{ top: 0 }}
       >
+        {/*
+          The close button lives in the overlay, not in the header bar. The bar
+          sits under this at z-40 vs z-50 and is deliberately covered, so its
+          own toggle is unreachable while the menu is open.
+        */}
+        <button
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-label="Close menu"
+          className="absolute right-6 top-6 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-foreground/5"
+        >
+          <X aria-hidden className="h-6 w-6" />
+        </button>
+
         <div className="flex flex-col min-h-full px-8 pt-28 pb-8">
           {/*
             Was five links at text-5xl, centred with justify-center. The silo
