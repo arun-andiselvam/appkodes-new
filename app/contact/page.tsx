@@ -57,6 +57,14 @@ export default async function ContactPage() {
     (slide): slide is Extract<TestimonialSlide, { kind: "video" }> =>
       slide.kind === "video" && slide.id === "video-joysale",
   );
+  // This page names the kind of product rather than the product. The client
+  // asked on 10 September 2026 for no product names here, in the heading, the
+  // description or the note; the testimonials section keeps the captions from
+  // content/testimonials.ts. The live streaming is the client's description of
+  // the build. The note still says whose product it was, without naming it.
+  const videoTitle = "Advanced classified live streaming marketplace";
+  const videoDescription =
+    "He runs a classified marketplace with live streaming, built on our product. The clip is his own account of working with us.";
 
   return (
     <main>
@@ -318,19 +326,21 @@ export default async function ContactPage() {
         <Section spacing="tight" className="border-t border-foreground/10">
           <Container>
             <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-              <VideoDialog slide={video} />
+              <VideoDialog
+                slide={{ ...video, title: videoTitle, description: videoDescription }}
+              />
               <div>
                 <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                   A client, in his own words
                 </p>
                 <h2 className="mt-4 font-display text-3xl lg:text-4xl tracking-tight">
-                  {video.title}
+                  {videoTitle}
                 </h2>
                 <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
-                  {video.description}
+                  {videoDescription}
                 </p>
                 <p className="mt-6 text-xs text-muted-foreground">
-                  Joysale is a product from Appkodes, our software product division.
+                  The marketplace runs on a product from Appkodes, our software product division.
                 </p>
               </div>
             </div>
