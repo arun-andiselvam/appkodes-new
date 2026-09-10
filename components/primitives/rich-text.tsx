@@ -416,13 +416,19 @@ function Summary({ text }: { text: string }) {
  * be a tell that something is stitched together. If either changes, change
  * both.
  */
+/*
+ * Link underlines, here and in Linked below: 30% of the text colour in light
+ * mode, 50% in dark. Links share the body's colour, so the underline is the
+ * only thing marking them, and at 30% it all but vanished on the dark ground
+ * while reading fine on the light one. Raised for dark only, 10 September 2026.
+ */
 export function Runs({ runs }: { runs: Inline[] }) {
   return (
     <>
       {runs.map((run, i) => {
         if (run.mark === "link" && run.href) {
           return (
-            <Link key={i} href={run.href} className="underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground">
+            <Link key={i} href={run.href} className="underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground dark:decoration-foreground/50">
               {run.text}
             </Link>
           );
@@ -470,7 +476,7 @@ export function Linked({ text, links }: { text: string; links?: { phrase: string
         typeof part === "string" ? (
           part
         ) : (
-          <Link key={i} href={part.href} className="underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground">
+          <Link key={i} href={part.href} className="underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground dark:decoration-foreground/50">
             {part.phrase}
           </Link>
         ),
