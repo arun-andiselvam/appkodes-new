@@ -529,7 +529,14 @@ export function Navigation() {
           <X aria-hidden className="h-6 w-6" />
         </button>
 
-        <div className="flex flex-col min-h-full px-8 pt-28 pb-8">
+        {/*
+          pt-20, not pt-28. The 112px was room for the header bar, from when it
+          sat above this overlay. The overlay covers the bar now and carries its
+          own close button, which ends 68px down (top-6 plus h-11), so 80px
+          clears it. Trimmed on 10 September 2026 so the menu and both buttons
+          fit on a phone screen; a very short screen still scrolls.
+        */}
+        <div className="flex flex-col min-h-full px-8 pt-20 pb-8">
           {/*
             Was five links at text-5xl, centred with justify-center. The silo
             adds children under two of them, and a fifty pixel accordion does
@@ -559,7 +566,7 @@ export function Navigation() {
                       {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       aria-current={active ? "page" : undefined}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`py-4 text-3xl font-display transition-colors duration-300 ${
+                      className={`py-3.5 text-3xl font-display transition-colors duration-300 ${
                         active ? "text-muted-foreground" : "text-foreground"
                       }`}
                     >
@@ -634,9 +641,13 @@ export function Navigation() {
             })}
           </div>
 
-          {/* Bottom CTAs */}
+          {/*
+            Bottom CTAs. No border-t of their own: the last menu item already
+            draws a rule beneath itself, so a second one here printed two lines
+            with an empty strip between them. mt-6 in place of mt-8 plus pt-8.
+          */}
           <div
-            className={`flex gap-4 pt-8 mt-8 border-t border-foreground/10 transition-all duration-500 ${
+            className={`flex gap-4 mt-6 transition-all duration-500 ${
               isMobileMenuOpen
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4"
