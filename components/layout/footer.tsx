@@ -47,7 +47,11 @@ export function Footer() {
         into it. Opacity is a compromise rather than a low default: it has to
         stay legible as a photograph while still losing to the copy on top of
         it, and 0.12 read as barely there once the ground behind it went dark.
-        public/team.webp, added 24 August 2026.
+        public/team-group.webp, replacing public/team.webp on 11 September
+        2026 with the client's wider group photo (1903 by 506 against 1024 by
+        586). A new filename rather than an overwrite: Cloudflare caches
+        /_next/image and next.config.mjs gives public assets a week's browser
+        cache, so a replaced file under the old name keeps being served stale.
 
         !! GRAYSCALE, NOT THE ORIGINAL COLOUR !!
 
@@ -67,7 +71,7 @@ export function Footer() {
         backdrop rather than something to describe.
       */}
       <Image
-        src="/team.webp"
+        src="/team-group.webp"
         alt="The Hitasoft team"
         aria-hidden
         fill
