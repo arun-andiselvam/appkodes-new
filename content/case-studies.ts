@@ -660,10 +660,17 @@ export const caseStudies: CaseStudy[] = [
    */
   {
     slug: "low-bandwidth-super-app",
-    /* 51 characters. The client is unnamed, so the title carries the
-       constraint rather than the usual "How <client> did <thing>". It names
-       what the app does rather than claiming a share of anybody's market. */
-    title: "How a chat app kept working where WhatsApp could not",
+    /* 44 characters, 55 rendered with " - Hitasoft", inside the 49 a page's
+       own title gets in docs/seo-standards.md. It read "How a chat app kept
+       working where WhatsApp could not" until 11 September 2026, 52 and 63
+       rendered, and was cut in results. The claim is unchanged and is the
+       challenge section's own: WhatsApp is built for a connection that holds,
+       and on these networks it does not.
+
+       The client is unnamed, so the title carries the constraint rather than
+       the usual "How <client> did <thing>". It names what the app does rather
+       than claiming a share of anybody's market. */
+    title: "How a chat app works where WhatsApp does not",
     client: "Undisclosed",
     industry: "Consumer messaging and payments",
     companySize: "5 to 10",
