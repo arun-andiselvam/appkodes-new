@@ -113,7 +113,13 @@ export default async function RootLayout({
   const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    /*
+      Dark by default, rendered on the server so the first paint is dark
+      before any script runs. See the note in components/theme-provider.tsx,
+      whose DEFAULT_THEME has to match this class. suppressHydrationWarning
+      stays because the header button changes the class on the client.
+    */
+    <html lang="en" className="dark" suppressHydrationWarning>
       {/*
         The dark mode favicon, added 6 September 2026.
 
