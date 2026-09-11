@@ -39,10 +39,21 @@ export function postRoute() {
       const post = await postBySlug(slug);
       if (!post) return {};
 
+      /*
+        !! absoluteTitle: BLOG POSTS CARRY NO " - Hitasoft" !!
+
+        On the client's instruction, 11 September 2026, and against the
+        general rule in docs/seo-standards.md, which records this as its one
+        exception beside the home page. A post's title is its headline and
+        the query it is written for, and the eleven characters of brand were
+        costing it that room: a post now has the full 60 a result shows rather
+        than 49. The Open Graph title follows it, through the same flag.
+      */
       return pageMetadata({
         title: post.title,
         description: post.excerpt,
         path: `/blog/${slug}`,
+        absoluteTitle: true,
       });
     },
 

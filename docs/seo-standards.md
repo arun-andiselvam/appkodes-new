@@ -76,6 +76,13 @@ Use `absoluteTitle` in `lib/seo.ts` only for the home page. Every other page
 keeps the brand suffix, and dropping it to buy characters trades recognition
 for a phrase nobody searches.
 
+**The one exception: blog posts, since 11 September 2026.** The client asked
+for the suffix off every post, and `lib/post-route.tsx` passes
+`absoluteTitle`. A post's title budget is therefore **60**, not 49. Ten titles
+were flagged over budget that day, nine of them posts; with the suffix gone,
+five of the nine fit as written and four still needed shortening. The argument
+above still holds for every other page type.
+
 ---
 
 ## 3. The description is 150 to 160 characters and ends on the action
