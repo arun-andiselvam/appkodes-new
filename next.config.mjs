@@ -257,6 +257,20 @@ const nextConfig = {
         destination: '/blog/:slug',
         permanent: true,
       },
+      /*
+       * A post from the old site, sent to the internship site on the client's
+       * instruction, 11 September 2026. It was never a post here, so without
+       * this it would 404: /blog/[slug] has dynamicParams off. Redirects run
+       * before the filesystem routes, so this wins over that route.
+       *
+       * The capitals are kept exactly as the old URL had them, because that
+       * is the address search engines and old links hold.
+       */
+      {
+        source: '/blog/Best-Digital-Marketing-Courses-with-Placement',
+        destination: 'https://internship.hitasoft.com/marketing-internship',
+        permanent: true,
+      },
     ]
   },
 
