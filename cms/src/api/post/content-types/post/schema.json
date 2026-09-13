@@ -10,26 +10,50 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
     "title": {
       "type": "string",
       "required": true,
-      "maxLength": 70
+      "maxLength": 70,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "slug": {
       "type": "uid",
       "targetField": "title",
-      "required": true
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "category": {
       "type": "enumeration",
-      "enum": ["/resources/integration-guides", "/resources/cost-reduction-strategies"]
+      "enum": ["/resources/integration-guides", "/resources/cost-reduction-strategies"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
     "excerpt": {
       "type": "text",
       "required": true,
-      "maxLength": 220
+      "maxLength": 220,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "body": {
       "type": "customField",
@@ -37,44 +61,94 @@
       "required": true,
       "options": {
         "preset": "Hitasoft article"
+      },
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
       }
     },
     "takeaways": {
       "type": "component",
       "repeatable": true,
       "component": "content.text-item",
-      "max": 3
+      "max": 3,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "faqs": {
       "type": "component",
       "repeatable": true,
-      "component": "content.faq"
+      "component": "content.faq",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "image": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
     "imageAlt": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "sendsTo": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
     "published": {
       "type": "date",
-      "required": true
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
     "updated": {
-      "type": "date"
+      "type": "date",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
     "readingMinutes": {
       "type": "integer",
-      "min": 1
+      "min": 1,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     },
     "author": {
       "type": "string",
-      "default": "Hitasoft"
+      "default": "Hitasoft",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     }
   }
 }
