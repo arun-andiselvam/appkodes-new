@@ -1,4 +1,5 @@
 import { strapiPosts } from "@/lib/strapi";
+import { blogBase, POST_LOCALES, type PostLocale } from "@/content/post-labels";
 
 /**
  * Where blog posts come from.
@@ -150,6 +151,13 @@ export type Block =
  * is a field the type demands rather than something a writer has to remember.
  */
 export type Post = {
+  /**
+   * Strapi's document id, shared by every language version of this post. What
+   * translationsOf matches on to link an English article to its Spanish one.
+   */
+  documentId: string;
+  /** Which language this version is. Decides its URL: see postHref. */
+  locale: PostLocale;
   /** Last segment of the URL. Unique within its category, not across all of them. */
   slug: string;
   /** Path of the category page this belongs under, leading slash. */
@@ -296,8 +304,8 @@ export const BLOG_POSTS_PER_PAGE = 10;
  * invented articles; now it is the category's own honest empty state. See
  * the note above for why.
  */
-async function source(): Promise<Post[]> {
-  return (await strapiPosts()) ?? [];
+async function source(locale: PostLocale = "en"): Promise<Post[]> {
+  return (await strapiPosts(locale)) ?? [];
 }
 
 /**
@@ -320,7 +328,8 @@ async function source(): Promise<Post[]> {
  * The old URLs 301 to the new ones. See the redirects in next.config.mjs.
  */
 export function postHref(post: Post): string {
-  return `/blog/${post.slug}`;
+  // /blog/<slug> for English, unchanged; /es/blog/<slug> for Spanish.
+  return `${blogBase(post.locale)}/${post.slug}`;
 }
 
 /**
@@ -401,8 +410,8 @@ function paginate(all: Post[], pageNumber: number, pageSize: number = POSTS_PER_
  * long before it should have a URL, and the note on `body` above says the
  * honest response is not to publish one for it.
  */
-export async function postsWithBody(): Promise<Post[]> {
-  return (await source()).filter((post) => post.body && post.body.length > 0);
+export async function postsWithBody(locale: PostLocale = "en"): Promise<Post[]> {
+  return (await source(locale)).filter((post) => post.body && post.body.length > 0);
 }
 
 /**
@@ -414,8 +423,27 @@ export async function postsWithBody(): Promise<Post[]> {
  * whatever categories they carry. cms/README.md recorded that as stricter
  * than the old routing needed. The flat URL is what it was already ready for.
  */
-export async function postBySlug(slug: string): Promise<Post | undefined> {
-  return (await postsWithBody()).find((post) => post.slug === slug);
+export async function postBySlug(
+  slug: string,
+  locale: PostLocale = "en",
+): Promise<Post | undefined> {
+  return (await postsWithBody(locale)).find((post) => post.slug === slug);
+}
+
+/**
+ * Every language this post is published in, as language to URL.
+ *
+ * Matched on Strapi's documentId, which all language versions of one post
+ * share. Only versions that are published with a body count, so hreflang
+ * never points at a page that would 404. Added 14 September 2026.
+ */
+export async function translationsOf(post: Post): Promise<Partial<Record<PostLocale, string>>> {
+  const found: Partial<Record<PostLocale, string>> = {};
+  for (const locale of POST_LOCALES) {
+    const match = (await postsWithBody(locale)).find((p) => p.documentId === post.documentId);
+    if (match) found[locale] = postHref(match);
+  }
+  return found;
 }
 
 /**
@@ -431,8 +459,11 @@ export async function relatedPosts(
   // Three, which is what docs/blog-structure.md asks for and what fills a
   // row without leaving a widow on its own line.
   limit = 3,
+  // Suggestions stay in the reader's language: a Spanish article never
+  // recommends English ones, and the section is simply omitted when empty.
+  locale: PostLocale = "en",
 ): Promise<Post[]> {
-  const all = await postsWithBody();
+  const all = await postsWithBody(locale);
   const current = all.find((post) => post.slug === slug);
   const others = all.filter((post) => post.slug !== slug);
 

@@ -3,8 +3,9 @@ import { siteOrigin } from "@/lib/site-url";
 import { pageMetadata } from "@/lib/seo";
 import { PostPage } from "@/components/sections/post";
 import { CtaSection } from "@/components/sections/cta";
-import { postBySlug, postsWithBody, relatedPosts } from "@/lib/posts";
+import { postBySlug, postHref, postsWithBody, relatedPosts, translationsOf } from "@/lib/posts";
 import { site } from "@/content/site";
+import { postLabels, type PostLocale } from "@/content/post-labels";
 
 /**
  * One article, wired up from its slug.
@@ -20,7 +21,14 @@ import { site } from "@/content/site";
  * The category is a tag deciding which resource page lists a post, which is
  * all it was ever meant to be. See postHref in lib/posts.ts.
  */
-export function postRoute() {
+export function postRoute(
+  /*
+   * Which language this route serves. app/blog/[slug] is English, and
+   * app/es/blog/[slug] passes "es", added 14 September 2026. One helper for
+   * both, so the two languages cannot drift apart in how an article is built.
+   */
+  locale: PostLocale = "en",
+) {
   return {
     /**
      * Every slug that has a body.
@@ -31,13 +39,24 @@ export function postRoute() {
      * filter any more: one route serves them all, uncategorised included.
      */
     async generateStaticParams() {
-      const posts = await postsWithBody();
+      const posts = await postsWithBody(locale);
       return posts.map((post) => ({ slug: post.slug }));
     },
 
     async generateMetadata(slug: string) {
-      const post = await postBySlug(slug);
+      const post = await postBySlug(slug, locale);
       if (!post) return {};
+
+      /*
+        hreflang, only when the post exists in more than one language, so a
+        page never points at a translation that would 404. x-default is the
+        English version, the site's default, when there is one.
+      */
+      const translations = await translationsOf(post);
+      const languages =
+        Object.keys(translations).length > 1
+          ? { ...translations, ...(translations.en ? { "x-default": translations.en } : {}) }
+          : undefined;
 
       /*
         !! absoluteTitle: BLOG POSTS CARRY NO " - Hitasoft" !!
@@ -52,16 +71,18 @@ export function postRoute() {
       return pageMetadata({
         title: post.title,
         description: post.excerpt,
-        path: `/blog/${slug}`,
+        path: postHref(post),
         absoluteTitle: true,
+        languages,
+        ogLocale: postLabels[locale].ogLocale,
       });
     },
 
     async Page(slug: string) {
-      const post = await postBySlug(slug);
+      const post = await postBySlug(slug, locale);
       if (!post) notFound();
 
-      const related = await relatedPosts(slug);
+      const related = await relatedPosts(slug, 3, locale);
       /*
         Absolute URLs in the schema below, from the request rather than a
         constant. See lib/site-url.ts.
@@ -95,7 +116,8 @@ export function postRoute() {
         "@type": "BlogPosting",
         headline: post.title,
         description: post.excerpt,
-        url: `${origin}/blog/${slug}`,
+        url: `${origin}${postHref(post)}`,
+        inLanguage: locale,
         ...(post.image ? { image: `${origin}${post.image}` } : {}),
         datePublished: post.published,
         dateModified: post.updated ?? post.published,
@@ -119,7 +141,7 @@ export function postRoute() {
         }, 0),
         author: { "@type": "Organization", name: site.name, url: origin },
         publisher: { "@type": "Organization", name: site.name, url: origin },
-        mainEntityOfPage: `${origin}/blog/${slug}`,
+        mainEntityOfPage: `${origin}${postHref(post)}`,
       };
 
       /*
@@ -158,7 +180,13 @@ export function postRoute() {
           : null;
 
       return (
-        <main>
+        /*
+          lang on <main> for a translated article. <html> is lang="en" for the
+          whole site in app/layout.tsx and stays that way, since the header and
+          footer around a Spanish post are still English; this marks the part
+          that is not, for screen readers and hyphenation.
+        */
+        <main lang={locale === "en" ? undefined : locale}>
           {[articleSchema, ...(faqSchema ? [faqSchema] : [])].map((schema) => (
             <script
               key={schema["@type"]}

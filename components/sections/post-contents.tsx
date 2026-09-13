@@ -43,9 +43,13 @@ import type { Block } from "@/lib/posts";
 export function Contents({
   headings,
   className = "",
+  // The panel's heading, in the article's language. The privacy page uses the
+  // English default.
+  label = "On this page",
 }: {
   headings: Extract<Block, { kind: "h2" | "h3" }>[];
   className?: string;
+  label?: string;
 }) {
   const ids = headings.map((heading) => slugify(heading.text));
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -167,7 +171,7 @@ export function Contents({
   return (
     <>
       <h2 className="hidden shrink-0 font-mono text-xs uppercase tracking-widest text-muted-foreground lg:block">
-        On this page
+        {label}
       </h2>
 
       <details
@@ -177,7 +181,7 @@ export function Contents({
         className={`group/toc lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain ${className}`}
       >
         <summary className="flex cursor-pointer items-center justify-between gap-4 border-y border-foreground/10 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground list-none lg:hidden [&::-webkit-details-marker]:hidden">
-          On this page
+          {label}
           <span
             aria-hidden
             className="text-lg leading-none transition-transform group-open/toc:rotate-45"
@@ -187,7 +191,7 @@ export function Contents({
         </summary>
 
         <div>
-          <nav aria-label="On this page">
+          <nav aria-label={label}>
             <ul className="mt-4 space-y-3 border-l border-foreground/15">
             {headings.map((heading, i) => {
               const id = ids[i];

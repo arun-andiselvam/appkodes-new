@@ -16,6 +16,8 @@ export function pageMetadata({
   description,
   path,
   absoluteTitle = false,
+  languages,
+  ogLocale = "en_GB",
 }: {
   /** The page's own name, without the company appended. */
   title: string;
@@ -28,17 +30,25 @@ export function pageMetadata({
    * needs this: it leads with the company name rather than trailing it.
    */
   absoluteTitle?: boolean;
+  /**
+   * hreflang alternates, language code to path, e.g. { en: "/blog/x",
+   * es: "/es/blog/y", "x-default": "/blog/x" }. Only blog posts pass it, and
+   * only when a post exists in more than one language. Added 14 September 2026.
+   */
+  languages?: Record<string, string>;
+  /** Open Graph locale. English unless a translated page says otherwise. */
+  ogLocale?: string;
 }): Metadata {
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical: path, ...(languages ? { languages } : {}) },
     openGraph: {
       title: absoluteTitle ? title : `${title} - ${site.name}`,
       description,
       url: path,
       siteName: site.name,
-      locale: "en_GB",
+      locale: ogLocale,
       type: "website",
       /*
        * !! THIS HAS TO BE HERE, NOT ONLY IN THE LAYOUT !!

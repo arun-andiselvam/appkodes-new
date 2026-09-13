@@ -18,6 +18,7 @@ import { resourceCategories } from "@/content/resources";
 import { site } from "@/content/site";
 import { QuoteLauncher } from "@/components/quote/launcher";
 import { postHref, type Block, type Post } from "@/lib/posts";
+import { postLabels, type PostLocale } from "@/content/post-labels";
 
 /**
  * One article, built to docs/blog-structure.md.
@@ -45,6 +46,8 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
     (block): block is Extract<Block, { kind: "h2" | "h3" }> =>
       block.kind === "h2" || block.kind === "h3",
   );
+  // The template's own words, in the article's language. See content/post-labels.ts.
+  const t = postLabels[post.locale];
 
   return (
     <>
@@ -169,11 +172,11 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                 list halfway up a screen with room for all of it.
               */}
               <div className="mt-10 lg:sticky lg:top-32 lg:flex lg:max-h-[calc(100vh-10rem)] lg:flex-col">
-                {headings.length > 1 && <Contents headings={headings} />}
+                {headings.length > 1 && <Contents headings={headings} label={t.onThisPage} />}
                 {/* Omitted rather than drawn empty when a post has no silo
                     target. See the note on `sendsTo` in lib/posts.ts. */}
                 {post.sendsTo && (
-                  <SiloLink href={post.sendsTo} className="mt-10 lg:shrink-0" />
+                  <SiloLink href={post.sendsTo} label={t.serviceBehind} className="mt-10 lg:shrink-0" />
                 )}
               </div>
             </aside>
@@ -206,11 +209,10 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
               */}
               <div className="mt-16 border-t border-foreground/15 pt-10">
                 <p className="font-display text-2xl tracking-tight leading-snug">
-                  Wondering what this would take against your own systems?
+                  {t.ctaHeading}
                 </p>
                 <p className="mt-3 text-muted-foreground leading-relaxed">
-                  The audit costs nothing, and you keep the costed plan and
-                  the risks whether you go ahead or not.
+                  {t.ctaBody}
                 </p>
                 <Button
                   asChild
@@ -219,7 +221,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                 >
                   <QuoteLauncher placement="blog_post">
                     <Sparkles aria-hidden />
-                    Book a free automation audit
+                    {t.ctaButton}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
                   </QuoteLauncher>
                 </Button>
@@ -228,7 +230,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
               {post.faqs && post.faqs.length > 0 && (
                 <div className="mt-16">
                   <h2 className="font-display text-2xl lg:text-3xl tracking-tight">
-                    Common questions
+                    {t.commonQuestions}
                   </h2>
                   <div className="mt-8 border-t border-foreground/10">
                     {post.faqs.map((faq) => (
@@ -256,7 +258,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                 </div>
               )}
 
-              <AuthorBox author={post.author} />
+              <AuthorBox author={post.author} locale={post.locale} />
             </article>
           </div>
         </Container>
@@ -265,7 +267,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
       {related.length > 0 && (
         <Section spacing="tight" className="border-t border-foreground/10">
           <Container>
-            <SectionTitle>Read next</SectionTitle>
+            <SectionTitle>{t.readNext}</SectionTitle>
             <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
               {/*
                 !! THESE LINKS WERE BUILT BY HAND AND WERE BROKEN !!
@@ -377,7 +379,7 @@ function Hero({ post }: { post: Post }) {
             aria-labelledby="takeaways"
             className="max-w-3xl bg-foreground/[0.03] p-8 lg:p-10"
           >
-            <TakeawaysHeading />
+            <TakeawaysHeading label={postLabels[post.locale].keyTakeaways} />
             <ul className="mt-6 space-y-4">
               {takeaways.map((line) => (
                 <li key={line} className="flex gap-4 text-lg leading-relaxed">
@@ -466,7 +468,7 @@ function Hero({ post }: { post: Post }) {
                     the mask above are cut to. Move one and move all three, or
                     the type runs out past its own scrim. */}
                 <div className="lg:max-w-[40%]">
-                  <TakeawaysHeading className="text-white/70" />
+                  <TakeawaysHeading label={postLabels[post.locale].keyTakeaways} className="text-white/70" />
                   <ul className="mt-5 max-w-4xl space-y-4">
                     {takeaways.map((line) => (
                       <li
@@ -488,13 +490,19 @@ function Hero({ post }: { post: Post }) {
   );
 }
 
-function TakeawaysHeading({ className = "text-muted-foreground" }) {
+function TakeawaysHeading({
+  label,
+  className = "text-muted-foreground",
+}: {
+  label: string;
+  className?: string;
+}) {
   return (
     <h2
       id="takeaways"
       className={`font-mono text-xs uppercase tracking-widest ${className}`}
     >
-      Key takeaways
+      {label}
     </h2>
   );
 }
@@ -530,21 +538,22 @@ function Bullet({ className }: { className: string }) {
  * the markup may as well say so.
  */
 function Facts({ post }: { post: Post }) {
+  const t = postLabels[post.locale];
   const rows: { label: string; value: React.ReactNode }[] = [
-    { label: "Author", value: post.author },
+    { label: t.author, value: post.author },
     {
-      label: "Published",
-      value: <time dateTime={post.published}>{formatDate(post.published)}</time>,
+      label: t.published,
+      value: <time dateTime={post.published}>{formatDate(post.published, t.dateLocale)}</time>,
     },
     ...(post.updated
       ? [
           {
-            label: "Updated",
-            value: <time dateTime={post.updated}>{formatDate(post.updated)}</time>,
+            label: t.updated,
+            value: <time dateTime={post.updated}>{formatDate(post.updated, t.dateLocale)}</time>,
           },
         ]
       : []),
-    { label: "Read time", value: `${post.readingMinutes} min` },
+    { label: t.readTime, value: t.minutes(post.readingMinutes) },
   ];
 
   return (
@@ -574,14 +583,22 @@ function Facts({ post }: { post: Post }) {
  * sits in the sticky column instead of at the foot where it would be read by
  * whoever finished the article rather than by everybody.
  */
-function SiloLink({ href, className = "" }: { href: string; className?: string }) {
+function SiloLink({
+  href,
+  label,
+  className = "",
+}: {
+  href: string;
+  label: string;
+  className?: string;
+}) {
   return (
     <Link
       href={href}
       className={`group/silo block border border-foreground/15 p-5 transition-colors hover:border-foreground/40 ${className}`}
     >
       <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-        The service behind this
+        {label}
       </span>
       <span className="mt-3 flex items-start gap-2 font-display text-lg tracking-tight leading-snug">
         {serviceName(href)}
@@ -648,8 +665,9 @@ function SiloLink({ href, className = "" }: { href: string; className?: string }
  */
 const FOUNDER = "Arun Andiselvam";
 
-function AuthorBox({ author }: { author: string }) {
+function AuthorBox({ author, locale }: { author: string; locale: PostLocale }) {
   const founder = author === FOUNDER;
+  const t = postLabels[locale];
 
   return (
     <div className="mt-16 border-t border-foreground/10 pt-10">
@@ -748,21 +766,7 @@ function AuthorBox({ author }: { author: string }) {
             </a>
           </div>
           <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
-            {founder ? (
-              <>
-                I am a startup veteran who has built five brands. I sold the
-                first, an SEO tool, for a six figure exit, and now build AI
-                automation products for businesses. I bootstrapped every one of
-                them from day one.
-              </>
-            ) : (
-              <>
-                {site.name} has built software since 2008, for companies that
-                mostly do not have an IT department. These pieces are written by
-                the people who do the integrations rather than by anybody in
-                marketing.
-              </>
-            )}
+            {founder ? t.founderBio : t.companyBio(site.name)}
           </p>
         </div>
       </div>
@@ -783,8 +787,8 @@ function serviceName(href: string) {
  * en-GB with an explicit UTC timezone, so a build machine in one place and a
  * reader in another never see the date land on different days.
  */
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-GB", {
+function formatDate(iso: string, locale = "en-GB") {
+  return new Date(iso).toLocaleDateString(locale, {
     day: "numeric",
     month: "short",
     year: "numeric",

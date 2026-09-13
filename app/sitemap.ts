@@ -97,8 +97,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * unreachable, so an outage costs the entries rather than the whole file,
    * and the structural URLs above still ship.
    */
-  const [posts, jobs, studies] = await Promise.all([
+  const [posts, postsEs, jobs, studies] = await Promise.all([
     postsWithBody(),
+    // Spanish translations, at /es/blog/<slug>. Added 14 September 2026.
+    postsWithBody("es"),
     careerListings(),
     caseStudies(),
   ]);
@@ -118,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * outrank the silo parents it feeds. The URL got shorter; the article did
    * not become more important than a service page.
    */
-  const articles: MetadataRoute.Sitemap = posts.map((post) => ({
+  const articles: MetadataRoute.Sitemap = [...posts, ...postsEs].map((post) => ({
     url: new URL(postHref(post), origin).toString(),
     lastModified: new Date(post.updated ?? post.published),
     changeFrequency: "monthly",

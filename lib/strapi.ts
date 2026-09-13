@@ -1,6 +1,7 @@
 import { htmlToBlocks, withImageDimensions } from "@/lib/html-to-blocks";
 import type { Block, Post } from "@/lib/posts";
 import type { Job } from "@/lib/careers";
+import type { PostLocale } from "@/content/post-labels";
 
 /**
  * The Strapi client, and the map from its shapes to ours.
@@ -104,6 +105,11 @@ type StrapiMedia = {
  */
 
 type StrapiPost = {
+  /* Shared by every language version of one post in Strapi 5, which is how
+     an English article finds its Spanish one. See translationsOf in
+     lib/posts.ts. */
+  documentId: string;
+  locale: string;
   slug: string;
   /* Optional in the schema since 25 August 2026, and Strapi returns null for
      an unset enumeration. lib/posts.ts holds those posts back rather than
@@ -214,6 +220,10 @@ async function mapPost(entry: StrapiPost): Promise<Post> {
   const image = mediaUrl(entry.image);
 
   return {
+    documentId: entry.documentId,
+    /* Anything Strapi returns outside the languages the site renders is
+       treated as English, the default, rather than trusted as a route. */
+    locale: entry.locale === "es" ? "es" : "en",
     slug: entry.slug,
     /* Empty string for an unset category rather than null, so the one place
        that decides what to do about it is the filter in lib/posts.ts and
@@ -272,8 +282,15 @@ async function mapPost(entry: StrapiPost): Promise<Post> {
  * would come back as an array of empty objects. That failure is quiet: the
  * request succeeds, the article renders with no content, and nothing logs.
  */
-export async function strapiPosts(): Promise<Post[] | null> {
+export async function strapiPosts(locale: PostLocale = "en"): Promise<Post[] | null> {
   const query = [
+    /*
+      Explicit since 14 September 2026, when posts became localized. Leaving it
+      off returns the default language, English, which is what the site asked
+      for before Spanish existed; naming it keeps one language per request so
+      a Spanish post can never surface on an English listing.
+    */
+    `locale=${locale}`,
     "sort=published:desc",
     "pagination[pageSize]=100",
     /*
