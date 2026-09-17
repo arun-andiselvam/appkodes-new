@@ -479,8 +479,30 @@ export function htmlToBlocks(html: string): Block[] {
  * failure or a file the library does not recognise leaves the block exactly
  * as it was - no width, no height, and rich-text.tsx's existing fallback to
  * `object-cover` - rather than breaking the page over an image dimension.
+ *
+ * !! REMEMBERED IN PROCESS, BECAUSE THE FETCH CACHE DOES NOT HOLD IMAGES !!
+ *
+ * Next's data cache skips any response over 2 MB, so a large photo was
+ * downloaded again from the CMS on every render that touched its post, which
+ * is every article page, since each one maps the whole catalogue. An upload's
+ * size never changes under the same filename (Strapi hashes it into the name),
+ * so a size, once read, is kept for the life of the server process. A failure
+ * is not kept, so a CMS blip is retried on the next render rather than
+ * pinning a figure to its fallback crop until the next deploy. 17 September
+ * 2026.
  */
+const knownSizes = new Map<string, { width: number; height: number }>();
+
 async function measuredSize(src: string): Promise<{ width: number; height: number } | undefined> {
+  const known = knownSizes.get(src);
+  if (known) return known;
+
+  const size = await readSize(src);
+  if (size) knownSizes.set(src, size);
+  return size;
+}
+
+async function readSize(src: string): Promise<{ width: number; height: number } | undefined> {
   try {
     const res = await fetch(src, { next: { revalidate: 86400 } });
     if (!res.ok) return undefined;

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { htmlToBlocks, withImageDimensions } from "@/lib/html-to-blocks";
 import type { Block, Post } from "@/lib/posts";
 import type { Job } from "@/lib/careers";
@@ -281,8 +282,19 @@ async function mapPost(entry: StrapiPost): Promise<Post> {
  * asked, and `populate=*` does not reach inside a dynamic zone, so the body
  * would come back as an array of empty objects. That failure is quiet: the
  * request succeeds, the article renders with no content, and nothing logs.
+ *
+ * !! WRAPPED IN React cache(), ONE MAPPING PER LOCALE PER REQUEST !!
+ *
+ * The fetch itself was always cached, but the mapping was not: every call
+ * re-parsed every post's HTML and re-measured every image in it. An article
+ * page calls this five times (metadata, hreflang for both languages, the page,
+ * read next), so a post took 1.3s to render at the origin against 0.3s for
+ * /blog. Measured 17 September 2026. cache() hands the second caller the
+ * first caller's result for the rest of that request.
  */
-export async function strapiPosts(locale: PostLocale = "en"): Promise<Post[] | null> {
+export const strapiPosts = cache(fetchPosts);
+
+async function fetchPosts(locale: PostLocale = "en"): Promise<Post[] | null> {
   const query = [
     /*
       Explicit since 14 September 2026, when posts became localized. Leaving it
