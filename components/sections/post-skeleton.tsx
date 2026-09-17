@@ -1,5 +1,6 @@
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
+import { ScrollToTop } from "@/components/sections/scroll-to-top";
 
 /**
  * What an article shows while it renders.
@@ -20,6 +21,10 @@ import { Container } from "@/components/primitives/container";
 export function PostSkeleton() {
   return (
     <main aria-busy="true">
+      {/* The skeleton is shorter than the page clicked from, so the window has
+          to be moved before the browser clamps it to the new bottom. See
+          scroll-to-top.tsx. */}
+      <ScrollToTop />
       <span role="status" className="sr-only">
         Loading article
       </span>
