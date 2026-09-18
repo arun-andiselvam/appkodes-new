@@ -219,12 +219,27 @@ export type NavGroup = {
  * first of these: internship.hitasoft.com is a real destination with no page
  * behind it in this repository, which the rule above otherwise requires.
  */
+/**
+ * appkodes.com's mega-menu layout: groups of links under an icon and a rule,
+ * stacked in columns, with a promo card on the right. Added 18 September 2026
+ * for the Services menu. `icon` is a key the navigation maps to a glyph.
+ */
+export type NavColumnGroup = { name: string; icon: string; links: NavLink[] };
+export type NavPromo = { title: string; text: string; cta: NavLink };
+
 export type NavItem = {
   name: string;
   href: string;
   external?: true;
   panel?: {
     groups: NavGroup[];
+    /**
+     * When present, the desktop panel and the mobile accordion draw these
+     * columns instead of `groups`. `groups` still feeds the sitemap, the
+     * breadcrumbs and the 404 finder, which is why it is not replaced.
+     */
+    columns?: NavColumnGroup[][];
+    promo?: NavPromo;
     /**
      * The strip along the bottom of the panel.
      *

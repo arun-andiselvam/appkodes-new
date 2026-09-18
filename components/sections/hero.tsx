@@ -153,14 +153,6 @@ export function HeroSection() {
             >
               <Link href={actions.caseStudies}>{heroCopy.secondaryCta}</Link>
             </Button>
-            <a
-              href={heroCopy.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="self-center text-sm text-muted-foreground underline underline-offset-4 decoration-foreground/20 transition-colors hover:text-foreground hover:decoration-foreground sm:basis-full"
-            >
-              {heroCopy.whatsappLabel}
-            </a>
           </div>
         </div>
         

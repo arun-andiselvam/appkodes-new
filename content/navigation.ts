@@ -210,6 +210,87 @@ export const mainNav: NavItem[] = [
        * Industries and Resources keep their footers. Theirs point at an index
        * of the panel's own contents, which is a different job.
        */
+      /*
+       * The dropdown, laid out as appkodes.com's Services menu on 18 September
+       * 2026: six groups in three columns, with a "start a business" card.
+       * Its "AI for your business" menu is left out: Appkodes carries no AI.
+       *
+       * !! THESE LINKS POINT AT appkodes.com FOR NOW !!
+       *
+       * None of these pages exists on this site yet, and every one of them is
+       * live and ranking on appkodes.com. Absolute URLs keep the menu honest
+       * until the pages are built here; then they become relative paths on the
+       * same slugs so the old URLs keep working.
+       */
+      columns: [
+        [
+          {
+            name: "Services",
+            icon: "services",
+            links: [
+              { name: "SaaS Development", href: "https://appkodes.com/saas-development-company/" },
+              { name: "Startup App Development", href: "https://appkodes.com/startup-mobile-app-development/" },
+              { name: "IoT App Development", href: "https://appkodes.com/iot-app-development/" },
+              { name: "MVP Software Development", href: "https://appkodes.com/mvp-software-development/" },
+            ],
+          },
+          {
+            name: "On Demand Industry",
+            icon: "onDemand",
+            links: [
+              { name: "Hyperlocal App Development", href: "https://appkodes.com/hyperlocal-app-development/" },
+              { name: "Taxi Booking App Development", href: "https://appkodes.com/taxi-booking-app-development-company/" },
+              { name: "Parking Finder App Development", href: "https://appkodes.com/parking-finder-app-development/" },
+            ],
+          },
+        ],
+        [
+          {
+            name: "Entertainment Industry",
+            icon: "entertainment",
+            links: [
+              { name: "Social Media App Development", href: "https://appkodes.com/social-media-app-development/" },
+              { name: "Live Streaming App Development", href: "https://appkodes.com/live-streaming-app-development/" },
+              { name: "Short Video App Development", href: "https://appkodes.com/short-video-app-development/" },
+            ],
+          },
+          {
+            name: "Delivery Industry",
+            icon: "delivery",
+            links: [
+              { name: "Food Delivery App Development", href: "https://appkodes.com/food-delivery-app-development-company/" },
+              { name: "Grocery Delivery App Development", href: "https://appkodes.com/grocery-delivery-app-development-company/" },
+              { name: "Pharmacy Delivery App Development", href: "https://appkodes.com/pharmacy-delivery-app-development-company/" },
+              { name: "Medicine Delivery App Development", href: "https://appkodes.com/medicine-delivery-app-development-company/" },
+            ],
+          },
+        ],
+        [
+          {
+            name: "Buy and Sell Industry",
+            icon: "buySell",
+            links: [
+              { name: "Ecommerce App Development", href: "https://appkodes.com/ecommerce-app-development-services/" },
+              { name: "Real Estate App Development", href: "https://appkodes.com/real-estate-app-development/" },
+              { name: "Mobile App for Shopify Store", href: "https://appkodes.com/mobile-app-for-shopify-store/" },
+            ],
+          },
+          {
+            name: "Healthcare Industry",
+            icon: "healthcare",
+            links: [
+              { name: "Healthcare App Development", href: "https://appkodes.com/healthcare-app-development-company/" },
+              { name: "Mental Health App Development", href: "https://appkodes.com/mental-health-app-development-company/" },
+              { name: "ABDM Integrated Digital Solution", href: "https://appkodes.com/abdm-integrated-digital-solutions/" },
+            ],
+          },
+        ],
+      ],
+      promo: {
+        title: "Looking to start a business?",
+        text: "Tell us what you want to build, and we will send back a free costed plan.",
+        cta: { name: "Let's talk", href: "/contact" },
+      },
     },
   },
   {

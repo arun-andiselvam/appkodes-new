@@ -105,6 +105,21 @@ export const actions = {
   caseStudies: "/resources/case-studies",
 } as const;
 
+/**
+ * The header's WhatsApp button, desktop and mobile menu.
+ *
+ * Replaced the "Free quote" assistant button on 18 September 2026, at the
+ * client's request. appkodes.com ran its main CTA through WhatsApp ("Ask Me
+ * How?"), the channel its India and Gulf buyers already use, to this number.
+ * The in-page "Get a free costed plan" buttons still open the assistant.
+ */
+export const whatsappContact = {
+  label: "WhatsApp us",
+  href: `https://wa.me/917708004693?text=${encodeURIComponent(
+    "Hi, I came from appkodes.com and I would like to talk about my app.",
+  )}`,
+} as const;
+
 /*
  * The rotating noun in "Your ___, live in 30 days." Changed 18 September 2026
  * from the industry list that rotated after "AI automation for". Appkodes
@@ -177,15 +192,6 @@ export const heroCopy = {
    */
   primaryCta: "Get a free costed plan",
   secondaryCta: "See case studies",
-  /*
-   * WhatsApp link under the buttons. appkodes.com's hero ran its only CTA
-   * through WhatsApp ("Ask Me How?"), the channel its India and Gulf buyers
-   * already use, to the same number.
-   */
-  whatsappLabel: "Or message us on WhatsApp",
-  whatsapp: `https://wa.me/917708004693?text=${encodeURIComponent(
-    "Hi, I came from appkodes.com and I would like to get my app live in 30 days.",
-  )}`,
 } as const;
 
 /**

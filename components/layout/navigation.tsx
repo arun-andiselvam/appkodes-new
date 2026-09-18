@@ -3,15 +3,18 @@
 import { Fragment, useState, useEffect, useId } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { QuoteLauncher } from "@/components/quote/launcher";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, X, ChevronDown, ArrowRight, Sparkles } from "lucide-react";
+import {
+  Menu, X, ChevronDown, ArrowRight,
+  Briefcase, MapPinned, Clapperboard, Truck, ShoppingBag, Stethoscope, Asterisk,
+  type LucideIcon,
+} from "lucide-react";
+import { siWhatsapp } from "simple-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { actions, site } from "@/content/site";
+import { actions, site, whatsappContact } from "@/content/site";
 import { mainNav } from "@/content/navigation";
-import { quoteCtaLabel } from "@/content/quote-flow";
-import type { NavItem } from "@/content/types";
+import type { NavColumnGroup, NavItem, NavPromo } from "@/content/types";
 
 /**
  * Is this menu item the branch of the site the visitor is standing in?
@@ -31,9 +34,25 @@ function isCurrentBranch(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/*
+ * WhatsApp's own mark for the header button, in currentColor so it matches
+ * the label on the brand-blue button: white in light mode, obsidian in dark.
+ * WhatsApp green was tried on 18 September 2026 and clashed with the palette.
+ * aria-hidden: the label already says WhatsApp.
+ */
+function WhatsappIcon() {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" className="fill-current">
+      <path d={siWhatsapp.path} />
+    </svg>
+  );
+}
+
 export function Navigation() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  /** Slid up out of view: set while scrolling down, cleared on any scroll up. */
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   /** Name of the menu item whose panel is open, or null. One at a time. */
   const [openPanel, setOpenPanel] = useState<string | null>(null);
@@ -54,35 +73,40 @@ export function Navigation() {
   const solid = isScrolled || isMobileMenuOpen;
 
   /*
-   * !! THE THRESHOLD HAS TWO VALUES, AND THAT IS THE POINT !!
+   * !! THE BAR HIDES ON THE WAY DOWN AND COMES BACK ON THE WAY UP !!
    *
-   * This read `setIsScrolled(window.scrollY > 20)` on every scroll event. One
-   * threshold means that at a scroll position of about twenty pixels, a
-   * movement of one pixel flips the state, and the header answers a flip by
-   * animating its width from 1400 to 1200, its height from 20 to 14, its
-   * border colour, its shadow and its blur. Momentum scrolling parks somebody
-   * on that boundary regularly, and a trackpad nudge there reads as the bar
-   * blinking.
+   * Changed 18 September 2026 at the client's request. The bar used to shrink
+   * into a narrower floating card once the page scrolled. Now it keeps its full
+   * width and height at every position: it slides out of view while reading
+   * down the page, and any scroll back up brings it straight back, solid.
    *
-   * The blur is the part that shows worst. Look at the transition below: it
-   * switches backdrop-filter with a 1ms duration, so it is a hard on and off
-   * rather than a fade, deliberately. A state that thrashes therefore strobes
-   * the blur rather than easing it.
+   * isScrolled still uses two thresholds, 24 in and 12 out, so a trackpad
+   * parked on the boundary cannot strobe the background on and off.
    *
-   * So the bar goes solid above 24 and only goes back to transparent below 12.
-   * Anything inside that band leaves it where it is. Reported 3 September 2026.
+   * Direction is read against the last position that produced a decision,
+   * not the last frame, and only moves of 6px or more count. A slow scroll up
+   * therefore still adds up to a reveal, and momentum jitter does not flip it.
+   * Near the top (under 80px) it is always shown.
    *
-   * Coalesced into one rAF as well. The handler ran on every scroll event,
-   * which on a trackpad is far more often than the screen refreshes, and each
-   * one read window.scrollY and forced React through a state update that
-   * usually changed nothing. Passive, because nothing here calls
-   * preventDefault and the listener should never be able to hold up a scroll.
+   * Coalesced into one rAF and passive, as before: the handler runs far more
+   * often than the screen refreshes, and nothing here calls preventDefault.
    */
   useEffect(() => {
     let frame = 0;
+    let lastY = window.scrollY;
     const read = () => {
       frame = 0;
-      setIsScrolled((was) => (was ? window.scrollY > 12 : window.scrollY > 24));
+      const y = window.scrollY;
+      setIsScrolled((was) => (was ? y > 12 : y > 24));
+      if (y < 80) {
+        setIsHidden(false);
+        lastY = y;
+        return;
+      }
+      const dy = y - lastY;
+      if (Math.abs(dy) < 6) return;
+      setIsHidden(dy > 0);
+      lastY = y;
     };
     const handleScroll = () => {
       if (frame) return;
@@ -153,10 +177,40 @@ export function Navigation() {
 
   return (
     <header
-      className={`fixed z-50 transition-all duration-500 ${
-        isScrolled ? "top-4 left-4 right-4" : "top-0 left-0 right-0"
-      }`}
+      /*
+        Full width at every scroll position. Only `transform` moves, and only
+        while hidden: a transform on this element makes it the containing block
+        for the full screen mobile menu below, which is `position: fixed`. So
+        it is `none` whenever the bar is showing, and the bar never hides while
+        that menu or a mega-menu panel is open. Focus arriving inside a hidden
+        bar, from a keyboard, brings it back.
+      */
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{
+        transform: isHidden && !isMobileMenuOpen && !openPanel ? "translateY(-100%)" : "none",
+        transition: "transform 300ms ease",
+      }}
+      onFocus={() => setIsHidden(false)}
     >
+      {/*
+        The solid background, on its own layer behind the bar.
+
+        !! NOT ON <header> ITSELF. backdrop-filter WOULD TRAP THE MOBILE MENU !!
+
+        A backdrop-filter makes an element the containing block for fixed
+        descendants, exactly like a transform, and the mobile menu is one. This
+        layer is a sibling of it rather than an ancestor, so the blur can stay
+        on permanently and only the opacity fades. translateZ(0) keeps the
+        blurred result on its own compositing layer, which is what stopped the
+        bar blinking over the footer canvas and the marquees (3 September 2026).
+      */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 border-b border-foreground/10 bg-background/80 backdrop-blur-xl shadow-sm transition-opacity duration-300 ${
+          solid ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ transform: "translateZ(0)" }}
+      />
       {/*
         The panel is a DOM child of <nav> even though it is drawn below it, so
         moving the pointer from a menu item down into the panel never leaves
@@ -166,144 +220,10 @@ export function Navigation() {
       */}
       <nav
         onMouseLeave={() => setOpenPanel(null)}
-        /*
-          Opening a panel deliberately does NOT put the bar into its scrolled
-          state. It used to, and hovering Services at the top of the page pulled
-          the header in from 1400 to 1200 and drew a border round it, so the
-          whole bar jumped sideways under the pointer. The bar belongs to the
-          page position, not to the menu. Only the panel appears.
-        */
-        /*
-          !! THE BORDER AND THE RADIUS ARE ALWAYS THERE. ONLY THE COLOUR MOVES !!
-
-          This toggled `border` and `rounded-2xl` on and off under
-          `transition-all`, and it flickered a hard cornered rectangle through
-          the middle of every transition. Two causes, and the first is easy to
-          miss.
-
-          `border-style` does not animate. Adding the `border` class takes it
-          from none to solid, which snaps, so the full weight of the line
-          arrived on the first frame. `border-radius` meanwhile was animating
-          from 0 to 1rem across half a second. A line at full strength around
-          corners that have not rounded yet is a rectangle, and it sat on
-          screen for most of those 500ms.
-
-          So the border is declared always, 1px solid transparent, and the
-          radius is always 1rem. Neither is visible while the bar is
-          transparent and neither has to change shape. Only `border-color`
-          moves, and that does animate.
-
-          !! ONLY ONE BORDER COLOUR CLASS AT A TIME, AND THIS IS WHY !!
-
-          The first version of this fix put `border-transparent` in the base
-          class list and `border-foreground/10` in the scrolled branch, so both
-          were on the element together. They are the same utility at the same
-          specificity, which means the winner is whichever Tailwind emits later
-          in the stylesheet, not whichever is written last in the attribute.
-          `.border-transparent` lands about a kilobyte after
-          `.border-foreground/10` in the generated CSS, so transparent won
-          permanently and the border never appeared at all.
-
-          The colour therefore lives in the branches. `border` on its own stays
-          in the base, because the width and style have to be constant for the
-          reason above.
-
-          !! THE DELAY IS ASYMMETRIC, AND IT HAS TO BE !!
-
-          On the way in, the colour and the shadow wait for the geometry to
-          finish, then fade in over 200ms. 500 is the full width transition, so
-          the line starts only once the bar has actually stopped moving. That
-          is the literal request and it is worth keeping literal: at 380 the
-          last few percent of travel is still running, which is what made an
-          earlier version of this still read as arriving mid-transition.
-
-          On the way out they take no delay. A symmetric delay would hold a
-          finished border on screen while the bar expanded back to full width,
-          which is the same rectangle in reverse. Fading the line out first and
-          moving the geometry underneath is the order that reads correctly in
-          both directions.
-        */
-        /*
-          !! THE BLUR IS SWITCHED, NEVER ANIMATED, AND THAT IS THE SECOND BUG !!
-
-          backdrop-filter was in this list on a 500ms duration and it made the
-          return to the plain header look stuck.
-
-          Tailwind writes the utility as
-          `backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-...)`,
-          so dropping the class unsets the variable and the whole value
-          collapses to nothing. CSS cannot interpolate a filter list against
-          nothing, so it falls back to discrete animation, and a discrete
-          transition flips at the halfway point. The blur therefore stayed
-          glued on for 250ms while the bar was already expanding, then vanished
-          in one frame. Nothing else was stuck. It was the one property that
-          could not move.
-
-          It is now 1ms, which makes the flip effectively instant, and the
-          delay decides when that instant happens. Going in it waits with the
-          border so the panel solidifies as one thing. Coming out it goes
-          immediately, because a blur over a background that is already fading
-          is the part a reader notices first.
-
-          -webkit-backdrop-filter is listed too. Safari reads that one, and a
-          property named in the class but missing from this list would animate
-          on its own default rather than on the timing declared here.
-        */
-        /*
-          !! translateZ(0) IS NOT DECORATION, IT PINS THE BLUR TO ITS OWN LAYER !!
-
-          Added 3 September 2026, for a header reported as blinking in two
-          places: at the bottom of a long page, and while a carousel moved
-          behind it.
-
-          Those look like two bugs and they are one. backdrop-filter has to
-          re-sample and re-blur whatever is painted behind this bar on every
-          frame that the thing behind it changes. At the bottom of a page that
-          is the footer, where components/backgrounds/animated-wave.tsx runs a
-          canvas the whole time it is on screen. Beside a carousel it is the
-          marquee in app/globals.css, which never stops. Both hold the backdrop
-          in a permanent state of re-blur, and a bar being re-rasterised into
-          the page every frame is what reads as a blink.
-
-          An identity 3D transform forces this element onto its own compositing
-          layer, so the blurred result is kept as a texture instead of being
-          redrawn into whatever is beneath it. It is the ordinary workaround
-          for backdrop-filter flicker and it changes nothing visually, because
-          translating zero on the Z axis of an untransformed element is the
-          identity.
-
-          Safe against the two things a transform can break. The mega-menu
-          panel is `absolute` inside this element, which is already
-          `position: relative`, so its containing block does not move. The
-          full screen mobile menu is `position: fixed` and would be captured by
-          a transformed ancestor, but it is a sibling of this <nav> rather than
-          a child of it. Check that again before moving either one.
-
-          transform is deliberately absent from transitionProperty below. It
-          never changes, so it has nothing to animate.
-        */
-        style={{
-          transform: "translateZ(0)",
-          transitionProperty:
-            "max-width, background-color, backdrop-filter, -webkit-backdrop-filter, border-color, box-shadow",
-          transitionDuration: solid
-            ? "500ms, 500ms, 1ms, 1ms, 200ms, 200ms"
-            : "500ms, 250ms, 1ms, 1ms, 150ms, 150ms",
-          transitionDelay: solid
-            ? "0ms, 0ms, 500ms, 500ms, 500ms, 500ms"
-            : "0ms, 0ms, 0ms, 0ms, 0ms, 0ms",
-          transitionTimingFunction: "ease",
-        }}
-        className={`relative mx-auto rounded-2xl border ${
-          solid
-            ? "border-foreground/10 bg-background/80 backdrop-blur-xl shadow-lg max-w-[1200px]"
-            : "border-transparent bg-transparent max-w-[1400px]"
-        }`}
+        className="relative mx-auto max-w-[1400px]"
       >
         <div
-          className={`flex items-center justify-between transition-all duration-500 px-6 lg:px-8 ${
-            isScrolled ? "h-14" : "h-20"
-          }`}
+          className="flex items-center justify-between px-6 lg:px-8 h-20"
         >
           {/* Logo. Also the home link, which is why Home is not in the menu. */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
@@ -377,7 +297,7 @@ export function Navigation() {
               loading="eager"
               fetchPriority="low"
               sizes="190px"
-              className={`w-auto transition-all duration-500 dark:hidden ${isScrolled ? "h-6" : "h-7"}`}
+              className="w-auto h-7 dark:hidden"
             />
             <Image
               src={site.logo.srcOnDark}
@@ -388,7 +308,7 @@ export function Navigation() {
               loading="eager"
               fetchPriority="low"
               sizes="190px"
-              className={`w-auto transition-all duration-500 hidden dark:block ${isScrolled ? "h-6" : "h-7"}`}
+              className="w-auto h-7 hidden dark:block"
             />
           </Link>
 
@@ -470,22 +390,16 @@ export function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <ThemeToggle compact={isScrolled} />
+            <ThemeToggle />
             <Button
               asChild
               size="sm"
-              className={`bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground rounded-lg transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
+              className="bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground rounded-lg px-6"
             >
-              <QuoteLauncher placement="header">
-                {/*
-                  The icon says the button opens an assistant rather than a
-                  form, which is the one thing the two words cannot. aria-hidden
-                  because the label already names the action - a screen reader
-                  announcing "sparkles free quote" is noise.
-                */}
-                <Sparkles aria-hidden />
-                {quoteCtaLabel}
-              </QuoteLauncher>
+              <a href={whatsappContact.href} target="_blank" rel="noopener noreferrer">
+                <WhatsappIcon />
+                {whatsappContact.label}
+              </a>
             </Button>
           </div>
 
@@ -613,7 +527,29 @@ export function Navigation() {
                     )}
                   </div>
 
-                  {item.panel && expanded && (
+                  {item.panel?.columns && expanded && (
+                    <div className="pb-5 flex flex-col gap-5">
+                      {item.panel.columns.flat().map((group) => (
+                        <div key={group.name}>
+                          <p className="text-base font-medium text-foreground">{group.name}</p>
+                          <ul className="mt-2 flex flex-col gap-2 pl-4 border-l border-foreground/10">
+                            {group.links.map((link) => (
+                              <li key={link.href}>
+                                <MenuLink
+                                  href={link.href}
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  className="text-sm text-muted-foreground"
+                                >
+                                  {link.name}
+                                </MenuLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {item.panel && !item.panel.columns && expanded && (
                     <div className="pb-5 flex flex-col gap-4">
                       {item.panel.groups.map((group) => (
                         <div key={group.href}>
@@ -681,24 +617,126 @@ export function Navigation() {
             </Button>
             <Button
               asChild
-              className="flex-1 bg-primary text-primary-foreground rounded-lg h-14 text-base"
+              className="flex-1 bg-primary hover:bg-primary-hover text-primary-foreground rounded-lg h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <QuoteLauncher placement="mobile_menu">
-                {/*
-                  The icon says the button opens an assistant rather than a
-                  form, which is the one thing the two words cannot. aria-hidden
-                  because the label already names the action - a screen reader
-                  announcing "sparkles free quote" is noise.
-                */}
-                <Sparkles aria-hidden />
-                {quoteCtaLabel}
-              </QuoteLauncher>
+              <a href={whatsappContact.href} target="_blank" rel="noopener noreferrer">
+                <WhatsappIcon />
+                {whatsappContact.label}
+              </a>
             </Button>
           </div>
         </div>
       </div>
     </header>
+  );
+}
+
+
+/*
+ * Glyphs for the column groups, keyed from content/navigation.ts so the data
+ * file stays free of React imports.
+ */
+const COLUMN_ICONS: Record<string, LucideIcon> = {
+  services: Briefcase,
+  onDemand: MapPinned,
+  entertainment: Clapperboard,
+  delivery: Truck,
+  buySell: ShoppingBag,
+  healthcare: Stethoscope,
+};
+
+/**
+ * next/link for paths on this site, a plain anchor for anything absolute.
+ * The Services columns still point at appkodes.com, see content/navigation.ts.
+ */
+function MenuLink({
+  href,
+  children,
+  className,
+  tabIndex,
+  onClick,
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  tabIndex?: number;
+  onClick?: () => void;
+}) {
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <a href={href} className={className} tabIndex={tabIndex} onClick={onClick}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={className} tabIndex={tabIndex} onClick={onClick}>
+      {children}
+    </Link>
+  );
+}
+
+/**
+ * appkodes.com's Services mega menu, added 18 September 2026: three columns of
+ * link groups, each under an icon and a rule, and a promo card on the right.
+ * Every link leaves the tab order while the panel is closed, as in the other
+ * panels.
+ */
+function ColumnsPanel({
+  columns,
+  promo,
+  open,
+}: {
+  columns: NavColumnGroup[][];
+  promo?: NavPromo;
+  open: boolean;
+}) {
+  const tab = open ? undefined : -1;
+  return (
+    <div className="grid grid-cols-[1fr_1fr_1fr_minmax(240px,280px)] gap-10 px-10 py-9">
+      {columns.map((column, c) => (
+        <div key={c} className="flex flex-col gap-8">
+          {column.map((group) => {
+            const Icon = COLUMN_ICONS[group.icon] ?? Briefcase;
+            return (
+              <div key={group.name}>
+                <p className="flex items-center gap-3 pb-3 border-b border-foreground/10 font-medium">
+                  <Icon aria-hidden className="w-5 h-5 shrink-0" />
+                  {group.name}
+                </p>
+                <ul className="mt-3 flex flex-col">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <MenuLink
+                        href={link.href}
+                        tabIndex={tab}
+                        className="block py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.name}
+                      </MenuLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      ))}
+
+      {promo && (
+        <div className="self-start border border-foreground/10 rounded-xl p-7 flex flex-col">
+          <Asterisk aria-hidden className="w-10 h-10" strokeWidth={2.5} />
+          <p className="mt-6 text-2xl font-display tracking-tight leading-tight">{promo.title}</p>
+          <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{promo.text}</p>
+          <Button asChild className="mt-6 self-start bg-primary hover:bg-primary-hover text-primary-foreground rounded-lg px-5">
+            <MenuLink href={promo.cta.href} tabIndex={tab}>
+              {promo.cta.name}
+            </MenuLink>
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -768,8 +806,8 @@ function MegaPanel({
         names, the /resources trigger, a pair of eyebrows. Nothing from the
         page itself appeared at all.
 
-        The panel is a child of <header>, which animates `top`, `left` and
-        `right` from 0 to 1rem over 500ms once the page scrolls past 24px. Those
+        The panel is a child of <header>, which until 18 September 2026 animated
+        `top`, `left` and `right` from 0 to 1rem over 500ms past 24px of scroll. Those
         are layout properties rather than transforms, so the bar genuinely
         narrows by 32px and every frame is a real re-layout. This panel is
         `left-0 right-0` inside it, so it narrows too and its three column card
@@ -821,7 +859,9 @@ function MegaPanel({
         a blur cannot rescue text laid over moving artwork.
       */}
       <div className="bg-background border border-foreground/10 rounded-2xl shadow-lg overflow-hidden">
-        {tiered ? (
+        {panel.columns ? (
+          <ColumnsPanel columns={panel.columns} promo={panel.promo} open={open} />
+        ) : tiered ? (
           <div className="grid grid-cols-[minmax(240px,300px)_1fr]">
             {/* The rail. One row per silo, each a link to the silo page. */}
             <div className="border-r border-foreground/10 p-2">
