@@ -118,8 +118,19 @@ export default async function RootLayout({
       before any script runs. See the note in components/theme-provider.tsx,
       whose DEFAULT_THEME has to match this class. suppressHydrationWarning
       stays because the header button changes the class on the client.
+
+      !! data-scroll-behavior="smooth" STOPS PAGE CHANGES SLIDING !!
+
+      app/globals.css sets scroll-behavior: smooth on <html> so in-page links,
+      the article contents panel among them, glide. Up to Next 15 the router
+      switched that off while it moved a new page to the top. Next 16 stopped
+      doing so unless this attribute is present (see "scroll-behavior" in
+      node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md),
+      so every navigation from partway down a page animated up to the top.
+      Most visible on the blog, where readers click from deep in a list.
+      Reported 18 September 2026. Anchor links still scroll smoothly.
     */
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
       {/*
         The dark mode favicon, added 6 September 2026.
 

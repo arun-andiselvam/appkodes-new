@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 /**
  * Puts the window at the top when a loading boundary appears.
@@ -19,9 +19,17 @@ import { useEffect } from "react";
  * "instant" is deliberate: app/globals.css sets scroll-behavior: smooth on the
  * root, and letting that animate scrolls the footer past the reader on the way
  * up, which is the same distraction in slower form.
+ *
+ * !! useLayoutEffect, NOT useEffect !!
+ *
+ * useEffect runs after the browser has painted, so the first frame of the
+ * skeleton was drawn at the old, clamped scroll position and then snapped to
+ * the top: a one-frame jerk, reported 18 September 2026. A layout effect runs
+ * after React commits and before paint, so the first frame is already at the
+ * top.
  */
 export function ScrollToTop() {
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, []);
 
