@@ -37,7 +37,7 @@ type Diagram = ArchitectureDiagram;
  * principle app/brand.css states for the logo mark: artwork keeps its own
  * colours in both themes. The dark theme's brand red is a light salmon tuned
  * for text on a dark ground, and a slab filled with it would not hold white
- * type. These two do: white on #146f90 is 5.67:1 and on #df2c16 is 4.66:1,
+ * type. These two do: white on #0052ff is 5.75:1 and on #ba1a1a is 6.46:1,
  * both measured in brand.css.
  *
  * Interaction is two numbers written on pointer move, feeding one transform.
@@ -62,25 +62,25 @@ const ROW = SLAB.h + SLAB.rowGap;
  * labels then sat at 3.49:1 and 3.06:1 over that end of the slab, both under
  * AA, and the text was hard to read exactly where the slab was brightest.
  *
- * The contrast figures quoted in app/brand.css, 5.67:1 and 4.66:1 for white,
- * are for #146f90 and #df2c16 themselves. Any stop lighter than those throws
+ * The contrast figures quoted in app/brand.css, 5.75:1 and 6.46:1 for white,
+ * are for #0052ff and #ba1a1a themselves. Any stop lighter than those throws
  * the guarantee away. So the lightest stop of each gradient is now the brand
  * colour, and every other stop is darker, which makes those numbers the floor
  * rather than a midpoint. Measured stops:
  *
- *   blue  #146f90 5.67  #10607d 7.02  #0b4257 10.87
- *   red   #df2c16 4.66  #c02513 5.97  #8e1b0d  9.08
+ *   blue  #0052ff 5.75  #0040cc 8.06  #002a8f 12.15
+ *   red   #ba1a1a 6.46  #9a1515 8.43  #6e0f0f 12.08
  */
 const TONES = {
   brand: {
-    face: "linear-gradient(150deg, #146f90 0%, #10607d 55%, #0b4257 100%)",
+    face: "linear-gradient(150deg, #0052ff 0%, #0040cc 55%, #002a8f 100%)",
     edge: "#0a3d51",
-    glow: "rgb(20 111 144 / 0.34)",
+    glow: "rgb(0 82 255 / 0.34)",
   },
   accent: {
-    face: "linear-gradient(150deg, #df2c16 0%, #c02513 55%, #8e1b0d 100%)",
+    face: "linear-gradient(150deg, #ba1a1a 0%, #9a1515 55%, #6e0f0f 100%)",
     edge: "#7c170b",
-    glow: "rgb(223 44 22 / 0.30)",
+    glow: "rgb(186 26 26 / 0.30)",
   },
 } as const;
 
@@ -292,13 +292,13 @@ export function IntegrationDiagram({ diagram }: { diagram: Diagram }) {
 
                       This was white/75, then white/90 when 75 measured under
                       AA over the lightest stop. Ninety is not enough either,
-                      and no value below a hundred can be: white on the accent
-                      face's lightest stop is 4.66:1 at full strength, so every
-                      reduction lands under 4.5. Measured over #df2c16, white
-                      at 90 per cent is 4.01:1 and at 85 is 3.69.
+                      and no value below a hundred could be over the Hitasoft
+                      red, where white was 4.66:1 at full strength. The current
+                      red #ba1a1a has more room (6.46:1, 5.45 at 90 per cent),
+                      but the rule stays so the next accent cannot break it.
 
                       It survived two attempts because both were checked
-                      against the brand face, which has headroom at 5.67:1 and
+                      against the brand face, which had headroom and
                       passes at 90. Every diagram on the site has at least one
                       accent node, so the failing case was always on screen.
 
@@ -427,7 +427,7 @@ function Connectors({
             transform: "translateZ(6px)",
             background: "rgb(255 255 255 / 0.9)",
             boxShadow:
-              "0 0 12px rgb(20 111 144 / 0.55), 0 0 3px rgb(255 255 255 / 0.9)",
+              "0 0 12px rgb(0 82 255 / 0.55), 0 0 3px rgb(255 255 255 / 0.9)",
           }}
         />
       ))}

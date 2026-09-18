@@ -165,12 +165,12 @@ async function deliverViaResend(fields: Delivery) {
     ? `<p style="margin:16px 0 0;font-size:13px;color:#6b7280;">Attached: ${escapeHtml(fields.attachment.filename)}</p>`
     : "";
 
-  // #146f90 is --brand-blue in app/brand.css, the same colour as the site's
+  // #0052ff is --brand-blue in app/brand.css, the same colour as the site's
   // primary button. Everything is inline because email clients do not read a
   // <style> block reliably, let alone Tailwind.
   const html = `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;">
-  <div style="background:#146f90;padding:24px 32px;border-radius:8px 8px 0 0;">
+  <div style="background:#0052ff;padding:24px 32px;border-radius:8px 8px 0 0;">
     <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ffffffb3;">Hitasoft</p>
     <p style="margin:4px 0 0;font-size:20px;font-weight:600;color:#ffffff;">Quote request</p>
   </div>
@@ -183,7 +183,7 @@ async function deliverViaResend(fields: Delivery) {
       <tr>
         <td style="padding:9px 0;color:#6b7280;font-size:13px;width:110px;vertical-align:top;white-space:nowrap;">Email</td>
         <td style="padding:9px 0;font-size:15px;">
-          <a href="mailto:${escapeHtml(fields.email)}" style="color:#146f90;text-decoration:none;">${escapeHtml(fields.email)}</a>
+          <a href="mailto:${escapeHtml(fields.email)}" style="color:#0052ff;text-decoration:none;">${escapeHtml(fields.email)}</a>
         </td>
       </tr>
       ${rows}
@@ -303,7 +303,7 @@ async function acknowledgeToVisitor(fields: Delivery) {
 
   const html = `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;">
-  <div style="background:#146f90;padding:24px 32px;border-radius:8px 8px 0 0;">
+  <div style="background:#0052ff;padding:24px 32px;border-radius:8px 8px 0 0;">
     <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ffffffb3;">Hitasoft</p>
     <p style="margin:4px 0 0;font-size:20px;font-weight:600;color:#ffffff;">We have your enquiry</p>
   </div>
@@ -337,9 +337,9 @@ async function acknowledgeToVisitor(fields: Delivery) {
     <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e5e7eb;">
       <p style="margin:0 0 6px;font-size:13px;color:#6b7280;">If it is easier to talk it through:</p>
       <p style="margin:0;font-size:15px;">
-        <a href="${founderContact.whatsapp}" style="color:#146f90;text-decoration:none;">WhatsApp</a>
+        <a href="${founderContact.whatsapp}" style="color:#0052ff;text-decoration:none;">WhatsApp</a>
         &nbsp;·&nbsp;
-        <a href="${founderContact.tel}" style="color:#146f90;text-decoration:none;">${escapeHtml(founderContact.phone)}</a>
+        <a href="${founderContact.tel}" style="color:#0052ff;text-decoration:none;">${escapeHtml(founderContact.phone)}</a>
       </p>
     </div>
   </div>

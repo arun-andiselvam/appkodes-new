@@ -77,7 +77,7 @@ export default async function AdminLoginPage({
 
         <button
           type="submit"
-          className="w-full bg-primary px-4 py-2.5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
+          className="w-full bg-primary px-4 py-2.5 text-sm text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow"
         >
           Sign in
         </button>

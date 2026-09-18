@@ -218,7 +218,7 @@ export function PostPage({ post, related }: { post: Post; related: Post[] }) {
                 <Button
                   asChild
                   size="lg"
-                  className="mt-6 h-14 rounded-full bg-primary px-8 text-base text-primary-foreground has-[>svg]:px-8 hover:bg-primary/90 group/cta"
+                  className="mt-6 h-14 rounded-lg bg-primary px-8 text-base text-primary-foreground has-[>svg]:px-8 hover:bg-primary-hover hover:shadow-glow group/cta"
                 >
                   <QuoteLauncher placement="blog_post">
                     <Sparkles aria-hidden />

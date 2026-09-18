@@ -85,7 +85,7 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
               <Button
                 asChild
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
+                className="bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-lg group"
               >
                 {/*
                   The site's own label unless the page names its own, which is
@@ -106,7 +106,7 @@ export function ServiceLandingPage({ page }: { page: ServiceLanding }) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+                className="h-14 px-8 text-base rounded-lg border-foreground/20 hover:bg-foreground/5"
               >
                 <Link href="/how-we-work">See how we work</Link>
               </Button>

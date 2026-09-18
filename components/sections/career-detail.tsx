@@ -50,7 +50,7 @@ export function CareerDetail({ job }: { job: Job }) {
 
           <a
             href={applyHref}
-            className="group/apply mt-8 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-8 text-base text-primary-foreground transition-colors hover:bg-primary/90"
+            className="group/apply mt-8 inline-flex h-14 items-center gap-2 rounded-lg bg-primary px-8 text-base text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow"
           >
             Apply for this role
             <ArrowRight aria-hidden className="h-4 w-4 transition-transform group-hover/apply:translate-x-1" />

@@ -132,12 +132,12 @@ async function deliverViaResend(fields: Fields) {
   const from = process.env.RESEND_FROM_EMAIL || "Hitasoft site <contact@hitasoft.com>";
   const to = process.env.CONTACT_TO_EMAIL || "info@hitasoft.com";
 
-  // #146f90 is --brand-blue in app/brand.css, the same colour as the site's
+  // #0052ff is --brand-blue in app/brand.css, the same colour as the site's
   // primary button. Everything else is inline because email clients do not
   // read a <style> block reliably, let alone Tailwind.
   const html = `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;">
-  <div style="background:#146f90;padding:24px 32px;border-radius:8px 8px 0 0;">
+  <div style="background:#0052ff;padding:24px 32px;border-radius:8px 8px 0 0;">
     <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ffffffb3;">Hitasoft</p>
     <p style="margin:4px 0 0;font-size:20px;font-weight:600;color:#ffffff;">New enquiry</p>
   </div>
@@ -147,7 +147,7 @@ async function deliverViaResend(fields: Fields) {
       <tr>
         <td style="padding:10px 0;color:#6b7280;font-size:13px;width:100px;vertical-align:top;white-space:nowrap;">Email</td>
         <td style="padding:10px 0;font-size:15px;">
-          <a href="mailto:${escapeHtml(fields.email)}" style="color:#146f90;text-decoration:none;">${escapeHtml(fields.email)}</a>
+          <a href="mailto:${escapeHtml(fields.email)}" style="color:#0052ff;text-decoration:none;">${escapeHtml(fields.email)}</a>
         </td>
       </tr>
       ${fieldRow("Company", fields.company)}

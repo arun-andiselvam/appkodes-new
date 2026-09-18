@@ -45,7 +45,7 @@ export default function Error({
           <Button
             onClick={reset}
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-14 text-base rounded-full"
+            className="bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground px-8 h-14 text-base rounded-lg"
           >
             Try again
           </Button>

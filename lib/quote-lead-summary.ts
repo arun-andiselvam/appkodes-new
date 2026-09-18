@@ -107,7 +107,7 @@ function buildHtml(session: Session, files: FileRow[], service: string): string 
   const transcriptHtml = session.transcript
     .map((turn) => {
       const speaker = turn.role === "user" ? "Visitor" : "QuoteBot";
-      return `<p style="margin:0 0 10px;font-size:13px;line-height:1.6;"><strong style="color:${turn.role === "user" ? "#0f556f" : "#6b7280"};">${speaker}:</strong> ${escapeHtml(turn.content)}</p>`;
+      return `<p style="margin:0 0 10px;font-size:13px;line-height:1.6;"><strong style="color:${turn.role === "user" ? "#0040cc" : "#6b7280"};">${speaker}:</strong> ${escapeHtml(turn.content)}</p>`;
     })
     .join("");
 
@@ -121,10 +121,10 @@ function buildHtml(session: Session, files: FileRow[], service: string): string 
 
     <p style="margin:0 0 12px;font-size:13px;color:#6b7280;">
       The estimate is being written now and will need approving in
-      <a href="/admin/estimates" style="color:#146f90;">/admin/estimates</a> before it goes out.
+      <a href="/admin/estimates" style="color:#0052ff;">/admin/estimates</a> before it goes out.
     </p>
 
-    <p style="margin:22px 0 8px;font-size:11px;font-weight:600;letter-spacing:0.6px;color:#146f90;text-transform:uppercase;">
+    <p style="margin:22px 0 8px;font-size:11px;font-weight:600;letter-spacing:0.6px;color:#0052ff;text-transform:uppercase;">
       Full conversation
     </p>
     <div style="border-top:1px solid #e5e7eb;padding-top:14px;">

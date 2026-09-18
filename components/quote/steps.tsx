@@ -161,7 +161,7 @@ export function BriefStep({
           value={text}
           onChange={(event) => onTextChange(event.target.value)}
           placeholder={step.placeholder}
-          className="w-full resize-y border border-foreground/15 bg-transparent px-4 py-3 text-[15px] leading-relaxed outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/50"
+          className="w-full resize-y border border-foreground/15 bg-transparent px-4 py-3 text-[15px] leading-relaxed outline-none transition-colors placeholder:text-muted-foreground/60 rounded-lg focus:border-primary focus:ring-[3px] focus:ring-primary/15"
         />
       </div>
 
@@ -219,7 +219,7 @@ export function BriefStep({
         type="button"
         onClick={onContinue}
         disabled={!ready}
-        className="group/next inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 text-[15px] text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-40"
+        className="group/next inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-[15px] text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow disabled:opacity-40"
       >
         {quoteChrome.continue}
         <ArrowRight
@@ -304,7 +304,7 @@ export function DetailsStep({
             value={name}
             onChange={(event) => onNameChange(event.target.value)}
             placeholder={quoteChrome.namePlaceholder}
-            className="w-full border border-foreground/15 bg-transparent px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/50"
+            className="w-full border border-foreground/15 bg-transparent px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/60 rounded-lg focus:border-primary focus:ring-[3px] focus:ring-primary/15"
           />
         </div>
         <div>
@@ -320,7 +320,7 @@ export function DetailsStep({
             value={email}
             onChange={(event) => onEmailChange(event.target.value)}
             placeholder={quoteChrome.emailPlaceholder}
-            className="w-full border border-foreground/15 bg-transparent px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/50"
+            className="w-full border border-foreground/15 bg-transparent px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/60 rounded-lg focus:border-primary focus:ring-[3px] focus:ring-primary/15"
           />
         </div>
       </div>
@@ -356,7 +356,7 @@ export function DetailsStep({
       <button
         type="submit"
         disabled={status === "sending" || !turnstileReady}
-        className="group/send inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-6 text-[15px] text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+        className="group/send inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-[15px] text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow disabled:opacity-60"
       >
         {status === "sending" ? quoteChrome.submitting : quoteChrome.submit}
         <ArrowRight

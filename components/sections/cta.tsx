@@ -116,7 +116,7 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                   <Button
                     asChild
                     size="lg"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 has-[>svg]:px-6 sm:px-8 sm:has-[>svg]:px-8 h-auto min-h-14 py-3 text-sm sm:text-base whitespace-normal text-center leading-snug rounded-full group"
+                    className="bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground px-6 has-[>svg]:px-6 sm:px-8 sm:has-[>svg]:px-8 h-auto min-h-14 py-3 text-sm sm:text-base whitespace-normal text-center leading-snug rounded-lg group"
                   >
                     {/*
                       A client component inside this server component, which is
@@ -135,7 +135,7 @@ export function CtaSection({ copy }: { copy?: Partial<CtaCopy> } = {}) {
                     asChild
                     size="lg"
                     variant="outline"
-                    className="h-auto min-h-14 py-3 px-6 sm:px-8 text-sm sm:text-base whitespace-normal text-center leading-snug rounded-full border-foreground/20 hover:bg-foreground/5"
+                    className="h-auto min-h-14 py-3 px-6 sm:px-8 text-sm sm:text-base whitespace-normal text-center leading-snug rounded-lg border-foreground/20 hover:bg-foreground/5"
                   >
                     <Link href={panel.secondaryHref}>{panel.secondaryCta}</Link>
                   </Button>

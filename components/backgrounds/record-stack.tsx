@@ -12,11 +12,11 @@ type Row = Panel["rows"][number];
  * Not approximated. The service page's slabs use these exact gradients, and
  * two pages a visitor reaches from one menu should be mixing the same paint.
  * Every stop is at or below the base brand colour, which is what keeps white
- * legible on them: measured, blue runs 5.67 to 10.87 and red 4.66 to 9.08.
+ * legible on them: measured, blue runs 5.75 to 12.15 and red 6.46 to 12.08.
  */
 const FACES = {
-  settled: "linear-gradient(150deg, #146f90 0%, #10607d 55%, #0b4257 100%)",
-  exception: "linear-gradient(150deg, #df2c16 0%, #c02513 55%, #8e1b0d 100%)",
+  settled: "linear-gradient(150deg, #0052ff 0%, #0040cc 55%, #002a8f 100%)",
+  exception: "linear-gradient(150deg, #ba1a1a 0%, #9a1515 55%, #6e0f0f 100%)",
 } as const;
 
 /** Lifts small text off a gradient without touching its alpha. See below. */
@@ -59,16 +59,16 @@ const SHADOW = { textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" } as const;
  * !! EVERY WORD ON A FACE IS FULL WHITE, NOT AN ALPHA !!
  *
  * The obvious way to make the small text quieter is white at 70 or 75 per
- * cent, and it measures under AA on both faces. Worse, it cannot be fixed by
- * nudging the alpha: white on the red face's lightest stop is 4.66:1 at full
- * strength, so every reduction lands under 4.5. Measured over #df2c16, white
- * at 90 per cent is 4.01:1 and at 85 is 3.69.
+ * cent, and it measures under AA on both faces. Over the Hitasoft red it
+ * could not be fixed by nudging the alpha at all, since full white only
+ * reached 4.66:1. The current #ba1a1a has room (5.45:1 at 90 per cent), but
+ * the rule stays so a future accent cannot quietly break it.
  *
  * So hierarchy here is carried by size, weight and tracking rather than by
  * opacity. Ten pixel mono, thirteen pixel medium, nine pixel uppercase.
  *
  * Both tokens flip for dark grounds on their own. app/brand.css redefines
- * --brand-blue to #8bcce4 under .dark at 9.55:1, so neither needs a variant
+ * --brand-blue to #7aa3ff under .dark at 7.77:1, so neither needs a variant
  * here.
  *
  * !! SQUARE CORNERS AND HAIRLINES, DELIBERATELY !!
@@ -230,7 +230,7 @@ function Tile({
         animationDelay: `${delay}ms`,
         background: row.flagged ? FACES.exception : FACES.settled,
         boxShadow: `0 18px 34px -18px ${
-          row.flagged ? "rgb(223 44 22 / 0.4)" : "rgb(20 111 144 / 0.4)"
+          row.flagged ? "rgb(186 26 26 / 0.4)" : "rgb(0 82 255 / 0.4)"
         }`,
         ...style,
       }}

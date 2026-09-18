@@ -35,8 +35,8 @@ import { allNavPages, type NavPage } from "@/content/navigation";
 
 /** Lifted verbatim from components/backgrounds/record-stack.tsx. */
 const FACES = {
-  settled: "linear-gradient(150deg, #146f90 0%, #10607d 55%, #0b4257 100%)",
-  exception: "linear-gradient(150deg, #df2c16 0%, #c02513 55%, #8e1b0d 100%)",
+  settled: "linear-gradient(150deg, #0052ff 0%, #0040cc 55%, #002a8f 100%)",
+  exception: "linear-gradient(150deg, #ba1a1a 0%, #9a1515 55%, #6e0f0f 100%)",
 } as const;
 
 const SHADOW = { textShadow: "0 1px 3px rgb(0 0 0 / 0.45)" } as const;
@@ -316,7 +316,7 @@ export function NotFoundFinder({ heading }: { heading?: React.ReactNode }) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Type what you were looking for"
               autoComplete="off"
-              className="w-full border border-foreground/20 bg-transparent py-3 pl-11 pr-4 text-[15px] text-foreground placeholder:text-muted-foreground focus:border-foreground/50 focus:outline-none"
+              className="w-full border border-foreground/20 bg-transparent py-3 pl-11 pr-4 text-[15px] text-foreground placeholder:text-muted-foreground rounded-lg focus:border-primary focus:ring-[3px] focus:ring-primary/15 focus:outline-none"
             />
           </span>
         </label>

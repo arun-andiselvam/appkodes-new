@@ -320,7 +320,7 @@ export function Navigation() {
 
               `eager` keeps it fetched immediately rather than lazily, so the
               header still paints with no pop-in. It just no longer claims a
-              preload slot and a high priority it does not deserve, for 137 by
+              preload slot and a high priority it does not deserve, for 186 by
               28 pixels of wordmark.
 
               `sizes` is a second, smaller point: without it Next builds a
@@ -349,9 +349,9 @@ export function Navigation() {
               about 471 device pixels and picks 640 out of the srcset, which is
               why it broke on a phone and looked fine on every desktop.
 
-              unoptimized points the tag at /hitasoft-logo.webp itself, so
+              unoptimized points the tag at the .webp itself, so
               there is no negotiation to get wrong and no poisoned URL to
-              purge. The file is 818x167 drawing at 137x28, so the optimizer
+              purge. The file is 1080x163 drawing at 186x28, so the optimizer
               was saving a few hundred bytes for the privilege of this.
 
               !! THIS IS BELT AND BRACES, NOT THE FIX !!
@@ -362,6 +362,12 @@ export function Navigation() {
               dashboard, and until it is, every remaining transparent asset
               under public/ can break the same way.
             */}
+            {/*
+              Two copies, one per theme: the navy half of the mark disappears
+              on the dark background, so dark mode swaps in the white-navy
+              variant. See the note on site.logo in content/site.ts. Both stay
+              eager so the toggle never shows a gap; each file is about 8KB.
+            */}
             <Image
               src={site.logo.src}
               alt={site.logo.alt}
@@ -370,8 +376,19 @@ export function Navigation() {
               unoptimized
               loading="eager"
               fetchPriority="low"
-              sizes="140px"
-              className={`w-auto transition-all duration-500 ${isScrolled ? "h-6" : "h-7"}`}
+              sizes="190px"
+              className={`w-auto transition-all duration-500 dark:hidden ${isScrolled ? "h-6" : "h-7"}`}
+            />
+            <Image
+              src={site.logo.srcOnDark}
+              alt={site.logo.alt}
+              width={site.logo.width}
+              height={site.logo.height}
+              unoptimized
+              loading="eager"
+              fetchPriority="low"
+              sizes="190px"
+              className={`w-auto transition-all duration-500 hidden dark:block ${isScrolled ? "h-6" : "h-7"}`}
             />
           </Link>
 
@@ -457,7 +474,7 @@ export function Navigation() {
             <Button
               asChild
               size="sm"
-              className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
+              className={`bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground rounded-lg transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
             >
               <QuoteLauncher placement="header">
                 {/*
@@ -657,14 +674,14 @@ export function Navigation() {
             <Button
               asChild
               variant="outline"
-              className="flex-1 rounded-full h-14 text-base"
+              className="flex-1 rounded-lg h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <Link href={actions.caseStudies}>Case studies</Link>
             </Button>
             <Button
               asChild
-              className="flex-1 bg-primary text-primary-foreground rounded-full h-14 text-base"
+              className="flex-1 bg-primary text-primary-foreground rounded-lg h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <QuoteLauncher placement="mobile_menu">

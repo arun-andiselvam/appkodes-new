@@ -511,14 +511,14 @@ export const Chatbot = forwardRef<
                 type="button"
                 autoFocus
                 onClick={() => setConfirmClose(false)}
-                className="h-11 flex-1 rounded-full bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
+                className="h-11 flex-1 rounded-lg bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow"
               >
                 Keep talking
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="h-11 flex-1 rounded-full border border-foreground/20 px-5 text-sm transition-colors hover:bg-foreground/5"
+                className="h-11 flex-1 rounded-lg border border-foreground/20 px-5 text-sm transition-colors hover:bg-foreground/5"
               >
                 Close anyway
               </button>

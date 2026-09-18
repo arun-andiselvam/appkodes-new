@@ -61,7 +61,7 @@ export function SiloPage({ page, path }: { page: ServicePage; path: string }) {
             <Button
               asChild
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
+              className="bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-lg group"
             >
               <QuoteLauncher placement="silo_hero">
                 <Sparkles aria-hidden />
@@ -73,7 +73,7 @@ export function SiloPage({ page, path }: { page: ServicePage; path: string }) {
               asChild
               size="lg"
               variant="outline"
-              className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+              className="h-14 px-8 text-base rounded-lg border-foreground/20 hover:bg-foreground/5"
             >
               <Link href="/how-we-work">See how we work</Link>
             </Button>

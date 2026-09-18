@@ -33,7 +33,7 @@ export const site = {
    */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.hitasoft.com",
   /**
-   * The Hitasoft wordmark, replacing the Appkodes one on 20 August 2026.
+   * The Appkodes wordmark, replacing the Hitasoft one on 18 September 2026.
    *
    * width and height are the asset's real pixels rather than a display size.
    * Both places that render it set the height in CSS - `h-7` in the header,
@@ -41,22 +41,24 @@ export const site = {
    * only ever serve as the aspect ratio Next reserves space with, and a wrong
    * ratio is what makes a logo jump on load.
    *
-   * The .webp is public/hitasoft-logo-c.png with its white background keyed
-   * out and the resulting transparent margin cropped off, 831x216 down to
-   * 818x167. The source does carry an alpha channel, but it only covers an
-   * outer border: 42 per cent of the file is opaque white sitting behind and
-   * between the letters, which rendered as a slab on the page background.
-   * Trusting that alpha and skipping the key is exactly the bug to avoid.
+   * Converted losslessly from the client's 1080x163 PNG, which arrived with a
+   * clean alpha and unmatted edges, so it needed no keying or cropping. At
+   * `h-7` it draws 186 by 28, which the asset covers at better than 5x.
    *
-   * That source is small for a logo, so: at `h-7` the mark draws 137 by 28,
-   * which the 818 by 167 asset still covers at 3x. Much beyond `h-12` would
-   * start to soften it.
+   * !! TWO FILES, BECAUSE THE NAVY HALF VANISHES ON A DARK GROUND !!
+   *
+   * The mark is #0065FF and #001923. The navy is 1.1:1 on the dark theme's
+   * background and on the footer's emphasis panel, so `srcOnDark` is the same
+   * artwork with the navy swapped for white and the blue kept. The header
+   * shows one or the other by theme; the footer always sits on the dark panel
+   * and always uses `srcOnDark`.
    */
   logo: {
-    src: "/hitasoft-logo.webp",
-    width: 818,
-    height: 167,
-    alt: "Hitasoft",
+    src: "/appkodes-logo.webp",
+    srcOnDark: "/appkodes-logo-on-dark.webp",
+    width: 1080,
+    height: 163,
+    alt: "Appkodes",
   },
   // A proof point rather than a label: the headline already says what we do,
   // so this slot carries evidence the reader can weigh. Both figures are from

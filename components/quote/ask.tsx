@@ -386,7 +386,7 @@ export function AskStep({
                   .join("\n\n"),
               )
             }
-            className="group/go inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary/90"
+            className="group/go inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow"
           >
             {file ? "Get a quote for this" : "Get my quote"}
             <ArrowRight

@@ -44,9 +44,9 @@ const INK = "#111827";
 const MUTED = "#6b7280";
 const RULE = "#e5e7eb";
 /** app/brand.css --brand-blue, light theme. */
-const ACCENT = "#146f90";
+const ACCENT = "#0052ff";
 /** app/brand.css --brand-blue-strong, light theme. For the cost figure. */
-const ACCENT_STRONG = "#0f556f";
+const ACCENT_STRONG = "#0040cc";
 
 const PAGE_MARGIN = 56;
 

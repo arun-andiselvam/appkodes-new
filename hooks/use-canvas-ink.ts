@@ -19,8 +19,7 @@ import { useTheme } from "@/components/theme-provider";
  * dark in both themes, so a canvas backdrop living on it needs light ink in
  * both themes too, not ink that flips and goes dark-on-dark in light mode.
  * Added 24 August 2026 when the footer's AnimatedWave moved onto the panel.
- * The two values below are --emphasis-foreground itself (light mode #fafcfd,
- * dark mode #e3f2f7), not a single colour reused for both.
+ * Both themes use --emphasis-foreground, #f8fafc, on the obsidian panel.
  */
 export function useCanvasInk(tone: "page" | "emphasis" = "page") {
   const { resolvedTheme } = useTheme();
@@ -28,13 +27,12 @@ export function useCanvasInk(tone: "page" | "emphasis" = "page") {
 
   useEffect(() => {
     if (tone === "emphasis") {
-      // --emphasis-foreground: light mode var(--surface) #fafcfd, dark mode
-      // var(--surface-ink) #e3f2f7.
-      inkRef.current = resolvedTheme === "dark" ? "227, 242, 247" : "250, 252, 253";
+      // --emphasis-foreground, #f8fafc in both themes.
+      inkRef.current = "248, 250, 252";
       return;
     }
-    // Matches --foreground in each palette: design-system navy #091E42 / #EDF0FF.
-    inkRef.current = resolvedTheme === "dark" ? "237, 240, 255" : "9, 30, 66";
+    // Matches --foreground in each palette: obsidian #0b0f17 / #f8fafc.
+    inkRef.current = resolvedTheme === "dark" ? "248, 250, 252" : "11, 15, 23";
   }, [resolvedTheme, tone]);
 
   return inkRef;

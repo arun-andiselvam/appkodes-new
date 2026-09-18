@@ -61,7 +61,7 @@ export function Footer() {
         loudest thing on a page built from hairlines and one accent colour
         everywhere else. Desaturating it is what makes it read as an
         editorial backdrop rather than a candid snapshot competing with the
-        copy on top of it, and grayscale plus the panel's own dark teal
+        copy on top of it, and grayscale plus the panel's own dark navy
         showing through at this opacity is what gives it the brand tint
         rather than leaving it a flat grey.
 
@@ -111,7 +111,7 @@ export function Footer() {
                     behind it, where a black rectangle reads as a hole.
                   */}
                   <Image
-                    src={site.logo.src}
+                    src={site.logo.srcOnDark}
                     alt={site.logo.alt}
                     width={site.logo.width}
                     height={site.logo.height}

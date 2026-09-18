@@ -247,7 +247,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
           id="budget"
           name="budget"
           defaultValue=""
-          className="mt-1.5 w-full border border-foreground/15 bg-background px-3.5 py-2.5 text-base outline-none transition-colors focus:border-foreground/50"
+          className="mt-1.5 w-full border border-foreground/15 bg-background px-3.5 py-2.5 text-base outline-none transition-colors rounded-lg focus:border-primary focus:ring-[3px] focus:ring-primary/15"
         >
           <option value="">Choose a range</option>
           {budgetOptions.map((option) => (
@@ -291,7 +291,7 @@ export function ContactForm({ nonce }: { nonce?: string }) {
       <button
         type="submit"
         disabled={status === "sending" || !turnstileReady}
-        className="group/send mt-5 inline-flex h-12 items-center gap-2 rounded-full bg-primary px-7 text-base text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+        className="group/send mt-5 inline-flex h-12 items-center gap-2 rounded-lg bg-primary px-7 text-base text-primary-foreground transition-colors hover:bg-primary-hover hover:shadow-glow disabled:opacity-60"
       >
         {status === "sending" ? "Sending" : "Send this"}
         <ArrowRight
@@ -337,7 +337,7 @@ function Field({
 }) {
   const errorId = `${name}-error`;
   const shared =
-    "mt-1.5 w-full border bg-transparent px-3.5 py-2.5 text-base outline-none transition-colors focus:border-foreground/50 " +
+    "mt-1.5 w-full border bg-transparent px-3.5 py-2.5 text-base outline-none transition-colors rounded-lg focus:border-primary focus:ring-[3px] focus:ring-primary/15 " +
     (error ? "border-brand-red" : "border-foreground/15");
 
   return (

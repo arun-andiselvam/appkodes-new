@@ -82,7 +82,7 @@ export function HowWeWorkPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-full group"
+                className="bg-primary hover:bg-primary-hover hover:shadow-glow text-primary-foreground px-8 has-[>svg]:px-8 h-14 text-base rounded-lg group"
               >
                 {/*
                   "Start a prototype", not the generic label. This page's whole
@@ -99,7 +99,7 @@ export function HowWeWorkPage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+                className="h-14 px-8 text-base rounded-lg border-foreground/20 hover:bg-foreground/5"
               >
                 <Link href={actions.caseStudies}>See case studies</Link>
               </Button>

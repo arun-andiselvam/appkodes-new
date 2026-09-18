@@ -59,7 +59,7 @@ export function QuoteBubble() {
         HTML, and this element is on every page of a `force-dynamic` site, so
         that whitespace ships on every request.
       */
-      className="group/bubble fixed bottom-6 right-6 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-foreground/10 transition-[background-color,transform,box-shadow] duration-300 hover:bg-primary/90 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-safe:hover:-translate-y-0.5 lg:bottom-8 lg:right-8 lg:h-14 lg:w-14"
+      className="group/bubble fixed bottom-6 right-6 z-30 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-foreground/10 transition-[background-color,transform,box-shadow] duration-300 hover:bg-primary-hover hover:shadow-glow hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-safe:hover:-translate-y-0.5 lg:bottom-8 lg:right-8 lg:h-14 lg:w-14"
     >
       {/*
         aria-hidden because the anchor is already named above. Without it a

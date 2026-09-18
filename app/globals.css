@@ -11,8 +11,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Not a colour, so it stays behind while the palette lives in brand.css. */
-  --radius: 0.25rem;
+  /*
+   * Not a colour, so it stays behind while the palette lives in brand.css.
+   * 8px, the guideline's control radius: rounded-lg is buttons and inputs,
+   * rounded-sm badges, rounded-xl and rounded-2xl cards. docs/design-system.md.
+   */
+  --radius: 0.5rem;
 }
 
 @theme inline {
@@ -27,6 +31,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --shadow-glow: 0 0 12px rgb(var(--brand-blue-rgb) / 0.35);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -36,6 +42,7 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-emphasis: var(--emphasis);
@@ -44,6 +51,7 @@
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-strong: var(--brand-blue-strong);
   --color-brand-red: var(--brand-red);
+  --color-brand-cyan: var(--brand-cyan);
   --color-brand-success: var(--brand-success);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);

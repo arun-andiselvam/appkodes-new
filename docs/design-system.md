@@ -1,176 +1,169 @@
 ---
-name: Kinetic Modular
+name: Electric Precision
 colors:
-  surface: '#fafcfd'
-  surface-dim: '#ccf1ff'
-  surface-bright: '#fafcfd'
-  surface-container-lowest: '#ffffff'
-  surface-container-low: '#f1fbff'
-  surface-container: '#e9f9ff'
-  surface-container-high: '#e1f7ff'
-  surface-container-highest: '#d8f5ff'
-  on-surface: '#0d323f'
-  on-surface-variant: '#4d595e'
-  inverse-surface: '#152c35'
-  inverse-on-surface: '#e3f2f7'
-  outline: '#738085'
-  outline-variant: '#c3d1d6'
-  surface-tint: '#146f90'
-  primary: '#0f556f'
-  on-primary: '#ffffff'
-  primary-container: '#146f90'
-  on-primary-container: '#c4efff'
-  inverse-primary: '#8bcce4'
-  secondary: '#911000'
-  on-secondary: '#ffffff'
-  secondary-container: '#df2c16'
-  on-secondary-container: '#610b00'
-  tertiary: '#7b0e00'
-  on-tertiary: '#ffffff'
-  tertiary-container: '#a31200'
-  on-tertiary-container: '#ffbab2'
-  error: '#a51221'
-  on-error: '#ffffff'
-  error-container: '#ffd6dd'
-  on-error-container: '#930019'
-  primary-fixed: '#daf5ff'
-  primary-fixed-dim: '#8bcce4'
-  on-primary-fixed: '#003548'
-  on-primary-fixed-variant: '#0077a2'
-  secondary-fixed: '#ffcac3'
-  secondary-fixed-dim: '#ff8c7e'
-  on-secondary-fixed: '#2f0500'
-  on-secondary-fixed-variant: '#6e0c00'
-  tertiary-fixed: '#ffd4cf'
-  tertiary-fixed-dim: '#ffa69b'
-  on-tertiary-fixed: '#380600'
-  on-tertiary-fixed-variant: '#810e00'
-  background: '#fafcfd'
-  on-background: '#0d323f'
-  surface-variant: '#d8f5ff'
-  surface-alt: '#f4f6f7'
-  border-subtle: '#DDE4E6'
-  success-green: '#36B37E'
+  mark-blue: '#0065FF'
+  mark-navy: '#001923'
+  primary: '#0052FF'
+  primary-hover: '#0040CC'
+  on-primary: '#FFFFFF'
+  primary-dark-mode: '#7AA3FF'
+  primary-hover-dark-mode: '#94B5FF'
+  on-primary-dark-mode: '#0B0F17'
+  cyan-accent: '#38BDF8'
+  obsidian: '#0B0F17'
+  error: '#BA1A1A'
+  error-dark-mode: '#F87171'
+  success: '#36B37E'
+  light-canvas: '#FFFFFF'
+  light-surface-1: '#F8FAFC'
+  light-surface-2: '#F1F5F9'
+  light-border-subtle: '#E2E8F0'
+  light-border-strong: '#CBD5E1'
+  light-text-primary: '#0B0F17'
+  light-text-secondary: '#475569'
+  light-text-muted: '#94A3B8'
+  dark-canvas: '#0B0F17'
+  dark-surface-1: '#111827'
+  dark-surface-2: '#1E293B'
+  dark-border-subtle: '#1E293B'
+  dark-border-strong: '#334155'
+  dark-text-primary: '#F8FAFC'
+  dark-text-secondary: '#94A3B8'
+  dark-text-muted: '#64748B'
 typography:
-  display-lg:
-    fontFamily: Montserrat
-    fontSize: 48px
-    fontWeight: '700'
-    lineHeight: 56px
-    letterSpacing: -0.02em
-  headline-lg:
-    fontFamily: Montserrat
-    fontSize: 32px
-    fontWeight: '600'
-    lineHeight: 40px
-    letterSpacing: -0.01em
-  headline-lg-mobile:
-    fontFamily: Montserrat
-    fontSize: 28px
-    fontWeight: '600'
-    lineHeight: 34px
-  headline-md:
-    fontFamily: Montserrat
-    fontSize: 24px
-    fontWeight: '600'
-    lineHeight: 32px
-  body-lg:
-    fontFamily: Inter
-    fontSize: 18px
-    fontWeight: '400'
-    lineHeight: 28px
-  body-md:
-    fontFamily: Inter
-    fontSize: 16px
-    fontWeight: '400'
-    lineHeight: 24px
-  label-md:
-    fontFamily: Inter
-    fontSize: 14px
-    fontWeight: '600'
-    lineHeight: 20px
-    letterSpacing: 0.02em
-  label-sm:
-    fontFamily: Inter
-    fontSize: 12px
-    fontWeight: '500'
-    lineHeight: 16px
-    letterSpacing: 0.04em
+  sans: Instrument Sans
+  display: Instrument Serif
+  mono: JetBrains Mono
 rounded:
-  sm: 0.125rem
-  DEFAULT: 0.25rem
-  md: 0.375rem
-  lg: 0.5rem
-  xl: 0.75rem
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
   full: 9999px
 spacing:
-  base: 8px
-  container-max: 1280px
-  gutter: 24px
-  margin-mobile: 16px
-  margin-desktop: 40px
+  gutter: 1.5rem
+  margin-mobile: 1rem
+  margin-tablet: 2rem
+  container-max: 1440px
 ---
+
+> Source of truth for colour is app/brand.css; this document describes it. Adopted 18 September 2026 from the "Electric Precision" guideline. Where the original guideline's figures disagreed with measurement, the measured figure is used here, and deviations are listed at the end.
 
 ## Brand & Style
 
-The design system is centered on the concept of "Instant Entrepreneurship"—the idea that technology should be a ready-to-use catalyst rather than a barrier. The brand personality is efficient, empowering, and architecturally sound. It targets visionaries who need high-speed execution without sacrificing professional sophistication.
+### Brand Personality & Philosophy
+This design system embodies high-velocity software engineering, digital craftsmanship, and technological authority. It is sharp, confident, and unapologetically engineered for enterprise scalability and high-performance product suites. The emotional response is immediate clarity, modern capability, and effortless momentum.
 
-The visual style is **Minimalist and Tech-Forward**, leaning into a "Modular Grid" aesthetic. It utilizes generous whitespace to signify clarity of thought, sharp execution, and a systematic approach to building businesses. The interface should feel like a high-end precision tool: intentional, responsive, and stripped of any decorative excess that doesn't serve a functional purpose.
+### Aesthetic Style
+The visual language merges **Modern Technical Brutalism** with **Refined Corporate Minimalism**. It uses crisp micro-borders, deep obsidian dark surfaces paired with pure white light surfaces, high-contrast typography, and an unmistakable energetic electric blue accent. Visual clutter is stripped away in favor of strict grid alignments, intentional typographic weight shifts, and laser-precise spatial hierarchy.
+
+### Logo Construction & Brandmark Geometry
+- **Monogram Anatomy:** The mark couples a geometric lowercase 'a' in vivid electric blue with an interlocking abstract 'k' stem in obsidian charcoal. The relationship between the two glyphs relies on precise optical radii matching the letterforms.
+- **Clearspace:** A minimum clearspace equal to 50% of the mark's height ($0.5H$) must surround the logo on all four sides. No typography, secondary iconography, or layout borders may infringe upon this clearance buffer.
+- **Minimum Scale:** Digital display requires a minimum width of 120px for the full lockup and 24px for the standalone monogram. Print minimum is 28mm lockup width.
+- **Background Adaptations:** On light backgrounds use public/appkodes-logo.webp: the "a"/"app" in #0065FF and the "k"/"kodes" in the artwork's navy #001923. On dark backgrounds use public/appkodes-logo-on-dark.webp, where the blue stays and the navy becomes white #FFFFFF.
 
 ## Colors
 
-The palette is anchored by **Hitasoft Blue (#146F90)**, used for primary actions and structural branding to evoke stability and corporate readiness. **Hitasoft Red (#DF2C16)** serves as a high-energy kinetic accent, reserved for secondary actions, "New" indicators, and moments of conversion that signify entrepreneurial "spark."
+### Primary Palette & Roles
+- **Electric Blue (`#0052FF`; the logo artwork is `#0065FF`):** The catalytic brand engine. Used strictly for critical interactive states, primary action anchors, active indicators, and high-priority brand moments. Never diluted for large non-interactive surface fills.
+- **Deep Obsidian (`#0B0F17`):** Grounding neutral providing weight, contrast, and structure. In light mode, it anchors headers and high-contrast text. In dark mode, it constitutes the foundational canvas surface.
+- **Cyan Accent (`#38BDF8`):** Serves as an auxiliary highlight token for data visualization, technical telemetry, and code syntactical highlights. It is 2.14:1 on white, so it is never text in light mode.
+- **Error Red (`#BA1A1A` light / `#F87171` dark):** Errors, flagged records and the human step in a flow.
 
-Both are the wordmark's own colours walked down in lightness until they clear WCAG AA. The mark is #1782A9 and #EA402B, which are 4.18:1 and 3.81:1 on the surface and so cannot carry text or a filled button. The logo file keeps the pure colours; only the UI tokens are darkened. Error red is pushed to #A51221, deeper and bluer than the accent, so a destructive control is not mistaken for a brand one."
+### Dual-Mode Architecture & Semantics
 
-The neutral scale uses a deep navy-tinted charcoal (#091E42) for text to maintain a softer, more sophisticated contrast than pure black. Backgrounds should primarily be clean white, with light grey (#F4F5F7) used to define modular zones and containers.
+#### Light Mode Surfaces & Text
+- **Canvas Base:** `#FFFFFF`
+- **Surface Layer 1 (Cards, panels):** `#F8FAFC`
+- **Surface Layer 2 (Inputs, active overlays):** `#F1F5F9`
+- **Border Subtle:** `#E2E8F0`
+- **Border Strong:** `#CBD5E1`
+- **Text Primary:** `#0B0F17` (Contrast 19.18:1 against Canvas)
+- **Text Secondary:** `#475569` (Contrast 7.58:1 against Canvas)
+- **Text Muted:** `#94A3B8` (Contrast 2.56:1: decorative only, never text)
+
+#### Dark Mode Surfaces & Text
+- **Canvas Base:** `#0B0F17`
+- **Surface Layer 1 (Cards, panels):** `#111827`
+- **Surface Layer 2 (Elevated hover, modal popovers):** `#1E293B`
+- **Border Subtle:** `#1E293B`
+- **Border Strong:** `#334155`
+- **Text Primary:** `#F8FAFC` (Contrast 18.33:1 against Base)
+- **Text Secondary:** `#94A3B8` (Contrast 7.48:1 against Base)
+- **Text Muted:** `#64748B` (4.03:1: large text and decoration only)
+- **Electric blue in dark mode:** `#7AA3FF` (7.77:1), with obsidian text on blue fills. `#0052FF` is 3.33:1 on obsidian and fails as text.
+
+### Accessibility & Contrast Standards
+Primary and secondary text pairs meet WCAG AAA (7:1) in both modes. Primary buttons and blue text meet AA (4.5:1): `#0052FF` on white is 5.75:1, white on `#0052FF` is 5.75:1.
 
 ## Typography
 
-This design system employs a dual-font strategy to balance character with utility. **Montserrat** is used for headings to provide a geometric, confident, and modern architectural feel. Its wider tracking and bold weights emphasize the "Entrepreneurship" aspect of the brand.
-
-**Inter** is used for all body copy and interface labels. Chosen for its exceptional legibility and neutral, "system-app" feel, it ensures that complex data and modular settings remain readable at any scale. Headlines should use tighter letter spacing as they grow in size to maintain a "locked-in" visual density.
+Unchanged from the existing site by client decision (18 September 2026): **Instrument Sans** for body and interface, **Instrument Serif** for display headlines (`font-display`), **JetBrains Mono** for technical badges, metrics and code labels. The guideline's type scale and tracking rules still apply: tighten large headlines to `-0.02em`, neutral tracking for body, `+0.06em` on all-caps micro-labels.
 
 ## Layout & Spacing
 
-The layout philosophy follows a **Rigid Fluid Grid**. Elements are placed on an 8px base unit system to ensure mathematical harmony and a "snapped-to-grid" modular appearance. 
+### Layout Model
+This design system operates on an uncompromising 8-point spatial matrix with an integrated 4-point micro-step for tight internal component padding. Layouts are architected around a 12-column fluid grid system on desktop, collapsing to 8 columns on tablet and 4 columns on mobile.
 
-- **Desktop:** 12-column grid with 24px gutters. Content is centered with a max-width of 1280px.
-- **Tablet:** 8-column grid with 20px gutters and 32px side margins.
-- **Mobile:** 4-column grid with 16px gutters and 16px side margins.
-
-Spacing should favor "grouping by proximity" to reinforce the modularity concept. Use larger gaps (64px+) between distinct sections and smaller, tighter gaps (8px-16px) between elements within a single module or card.
+### Breakpoint Scaling
+- **Desktop (1200px+):** 12-column grid, 24px (`1.5rem`) gutters, maximum layout width of 1440px (components/primitives/container.tsx).
+- **Tablet (768px – 1199px):** 8-column grid, 16px (`1rem`) gutters, 32px (`2rem`) outer margin. Side-by-side data cards wrap to two-column arrangements.
+- **Mobile (< 767px):** 4-column grid, 12px (`0.75rem`) gutters, 16px (`1rem`) outer margin. Grids collapse to single-column flows; sub-nav bars morph into horizontal scroll containers.
 
 ## Elevation & Depth
 
-To maintain a minimalist and sophisticated tech aesthetic, this design system avoids heavy shadows. Depth is conveyed through **Tonal Layering and Low-Contrast Outlines**.
+### Tonal Stratification & Razor Borders
+This design system rejects heavy, muddy, diffuse drop shadows in favor of precise structural boundaries. Hierarchy is conveyed via sharp surface tiering accompanied by ultra-fine hairline outlines.
 
-- **Level 0 (Base):** White (#FFFFFF) or light grey (#F4F5F7).
-- **Level 1 (Cards/Modules):** White surface with a 1px solid border (#DFE1E6). No shadow.
-- **Level 2 (Hover/Active):** Primary color 1px border or a very subtle, high-diffusion "ambient" shadow (0px 4px 20px rgba(9, 30, 66, 0.08)).
-- **Level 3 (Modals/Popovers):** Standard 1px border with a medium-diffusion shadow to separate the element from the backdrop.
-
-Use semi-transparent overlays (Backdrop-blur 8px) for modals to maintain the "Tech-forward" feel of connectivity and transparency.
+- **Level 0 (Flat Canvas):** `#FFFFFF` (Light) / `#0B0F17` (Dark).
+- **Level 1 (Card Surfaces):** 1px solid border (`#E2E8F0` / `#1E293B`) overlaying Surface 1. No shadow.
+- **Level 2 (Hover States & Dropdowns):** Ambient shadow tinted with the primary hue: `0 8px 24px -4px rgba(11, 15, 23, 0.08)` in light mode, and `0 8px 24px -4px rgba(0, 82, 255, 0.12)` in dark mode with a 1px border (`#CBD5E1` / `#334155`).
+- **Level 3 (Modals & Command Palettes):** Elevated floating backdrop blur (`backdrop-filter: blur(12px)`) with crisp `0 20px 48px -12px rgba(11, 15, 23, 0.24)` deep obsidian occlusion.
 
 ## Shapes
 
-The shape language is **Soft (0.25rem/4px)**. This specific radius provides a "professional-industrial" feel—it is not as aggressive as sharp corners, yet it avoids the casual, consumer-focused look of fully rounded "pill" shapes. 
+### Corner Curvature Logic
+The roundedness scale (`level 2`) utilizes exact `0.5rem` (8px) radii for baseline interface components, reflecting the balanced geometry of the monogram while avoiding childish or overly bulbous profiles.
 
-This geometric precision reinforces the "modular" concept, where components look like they can be perfectly stacked and assembled. Larger components like cards use `rounded-lg` (8px) for a slightly softer container feel, while buttons and inputs strictly follow the 4px standard.
+- **Micro Components (Badges, Checkboxes, Tooltips):** 4px (`0.25rem`) corner radius.
+- **Standard Controls (Buttons, Inputs, Selectors):** 8px (`0.5rem`) corner radius.
+- **Card Containers & Modules:** 12px (`0.75rem`) to 16px (`1rem`) corner radius (`rounded-lg`).
+- **Pill Tags & Status Indicators:** Strict full-radius (`9999px`) roundedness to distinctly identify status pills and filter chips against rectangular inputs.
 
 ## Components
 
 ### Buttons
-Primary buttons use a solid Blue (#146F90) fill with white text. Secondary buttons use a Red (#DF2C16) outline with red text to represent "Innovation" without overpowering the hierarchy. All buttons have a 4px corner radius and use `label-md` typography.
+- **Primary Button:** Solid electric blue background (`#0052FF`), crisp optical white text, 8px corner radius, bold weight. Hover state initiates `#0040CC` background with an electric blue micro-glow (`0 0 12px rgba(0, 82, 255, 0.35)`).
+- **Secondary Button:** Surface-matched fill with 1px border (`#E2E8F0` in light mode; `#1E293B` in dark mode). Text is obsidian primary in light mode, optical white in dark mode. Hover introduces `#F1F5F9` / `#1E293B` fills.
+- **Ghost / Tertiary:** Borderless, zero fill. Electric blue text with an underlined interaction on hover.
 
-### Input Fields
-Inputs are defined by a 1px border (#DFE1E6). On focus, the border transitions to Primary Blue with a 2px "inner glow" of light blue. Labels are always positioned above the field using `label-sm`.
+### Inputs & Text Fields
+- Height of 42px on desktop with 12px horizontal padding.
+- Border is 1px solid (`#E2E8F0` / `#1E293B`).
+- Active/Focused state triggers a crisp 1.5px border colored in `#0052FF`, complemented by an offset focus ring (`box-shadow: 0 0 0 3px rgba(0, 82, 255, 0.15)`). No layout shift occurs on focus.
 
-### Modular Cards
-Cards are the core of the system. They feature a white background and a subtle grey border. Header sections within cards should be separated by a 1px horizontal rule to emphasize the "built from parts" aesthetic.
+### Cards & Data Panels
+- Surface-backed with 16px internal padding. Hairline 1px border around the entire container perimeter.
+- Header bars within cards are separated by a clean 1px horizontal rule, maintaining geometric compartmentalization.
+- Hoverable cards exhibit a smooth 2px vertical translation (`transform: translateY(-2px)`) coupled with border illumination from subtle slate to primary electric blue.
 
-### Progress & Speed Indicators
-Use the Innovative Orange for progress bars and "Speed" metrics. These should be sleek, 4px tall lines with no rounded caps, reinforcing the geometric and technical nature of the platform.
+### Chips, Tags & Status Pills
+- Compact padding of 4px vertical by 10px horizontal.
+- Integrated status dot (6px circle) preceding the text.
+- Standard metadata tags utilize subtle neutral fills (`#F1F5F9` light, `#1E293B` dark) with `label-caps` or `label-code` typography.
 
-### Chips & Tags
-Used for modular categorization. Chips use a light-tinted background of the Primary Blue (8% opacity) with dark blue text, keeping the interface clean while allowing for easy information scanning.
+### Checkboxes & Radio Controls
+- Checkboxes feature a 4px corner radius; radio controls are true circular discs.
+- Unchecked: 1.5px outline with transparent fill.
+- Checked: Solid `#0052FF` fill housing an optical white geometric checkmark or inner core pip. Focus states exhibit the standard blue glow ring.
+
+### Code & Telemetry Blocks
+- Custom components optimized for technical suites: Dark obsidian slate background (`#070A0E`) regardless of global theme mode, 1px perimeter border (`#1E293B`), monospace typography via `label-code`, and syntax-highlighted accents utilizing vivid electric blue, cyan, and amber.
+## Deviations from the original guideline
+
+- **Fonts** stay Instrument Sans / Instrument Serif instead of Hanken Grotesk, by client decision.
+- **Dark mode blue** is `#7AA3FF` with obsidian text on fills, because `#0052FF` fails as text on obsidian.
+- **Muted text role:** the site's `muted-foreground` is used for body copy, so it maps to Text Secondary (`#475569` / `#94A3B8`), not Text Muted.
+- **Logo navy:** the artwork keeps its own `#001923`; UI text uses obsidian `#0B0F17`.
+- **Card corners:** buttons and inputs use the 8px radius. Cards are still square, pending a decision (the client asked for square cards on 26 August 2026).
