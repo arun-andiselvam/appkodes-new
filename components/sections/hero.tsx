@@ -6,7 +6,7 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { HeroBackdrop } from "@/components/backgrounds/hero-backdrop";
+import { Starfield } from "@/components/backgrounds/starfield";
 import { actions, heroWords as words, heroStats, heroCopy, site } from "@/content/site";
 import { QuoteLauncher } from "@/components/quote/launcher";
 import { Section } from "@/components/primitives/section";
@@ -45,7 +45,7 @@ export function HeroSection() {
       spacing="none"
       className="min-h-screen flex flex-col justify-center overflow-hidden"
     >
-      <HeroBackdrop />
+      <Starfield />
 
       <Container className="relative z-10 pt-24 pb-40 lg:pt-28 lg:pb-56">
         {/* Eyebrow */}
