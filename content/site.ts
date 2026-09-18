@@ -49,13 +49,14 @@ export const site = {
    *
    * The mark is #0065FF and #001923. The navy is 1.1:1 on the dark theme's
    * background and on the footer's emphasis panel, so `srcOnDark` is the same
-   * artwork with the navy swapped for white and the blue kept. The header
+   * artwork in solid white, the whole mark, by client request on 18 September
+   * 2026 (an earlier cut kept the blue and whitened only the navy). The header
    * shows one or the other by theme; the footer always sits on the dark panel
    * and always uses `srcOnDark`.
    */
   logo: {
     src: "/appkodes-logo.webp",
-    srcOnDark: "/appkodes-logo-on-dark.webp",
+    srcOnDark: "/appkodes-logo-white.webp",
     width: 1080,
     height: 163,
     alt: "Appkodes",

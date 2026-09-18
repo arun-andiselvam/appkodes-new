@@ -61,7 +61,7 @@ The visual language merges **Modern Technical Brutalism** with **Refined Corpora
 - **Monogram Anatomy:** The mark couples a geometric lowercase 'a' in vivid electric blue with an interlocking abstract 'k' stem in obsidian charcoal. The relationship between the two glyphs relies on precise optical radii matching the letterforms.
 - **Clearspace:** A minimum clearspace equal to 50% of the mark's height ($0.5H$) must surround the logo on all four sides. No typography, secondary iconography, or layout borders may infringe upon this clearance buffer.
 - **Minimum Scale:** Digital display requires a minimum width of 120px for the full lockup and 24px for the standalone monogram. Print minimum is 28mm lockup width.
-- **Background Adaptations:** On light backgrounds use public/appkodes-logo.webp: the "a"/"app" in #0065FF and the "k"/"kodes" in the artwork's navy #001923. On dark backgrounds use public/appkodes-logo-on-dark.webp, where the blue stays and the navy becomes white #FFFFFF.
+- **Background Adaptations:** On light backgrounds use public/appkodes-logo.webp: the "a"/"app" in #0065FF and the "k"/"kodes" in the artwork's navy #001923. On dark backgrounds use public/appkodes-logo-white.webp, the whole mark in solid white #FFFFFF.
 
 ## Colors
 
