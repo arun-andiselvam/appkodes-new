@@ -605,3 +605,72 @@
     from { stroke-dashoffset: calc(var(--arc-len) * 1px); }
     to { stroke-dashoffset: 0; }
   }
+
+/*
+ * Signal traces, the home hero backdrop (components/backgrounds/signal-traces.tsx).
+ * The component lays the tracks out once; everything that moves is here.
+ * Colours are --traces-* in app/brand.css.
+ */
+/*
+ * !! NO mask-image IN HERE. IT HALVED THE FRAME RATE WHILE SCROLLING !!
+ *
+ * The first cut dimmed the left side with a linear mask on the wrapper and
+ * lit the cursor with a radial mask on the glow layer. Measured on
+ * 18 September 2026 over a 2.5s scroll at 120Hz: 133 frames drawn with the
+ * masks, 290 without, because a mask makes the browser redraw the whole
+ * hero-sized layer through it on every frame. The pulses themselves cost
+ * nothing measurable. The dimming is now a background-coloured veil laid over
+ * the tracks, and the cursor glow a clip-path circle; both measured at 290.
+ */
+.signal-traces-veil {
+  /* Quieter behind the headline on the left, full strength on the open right. */
+  background: linear-gradient(100deg, var(--background) 0%, var(--background) 15%, transparent 70%);
+  opacity: 0.6;
+}
+.signal-traces-grid {
+  background-image:
+    linear-gradient(var(--traces-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--traces-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.signal-traces .trace { fill: none; stroke: var(--traces-line); stroke-width: 1; }
+.signal-traces .trace-start { fill: var(--traces-line); }
+.signal-traces .trace-pulse {
+  fill: none;
+  stroke: var(--traces-signal);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 90 3000;
+  animation: trace-run linear infinite;
+}
+.signal-traces .trace-pad {
+  fill: var(--background);
+  stroke: var(--traces-line);
+  stroke-width: 1;
+  animation: trace-pad linear infinite;
+}
+/* Tracks near the cursor, revealed by a circle that follows --mx/--my. */
+.signal-traces-glow {
+  clip-path: circle(150px at var(--mx, -999px) var(--my, -999px));
+}
+.signal-traces .trace-lit { fill: none; stroke: var(--traces-signal); stroke-width: 1.5; }
+.signal-traces[data-paused="true"] .trace-pulse,
+.signal-traces[data-paused="true"] .trace-pad {
+  animation-play-state: paused;
+}
+@keyframes trace-run {
+  from { stroke-dashoffset: 90; }
+  to { stroke-dashoffset: -1000; }
+}
+/* The pad lights as the pulse arrives, about 90% of the way through its run. */
+@keyframes trace-pad {
+  0%, 84% { fill: var(--background); stroke: var(--traces-line); }
+  90% { fill: var(--traces-signal); stroke: var(--traces-signal); }
+  100% { fill: var(--background); stroke: var(--traces-line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signal-traces .trace-pulse,
+  .signal-traces .trace-pad {
+    animation-play-state: paused;
+  }
+}

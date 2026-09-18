@@ -120,6 +120,13 @@
   /* Home hero starfield (components/backgrounds/starfield.tsx). */
   --starfield-star: var(--brand-blue);
   --starfield-opacity: 0.35; /* multiplies each star's own 0.5-1 brightness */
+  /* Home hero arc field (components/backgrounds/arc-field.tsx). */
+  --arcfield-line: rgb(71 85 105 / 0.16);
+  --arcfield-signal: var(--brand-blue);
+  /* Home hero signal traces (components/backgrounds/signal-traces.tsx). */
+  --traces-grid: rgb(71 85 105 / 0.06);
+  --traces-line: rgb(71 85 105 / 0.2);
+  --traces-signal: var(--brand-blue);
   /*
    * Emphasis panel (the inverted "process" section, and the footer): deep
    * obsidian in both themes. Defined explicitly rather than derived from
@@ -184,6 +191,11 @@
   --spotlight: rgb(var(--brand-blue-rgb) / 0.12);
   --starfield-star: #f8fafc;
   --starfield-opacity: 0.45;
+  --arcfield-line: rgb(148 163 184 / 0.17);
+  --arcfield-signal: #6e9bff;
+  --traces-grid: rgb(148 163 184 / 0.06);
+  --traces-line: rgb(148 163 184 / 0.22);
+  --traces-signal: #6e9bff;
   --emphasis: var(--slate-900);
   --emphasis-foreground: #f8fafc;
   --emphasis-accent: var(--brand-blue-bright);
