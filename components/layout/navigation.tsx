@@ -5,16 +5,17 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
-  Menu, X, ChevronDown, ArrowRight,
-  Briefcase, MapPinned, Clapperboard, Truck, ShoppingBag, Stethoscope, Asterisk,
+  Menu, X, ChevronDown, ArrowRight, LayoutGrid, FileText,
+  Briefcase, MapPinned, Clapperboard, Truck, ShoppingBag, Stethoscope,
   type LucideIcon,
 } from "lucide-react";
+import { QuoteLauncher } from "@/components/quote/launcher";
 import { siWhatsapp } from "simple-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { actions, site, whatsappContact } from "@/content/site";
 import { mainNav } from "@/content/navigation";
-import type { NavColumnGroup, NavItem, NavPromo } from "@/content/types";
+import type { NavColumnGroup, NavFeature, NavItem, NavStripLink } from "@/content/types";
 
 /**
  * Is this menu item the branch of the site the visitor is standing in?
@@ -647,22 +648,10 @@ export function Navigation() {
 }
 
 
-/*
- * Glyphs for the column groups, keyed from content/navigation.ts so the data
- * file stays free of React imports.
- */
-const COLUMN_ICONS: Record<string, LucideIcon> = {
-  services: Briefcase,
-  onDemand: MapPinned,
-  entertainment: Clapperboard,
-  delivery: Truck,
-  buySell: ShoppingBag,
-  healthcare: Stethoscope,
-};
-
 /**
  * next/link for paths on this site, a plain anchor for anything absolute.
- * The Services columns still point at appkodes.com, see content/navigation.ts.
+ * The Services links still point at appkodes.com, see content/navigation.ts.
+ * A WhatsApp link opens in a new tab so the site stays where it was.
  */
 function MenuLink({
   href,
@@ -678,8 +667,15 @@ function MenuLink({
   onClick?: () => void;
 }) {
   if (/^https?:\/\//.test(href)) {
+    const newTab = href.startsWith("https://wa.me/");
     return (
-      <a href={href} className={className} tabIndex={tabIndex} onClick={onClick}>
+      <a
+        href={href}
+        className={className}
+        tabIndex={tabIndex}
+        onClick={onClick}
+        {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
         {children}
       </a>
     );
@@ -691,62 +687,153 @@ function MenuLink({
   );
 }
 
+/*
+ * Thin-line glyphs beside each Services group label, keyed from
+ * content/navigation.ts so the data file stays free of React imports. They
+ * replaced a link count (04, 03), which told the reader nothing useful.
+ */
+const GROUP_ICONS: Record<string, LucideIcon> = {
+  services: Briefcase,
+  onDemand: MapPinned,
+  entertainment: Clapperboard,
+  delivery: Truck,
+  buySell: ShoppingBag,
+  healthcare: Stethoscope,
+};
+
 /**
- * appkodes.com's Services mega menu, added 18 September 2026: three columns of
- * link groups, each under an icon and a rule, and a promo card on the right.
+ * The Services mega menu, 18 September 2026. Chosen by the client from four
+ * drafts as a combination of two: the editorial list (small labels with a
+ * count over short, quiet links that slide an arrow in on hover, and a strip
+ * of next steps under them) and the tiles draft's brand-blue feature card.
  * Every link leaves the tab order while the panel is closed, as in the other
  * panels.
  */
 function ColumnsPanel({
   columns,
-  promo,
+  feature,
+  strip,
   open,
 }: {
   columns: NavColumnGroup[][];
-  promo?: NavPromo;
+  feature?: NavFeature;
+  strip?: NavStripLink[];
   open: boolean;
 }) {
   const tab = open ? undefined : -1;
+  const groups = columns.flat();
   return (
-    <div className="grid grid-cols-[1fr_1fr_1fr_minmax(240px,280px)] gap-10 px-10 py-9">
-      {columns.map((column, c) => (
-        <div key={c} className="flex flex-col gap-8">
-          {column.map((group) => {
-            const Icon = COLUMN_ICONS[group.icon] ?? Briefcase;
+    <div className="grid grid-cols-[1fr_292px]">
+      {/* 292px: the card keeps its 268px width with a 12px gap on both sides. */}
+      {/* The rule on the right is the separator from the feature card. */}
+      <div className="flex flex-col border-r border-foreground/10">
+        <div className="grid grid-cols-3 gap-x-10 gap-y-7 px-9 pt-8 pb-7">
+          {groups.map((group) => {
+            const Icon = GROUP_ICONS[group.icon] ?? Briefcase;
             return (
-              <div key={group.name}>
-                <p className="flex items-center gap-3 pb-3 border-b border-foreground/10 font-medium">
-                  <Icon aria-hidden className="w-5 h-5 shrink-0" />
-                  {group.name}
-                </p>
-                <ul className="mt-3 flex flex-col">
-                  {group.links.map((link) => (
-                    <li key={link.href}>
-                      <MenuLink
-                        href={link.href}
-                        tabIndex={tab}
-                        className="block py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {link.name}
-                      </MenuLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div key={group.name}>
+              <p className="mb-2 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                {group.name}
+                <Icon aria-hidden strokeWidth={1.25} className="w-[18px] h-[18px] opacity-70" />
+              </p>
+              <ul>
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <MenuLink
+                      href={link.href}
+                      tabIndex={tab}
+                      className="group/link flex items-center gap-1.5 py-1 text-[15px] tracking-[-0.01em] transition-colors hover:text-primary"
+                    >
+                      {link.name}
+                      <ArrowRight
+                        aria-hidden
+                        className="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1.5 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-0"
+                      />
+                    </MenuLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
             );
           })}
         </div>
-      ))}
 
-      {promo && (
-        <div className="self-start border border-foreground/10 rounded-xl p-7 flex flex-col">
-          <Asterisk aria-hidden className="w-10 h-10" strokeWidth={2.5} />
-          <p className="mt-6 text-2xl font-display tracking-tight leading-tight">{promo.title}</p>
-          <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{promo.text}</p>
-          <Button asChild className="mt-6 self-start bg-primary hover:bg-primary-hover text-primary-foreground rounded-lg px-5">
-            <MenuLink href={promo.cta.href} tabIndex={tab}>
-              {promo.cta.name}
-            </MenuLink>
+        {strip && strip.length > 0 && (
+          <div
+            className="mt-auto grid border-t border-foreground/10"
+            style={{ gridTemplateColumns: `repeat(${strip.length}, minmax(0, 1fr))` }}
+          >
+            {strip.map((item) => {
+              const cell =
+                "flex items-center gap-3 px-9 py-4 text-left border-r border-foreground/10 last:border-r-0 transition-colors hover:bg-foreground/[0.03]";
+              const body = (
+                <>
+                  <span className="grid place-items-center w-9 h-9 shrink-0 rounded-full bg-primary/10 text-primary [&_svg]:w-4 [&_svg]:h-4">
+                    {item.icon === "whatsapp" ? (
+                      <WhatsappIcon />
+                    ) : item.icon === "quote" ? (
+                      <FileText aria-hidden />
+                    ) : (
+                      <LayoutGrid aria-hidden />
+                    )}
+                  </span>
+                  <span>
+                    <span className="block text-sm font-medium">{item.name}</span>
+                    <span className="block text-xs text-muted-foreground">{item.note}</span>
+                  </span>
+                </>
+              );
+              // "quote" opens the same assistant as every costed-plan button.
+              return item.href === "quote" ? (
+                <QuoteLauncher key={item.name} placement="header" tabIndex={tab} className={cell}>
+                  {body}
+                </QuoteLauncher>
+              ) : (
+                <MenuLink
+                  key={item.name}
+                  href={item.href === "whatsapp" ? whatsappContact.href : item.href}
+                  tabIndex={tab}
+                  className={cell}
+                >
+                  {body}
+                </MenuLink>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {feature && (
+        /*
+          Fixed colours in both themes, from app/brand.css: the card is its own
+          blue object, and white on #0040cc is well past AA (8.06:1).
+        */
+        <div
+          className="m-3 rounded-xl p-6 flex flex-col text-white"
+          style={{ background: "var(--feature-card)" }}
+        >
+          <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-white/80">
+            {feature.eyebrow}
+          </span>
+          <p className="mt-3 text-2xl font-display tracking-tight leading-[1.1]">{feature.title}</p>
+          <p className="mt-2 text-sm text-white/90 leading-relaxed">{feature.text}</p>
+          <div className="mt-auto pt-5 grid grid-cols-2 gap-3 border-t border-white/20">
+            {feature.stats.map((stat) => (
+              <span key={stat.label}>
+                <span className="block text-2xl font-display">{stat.value}</span>
+                <span className="block text-xs text-white/80">{stat.label}</span>
+              </span>
+            ))}
+          </div>
+          <Button
+            asChild
+            size="sm"
+            className="mt-5 self-start rounded-lg bg-white px-4 text-[color:var(--feature-card-ink)] hover:bg-white/90"
+          >
+            <QuoteLauncher placement="header" tabIndex={tab}>
+              {feature.cta}
+              <ArrowRight aria-hidden />
+            </QuoteLauncher>
           </Button>
         </div>
       )}
@@ -874,7 +961,7 @@ function MegaPanel({
       */}
       <div className="bg-background border border-foreground/10 rounded-2xl shadow-lg overflow-hidden">
         {panel.columns ? (
-          <ColumnsPanel columns={panel.columns} promo={panel.promo} open={open} />
+          <ColumnsPanel columns={panel.columns} feature={panel.feature} strip={panel.strip} open={open} />
         ) : tiered ? (
           <div className="grid grid-cols-[minmax(240px,300px)_1fr]">
             {/* The rail. One row per silo, each a link to the silo page. */}

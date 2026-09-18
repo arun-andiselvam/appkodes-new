@@ -211,8 +211,10 @@ export const mainNav: NavItem[] = [
        * of the panel's own contents, which is a different job.
        */
       /*
-       * The dropdown, laid out as appkodes.com's Services menu on 18 September
-       * 2026: six groups in three columns, with a "start a business" card.
+       * The dropdown, 18 September 2026: appkodes.com's six Services groups as
+       * an editorial list, a next-steps strip, and a "live in 30 days" card.
+       * The strip's "whatsapp" href is resolved to whatsappContact.href by the
+       * navigation, so the number lives in one place.
        * Its "AI for your business" menu is left out: Appkodes carries no AI.
        *
        * !! THESE LINKS POINT AT appkodes.com FOR NOW !!
@@ -228,69 +230,79 @@ export const mainNav: NavItem[] = [
             name: "Services",
             icon: "services",
             links: [
-              { name: "SaaS Development", href: "https://appkodes.com/saas-development-company/" },
-              { name: "Startup App Development", href: "https://appkodes.com/startup-mobile-app-development/" },
-              { name: "IoT App Development", href: "https://appkodes.com/iot-app-development/" },
-              { name: "MVP Software Development", href: "https://appkodes.com/mvp-software-development/" },
+              { name: "SaaS", href: "https://appkodes.com/saas-development-company/" },
+              { name: "Startup", href: "https://appkodes.com/startup-mobile-app-development/" },
+              { name: "IoT", href: "https://appkodes.com/iot-app-development/" },
+              { name: "MVP Software", href: "https://appkodes.com/mvp-software-development/" },
             ],
           },
           {
-            name: "On Demand Industry",
+            name: "On Demand",
             icon: "onDemand",
             links: [
-              { name: "Hyperlocal App Development", href: "https://appkodes.com/hyperlocal-app-development/" },
-              { name: "Taxi Booking App Development", href: "https://appkodes.com/taxi-booking-app-development-company/" },
-              { name: "Parking Finder App Development", href: "https://appkodes.com/parking-finder-app-development/" },
+              { name: "Hyperlocal", href: "https://appkodes.com/hyperlocal-app-development/" },
+              { name: "Taxi Booking", href: "https://appkodes.com/taxi-booking-app-development-company/" },
+              { name: "Parking Finder", href: "https://appkodes.com/parking-finder-app-development/" },
             ],
           },
         ],
         [
           {
-            name: "Entertainment Industry",
+            name: "Entertainment",
             icon: "entertainment",
             links: [
-              { name: "Social Media App Development", href: "https://appkodes.com/social-media-app-development/" },
-              { name: "Live Streaming App Development", href: "https://appkodes.com/live-streaming-app-development/" },
-              { name: "Short Video App Development", href: "https://appkodes.com/short-video-app-development/" },
+              { name: "Social Media", href: "https://appkodes.com/social-media-app-development/" },
+              { name: "Live Streaming", href: "https://appkodes.com/live-streaming-app-development/" },
+              { name: "Short Video", href: "https://appkodes.com/short-video-app-development/" },
             ],
           },
           {
-            name: "Delivery Industry",
+            name: "Delivery",
             icon: "delivery",
             links: [
-              { name: "Food Delivery App Development", href: "https://appkodes.com/food-delivery-app-development-company/" },
-              { name: "Grocery Delivery App Development", href: "https://appkodes.com/grocery-delivery-app-development-company/" },
-              { name: "Pharmacy Delivery App Development", href: "https://appkodes.com/pharmacy-delivery-app-development-company/" },
-              { name: "Medicine Delivery App Development", href: "https://appkodes.com/medicine-delivery-app-development-company/" },
+              { name: "Food Delivery", href: "https://appkodes.com/food-delivery-app-development-company/" },
+              { name: "Grocery Delivery", href: "https://appkodes.com/grocery-delivery-app-development-company/" },
+              { name: "Pharmacy Delivery", href: "https://appkodes.com/pharmacy-delivery-app-development-company/" },
+              { name: "Medicine Delivery", href: "https://appkodes.com/medicine-delivery-app-development-company/" },
             ],
           },
         ],
         [
           {
-            name: "Buy and Sell Industry",
+            name: "Buy and Sell",
             icon: "buySell",
             links: [
-              { name: "Ecommerce App Development", href: "https://appkodes.com/ecommerce-app-development-services/" },
-              { name: "Real Estate App Development", href: "https://appkodes.com/real-estate-app-development/" },
+              { name: "Ecommerce", href: "https://appkodes.com/ecommerce-app-development-services/" },
+              { name: "Real Estate", href: "https://appkodes.com/real-estate-app-development/" },
               { name: "Mobile App for Shopify Store", href: "https://appkodes.com/mobile-app-for-shopify-store/" },
             ],
           },
           {
-            name: "Healthcare Industry",
+            name: "Healthcare",
             icon: "healthcare",
             links: [
-              { name: "Healthcare App Development", href: "https://appkodes.com/healthcare-app-development-company/" },
-              { name: "Mental Health App Development", href: "https://appkodes.com/mental-health-app-development-company/" },
+              { name: "Healthcare", href: "https://appkodes.com/healthcare-app-development-company/" },
+              { name: "Mental Health", href: "https://appkodes.com/mental-health-app-development-company/" },
               { name: "ABDM Integrated Digital Solution", href: "https://appkodes.com/abdm-integrated-digital-solutions/" },
             ],
           },
         ],
       ],
-      promo: {
-        title: "Looking to start a business?",
-        text: "Tell us what you want to build, and we will send back a free costed plan.",
-        cta: { name: "Let's talk", href: "/contact" },
+      feature: {
+        eyebrow: "Start here",
+        title: "Your app, live in 30 days.",
+        text: "A fixed price and a fixed launch date, agreed before we start.",
+        stats: [
+          { value: "1000+", label: "businesses served" },
+          { value: "18 yrs", label: "shipping apps" },
+        ],
+        cta: "Get a free costed plan",
       },
+      strip: [
+        { name: "Get Free Quote", note: "Price and launch date first", href: "quote", icon: "quote" },
+        { name: "WhatsApp us", note: "Talk to the team today", href: "whatsapp", icon: "whatsapp" },
+        { name: "See case studies", note: "Apps we have shipped", href: "/resources/case-studies", icon: "cases" },
+      ],
     },
   },
   {

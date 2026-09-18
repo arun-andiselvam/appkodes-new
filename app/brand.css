@@ -115,6 +115,14 @@
   --chart-3: var(--brand-cyan);
   --chart-4: var(--brand-red);
   --chart-5: var(--brand-success);
+  /*
+   * The Services menu's "live in 30 days" card. Its own blue object, the same
+   * in both themes and never redefined under .dark. White text on the #0040cc
+   * base is 8.06:1; the button text uses --feature-card-ink on white.
+   */
+  --feature-card: radial-gradient(120% 90% at 100% 0%, #3d7bff 0%, transparent 60%),
+    radial-gradient(90% 70% at 0% 100%, #38bdf8 0%, transparent 55%), #0040cc;
+  --feature-card-ink: #0040cc;
   /* Cursor spotlight in the CTA section. */
   --spotlight: rgb(var(--brand-blue-rgb) / 0.12);
   /* Home hero starfield (components/backgrounds/starfield.tsx). */

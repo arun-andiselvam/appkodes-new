@@ -220,12 +220,21 @@ export type NavGroup = {
  * behind it in this repository, which the rule above otherwise requires.
  */
 /**
- * appkodes.com's mega-menu layout: groups of links under an icon and a rule,
- * stacked in columns, with a promo card on the right. Added 18 September 2026
- * for the Services menu. `icon` is a key the navigation maps to a glyph.
+ * The Services mega menu, 18 September 2026: an editorial list of link groups
+ * (a small label and count over short, quiet links), a strip of next steps
+ * under them, and a brand-blue feature card on the right.
  */
+/** `icon` is a key the navigation maps to a thin-line glyph beside the label. */
 export type NavColumnGroup = { name: string; icon: string; links: NavLink[] };
-export type NavPromo = { title: string; text: string; cta: NavLink };
+export type NavFeature = {
+  eyebrow: string;
+  title: string;
+  text: string;
+  stats: { value: string; label: string }[];
+  cta: string;
+};
+/** href "quote" opens the quote assistant; "whatsapp" resolves to whatsappContact. */
+export type NavStripLink = NavLink & { note: string; icon: "quote" | "whatsapp" | "cases" };
 
 export type NavItem = {
   name: string;
@@ -239,7 +248,8 @@ export type NavItem = {
      * breadcrumbs and the 404 finder, which is why it is not replaced.
      */
     columns?: NavColumnGroup[][];
-    promo?: NavPromo;
+    feature?: NavFeature;
+    strip?: NavStripLink[];
     /**
      * The strip along the bottom of the panel.
      *
