@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { FadeImage } from "@/components/primitives/fade-image";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
@@ -284,12 +284,14 @@ export function PostCard({ post }: { post: Post }) {
             container is px-6, so the card is the viewport less 3rem.
           */
           <span className="relative block aspect-[16/9] w-full overflow-hidden rounded-[12px] sm:aspect-[4/3]">
-            <Image
+            {/* FadeImage for the per-card shimmer and the fade on arrival. It
+                owns the transition, so only the hover transform is passed. */}
+            <FadeImage
               src={post.image}
               alt={post.title}
               fill
               sizes="(min-width: 640px) 10rem, calc(100vw - 3rem)"
-              className="object-cover transition-transform duration-500 group-hover/post:scale-[1.04]"
+              className="object-cover group-hover/post:scale-[1.04]"
             />
             <span
               aria-hidden

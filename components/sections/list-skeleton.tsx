@@ -42,7 +42,9 @@ export function ListSkeleton() {
                   key={i}
                   className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,10rem)_1fr] sm:items-start sm:gap-5"
                 >
-                  <div className="aspect-[3/2] w-full rounded-[12px] bg-foreground/[0.06]" />
+                  {/* Same ratios as PostCard's thumbnail: 16:9 stacked on a
+                      phone, 4:3 beside the text from sm up. */}
+                  <div className="aspect-[16/9] w-full rounded-[12px] bg-foreground/[0.06] sm:aspect-[4/3]" />
                   <div>
                     <div className="h-5 w-full rounded bg-foreground/[0.06]" />
                     <div className="mt-3 h-5 w-3/4 rounded bg-foreground/[0.06]" />
