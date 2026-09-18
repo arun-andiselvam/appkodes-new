@@ -236,10 +236,20 @@ export type NavFeature = {
 /** href "quote" opens the quote assistant; "whatsapp" resolves to whatsappContact. */
 export type NavStripLink = NavLink & { note: string; icon: "quote" | "whatsapp" | "cases" };
 
+/** A plain call-to-action card on the right of a menu panel. */
+export type NavCallout = { eyebrow: string; title: string; text: string; cta: NavLink };
+
+/** One ready-made product in the Solutions menu, shown as a solution type. */
+export type NavSolution = NavLink & { note: string; icon: string };
+
 export type NavItem = {
   name: string;
   href: string;
   external?: true;
+  /** Kept for the sitemap, breadcrumbs and llms.txt, but not drawn in the menu. */
+  menuHidden?: true;
+  /** Drawn in the menu only: allNavPages and the 404 finder skip it. */
+  menuOnly?: true;
   panel?: {
     groups: NavGroup[];
     /**
@@ -248,6 +258,10 @@ export type NavItem = {
      * breadcrumbs and the 404 finder, which is why it is not replaced.
      */
     columns?: NavColumnGroup[][];
+    /** When present, the panel draws these as a three-column list instead. */
+    solutions?: NavSolution[];
+    /** The card beside the solutions list. */
+    callout?: NavCallout;
     feature?: NavFeature;
     strip?: NavStripLink[];
     /**

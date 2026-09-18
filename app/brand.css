@@ -125,6 +125,15 @@
   --feature-card-ink: #0040cc;
   /* Cursor spotlight in the CTA section. */
   --spotlight: rgb(var(--brand-blue-rgb) / 0.12);
+  /*
+   * Header dropdown panels. White in light mode with the standard line and
+   * shadow; see .dark for the navy. --menu-muted replaces --muted-foreground
+   * inside the panel.
+   */
+  --menu-surface: var(--canvas);
+  --menu-muted: var(--slate-600);
+  --menu-border: var(--line);
+  --menu-shadow: 0 10px 15px -3px rgb(11 15 23 / 0.1), 0 4px 6px -4px rgb(11 15 23 / 0.1);
   /* Home hero starfield (components/backgrounds/starfield.tsx). */
   --starfield-star: var(--brand-blue);
   --starfield-opacity: 0.35; /* multiplies each star's own 0.5-1 brightness */
@@ -198,6 +207,17 @@
   --chart-4: var(--brand-red);
   --chart-5: var(--brand-success);
   --spotlight: rgb(var(--brand-blue-rgb) / 0.12);
+  /*
+   * A deep navy rather than a lifter grey, chosen by the client on 18 September
+   * 2026 after the slate panels (#1E293B, then #2D3D58) read as washed out.
+   * Taken a step darker, to #10172A, and the blue glow dropped the same day at
+   * the client's request: it separates from the page by its brighter edge and
+   * a plain shadow. Every text colour on it is AA with more room than before.
+   */
+  --menu-surface: #10172a;
+  --menu-muted: var(--slate-400);
+  --menu-border: var(--slate-700);
+  --menu-shadow: 0 24px 48px -16px rgb(0 0 0 / 0.6);
   --starfield-star: #f8fafc;
   --starfield-opacity: 0.45;
   --arcfield-line: rgb(148 163 184 / 0.17);

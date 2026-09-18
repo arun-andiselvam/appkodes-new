@@ -7,6 +7,9 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Menu, X, ChevronDown, ArrowRight, LayoutGrid, FileText,
   Briefcase, MapPinned, Clapperboard, Truck, ShoppingBag, Stethoscope,
+  ArrowLeftRight, Video, Heart, Camera, House, Radio, Car, Gavel, Coffee,
+  ShoppingCart, Users, CalendarCheck, Tv, Wrench, MessageSquare,
+  BookOpen, Wallet, Rocket, Palette, Store, Bike, Smartphone, Layers,
   type LucideIcon,
 } from "lucide-react";
 import { QuoteLauncher } from "@/components/quote/launcher";
@@ -15,7 +18,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { actions, site, whatsappContact } from "@/content/site";
 import { mainNav } from "@/content/navigation";
-import type { NavColumnGroup, NavFeature, NavItem, NavStripLink } from "@/content/types";
+import type { NavCallout, NavColumnGroup, NavFeature, NavItem, NavSolution, NavStripLink } from "@/content/types";
 
 /**
  * Is this menu item the branch of the site the visitor is standing in?
@@ -34,6 +37,9 @@ function panelKey(base: string, name: string) {
 function isCurrentBranch(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
+
+/** The menu leaves out items kept only for the sitemap and breadcrumbs. */
+const menuItems = mainNav.filter((item) => !item.menuHidden);
 
 /*
  * WhatsApp's own mark for the header button, in currentColor so it matches
@@ -333,7 +339,7 @@ export function Navigation() {
             at 768, so the breakpoint moved up and the gap came down from 12.
           */}
           <div className="hidden lg:flex items-center gap-8">
-            {mainNav.map((item) => {
+            {menuItems.map((item) => {
               const active = isCurrentBranch(pathname, item.href);
               const open = openPanel === item.name;
               return (
@@ -491,7 +497,7 @@ export function Navigation() {
             instead of the middle so an expanded section has room to grow.
           */}
           <div className="flex-1 flex flex-col gap-1">
-            {mainNav.map((item, i) => {
+            {menuItems.map((item, i) => {
               const active = isCurrentBranch(pathname, item.href);
               const expanded = openSection === item.name;
               return (
@@ -564,7 +570,23 @@ export function Navigation() {
                       ))}
                     </div>
                   )}
-                  {item.panel && !item.panel.columns && expanded && (
+                  {item.panel?.solutions && expanded && (
+                    <ul className="pb-5 flex flex-col gap-3">
+                      {item.panel.solutions.map((solution) => (
+                        <li key={solution.name}>
+                          <MenuLink
+                            href={solution.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block"
+                          >
+                            <span className="block text-base font-medium text-foreground">{solution.name}</span>
+                            <span className="block text-sm text-muted-foreground">{solution.note}</span>
+                          </MenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {item.panel && !item.panel.columns && !item.panel.solutions && expanded && (
                     <div className="pb-5 flex flex-col gap-4">
                       {item.panel.groups.map((group) => (
                         <div key={group.href}>
@@ -684,6 +706,121 @@ function MenuLink({
     <Link href={href} className={className} tabIndex={tabIndex} onClick={onClick}>
       {children}
     </Link>
+  );
+}
+
+/*
+ * Thin-line glyphs for the Solutions menu, keyed from content/navigation.ts.
+ */
+const SOLUTION_ICONS: Record<string, LucideIcon> = {
+  arrowLeftRight: ArrowLeftRight,
+  clapperboard: Clapperboard,
+  video: Video,
+  heart: Heart,
+  camera: Camera,
+  house: House,
+  radio: Radio,
+  stethoscope: Stethoscope,
+  car: Car,
+  gavel: Gavel,
+  coffee: Coffee,
+  shoppingCart: ShoppingCart,
+  users: Users,
+  calendarCheck: CalendarCheck,
+  tv: Tv,
+  wrench: Wrench,
+  messageSquare: MessageSquare,
+  truck: Truck,
+  // Resources menu categories.
+  bookOpen: BookOpen,
+  wallet: Wallet,
+  rocket: Rocket,
+  palette: Palette,
+  store: Store,
+  bike: Bike,
+  smartphone: Smartphone,
+  layers: Layers,
+};
+
+/**
+ * The Solutions menu, 18 September 2026: appkodes.com's eighteen ready-made
+ * apps as a three-column list, filled down each column in their order there.
+ * A thin-line icon, the solution's name, and a note naming the product it
+ * resembles, on hairline rows in the same quiet style as the Services list.
+ */
+function SolutionsPanel({
+  solutions,
+  callout,
+  open,
+}: {
+  solutions: NavSolution[];
+  callout?: NavCallout;
+  open: boolean;
+}) {
+  const tab = open ? undefined : -1;
+  const rows = Math.ceil(solutions.length / 3);
+  // The Resources categories share one placeholder href, so rows key on name.
+  return (
+    <div className="grid grid-cols-[1fr_292px]">
+    <ul
+      className="grid grid-cols-3 grid-flow-col gap-x-10 px-9 py-6 border-r border-foreground/10"
+      style={{ gridTemplateRows: `repeat(${rows}, auto)` }}
+    >
+      {solutions.map((solution) => {
+        const Icon = SOLUTION_ICONS[solution.icon] ?? Briefcase;
+        return (
+          <li key={solution.name}>
+            <MenuLink
+              href={solution.href}
+              tabIndex={tab}
+              className="group/sol flex items-center gap-3.5 py-3 transition-colors"
+            >
+              {/*
+                Hover: the icon turns blue, grows a little and tilts, on an
+                overshooting curve so it settles with a small spring. Transform
+                only, so it costs no layout. Off for reduced motion.
+              */}
+              <Icon
+                aria-hidden
+                strokeWidth={1.25}
+                className="w-6 h-6 shrink-0 text-muted-foreground transition-[color,transform] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/sol:text-primary motion-safe:group-hover/sol:scale-115 motion-safe:group-hover/sol:-rotate-8"
+              />
+              <span className="min-w-0">
+                <span className="block text-[15px] tracking-[-0.01em] transition-colors group-hover/sol:text-primary">
+                  {solution.name}
+                </span>
+                <span className="block text-xs text-muted-foreground truncate">{solution.note}</span>
+              </span>
+            </MenuLink>
+          </li>
+        );
+      })}
+    </ul>
+
+      {callout && (
+        /* The same blue card as the Services menu, a plain contact step. */
+        <div
+          className="m-3 rounded-xl p-6 flex flex-col text-white"
+          style={{ background: "var(--feature-card)" }}
+        >
+          <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-white/80">
+            {callout.eyebrow}
+          </span>
+          <p className="mt-3 text-2xl font-display tracking-tight leading-[1.1]">{callout.title}</p>
+          <p className="mt-2 text-sm text-white/90 leading-relaxed">{callout.text}</p>
+          <Button
+            asChild
+            size="sm"
+            className="mt-auto self-start rounded-lg bg-white px-4 text-[color:var(--feature-card-ink)] hover:bg-white/90"
+          >
+            <MenuLink href={callout.cta.href} tabIndex={tab}>
+              {callout.cta.name}
+              <ArrowRight aria-hidden />
+            </MenuLink>
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -959,8 +1096,25 @@ function MegaPanel({
         the hero watermark and headline sat visibly under the menu copy — and
         a blur cannot rescue text laid over moving artwork.
       */}
-      <div className="bg-background border border-foreground/10 rounded-2xl shadow-lg overflow-hidden">
-        {panel.columns ? (
+      {/*
+        The --menu-* tokens from app/brand.css: white with the usual line and
+        shadow in light mode, a deep navy with a brighter edge and a plain
+        shadow in dark, where the page's own obsidian left the panel melting into
+        the hero (18 September 2026). --muted-foreground is re-pointed at
+        --menu-muted inside the panel.
+      */}
+      <div
+        className="text-popover-foreground border rounded-2xl overflow-hidden"
+        style={{
+          background: "var(--menu-surface)",
+          borderColor: "var(--menu-border)",
+          boxShadow: "var(--menu-shadow)",
+          ["--muted-foreground" as string]: "var(--menu-muted)",
+        }}
+      >
+        {panel.solutions ? (
+          <SolutionsPanel solutions={panel.solutions} callout={panel.callout} open={open} />
+        ) : panel.columns ? (
           <ColumnsPanel columns={panel.columns} feature={panel.feature} strip={panel.strip} open={open} />
         ) : tiered ? (
           <div className="grid grid-cols-[minmax(240px,300px)_1fr]">

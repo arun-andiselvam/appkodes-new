@@ -307,6 +307,51 @@ export const mainNav: NavItem[] = [
   },
   {
     /*
+     * Added 18 September 2026 in the Industries slot, at the client's request:
+     * appkodes.com's Products menu, eighteen ready-made apps, presented as
+     * solutions rather than as clone scripts. Each is named for what it is
+     * ("Taxi Booking") with the product it resembles in the note ("like
+     * Uber"), which is how a buyer searches for it.
+     *
+     * menuOnly: the links point at the live pages on appkodes.com until these
+     * exist here, so nothing that builds the sitemap or the 404 finder reads
+     * this item.
+     */
+    name: "Solutions",
+    href: "https://appkodes.com/clone-scripts/",
+    menuOnly: true,
+    panel: {
+      groups: [],
+      solutions: [
+        { name: "Classifieds Marketplace", note: "Buy and sell app, like OLX", icon: "arrowLeftRight", href: "https://appkodes.com/olx-clone/" },
+        { name: "Short Video Classifieds", note: "Listings sold through short videos", icon: "clapperboard", href: "https://appkodes.com/short-video-classifieds/" },
+        { name: "Short Video Sharing", note: "Short video app, like TikTok", icon: "video", href: "https://appkodes.com/tiktok-clone/" },
+        { name: "Dating App", note: "Swipe and match, like Tinder", icon: "heart", href: "https://appkodes.com/tinder-clone/" },
+        { name: "Photo and Video Sharing", note: "Social feed, like Instagram", icon: "camera", href: "https://appkodes.com/instagram-clone/" },
+        { name: "Rental Marketplace", note: "Stays and rentals, like Airbnb", icon: "house", href: "https://appkodes.com/airbnb-clone/" },
+        { name: "Live Streaming", note: "Live video and gifting, like Bigo Live", icon: "radio", href: "https://appkodes.com/bigo-live-clone/" },
+        { name: "Doctor Appointments", note: "Booking and consults, like Practo", icon: "stethoscope", href: "https://appkodes.com/practo-clone/" },
+        { name: "Taxi Booking", note: "Ride hailing, like Uber", icon: "car", href: "https://appkodes.com/uber-clone/" },
+        { name: "Auction and Bidding", note: "Live auctions, like Tophatter", icon: "gavel", href: "https://appkodes.com/tophatter-clone/" },
+        { name: "Coffee Shop Ordering", note: "Order ahead for cafés", icon: "coffee", href: "https://appkodes.com/coffee-shop-app-script/" },
+        { name: "Multi-vendor Ecommerce", note: "Marketplace store, like Amazon", icon: "shoppingCart", href: "https://appkodes.com/amazon-clone/" },
+        { name: "Random Video Chat", note: "Meet new people on video, like Chatroulette", icon: "users", href: "https://appkodes.com/chatroulette-clone/" },
+        { name: "Table Booking", note: "Restaurant reservations, like OpenTable", icon: "calendarCheck", href: "https://appkodes.com/opentable-clone/" },
+        { name: "OTT Streaming", note: "Movies and series, like Netflix", icon: "tv", href: "https://appkodes.com/netflix-clone/" },
+        { name: "On-demand Services", note: "Home services, like Urban Company", icon: "wrench", href: "https://appkodes.com/urbanclap-clone/" },
+        { name: "Chat Messenger", note: "Private messaging, like WhatsApp", icon: "messageSquare", href: "https://appkodes.com/whatsapp-clone-script/" },
+        { name: "Delivery Super App", note: "Food, grocery and parcels in one app", icon: "truck", href: "https://appkodes.com/doordash-clone/" },
+      ],
+      callout: {
+        eyebrow: "Something else?",
+        title: "Not finding what you need?",
+        text: "Most of the apps we build are custom. Tell us the idea, and a free costed plan comes back with a price and a date.",
+        cta: { name: "Contact us", href: "/contact" },
+      },
+    },
+  },
+  {
+    /*
      * Industries came out of the menu on 19 August 2026 because it pointed at
      * an anchor about models and tooling and there was no industries content
      * to route to. There is now. The rule that removed it is the same rule
@@ -316,6 +361,8 @@ export const mainNav: NavItem[] = [
      * than as a rail, three to a row. See components/layout/navigation.tsx.
      */
     name: "Industries",
+    // Out of the menu since 18 September 2026; Solutions took its slot.
+    menuHidden: true,
     href: "/industries",
     panel: {
       groups: [
@@ -397,12 +444,50 @@ export const mainNav: NavItem[] = [
   },
   {
     /*
+     * The Resources menu from 18 September 2026: nine blog categories for app
+     * development, in the Solutions layout. A presentation placeholder at the
+     * client's request: the categories are not in the CMS yet, so every one
+     * links to /blog. Case studies came out of this menu; they are linked from
+     * the hero, the Services menu and the closing panel.
+     *
+     * menuOnly, like Solutions. The original Resources item below stays for
+     * the sitemap and the /resources hub, hidden from the menu.
+     */
+    name: "Resources",
+    href: "/blog",
+    menuOnly: true,
+    panel: {
+      groups: [],
+      solutions: [
+        { name: "App Development Guides", note: "Planning, building and launching an app", icon: "bookOpen", href: "/blog" },
+        { name: "Cost and Pricing", note: "What apps cost, and where the money goes", icon: "wallet", href: "/blog" },
+        { name: "MVPs and Startups", note: "A first version that proves demand", icon: "rocket", href: "/blog" },
+        { name: "Design and UX", note: "Screens people understand on first open", icon: "palette", href: "/blog" },
+        { name: "Marketplaces and Classifieds", note: "Building and scaling buy and sell platforms", icon: "store", href: "/blog" },
+        { name: "On-demand and Delivery", note: "Taxi, food and delivery apps end to end", icon: "bike", href: "/blog" },
+        { name: "Streaming and Social", note: "Live video, short video and feeds at scale", icon: "radio", href: "/blog" },
+        { name: "App Store Launch", note: "Publishing, reviews and your first users", icon: "smartphone", href: "/blog" },
+        { name: "Tech Stack Choices", note: "Native, cross platform or web, and why", icon: "layers", href: "/blog" },
+      ],
+      callout: {
+        eyebrow: "From the blog",
+        title: "Notes from the build.",
+        text: "How we plan, price and ship apps, written up from real projects.",
+        cta: { name: "Read the blog", href: "/blog" },
+      },
+    },
+  },
+  {
+    /*
      * Case studies used to be a menu item of its own pointing at /results. It
      * is a resource, and the strategy files it as one, so it moved under here
      * on 20 August 2026 and the menu lost a slot. Both old URLs redirect; see
      * next.config.mjs.
      */
     name: "Resources",
+    // Hidden from the menu since 18 September 2026; the menu-only item above
+    // took its slot. Kept for the sitemap, breadcrumbs and the /resources hub.
+    menuHidden: true,
     href: "/resources",
     panel: {
       groups: [
@@ -459,14 +544,21 @@ export const mainNav: NavItem[] = [
    * instead of routing away from the marketing site. Added 24 August 2026 at
    * the client's request.
    */
-  { name: "Academy", href: "https://internship.hitasoft.com", external: true },
+  /*
+   * Was "Academy", linking to internship.hitasoft.com. Renamed "Store" on
+   * 18 September 2026; the store has no URL yet, so it points at /contact.
+   * menuOnly keeps a "Store" entry out of the 404 finder until it is real.
+   */
+  { name: "Store", href: "/contact", menuOnly: true },
   /*
    * Added 25 August 2026 at the client's request, alongside the page itself.
    * No panel: one page, not a silo, same as Contact below it. Placed after
    * Academy rather than inside Resources or Industries, because an open role
    * is neither reading material nor a sector this company sells into.
    */
-  { name: "Careers", href: "/careers" },
+  // Out of the menu since 18 September 2026 at the client's request; the
+  // /careers page stays, and so does its sitemap entry.
+  { name: "Careers", href: "/careers", menuHidden: true },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -522,6 +614,7 @@ export function allNavPages(): NavPage[] {
   ];
 
   for (const item of mainNav) {
+    if (item.menuOnly) continue;
     pages.push({
       name: item.name,
       href: item.href,
