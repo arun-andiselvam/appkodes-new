@@ -121,8 +121,22 @@ export async function Breadcrumbs({
           <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
             {trail.map((crumb, i) => {
               const last = i === trail.length - 1;
+              /*
+                !! AN ARTICLE'S OWN TITLE IS HIDDEN FROM SIGHT, NOT REMOVED !!
+
+                The client asked on 18 September 2026 for the post title off
+                the visible trail: it sits directly above the same words set as
+                the headline, and a long one wrapped to two lines on a phone.
+                sr-only rather than dropping it, so screen readers still hear
+                where they are, and the schema above still carries all of it.
+                Only a `leaf` is hidden; section pages end on their own name.
+              */
+              const hidden = last && Boolean(leaf);
               return (
-                <li key={crumb.href} className="flex items-center gap-2">
+                <li
+                  key={crumb.href}
+                  className={hidden ? "sr-only" : "flex items-center gap-2"}
+                >
                   {i > 0 && (
                     <ChevronRight
                       aria-hidden
