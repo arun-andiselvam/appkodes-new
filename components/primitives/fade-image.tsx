@@ -29,8 +29,22 @@ import { useEffect, useRef, useState } from "react";
  * transition-property, and whichever comes later in the stylesheet wins, so
  * the hover zoom the cards use would silently lose its easing. This sets both
  * properties at once instead; pass the hover transform itself as usual.
+ *
+ * !! fade={false} FOR AN LCP IMAGE, AND THE ARTICLE HERO IS ONE !!
+ *
+ * Chrome does not count an element at opacity 0 as painted, so fading the
+ * largest image in pushes Largest Contentful Paint back by the length of the
+ * fade. With `fade` off the shimmer still covers the frame until the picture
+ * arrives, but the picture itself is never hidden: it paints over the shimmer
+ * the moment it has pixels, and LCP lands exactly when it did before.
  */
-export function FadeImage({ className = "", onLoad, alt, ...props }: ImageProps) {
+export function FadeImage({
+  className = "",
+  onLoad,
+  alt,
+  fade = true,
+  ...props
+}: ImageProps & { fade?: boolean }) {
   const ref = useRef<HTMLImageElement>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -50,9 +64,13 @@ export function FadeImage({ className = "", onLoad, alt, ...props }: ImageProps)
           setLoaded(true);
           onLoad?.(event);
         }}
-        className={`${className} transition-[opacity,transform] duration-500 ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
+        className={
+          fade
+            ? `${className} transition-[opacity,transform] duration-500 ${
+                loaded ? "opacity-100" : "opacity-0"
+              }`
+            : className
+        }
       />
     </>
   );

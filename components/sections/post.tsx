@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { FadeImage } from "@/components/primitives/fade-image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Section } from "@/components/primitives/section";
@@ -429,8 +428,13 @@ function Hero({ post }: { post: Post }) {
             preload puts the link back and fetchPriority puts the image in
             front of the fonts. The article's own picture outranks the face it
             is captioned in.
+
+            FadeImage for the shimmer placeholder, asked for on 18 September
+            2026, with the fade off: this is the page's LCP element, and an
+            image faded in from opacity 0 does not count as painted until it
+            is visible. See the note in fade-image.tsx.
           */}
-          <Image
+          <FadeImage
             src={post.image}
             alt={post.imageAlt ?? ""}
             fill
@@ -438,6 +442,7 @@ function Hero({ post }: { post: Post }) {
             fetchPriority="high"
             sizes="(min-width: 1400px) 1320px, 100vw"
             className="object-cover"
+            fade={false}
           />
 
           {takeaways.length === 0 ? (
