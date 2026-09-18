@@ -204,6 +204,20 @@ export function Navigation() {
         blurred result on its own compositing layer, which is what stopped the
         bar blinking over the footer canvas and the marquees (3 September 2026).
       */}
+      {/*
+        The fade behind the transparent bar at the top of the page. Page colour
+        solid for the top 40% and clear by 144px, well past the bar's 80px, so
+        an animated hero backdrop (the signal traces) never runs behind the
+        menu text. Ending it at the bar's own edge let a trace just under the
+        labels read as an underline. Added 18 September 2026. Hands over to the
+        solid layer below once the page scrolls.
+      */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-background from-40% to-transparent transition-opacity duration-300 ${
+          solid ? "opacity-0" : "opacity-100"
+        }`}
+      />
       <div
         aria-hidden
         className={`pointer-events-none absolute inset-0 border-b border-foreground/10 bg-background/80 backdrop-blur-xl shadow-sm transition-opacity duration-300 ${

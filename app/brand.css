@@ -126,7 +126,8 @@
   /* Home hero signal traces (components/backgrounds/signal-traces.tsx). */
   --traces-grid: rgb(71 85 105 / 0.06);
   --traces-line: rgb(71 85 105 / 0.2);
-  --traces-signal: var(--brand-blue);
+  /* Electric blue at 45%: full strength read too loud on white (client, 18 September 2026). */
+  --traces-signal: rgb(0 82 255 / 0.45);
   /*
    * Emphasis panel (the inverted "process" section, and the footer): deep
    * obsidian in both themes. Defined explicitly rather than derived from
