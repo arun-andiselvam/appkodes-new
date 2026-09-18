@@ -7,41 +7,47 @@ import type { Step } from "./types";
  * which describes software the visitor would operate themselves. We are hired
  * to do the work, so the three steps are review, build and run.
  */
+/*
+ * Rewritten 18 September 2026 for Appkodes. appkodes.com lists nine steps
+ * (data gathering, UI/UX, prototype, development, QA, deployment, support,
+ * GTM, bootstrapping). They are grouped into the three phases this panel is
+ * built for, laid over the 30 days the hero promises.
+ */
 export const steps: Step[] = [
   {
     number: "I",
-    title: "We look at how you work today",
+    title: "We plan it with you",
     description:
-      "The first week changes nothing in your business. We watch the work your team does by hand, then put a cost against every step.",
-    duration: "Week 1 and 2",
-    panelLabel: "what we do",
-    output: `Two days sitting with your team
-Every manual step written down
-Hours and cost against each one
-Ranked by what pays back fastest`,
+      "We start with your goals and your users. You see and click through the screens before a single line of code is written.",
+    duration: "Week 1",
+    panelLabel: "what you get",
+    output: `Your goals and requirements written down
+Screens designed for your users
+A clickable prototype to try
+A fixed price and a launch date`,
   },
   {
     number: "II",
-    title: "You get a costed plan",
+    title: "We build and test it",
     description:
-      "At the end of week two you decide. It names what to automate first and what that saves every month, in numbers you recognise.",
-    duration: "End of week 2",
-    panelLabel: "what you get",
-    output: `What to automate first
-What the build costs
-What it saves every month
-What we leave alone`,
+      "Our developers build the app while testers check every screen. A new build lands on your phone every week, so launch day holds no surprises for anyone.",
+    duration: "Weeks 2 to 4",
+    panelLabel: "what we do",
+    output: `Native or cross platform, as agreed
+A test build on your phone every week
+Every screen tested before release
+Bugs fixed before your users find them`,
   },
   {
     number: "III",
-    title: "We build it and keep it running",
+    title: "We launch it and stay with you",
     description:
-      "Work starts once you approve the plan. We build into the systems you already run, or replace them where that turns out cheaper.",
-    duration: "From week 3",
+      "We publish the app to both stores and help you find the first people who will pay for it. After launch we keep it running and current.",
+    duration: "Day 30 onwards",
     panelLabel: "what happens next",
-    output: `Built into your current tools
-Your team shown how it works
-Monitored after go live
-Retrained when the numbers drift`,
+    output: `Published to the App Store and Google Play
+A launch plan for your first users
+Bug fixes and store updates
+A monthly report in plain words`,
   },
 ];

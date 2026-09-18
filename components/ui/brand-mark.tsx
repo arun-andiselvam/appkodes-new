@@ -7,6 +7,9 @@ import {
   // Plaid and Salesforce are not in simple-icons, so they fall back to a
   // monogram like OpenAI does.
   siQuickbooks, siXero, siMysql,
+  // Added 18 September 2026 for the home page's platforms and stack rows.
+  siSwift, siKotlin, siNextdotjs, siPwa, siAppstore, siGoogleplay, siNodedotjs, siMongodb, siFirebase,
+  siSocketdotio, siWebrtc, siRazorpay, siGooglecloud, siFigma, siGithub, siJira, siPostman, siGoogleanalytics,
 } from "simple-icons";
 
 /**
@@ -31,6 +34,24 @@ const BRAND_PATHS: Record<string, string> = Object.fromEntries(
     ["siCursor", siCursor], ["siGithubcopilot", siGithubcopilot], ["siV0", siV0],
     ["siVercel", siVercel], ["siGithubactions", siGithubactions], ["siSentry", siSentry],
     ["siQuickbooks", siQuickbooks], ["siXero", siXero], ["siMysql", siMysql],
+    ["siSwift", siSwift],
+    ["siKotlin", siKotlin],
+    ["siNextdotjs", siNextdotjs],
+    ["siPwa", siPwa],
+    ["siAppstore", siAppstore],
+    ["siGoogleplay", siGoogleplay],
+    ["siNodedotjs", siNodedotjs],
+    ["siMongodb", siMongodb],
+    ["siFirebase", siFirebase],
+    ["siSocketdotio", siSocketdotio],
+    ["siWebrtc", siWebrtc],
+    ["siRazorpay", siRazorpay],
+    ["siGooglecloud", siGooglecloud],
+    ["siFigma", siFigma],
+    ["siGithub", siGithub],
+    ["siJira", siJira],
+    ["siPostman", siPostman],
+    ["siGoogleanalytics", siGoogleanalytics],
   ].map(([key, icon]) => [key as string, (icon as { path: string }).path]),
 );
 

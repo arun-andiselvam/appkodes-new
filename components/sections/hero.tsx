@@ -6,7 +6,7 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { Starfield } from "@/components/backgrounds/starfield";
+import { SignalTraces } from "@/components/backgrounds/signal-traces";
 import { actions, heroWords as words, heroStats, heroCopy, site } from "@/content/site";
 import { QuoteLauncher } from "@/components/quote/launcher";
 import { Section } from "@/components/primitives/section";
@@ -45,7 +45,7 @@ export function HeroSection() {
       spacing="none"
       className="min-h-screen flex flex-col justify-center overflow-hidden"
     >
-      <Starfield />
+      <SignalTraces />
 
       <Container className="relative z-10 pt-24 pb-40 lg:pt-28 lg:pb-56">
         {/* Eyebrow */}
@@ -83,8 +83,9 @@ export function HeroSection() {
         */}
         <div className="mb-12">
           <h1 className="text-[clamp(2.5rem,9vw,7rem)] font-display leading-[0.9] tracking-tight">
-            <span className="block">{heroCopy.headline}</span>
+            {/* "Your {word}," over "live in 30 days." */}
             <span className="block">
+              {heroCopy.headlinePrefix}{" "}
               <span className="relative inline-block">
                 <span 
                   key={wordIndex}
@@ -104,7 +105,9 @@ export function HeroSection() {
                 </span>
                 <span className="absolute -bottom-2 left-0 right-0 h-3 bg-foreground/10" />
               </span>
+              ,
             </span>
+            <span className="block">{heroCopy.headline}</span>
           </h1>
         </div>
         
@@ -150,6 +153,14 @@ export function HeroSection() {
             >
               <Link href={actions.caseStudies}>{heroCopy.secondaryCta}</Link>
             </Button>
+            <a
+              href={heroCopy.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="self-center text-sm text-muted-foreground underline underline-offset-4 decoration-foreground/20 transition-colors hover:text-foreground hover:decoration-foreground sm:basis-full"
+            >
+              {heroCopy.whatsappLabel}
+            </a>
           </div>
         </div>
         

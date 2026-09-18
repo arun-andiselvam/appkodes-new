@@ -105,18 +105,28 @@ export const actions = {
   caseStudies: "/resources/case-studies",
 } as const;
 
+/*
+ * The rotating noun in "Your ___, live in 30 days." Changed 18 September 2026
+ * from the industry list that rotated after "AI automation for". Appkodes
+ * carries no AI messaging (Hitasoft.com owns that), and the 30 day promise is
+ * appkodes.com's own hook. Every item here has to be something that can ship
+ * in 30 days, because the headline promises it for each one.
+ */
 export const heroWords: string[] = [
-  "healthcare",
-  "finance",
-  "retail",
-  "logistics",
-  "media",
-  "your business",
+  "mobile app",
+  "web app",
+  "MVP",
+  "marketplace",
 ];
 
 export const heroCopy = {
-  headline: "AI automation for",
-  headlinePrefix: "",
+  /*
+   * Read as one sentence: headlinePrefix, the rotating word and a comma on
+   * the first line, then headline on the second. It was "AI automation for" over the
+   * rotating industry until 18 September 2026.
+   */
+  headline: "live in 30 days.",
+  headlinePrefix: "Your",
   /*
    * Changed on 20 August 2026.
    *
@@ -139,8 +149,13 @@ export const heroCopy = {
    * general, which is what this page is selling, and it is the fear a buyer
    * arrives with rather than one they develop later.
    */
+  /*
+   * 18 September 2026: leads on the buyer's first fear, cost and time that
+   * run away, and answers it with the two fixed terms. The AI version it
+   * replaced led on dead proofs of concept, which is Hitasoft's argument now.
+   */
   description:
-    "Most AI projects never get past a demo. We build the ones that end up in daily use, which is a different job from building something impressive.",
+    "Most software projects run late and over budget. Ours ship on a fixed price and a fixed date. You get an app your team can run and grow.",
   /*
    * Changed 25 August 2026, from "Book an automation review". The offer was
    * always free — docs/positioning.md had it flagged as an open decision
@@ -155,8 +170,22 @@ export const heroCopy = {
    * offer actually is. Every one of these still opens the same assistant — the
    * button says what you get, not which widget appears.
    */
-  primaryCta: "Book a free automation audit",
+  /*
+   * 18 September 2026: "Get a free costed plan". An automation audit means
+   * nothing to a founder with no systems yet, and a costed plan is what the
+   * first step actually hands over. Still free, still said on the button.
+   */
+  primaryCta: "Get a free costed plan",
   secondaryCta: "See case studies",
+  /*
+   * WhatsApp link under the buttons. appkodes.com's hero ran its only CTA
+   * through WhatsApp ("Ask Me How?"), the channel its India and Gulf buyers
+   * already use, to the same number.
+   */
+  whatsappLabel: "Or message us on WhatsApp",
+  whatsapp: `https://wa.me/917708004693?text=${encodeURIComponent(
+    "Hi, I came from appkodes.com and I would like to get my app live in 30 days.",
+  )}`,
 } as const;
 
 /**
@@ -234,12 +263,15 @@ export const industries: string[] = [
  */
 export const ctaCopy = {
   eyebrow: "Next step",
-  headline: "Let AI do the repetitive",
-  headlineAccent: " half of the job.",
+  /*
+   * 18 September 2026: closes on the hero's promise instead of AI. The same
+   * free costed plan as the hero button, named as what the visitor receives.
+   */
+  headline: "Your app could be live",
+  headlineAccent: " next month.",
   description:
-    "Data entry, answering the same tickets, chasing numbers between systems. We automate the parts that repeat. Your team keeps the parts that need judgement.",
-  // See the note on heroCopy.primaryCta above — same change, same reason.
-  primaryCta: "Book a free automation audit",
-  secondaryCta: "See how we work",
-  secondaryHref: "/how-we-work",
+    "Tell us about the app you want to build. We send back a costed plan with a fixed price and a launch date, free and yours to keep.",
+  primaryCta: "Get a free costed plan",
+  secondaryCta: "See case studies",
+  secondaryHref: "/resources/case-studies",
 } as const;

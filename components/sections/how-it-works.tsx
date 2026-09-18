@@ -64,9 +64,9 @@ export function HowItWorksSection() {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            We find the hours your team is losing.
+            Your idea on day one.
             <br />
-            <span className="text-emphasis-foreground/50">Then we give them back.</span>
+            <span className="text-emphasis-foreground/50">Your app in the stores by day thirty.</span>
           </SectionTitle>
         </div>
 

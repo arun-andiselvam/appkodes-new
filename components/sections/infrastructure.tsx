@@ -45,9 +45,9 @@ export function InfrastructureSection() {
               Track record
             </Eyebrow>
             <SectionTitle className="mb-8">
-              AI is new.
+              Apps are all we do.
               <br />
-              Shipping software is not.
+              We have done it for 18 years.
             </SectionTitle>
             {/*
               "built by five offices across Asia and the Middle East" stood
@@ -58,9 +58,8 @@ export function InfrastructureSection() {
               the team has met them.
             */}
             <p className="text-xl text-muted-foreground leading-relaxed mb-12">
-              This is not our first change of technology. Our software runs in
-              more than 50 countries, for clients across Asia and the Middle
-              East. The people who shipped that work will build yours.
+              Our apps run in more than 50 countries, for clients across Asia and the
+              Middle East. The people who shipped that work will build yours.
             </p>
 
             {/* Stats */}

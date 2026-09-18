@@ -2,16 +2,18 @@ import dynamic from "next/dynamic";
 import { pageMetadata } from "@/lib/seo";
 import { site } from "@/content/site";
 import { HeroSection } from "@/components/sections/hero";
-import { FeaturesSection } from "@/components/sections/features";
-import { HowItWorksSection } from "@/components/sections/how-it-works";
 import { InfrastructureSection } from "@/components/sections/infrastructure";
-import { MetricsSection } from "@/components/sections/metrics";
-import { IntegrationsSection } from "@/components/sections/integrations";
-import { SecuritySection } from "@/components/sections/security";
-import { AudiencesSection } from "@/components/sections/audiences";
-import { RecognitionSection } from "@/components/sections/recognition";
+import { ClientLogosSection } from "@/components/sections/client-logos";
+import { PartnershipModelsSection } from "@/components/sections/partnership-models";
+import { FeaturesSection } from "@/components/sections/features";
 import { DeliveryReachSection } from "@/components/sections/delivery-reach";
 import { MeetingsSection } from "@/components/sections/meetings";
+import { HowItWorksSection } from "@/components/sections/how-it-works";
+import { IntegrationsSection } from "@/components/sections/integrations";
+import { IndustriesSection } from "@/components/sections/industries";
+import { RecognitionSection } from "@/components/sections/recognition";
+import { LatestPostsSection } from "@/components/sections/latest-posts";
+import { TeamSection } from "@/components/sections/team";
 import { CtaSection } from "@/components/sections/cta";
 
 /**
@@ -30,13 +32,12 @@ const TestimonialsSection = dynamic(() =>
 export const metadata = pageMetadata({
   // The one page that leads with the company name. See lib/seo.ts.
   absoluteTitle: true,
-  /* "AI Automation for Growing Businesses" until 2 September 2026. The title
-     tag is the narrowest statement of what this company sells anywhere on the
-     site and the first thing in a search result, and that one named only half
-     of it. 51 characters, inside the ~60 a SERP shows. */
-  title: `${site.name} - AI Automation and AI Product Development`,
+  /* 18 September 2026: app development, no AI. Appkodes is the legacy app
+     business and Hitasoft.com carries the AI work. The previous title was
+     "AI Automation and AI Product Development". */
+  title: `${site.name} - Mobile App and Web App Development`,
   description:
-    "We put AI into the systems you already run, or build the replacement, so your team spends less time on work software should be doing.",
+    "We build mobile apps, web apps and MVPs on a fixed price and a fixed launch date. 18 years and 1000+ businesses served.",
   path: "/",
 });
 
@@ -60,18 +61,27 @@ export const metadata = pageMetadata({
 export default function Home() {
   return (
     <main>
+      {/*
+        Rebuilt 18 September 2026 on appkodes.com's own section order: hero,
+        track record, clients, partnership models, what you get, globally
+        delivered, process, platforms, industries, then proof, writing, team
+        and the close. Results, Security and Audiences came off the page with
+        the AI messaging they carried.
+      */}
       <HeroSection />
-      <FeaturesSection />
-      <HowItWorksSection />
       <InfrastructureSection />
-      <MetricsSection />
-      <IntegrationsSection />
-      <SecuritySection />
-      <AudiencesSection />
-      <TestimonialsSection />
-      <RecognitionSection />
+      <ClientLogosSection />
+      <PartnershipModelsSection />
+      <FeaturesSection />
       <DeliveryReachSection />
       <MeetingsSection />
+      <HowItWorksSection />
+      <IntegrationsSection />
+      <IndustriesSection />
+      <TestimonialsSection showClients={false} />
+      <RecognitionSection />
+      <LatestPostsSection />
+      <TeamSection />
       <CtaSection />
     </main>
   );

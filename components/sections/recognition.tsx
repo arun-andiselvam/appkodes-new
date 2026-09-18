@@ -56,8 +56,8 @@ export function RecognitionSection() {
             */}
             <p className="text-xl text-muted-foreground leading-relaxed">
               These four came from industry directories that assess development firms.
-              They looked at delivered work rather than a pitch. All four cover the app
-              development side of the business rather than the automation work.
+              They looked at delivered work rather than a pitch, and all four are for the
+              app development this page is about.
             </p>
           </div>
 

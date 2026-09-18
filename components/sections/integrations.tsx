@@ -2,7 +2,7 @@
 
 import { useInView } from "@/hooks/use-in-view";
 import type { Integration } from "@/content/types";
-import { aiModels, techStack, buildTools } from "@/content/integrations";
+import { platforms, techStack, buildTools } from "@/content/integrations";
 import { Section } from "@/components/primitives/section";
 import { Container } from "@/components/primitives/container";
 import { Eyebrow } from "@/components/primitives/eyebrow";
@@ -82,9 +82,9 @@ export function IntegrationsSection() {
             What we build with
           </Eyebrow>
           <SectionTitle className="mb-6">
-            We pick the model
+            iOS, Android and web.
             <br />
-            that fits the job.
+            One team for all three.
           </SectionTitle>
           {/*
             The old line promised 200+ pre-built integrations and a stack
@@ -93,9 +93,9 @@ export function IntegrationsSection() {
             one answers the lock in fear from docs/positioning.md instead.
           */}
           <p className="text-xl text-muted-foreground">
-            Some jobs need the strongest model on the market. Most of them do not need it
-            at all. Paying a top rate for work a small model handles is how an automation
-            budget disappears. Whatever we build stays yours to take elsewhere.
+            Some apps need native code on each phone. Most can share one codebase and
+            launch on both stores the same week, which saves a second build. We tell you
+            which before the build starts, and the code stays yours to take elsewhere.
           </p>
         </div>
       </Container>
@@ -112,9 +112,9 @@ export function IntegrationsSection() {
         together.
       */}
       <div className="space-y-10">
-        <MarqueeRow label="Models we build on" items={aiModels} />
-        <MarqueeRow label="The stack around them" items={techStack} reverse />
-        <MarqueeRow label="How we build it" items={buildTools} />
+        <MarqueeRow label="Platforms we ship to" items={platforms} />
+        <MarqueeRow label="The stack behind them" items={techStack} reverse />
+        <MarqueeRow label="How we ship it" items={buildTools} />
       </div>
     </Section>
   );
