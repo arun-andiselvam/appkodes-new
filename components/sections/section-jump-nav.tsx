@@ -10,7 +10,7 @@ import { Container } from "@/components/primitives/container";
  * crossing a line a third of the way down the viewport is the active one.
  *
  * Two layouts, so the labels never wrap (client, 19 September 2026): a single
- * non-shrinking row from lg up, and below that a compact button naming the
+ * non-shrinking row from xl up, and below that a compact button naming the
  * current section that opens the full list. A thin line along the bottom
  * shows reading progress through the page.
  */
@@ -72,8 +72,8 @@ export function SectionJumpNav({ items }: { items: readonly (readonly [string, s
   return (
     <nav ref={navRef} aria-label="On this page" className="sticky top-0 z-30 border-y border-foreground/10 bg-background/85 backdrop-blur-md">
       <Container>
-        {/* lg and up: one row that never wraps. */}
-        <ul className="hidden lg:flex items-center gap-1 py-2.5 text-sm">
+        {/* xl and up: one row that never wraps. */}
+        <ul className="hidden xl:flex items-center gap-1 py-2.5 text-sm">
           {items.map(([id, label]) => {
             const current = id === active;
             return (
@@ -94,8 +94,8 @@ export function SectionJumpNav({ items }: { items: readonly (readonly [string, s
           })}
         </ul>
 
-        {/* Below lg: the current section, opening the full list. */}
-        <div className="lg:hidden relative">
+        {/* Below xl: the current section, opening the full list. */}
+        <div className="xl:hidden relative">
           <button
             type="button"
             aria-expanded={open}

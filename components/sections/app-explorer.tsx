@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import {
-  Smartphone, ChefHat, Bike, LayoutDashboard, Layers, Check, MapPin, Star, Monitor, Truck,
+  Smartphone, ChefHat, Bike, LayoutDashboard, Layers, Check, MapPin, Star, Monitor, Truck, Plus,
   type LucideIcon,
 } from "lucide-react";
 import type { AppServiceApp } from "@/content/app-services";
 
 const ICONS: Record<string, LucideIcon> = {
   smartphone: Smartphone, chefHat: ChefHat, bike: Bike, dashboard: LayoutDashboard,
-  monitor: Monitor, fleet: Truck,
+  monitor: Monitor, fleet: Truck, plus: Plus,
 };
 
 /**
@@ -24,7 +24,7 @@ export function AppExplorer({ apps }: { apps: AppServiceApp[] }) {
 
   return (
     <div className="grid lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] gap-6 lg:gap-10">
-      <div role="tablist" aria-label="The apps" className="flex lg:flex-col gap-2 overflow-x-auto -mx-4 px-4 lg:mx-0 lg:px-0 pb-1">
+      <div role="tablist" aria-label="The apps" className="flex lg:flex-col gap-2 overflow-x-auto -mx-4 px-4 lg:mx-0 lg:px-0 pb-1 lg:self-center">
         {apps.map((a, i) => {
           const Icon = ICONS[a.icon] ?? Layers;
           const selected = i === active;
@@ -37,7 +37,7 @@ export function AppExplorer({ apps }: { apps: AppServiceApp[] }) {
               aria-selected={selected}
               aria-controls={`app-panel-${i}`}
               onClick={() => setActive(i)}
-              className={`group shrink-0 text-left flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-colors ${
+              className={`group shrink-0 text-left flex items-center gap-3 rounded-xl border px-4 py-3.5 transition-colors ${a.device === "custom" ? "border-dashed" : ""} ${
                 selected
                   ? "border-primary/50 bg-primary/[0.07]"
                   : "border-foreground/10 hover:border-foreground/25 hover:bg-foreground/[0.03]"
@@ -46,12 +46,12 @@ export function AppExplorer({ apps }: { apps: AppServiceApp[] }) {
               <span className={`grid place-items-center shrink-0 w-9 h-9 rounded-lg transition-colors ${selected ? "bg-primary text-primary-foreground" : "bg-foreground/[0.06] text-muted-foreground group-hover:text-foreground"}`}>
                 <Icon aria-hidden strokeWidth={1.5} className="w-[18px] h-[18px]" />
               </span>
-              <span>
+              <span className="flex-1 min-w-0">
                 <span className="block text-sm font-medium whitespace-nowrap">{a.name}</span>
                 <span className="block text-xs text-muted-foreground whitespace-nowrap">{a.tagline}</span>
               </span>
-              <span aria-hidden className="ml-auto shrink-0 pl-2 hidden lg:block font-mono text-[11px] text-muted-foreground/60">
-                {String(i + 1).padStart(2, "0")}
+              <span aria-hidden className="shrink-0 w-5 text-right hidden lg:block font-mono text-[11px] text-muted-foreground/60">
+                {a.device === "custom" ? "+" : String(i + 1).padStart(2, "0")}
               </span>
             </button>
           );
@@ -66,7 +66,9 @@ export function AppExplorer({ apps }: { apps: AppServiceApp[] }) {
       >
         <div key={app.name} className="p-7 lg:p-10 animate-in fade-in duration-300">
           <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-primary">
-            App {String(active + 1).padStart(2, "0")} of {String(apps.length).padStart(2, "0")}
+            {app.device === "custom"
+              ? "Open slot · built to order"
+              : `App ${String(active + 1).padStart(2, "0")} of ${String(apps.filter((a) => a.device !== "custom").length).padStart(2, "0")}`}
           </p>
           <h3 className="mt-4 text-3xl lg:text-4xl font-display tracking-tight">{app.name}</h3>
           <p className="mt-4 max-w-xl text-muted-foreground leading-relaxed">{app.description}</p>
@@ -87,7 +89,7 @@ export function AppExplorer({ apps }: { apps: AppServiceApp[] }) {
         <div aria-hidden className="relative hidden md:grid place-items-center border-t xl:border-t-0 xl:border-l border-foreground/10 bg-muted/60 p-8 min-h-[30rem] overflow-hidden">
           <div className="absolute inset-0 signal-traces-grid opacity-60" />
           <div key={app.name} className="relative animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {app.device === "desktop" ? <DesktopMock kind={app.icon} /> : <PhoneMock kind={app.icon} />}
+            {app.device === "custom" ? <CustomMock /> : app.device === "desktop" ? <DesktopMock kind={app.icon} /> : <PhoneMock kind={app.icon} />}
           </div>
         </div>
       </div>
@@ -318,5 +320,34 @@ function FleetScreen() {
         ))}
       </div>
     </>
+  );
+}
+
+/** The open slot: a blank portal waiting for the client's idea. */
+function CustomMock() {
+  return (
+    <div className="w-[21rem] rounded-xl border-2 border-dashed border-primary/40 bg-background/70 shadow-2xl overflow-hidden text-[9px]">
+      <div className="flex gap-1.5 px-3 py-2 border-b border-dashed border-primary/30">
+        {[0, 1, 2].map((i) => <span key={i} className="w-2 h-2 rounded-full bg-foreground/15" />)}
+      </div>
+      <div className="p-4 space-y-3">
+        <div className="grid grid-cols-3 gap-2">
+          {[0, 1, 2].map((i) => <div key={i} className="h-12 rounded-md border border-dashed border-foreground/20" />)}
+        </div>
+        <div className="h-24 rounded-md border border-dashed border-foreground/20 grid place-items-center text-center">
+          <span className="flex flex-col items-center gap-1.5 text-primary">
+            <span className="grid place-items-center w-8 h-8 rounded-full bg-primary text-primary-foreground">
+              <Plus className="w-4 h-4" />
+            </span>
+            <span className="text-[11px] font-medium">Your idea here</span>
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {["Corporate orders", "Franchise", "Kitchen screen", "Support desk"].map((l) => (
+            <span key={l} className="rounded-full border border-dashed border-foreground/20 px-2 py-1 text-center text-muted-foreground">{l}</span>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

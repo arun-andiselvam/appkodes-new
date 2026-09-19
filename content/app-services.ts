@@ -27,8 +27,8 @@ export type AppServiceApp = {
   name: string;
   tagline: string;
   icon: string;
-  /** Drawn mock-up beside the app: a phone or a desktop dashboard. */
-  device: "phone" | "desktop";
+  /** Drawn mock-up beside the app: a phone, a desktop dashboard, or "custom" for the open slot. */
+  device: "phone" | "desktop" | "custom";
   description: string;
   features: { title: string; text: string }[];
 };
@@ -86,6 +86,34 @@ export type AppService = {
  * The fixed price and fixed date process, the same on every service page
  * (brief section 11: "the fixed-price, fixed-date process in 3-4 steps").
  */
+/**
+ * App store submission, the same on every service page (client, 19 September
+ * 2026): part of every build and included in the price. The store accounts
+ * and their fees are the client's; the accounts stay in their name. Fees are
+ * Apple's and Google's published rates as of September 2026.
+ */
+export const storeSubmission = {
+  eyebrow: "Store launch",
+  title: "We publish your apps. It is in the price.",
+  lede: "Every build ends with your apps live on the App Store and Google Play. Submission is part of the job, never an extra: we prepare everything, handle the review and fix whatever the stores ask for.",
+  included: [
+    { title: "Store listings", text: "Name, description, keywords, screenshots and preview images." },
+    { title: "Privacy and compliance", text: "Privacy details, data forms and content ratings each store requires." },
+    { title: "Signed release builds", text: "Built, signed and uploaded for iOS and Android." },
+    { title: "Review and approval", text: "We answer the reviewers and resubmit if anything is flagged." },
+    { title: "Updates after launch", text: "Every new version goes through the same process." },
+  ],
+  yours: {
+    title: "The one cost that is yours",
+    text: "Apple and Google charge for a developer account. It is opened in your company's name, so the apps and their listings always belong to you.",
+    fees: [
+      { store: "Apple App Store", icon: "siAppstore", fee: "US$99 a year", note: "Apple Developer Program" },
+      { store: "Google Play", icon: "siGoogleplay", fee: "US$25 once", note: "Google Play Console" },
+    ],
+    footnote: "Store fees are set by Apple and Google and may change.",
+  },
+};
+
 export const serviceProcess = {
   eyebrow: "How it works",
   title: "A price and a date you can plan around.",
@@ -123,14 +151,14 @@ export const appServices: AppService[] = [
     group: "Delivery",
     name: "Food Delivery App Development",
     metaDescription:
-      "Your own food delivery app for customers, restaurants and riders, on a fixed price and a fixed date. Most first releases go live in about 30 days.",
+      "Launch your own food delivery business: apps for customers, restaurants and riders, plus the portals to run it, on a fixed price and a fixed date. Most first releases go live in about 30 days.",
     hero: {
-      lede: "Your own ordering app for customers, restaurants and riders, designed and built new for your business, with the price and the launch date agreed before we start. We have built food delivery apps many times, so most first releases go live in about 30 days.",
+      lede: "Launch your own food delivery business, with apps for customers, restaurants and riders and the portals to run it, designed and built new for you, with the price and the launch date agreed before we start. We have built food delivery apps many times, so most first releases go live in about 30 days.",
       facts: [
-        { label: "Price", value: "Fixed before we start" },
-        { label: "Launch date", value: "Agreed in writing" },
+        { label: "Price", value: "Fixed upfront" },
+        { label: "Launch date", value: "In writing" },
         { label: "First release", value: "About 30 days" },
-        { label: "You get", value: "Six apps and portals, built new for you" },
+        { label: "You get", value: "6 apps and portals" },
       ],
     },
     story: {
@@ -153,22 +181,23 @@ export const appServices: AppService[] = [
       ],
     },
     whyOwn: {
-      title: "Your own app, not a listing on someone else's.",
-      lede: "Marketplace apps bring customers, but they keep the relationship and take a cut of every order. Your own app changes who holds both.",
+      title: "Launch the delivery app your city orders from.",
+      lede: "People in your city already order food on their phones. Your own delivery platform lets you run that business: the restaurants you sign up, the customers who order, and a fee on every order that goes through.",
       points: [
-        { title: "Keep the margin", text: "No marketplace commission on every order. You set the fees, and they are yours.", icon: "gift" },
-        { title: "Own the customer", text: "Names, orders and preferences stay with you, so you can bring people back.", icon: "heart" },
-        { title: "Your brand on the screen", text: "Customers open your app, see your menu and remember your name.", icon: "store" },
-        { title: "Your rules", text: "Delivery zones, fees, hours and promotions work the way you decide.", icon: "dashboard" },
+        { title: "Own the market", text: "Sign up local restaurants and become the name your city orders from.", icon: "store" },
+        { title: "Earn on every order", text: "Commission from restaurants, fees from customers, at rates you set.", icon: "gift" },
+        { title: "Own the data", text: "Every customer, order and restaurant sits in your system, not someone else's.", icon: "dashboard" },
+        { title: "Grow on your terms", text: "New zones, new cities, groceries or pharmacy next, when you are ready.", icon: "mapPin" },
       ],
       comparison: {
-        columns: ["Listing on a marketplace", "Your own app"],
+        columns: ["Hiring a team yourself", "Building with Appkodes"],
         rows: [
-          { label: "Commission", values: ["Taken on every order", "None. You set your own fees"] },
-          { label: "Customer data", values: ["Held by the marketplace", "Yours, in your own system"] },
-          { label: "Brand", values: ["Their app, their name", "Your app, your name"] },
-          { label: "Promotions", values: ["Paid placement against rivals", "Your own offers and loyalty"] },
-          { label: "Delivery rules", values: ["Set by the marketplace", "Set by you"] },
+          { label: "Price", values: ["Open-ended, paid by the month", "Fixed before we start"] },
+          { label: "Launch date", values: ["Moves as the team learns", "Agreed in writing"] },
+          { label: "First release", values: ["After months of hiring and building", "Most go live in about 30 days"] },
+          { label: "Team", values: ["You recruit and manage it", "One in-house team, managed for you"] },
+          { label: "After launch", values: ["Yours to maintain", "We keep it fixed and current"] },
+          { label: "Experience", values: ["Often new to delivery apps", "Food delivery apps built many times"] },
         ],
       },
     },
@@ -266,6 +295,21 @@ export const appServices: AppService[] = [
             { title: "Reports", text: "Sales, orders, ratings and growth by day, week and zone." },
           ],
         },
+        {
+          name: "Your own portal",
+          tagline: "Anything else you need",
+          icon: "plus",
+          device: "custom",
+          description: "Your business may need something no one else has. Tell us what it is, and we design and build it into the same platform, on the same fixed price and date. Some of what clients have asked for:",
+          features: [
+            { title: "Corporate ordering portal", text: "Company accounts, staff allowances and monthly invoices." },
+            { title: "Franchise portal", text: "Each franchisee runs their area; you see the whole network." },
+            { title: "Kitchen display screen", text: "Orders on a screen in the kitchen, in the order to cook them." },
+            { title: "Call-centre ordering", text: "Staff take phone orders into the same system." },
+            { title: "Partner and affiliate portal", text: "Referral codes, tracking and commission for partners." },
+            { title: "Support desk", text: "Customer tickets, refunds and order history in one place." },
+          ],
+        },
       ],
     },
     flow: {
@@ -314,14 +358,14 @@ export const appServices: AppService[] = [
       lede: "No two food businesses run the same way, so no two of our apps do either. Tell us how you work today, and the app is designed around it: your menu, your delivery rules, your way of getting paid.",
       items: [
         {
-          title: "Restaurants and chains", icon: "store",
-          text: "Your own ordering app, with no marketplace commission on every order.",
-          builds: ["One app for every branch, with menus and prices per location", "Loyalty points and offers that bring regulars back", "Pickup, dine-in or delivery, as you choose"],
+          title: "Delivery startups and marketplaces", icon: "building",
+          text: "Your own multi-restaurant delivery platform, with a fee on every order.",
+          builds: ["Restaurant sign-up and approval, with your commission rates", "Rider onboarding, zones and automatic job assignment", "Weekly payouts to every restaurant and rider"],
         },
         {
-          title: "Delivery marketplaces", icon: "building",
-          text: "Many restaurants and riders in one app, with your fee on each order.",
-          builds: ["Restaurant sign-up and approval, with your commission rates", "Rider onboarding, zones and automatic job assignment", "Weekly payouts to every restaurant and rider"],
+          title: "Restaurants and chains", icon: "store",
+          text: "Your own ordering app, so you stop paying marketplace commission on every order.",
+          builds: ["One app for every branch, with menus and prices per location", "Loyalty points and offers that bring regulars back", "Pickup, dine-in or delivery, as you choose"],
         },
         {
           title: "Cloud kitchens", icon: "soup",
@@ -438,7 +482,7 @@ export const appServices: AppService[] = [
       },
       {
         question: "Do you publish the apps to the App Store and Google Play?",
-        answer: "Yes. We handle the submission, the store listings and the review for both stores.",
+        answer: "Yes, and it is included in your price. We prepare the store listings, submit the apps and handle the review for both stores. The only cost that is yours is the store developer accounts: US$99 a year for Apple and a one-off US$25 for Google, opened in your company's name.",
       },
       {
         question: "Can it support several languages and currencies?",

@@ -7,7 +7,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
-import { serviceProcess, type AppService, type AppServiceItem } from "@/content/app-services";
+import { serviceProcess, storeSubmission, type AppService, type AppServiceItem } from "@/content/app-services";
 import { whatsappContact } from "@/content/site";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/ui/brand-mark";
@@ -81,6 +81,7 @@ const JUMP = [
   ["features", "Features"],
   ["earn", "Ways to earn"],
   ["process", "Price and date"],
+  ["stores", "Store launch"],
   ["tech", "Tech"],
   ["support", "After launch"],
   ["faq", "Questions"],
@@ -106,9 +107,10 @@ export function AppServicePage({ service }: { service: AppService }) {
   return (
     <main>
       {/* ---- Hero ------------------------------------------------------- */}
-      <Section spacing="none" className="relative overflow-hidden pt-24 lg:pt-28 pb-16 lg:pb-20">
+      {/* At least one full screen tall, so the sticky section bar starts below the fold. */}
+      <Section spacing="none" className="relative overflow-hidden min-h-svh flex items-center pt-24 lg:pt-28 pb-16 lg:pb-20">
         <div aria-hidden className="signal-traces-grid absolute inset-0 pointer-events-none [mask-image:linear-gradient(to_bottom,#000,transparent)]" />
-        <Container className="relative">
+        <Container className="relative w-full">
           <div className="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-12 lg:gap-10 items-center">
             <div>
               <Eyebrow className="mb-6">{service.group}</Eyebrow>
@@ -135,44 +137,25 @@ export function AppServicePage({ service }: { service: AppService }) {
                   </a>
                 </Button>
               </div>
-              <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                {["Fixed price", "Fixed date", "You own the code", "NDA on request"].map((t) => (
-                  <li key={t} className="flex items-center gap-2">
-                    <Check aria-hidden className="w-4 h-4 text-primary" />
-                    {t}
-                  </li>
+              {/* What is fixed before we start. */}
+              <dl className="mt-10 grid grid-cols-2 sm:grid-cols-4 max-w-2xl rounded-xl border border-foreground/10 bg-card/70 backdrop-blur-sm divide-foreground/10 [&>div]:border-foreground/10 [&>div:nth-child(odd)]:border-r sm:[&>div]:border-r sm:[&>div:last-child]:border-r-0 [&>div:nth-child(-n+2)]:border-b sm:[&>div:nth-child(-n+2)]:border-b-0">
+                {hero.facts.map((fact) => (
+                  <div key={fact.label} className="px-4 py-3">
+                    <dt className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">{fact.label}</dt>
+                    <dd className="mt-1 text-sm font-medium">{fact.value}</dd>
+                  </div>
                 ))}
-              </ul>
+              </dl>
             </div>
 
             {/* The system, as a radar. */}
             <ServiceOrbit
               hub={ecosystem.hub}
-              inner={apps.items.map((a) => ({ name: a.name, icon: a.icon }))}
+              inner={apps.items.filter((a) => a.device !== "custom").map((a) => ({ name: a.name, icon: a.icon }))}
               outer={ecosystem.items}
             />
           </div>
 
-          {/* What is fixed before we start, as a spec strip. */}
-          <div className="mt-14 lg:mt-16 rounded-2xl border border-foreground/10 bg-card/80 backdrop-blur-sm overflow-hidden">
-            <dl className="grid grid-cols-2 lg:grid-cols-4 divide-foreground/10 [&>div]:border-foreground/10 [&>div:nth-child(odd)]:border-r lg:[&>div]:border-r lg:[&>div:last-child]:border-r-0 [&>div:nth-child(-n+2)]:border-b lg:[&>div:nth-child(-n+2)]:border-b-0">
-              {hero.facts.map((fact) => (
-                <div key={fact.label} className="px-6 py-5">
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">{fact.label}</dt>
-                  <dd className="mt-1.5 font-medium">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-            {story && (
-              <div className="border-t border-foreground/10 px-6 py-4 bg-primary/5 flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                <p className="flex items-center gap-2 shrink-0 font-mono text-[11px] uppercase tracking-[0.1em] text-primary">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  {story.label} · {story.client}, {story.place}
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{story.text}</p>
-              </div>
-            )}
-          </div>
         </Container>
       </Section>
 
@@ -182,9 +165,14 @@ export function AppServicePage({ service }: { service: AppService }) {
       {/* ---- Why own your app ------------------------------------------- */}
       <Section id="why" className="scroll-mt-16">
         <Container>
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-12 lg:gap-16 items-start">
+          <Eyebrow className="mb-6">Why own it</Eyebrow>
+          {/* The comparison cards sit centred against the text column. */}
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-12 lg:gap-16 items-center">
             <div>
-              <Intro eyebrow="Why own it" title={whyOwn.title} lede={whyOwn.lede} className="mb-10" />
+              <div className="max-w-3xl mb-10">
+                <SectionTitle className="mb-6">{whyOwn.title}</SectionTitle>
+                <p className="text-lg text-muted-foreground leading-relaxed">{whyOwn.lede}</p>
+              </div>
               <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-7">
                 {whyOwn.points.map((p) => {
                   const Icon = icon(p.icon);
@@ -198,30 +186,43 @@ export function AppServicePage({ service }: { service: AppService }) {
                 })}
               </ul>
             </div>
-            <div className="rounded-2xl border border-foreground/10 overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left">
-                    <th className="p-5 w-[28%]"><span className="sr-only">Compare</span></th>
-                    <th className="p-5 font-medium text-muted-foreground">{whyOwn.comparison.columns[0]}</th>
-                    <th className="p-5 font-medium text-primary bg-primary/[0.06]">{whyOwn.comparison.columns[1]}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-foreground/10 border-t border-foreground/10">
+            {/* The comparison as two cards: the usual route, and ours raised above it. */}
+            <div className="relative grid sm:grid-cols-2 gap-4 sm:gap-5">
+              <div className="rounded-2xl border border-foreground/10 bg-card/60 p-6 lg:p-7 sm:mt-10">
+                <p className="text-sm font-medium text-muted-foreground">{whyOwn.comparison.columns[0]}</p>
+                <dl className="mt-6 space-y-5">
                   {whyOwn.comparison.rows.map((row) => (
-                    <tr key={row.label} className="align-top">
-                      <th scope="row" className="p-5 text-left font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground font-normal">{row.label}</th>
-                      <td className="p-5 text-muted-foreground">
-                        <span className="flex gap-2"><X aria-hidden className="w-4 h-4 shrink-0 mt-0.5 opacity-50" />{row.values[0]}</span>
-                      </td>
-                      <td className="p-5 bg-primary/[0.06] font-medium">
-                        <span className="flex gap-2"><Check aria-hidden className="w-4 h-4 shrink-0 mt-0.5 text-primary" />{row.values[1]}</span>
-                      </td>
-                    </tr>
+                    <div key={row.label}>
+                      <dt className="font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground/70">{row.label}</dt>
+                      <dd className="mt-1 flex gap-2 text-sm text-muted-foreground">
+                        <X aria-hidden className="w-4 h-4 shrink-0 mt-0.5 opacity-50" />
+                        {row.values[0]}
+                      </dd>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </dl>
+              </div>
+
+              <span aria-hidden className="hidden sm:grid absolute left-1/2 top-1/2 -translate-x-1/2 z-10 place-items-center w-10 h-10 rounded-full border border-foreground/10 bg-background font-mono text-[11px] text-muted-foreground">
+                vs
+              </span>
+
+              <div className="rounded-2xl p-6 lg:p-7 text-white shadow-[0_24px_60px_-20px_rgb(0_64_204/0.55)] sm:mb-10" style={{ background: "var(--feature-card)" }}>
+                <p className="text-sm font-medium">{whyOwn.comparison.columns[1]}</p>
+                <dl className="mt-6 space-y-5">
+                  {whyOwn.comparison.rows.map((row) => (
+                    <div key={row.label}>
+                      <dt className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/70">{row.label}</dt>
+                      <dd className="mt-1 flex gap-2 text-sm font-medium">
+                        <Check aria-hidden className="w-4 h-4 shrink-0 mt-0.5" />
+                        {row.values[1]}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </div>
+
           </div>
         </Container>
       </Section>
@@ -284,8 +285,63 @@ export function AppServicePage({ service }: { service: AppService }) {
       {/* ---- Ways to earn ------------------------------------------------- */}
       <Section id="earn" className="scroll-mt-16 border-t border-foreground/10">
         <Container>
-          <Intro eyebrow="Ways to earn" title={models.title} lede={models.lede} />
-          <ItemGrid items={models.items} />
+          <Eyebrow className="mb-6">Ways to earn</Eyebrow>
+          {/* The receipt centres on the heading and list, not the eyebrow above them. */}
+          <div className="grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-12 lg:gap-20 items-center">
+            <div>
+              <div className="max-w-3xl mb-10">
+                <SectionTitle className="mb-6">{models.title}</SectionTitle>
+                <p className="text-lg text-muted-foreground leading-relaxed">{models.lede}</p>
+              </div>
+              <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
+                {models.items.map((item) => {
+                  const Icon = icon(item.icon);
+                  return (
+                    <li key={item.title} className="flex gap-3">
+                      <Icon aria-hidden strokeWidth={1.5} className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
+                      <span>
+                        <span className="block font-medium">{item.title}</span>
+                        <span className="mt-0.5 block text-sm text-muted-foreground leading-relaxed">{item.text}</span>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* One example order, showing where the platform earns. */}
+            <figure className="relative mx-auto w-full max-w-md">
+              <div className="rounded-2xl border border-foreground/10 bg-card shadow-[0_24px_60px_-24px_rgb(11_15_23/0.35)] overflow-hidden">
+                <div className="px-7 pt-7 pb-5 border-b border-dashed border-foreground/15">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">Example order #2041</p>
+                  <p className="mt-2 text-lg font-display tracking-tight">2 × Margherita, 1 × Garlic bread</p>
+                </div>
+                <dl className="px-7 py-5 space-y-3 text-sm">
+                  {[
+                    ["Food total", "$24.00", false],
+                    ["Delivery fee", "$2.99", true],
+                    ["Service fee", "$0.99", true],
+                    ["Commission from the restaurant, 15%", "$3.60", true],
+                  ].map(([label, value, yours]) => (
+                    <div key={label as string} className="flex items-center justify-between gap-4">
+                      <dt className={yours ? "flex items-center gap-2" : "text-muted-foreground"}>
+                        {yours && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
+                        {label}
+                      </dt>
+                      <dd className={yours ? "font-medium text-primary" : "text-muted-foreground"}>{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="mx-4 mb-4 rounded-xl bg-primary/10 px-5 py-4 flex items-center justify-between">
+                  <span className="text-sm font-medium">Your platform earns</span>
+                  <span className="text-2xl font-display tracking-tight text-primary">$7.58</span>
+                </div>
+                <p className="px-7 pb-6 text-xs text-muted-foreground leading-relaxed">
+                  Plus subscriptions and featured listings, billed monthly. Figures are an example: you set every rate.
+                </p>
+              </div>
+            </figure>
+          </div>
         </Container>
       </Section>
 
@@ -369,8 +425,60 @@ export function AppServicePage({ service }: { service: AppService }) {
         </Container>
       </Section>
 
+      {/* ---- App store submission ----------------------------------------- */}
+      <Section id="stores" className="scroll-mt-16">
+        <Container>
+          <Eyebrow className="mb-6">{storeSubmission.eyebrow}</Eyebrow>
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-center">
+            <div>
+              <div className="max-w-3xl mb-10">
+                <SectionTitle className="mb-6">{storeSubmission.title}</SectionTitle>
+                <p className="text-lg text-muted-foreground leading-relaxed">{storeSubmission.lede}</p>
+              </div>
+              <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-primary mb-5">
+                <ShieldCheck aria-hidden className="w-4 h-4" strokeWidth={1.5} />
+                Included in every build
+              </p>
+              <ul className="space-y-4">
+                {storeSubmission.included.map((item) => (
+                  <li key={item.title} className="flex gap-3">
+                    <Check aria-hidden className="w-4 h-4 shrink-0 mt-1 text-primary" />
+                    <span>
+                      <span className="font-medium">{item.title}.</span>{" "}
+                      <span className="text-muted-foreground">{item.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-foreground/10 bg-card p-7 lg:p-8">
+              <p className="text-xl font-display tracking-tight">{storeSubmission.yours.title}</p>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{storeSubmission.yours.text}</p>
+              <ul className="mt-7 grid sm:grid-cols-2 gap-4">
+                {storeSubmission.yours.fees.map((f) => (
+                  <li key={f.store} className="rounded-xl border border-foreground/10 bg-background p-5">
+                    <span className="flex items-center gap-2.5">
+                      <BrandMark icon={f.icon} name={f.store} className="shrink-0 w-5 h-5 text-foreground" />
+                      <span className="text-sm font-medium">{f.store}</span>
+                    </span>
+                    <span className="mt-4 block text-2xl font-display tracking-tight">{f.fee}</span>
+                    <span className="mt-1 block text-xs text-muted-foreground">{f.note}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-5 rounded-xl bg-primary/10 px-5 py-4 flex items-center justify-between gap-4">
+                <span className="text-sm font-medium">Submission, listings and review</span>
+                <span className="text-sm font-medium text-primary whitespace-nowrap">Included</span>
+              </div>
+              <p className="mt-4 text-xs text-muted-foreground">{storeSubmission.yours.footnote}</p>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       {/* ---- Tech and integrations ---------------------------------------- */}
-      <Section id="tech" className="scroll-mt-16">
+      <Section id="tech" className="scroll-mt-16 border-t border-foreground/10">
         <Container>
           <Intro eyebrow="Tech" title={tech.title} lede={tech.lede} />
           <div className="grid md:grid-cols-2 gap-px bg-foreground/10 border border-foreground/10 rounded-2xl overflow-hidden">
@@ -442,7 +550,16 @@ export function AppServicePage({ service }: { service: AppService }) {
       {quotes.length > 0 && (
         <Section className="border-t border-foreground/10 bg-muted/40">
           <Container>
-            <Intro eyebrow="Clients" title="What our clients say." className="mb-12" />
+            <Intro eyebrow="Clients" title="What our clients say." className="mb-8" />
+            {story && (
+              <div className="mb-10 inline-flex flex-col md:flex-row md:items-center gap-2 md:gap-4 rounded-xl border border-primary/20 bg-primary/5 px-5 py-3.5">
+                <p className="flex items-center gap-2 shrink-0 font-mono text-[11px] uppercase tracking-[0.1em] text-primary">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  {story.label} · {story.client}, {story.place}
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{story.text}</p>
+              </div>
+            )}
             <div className="grid md:grid-cols-2 gap-5">
               {quotes.map((q) => (
                 <figure key={q.name} className="rounded-2xl border border-foreground/10 bg-background p-8 flex flex-col">
