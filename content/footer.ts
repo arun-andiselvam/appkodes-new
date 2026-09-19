@@ -44,19 +44,35 @@ import type { SocialLink } from "./types";
  * the Services and Resources panels. This is the only place either is reachable
  * from every page without opening something.
  */
+/*
+ * Rewritten 18 September 2026 to match the header menus: app services from
+ * the Services menu (the same appkodes.com links, until those pages exist
+ * here), blog categories from the Resources menu, and the company links.
+ * No AI anywhere: that is Hitasoft.com's. Careers is here although it left
+ * the header, because /careers is live and the footer is where it belongs.
+ */
 export const footerLinks = {
   Services: [
-    { name: "AI Integration", href: "/services/ai-software-integration" },
-    { name: "Workflow Automation", href: "/services/ai-workflow-automation" },
-    { name: "AI MVP Development", href: "/services/custom-ai-mvp-development" },
-    { name: "Data & Analytics", href: "/services/ai-data-predictive-analytics" },
-    { name: "Custom Models & Voice", href: "/services/custom-ai-models-voice" },
+    { name: "SaaS Development", href: "https://appkodes.com/saas-development-company/" },
+    { name: "Startup App Development", href: "https://appkodes.com/startup-mobile-app-development/" },
+    { name: "MVP Software Development", href: "https://appkodes.com/mvp-software-development/" },
+    { name: "Food Delivery Apps", href: "/food-delivery-app-development-company" },
+    { name: "Taxi Booking Apps", href: "https://appkodes.com/taxi-booking-app-development-company/" },
+    { name: "Ecommerce Apps", href: "https://appkodes.com/ecommerce-app-development-services/" },
+    { name: "Healthcare Apps", href: "https://appkodes.com/healthcare-app-development-company/" },
+  ],
+  Resources: [
+    { name: "App Development Guides", href: "/blog" },
+    { name: "Cost and Pricing", href: "/blog" },
+    { name: "MVPs and Startups", href: "/blog" },
+    { name: "Design and UX", href: "/blog" },
+    { name: "App Store Launch", href: "/blog" },
+    { name: "All posts", href: "/blog" },
   ],
   Company: [
-    { name: "Industries", href: "/industries" },
-    { name: "How we work", href: "/how-we-work" },
+    { name: "Solutions", href: "https://appkodes.com/clone-scripts/" },
     { name: "Case studies", href: "/resources/case-studies" },
-    { name: "Resources", href: "/resources" },
+    { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
   ],
 };
@@ -81,9 +97,13 @@ export const footerLinks = {
  * company either way, since the buyer in docs/positioning.md often has no
  * developers at all.
  */
+/*
+ * Appkodes' own accounts, as linked from appkodes.com (18 September 2026).
+ * They were Hitasoft's until the rebrand.
+ */
 export const socialLinks: SocialLink[] = [
-  { name: "LinkedIn", href: "https://www.linkedin.com/company/hitasoft" },
-  { name: "YouTube", href: "https://www.youtube.com/@hitasoft" },
-  { name: "Instagram", href: "https://www.instagram.com/hitasoft_technology_solutions/" },
-  { name: "Facebook", href: "https://www.facebook.com/hitasoft/" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/appkodes/" },
+  { name: "YouTube", href: "https://www.youtube.com/channel/UC_B0YTIF6Dp70xwGVf0EL3w" },
+  { name: "Instagram", href: "https://www.instagram.com/appkodesofficial/" },
+  { name: "Facebook", href: "https://www.facebook.com/appkodes/" },
 ];

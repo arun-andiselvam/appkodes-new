@@ -39,6 +39,42 @@ export const partnershipModels = [
   },
 ];
 
+/* --- Solutions preview ------------------------------------------------ */
+/*
+ * The kinds of apps Appkodes has built many times. Rewritten 19 September
+ * 2026 when docs/positioning.md was corrected at root: there are NO ready-made
+ * solutions or reusable bases, and every app is designed and built new for
+ * its client. What carries over between projects is experience, and that,
+ * with a written scope and one in-house team, is why the price and the date
+ * can be fixed.
+ *
+ * Nothing here is for sale as it stands: no prices, no "buy", no demos. Each
+ * app type is described by what it does; brand references stay in the menu.
+ * The qualifier is the brief's own (section 6): first releases, about 30 days.
+ */
+export const solutionsCopy = {
+  eyebrow: "Solutions",
+  title: "We have built this before.",
+  titleMuted: "Many times, for businesses like yours.",
+  lede: "Every app we deliver is designed and built new for its client. What carries over is experience: we already know the screens, the edge cases and the store rules for these kinds of apps, so none of it is learned on your time or your budget. That is why the price and the date can be fixed.",
+  qualifier: "Most first releases go live in about 30 days. Larger apps take longer, and your costed plan fixes the scope and the exact date.",
+  cta: "Get a free costed plan",
+  other: "Building something else? Tell us about it.",
+  otherLink: { name: "Talk to us", href: "/contact" },
+};
+
+export const solutionsPreview = [
+  { name: "Classifieds marketplace", line: "Buyers and sellers, listings and chat", icon: "arrowLeftRight" },
+  { name: "Short video app", line: "Record, share and discover", icon: "video" },
+  { name: "Live streaming", line: "Live video with gifting", icon: "radio" },
+  { name: "Taxi booking", line: "Rider, driver and admin apps", icon: "car" },
+  { name: "Delivery super app", line: "Food, grocery and parcels", icon: "truck" },
+  { name: "Doctor appointments", line: "Booking and online consults", icon: "stethoscope" },
+  { name: "Multi-vendor ecommerce", line: "Many sellers in one store", icon: "shoppingCart" },
+  { name: "OTT streaming", line: "Movies and series on demand", icon: "tv" },
+  { name: "Dating app", line: "Profiles, matching and chat", icon: "heart" },
+];
+
 /* --- Industries ------------------------------------------------------- */
 /*
  * appkodes.com's twelve industry cards, minus its AI card, plus taxi booking
@@ -50,7 +86,7 @@ export const industriesCopy = {
   eyebrow: "Industries",
   title: "We have built for your industry.",
   titleMuted: "Probably more than once.",
-  lede: "We have shipped apps across all of these. Each one comes with features its users already expect, so you do not pay to invent them.",
+  lede: "We have shipped apps across all of these. We know the features their users expect, so none of your budget goes on learning them.",
 };
 
 export const industries = [
@@ -108,9 +144,19 @@ export const latestPosts = [
  */
 export const teamCopy = {
   eyebrow: "The team",
-  title: "150+ people.",
-  titleMuted: "One team from plan to launch.",
+  title: "One team, from plan to launch.",
   lede: "Meet the developers and testers behind every app we ship. Nobody hands your project to an outside agency or a freelancer halfway through the build.",
+  /*
+   * The specifics the section lacked (18 September 2026). 150+ and 18 years
+   * are published in heroStats, one office in Madurai is verified in
+   * docs/positioning.md, and "none outsourced" restates the lede's promise.
+   */
+  facts: [
+    { value: "150+", label: "people in house" },
+    { value: "18", label: "years shipping apps" },
+    { value: "1", label: "office, in Madurai" },
+    { value: "0", label: "work outsourced" },
+  ],
   cta: "Talk to the team",
   image: { src: "/team.webp", width: 1024, height: 586, alt: "The Appkodes team together outdoors" },
 };

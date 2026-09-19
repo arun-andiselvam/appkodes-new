@@ -65,8 +65,10 @@ export const site = {
   // so this slot carries evidence the reader can weigh. Both figures are from
   // appkodes.com and are safe to publish. See docs/positioning.md.
   eyebrow: "18 years, 1000+ businesses served",
+  // App development, no AI (18 September 2026). Also the site's default meta
+  // description and the footer blurb.
   description:
-    "We put AI into the systems you already run, or build the replacement, so your team spends less time on work software should be doing.",
+    "We build mobile apps, web apps and MVPs on a fixed price and a fixed launch date, for businesses in more than 50 countries.",
 } as const;
 
 /**
@@ -273,7 +275,9 @@ export const ctaCopy = {
    * 18 September 2026: closes on the hero's promise instead of AI. The same
    * free costed plan as the hero button, named as what the visitor receives.
    */
-  headline: "Your app could be live",
+  // "First release": every app is built new, and the brief qualifies the
+  // 30-day promise to first releases (docs/positioning.md, section 6).
+  headline: "Your first release could be live",
   headlineAccent: " next month.",
   description:
     "Tell us about the app you want to build. We send back a costed plan with a fixed price and a launch date, free and yours to keep.",

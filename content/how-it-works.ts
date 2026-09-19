@@ -43,7 +43,8 @@ Bugs fixed before your users find them`,
     title: "We launch it and stay with you",
     description:
       "We publish the app to both stores and help you find the first people who will pay for it. After launch we keep it running and current.",
-    duration: "Day 30 onwards",
+    // "About": heavier builds such as OTT take longer (docs/positioning.md §6).
+    duration: "From about day 30",
     panelLabel: "what happens next",
     output: `Published to the App Store and Google Play
 A launch plan for your first users

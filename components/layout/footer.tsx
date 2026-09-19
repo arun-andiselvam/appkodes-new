@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
-import { AnimatedWave } from "@/components/backgrounds/animated-wave";
+import { ArrowUpRight, Linkedin, Youtube, Instagram, Facebook, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { footerLinks, socialLinks } from "@/content/footer";
 import { site } from "@/content/site";
@@ -12,14 +11,23 @@ import { Container } from "@/components/primitives/container";
  * It was there until 22 August 2026, and nothing in here ever needed it. There
  * is no state, no effect and no event handler. The footer is links and type.
  *
- * It was presumably added because AnimatedWave below is a client component,
+ * It was presumably added because AnimatedWave (the footer's backdrop until
+ * 18 September 2026) is a client component,
  * and that is not how the boundary works. A server component can render a
  * client one, and only the client one crosses. Marking the parent instead
  * dragged the whole footer into the JavaScript bundle of every page on the
  * site, for nothing.
  *
- * AnimatedWave keeps its own directive, which is the right place for it.
+ * AnimatedWave kept its own directive, which was the right place for it.
  */
+/* The social icons, keyed by the names in content/footer.ts. */
+const SOCIAL_ICONS: Record<string, LucideIcon> = {
+  LinkedIn: Linkedin,
+  YouTube: Youtube,
+  Instagram: Instagram,
+  Facebook: Facebook,
+};
+
 export function Footer() {
   return (
     /*
@@ -42,57 +50,32 @@ export function Footer() {
     */
     <footer className="relative bg-emphasis text-emphasis-foreground overflow-hidden">
       {/*
-        The team, behind everything. Full bleed rather than boxed to Container,
-        so it reads as the footer's own ground rather than as a photo dropped
-        into it. Opacity is a compromise rather than a low default: it has to
-        stay legible as a photograph while still losing to the copy on top of
-        it, and 0.12 read as barely there once the ground behind it went dark.
-        public/team-group.webp, replacing public/team.webp on 11 September
-        2026 with the client's wider group photo (1903 by 506 against 1024 by
-        586). A new filename rather than an overwrite: Cloudflare caches
-        /_next/image and next.config.mjs gives public assets a week's browser
-        cache, so a replaced file under the old name keeps being served stale.
-
-        !! GRAYSCALE, NOT THE ORIGINAL COLOUR !!
-
-        It is a real photograph and stays one; nothing here is a stand-in or
-        stock. But a dozen bright, unrelated clothing colours sitting behind
-        two link columns and a brand mark in its own two colours was the
-        loudest thing on a page built from hairlines and one accent colour
-        everywhere else. Desaturating it is what makes it read as an
-        editorial backdrop rather than a candid snapshot competing with the
-        copy on top of it, and grayscale plus the panel's own dark navy
-        showing through at this opacity is what gives it the brand tint
-        rather than leaving it a flat grey.
-
-        alt names the photo rather than staying empty, for an image search
-        crawler to index it against. aria-hidden stays: a screen reader still
-        skips it, because at 0.35 opacity behind the brand copy it is a
-        backdrop rather than something to describe.
+        No photograph since 18 September 2026, at the client's request. The
+        team group photo sat here at 35% in grayscale; the footer is now the
+        emphasis panel's own solid colour (obsidian in light mode, raised
+        slate in dark), with the faint wave below as its only texture. The
+        team is shown properly in the home page's team section instead.
       */}
-      <Image
-        src="/team-group.webp"
-        alt="The Hitasoft team"
-        aria-hidden
-        fill
-        sizes="100vw"
-        className="object-cover grayscale contrast-110 opacity-[0.35] pointer-events-none select-none"
-      />
 
       {/*
-        The wave is scoped to this block rather than the whole footer: it sizes
-        itself to the columns above and stops at the copyright bar's border.
-        It sits outside Container so it still bleeds the full viewport width.
+        The dot field, scoped to this block rather than the whole footer: it
+        sizes itself to the columns above and stops at the copyright bar's
+        border, bleeding the full viewport width outside Container.
+
+        Static since 18 September 2026, at the client's request. It was
+        AnimatedWave's canvas, the same ring dots on a 20px grid with a wave of
+        brightness drifting through them; the dots stay and the motion is gone.
+        A CSS pattern now (.footer-dots in app/globals.css), so no script and
+        no animation frame at all.
       */}
       <div className="relative">
-        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
-          <AnimatedWave />
-        </div>
+        <div aria-hidden className="footer-dots absolute inset-0 pointer-events-none" />
 
         <Container className="relative z-10">
           {/* Main Footer */}
           <div className="py-16 lg:py-24">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-8">
+            {/* Five tracks: the brand column takes two, each link column one. */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-12 lg:gap-8">
               {/* Brand Column */}
               <div className="col-span-2">
                 <Link href="/" className="inline-flex items-center gap-2 mb-6">
@@ -126,17 +109,28 @@ export function Footer() {
 
                 {/* Social Links. Empty until real accounts exist. */}
                 {socialLinks.length > 0 && (
-                <div className="flex gap-6">
-                  {socialLinks.map((link) => (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className="text-sm text-emphasis-foreground/70 hover:text-emphasis-foreground transition-colors flex items-center gap-1 group"
-                    >
-                      {link.name}
-                      <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                    </a>
-                  ))}
+                /*
+                  Icons rather than names since 18 September 2026. Round
+                  outlined buttons in the panel's own ink, lifting on hover.
+                  The name stays as the accessible label and the tooltip.
+                */
+                <div className="flex gap-3">
+                  {socialLinks.map((link) => {
+                    const Icon = SOCIAL_ICONS[link.name] ?? ArrowUpRight;
+                    return (
+                      <a
+                        key={link.name}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={link.name}
+                        title={link.name}
+                        className="grid place-items-center w-10 h-10 rounded-full border border-emphasis-foreground/15 text-emphasis-foreground/70 transition-colors hover:text-emphasis-foreground hover:border-emphasis-foreground/40 hover:bg-emphasis-foreground/10"
+                      >
+                        <Icon aria-hidden strokeWidth={1.5} className="w-[18px] h-[18px]" />
+                      </a>
+                    );
+                  })}
                 </div>
                 )}
             </div>
@@ -169,6 +163,8 @@ export function Footer() {
 
         !! bg-background AND relative z-10 ARE BOTH LOAD BEARING !!
 
+        (Written while a team photo filled the footer; it was removed on
+        18 September 2026, so the opaque ground below is now belt and braces.)
         The photo and the panel colour both live on <footer> itself (fill,
         and bg-emphasis), so without an opaque ground here this strip would
         show the photo bleeding through under the copyright line rather than

@@ -66,7 +66,7 @@ export function HowItWorksSection() {
           >
             Your idea on day one.
             <br />
-            <span className="text-emphasis-foreground/50">Your app in the stores by day thirty.</span>
+            <span className="text-emphasis-foreground/50">Most first releases in the stores by day thirty.</span>
           </SectionTitle>
         </div>
 

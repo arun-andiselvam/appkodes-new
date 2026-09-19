@@ -4,7 +4,7 @@ import { site } from "@/content/site";
 import { HeroSection } from "@/components/sections/hero";
 import { InfrastructureSection } from "@/components/sections/infrastructure";
 import { ClientLogosSection } from "@/components/sections/client-logos";
-import { PartnershipModelsSection } from "@/components/sections/partnership-models";
+import { SolutionsPreviewSection } from "@/components/sections/solutions-preview";
 import { FeaturesSection } from "@/components/sections/features";
 import { DeliveryReachSection } from "@/components/sections/delivery-reach";
 import { MeetingsSection } from "@/components/sections/meetings";
@@ -63,7 +63,9 @@ export default function Home() {
     <main>
       {/*
         Rebuilt 18 September 2026 on appkodes.com's own section order: hero,
-        track record, clients, partnership models, what you get, globally
+        track record, clients, solutions (platforms we have shipped, which
+        replaced partnership models on 19 September per docs/positioning.md),
+        what you get, globally
         delivered, process, platforms, industries, then proof, writing, team
         and the close. Results, Security and Audiences came off the page with
         the AI messaging they carried.
@@ -71,7 +73,7 @@ export default function Home() {
       <HeroSection />
       <InfrastructureSection />
       <ClientLogosSection />
-      <PartnershipModelsSection />
+      <SolutionsPreviewSection />
       <FeaturesSection />
       <DeliveryReachSection />
       <MeetingsSection />
