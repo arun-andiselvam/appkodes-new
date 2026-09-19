@@ -443,12 +443,30 @@ export const appServices: AppService[] = [
       title: "After launch, we stay.",
       lede: "Launch day is not the finish line. Phones update, stores change their rules and your business grows.",
       items: [
-        { title: "Store updates", text: "New iOS and Android versions handled before they break anything.", icon: "smartphone" },
-        { title: "Fixes", text: "Bugs found and fixed, with a clear turnaround.", icon: "megaphone" },
-        { title: "Monitoring", text: "We watch the servers and the orders, so problems reach us first.", icon: "dashboard" },
-        { title: "New features", text: "Priced and dated the same way as the first release.", icon: "package" },
-        { title: "Security", text: "Payments through certified gateways, encrypted data and regular reviews.", icon: "crown" },
-        { title: "Handover", text: "Training and documentation, so your team can run it.", icon: "briefcase" },
+        {
+          title: "Store updates", icon: "smartphone",
+          text: "Apple and Google release new versions of iOS and Android every year, and change their store rules more often than that. We test your apps against each new version before it reaches your customers, update what needs updating and resubmit, so nothing breaks on the day a phone updates.",
+        },
+        {
+          title: "Fixes", icon: "wrench",
+          text: "When something goes wrong, you tell us once and we take it from there. Every issue is logged, fixed, tested and released, and you know where it stands at each step. Urgent problems that stop orders come first, ahead of everything else.",
+        },
+        {
+          title: "Monitoring", icon: "activity",
+          text: "We watch the servers, the payments and the flow of orders around the clock. If something slows down or stops, we see it first and start on it, often before a customer or a restaurant notices anything at all.",
+        },
+        {
+          title: "New features", icon: "package",
+          text: "Your business will grow and change, and the apps should keep up. Each new feature is scoped, priced and dated in writing before we start, exactly like your first release, so there are no open-ended bills and no surprises.",
+        },
+        {
+          title: "Security", icon: "shield",
+          text: "Payments go through certified gateways, so card details never touch your servers. Data is encrypted in transit and at rest, access is limited to the people who need it, and we review and update the security of your platform regularly.",
+        },
+        {
+          title: "Handover", icon: "briefcase",
+          text: "The platform is yours, and so is the knowledge. Your team gets training on the portals and dashboards, plus documentation for the code and the servers, so you can run it day to day or bring in your own developers whenever you choose.",
+        },
       ],
     },
     quotes: [

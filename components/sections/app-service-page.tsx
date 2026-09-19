@@ -3,7 +3,7 @@ import {
   ArrowRight, Check, ChevronDown, Quote, Sparkles, Layers, X, ShieldCheck, Clock,
   Smartphone, ChefHat, Bike, LayoutDashboard, Utensils, Search, MapPin,
   ShoppingBasket, Repeat, Star, Megaphone, Gift, Heart, MessageCircle,
-  Store, Building2, Soup, Truck, Briefcase, Package, CalendarCheck, Leaf, Crown,
+  Store, Building2, Soup, Truck, Briefcase, Package, CalendarCheck, Leaf, Crown, Wrench, Activity,
   type LucideIcon,
 } from "lucide-react";
 import { siWhatsapp } from "simple-icons";
@@ -31,6 +31,7 @@ const ICONS: Record<string, LucideIcon> = {
   repeat: Repeat, star: Star, megaphone: Megaphone, gift: Gift, heart: Heart,
   chat: MessageCircle, store: Store, building: Building2, soup: Soup, truck: Truck,
   briefcase: Briefcase, package: Package, calendar: CalendarCheck, leaf: Leaf, crown: Crown,
+  wrench: Wrench, activity: Activity, shield: ShieldCheck,
 };
 const icon = (key?: string) => (key && ICONS[key]) || Layers;
 

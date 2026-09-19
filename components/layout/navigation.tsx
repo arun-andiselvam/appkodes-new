@@ -97,16 +97,29 @@ export function Navigation() {
    *
    * Coalesced into one rAF and passive, as before: the handler runs far more
    * often than the screen refreshes, and nothing here calls preventDefault.
+   *
+   * A jump from an in-page link (the service page's section bar, "#faq" and
+   * the like) is not the reader scrolling, so it never reveals the bar
+   * (client, 19 September 2026): the scroll that follows such a click keeps
+   * the bar hidden and becomes the new baseline.
    */
   useEffect(() => {
     let frame = 0;
     let lastY = window.scrollY;
+    let jumping = false;
+    let jumpTimer = 0;
     const read = () => {
       frame = 0;
       const y = window.scrollY;
       setIsScrolled((was) => (was ? y > 12 : y > 24));
       if (y < 80) {
         setIsHidden(false);
+        lastY = y;
+        return;
+      }
+      if (jumping) {
+        jumping = false;
+        setIsHidden(true);
         lastY = y;
         return;
       }
@@ -119,9 +132,20 @@ export function Navigation() {
       if (frame) return;
       frame = requestAnimationFrame(read);
     };
+    const handleClick = (e: MouseEvent) => {
+      const link = (e.target as Element | null)?.closest?.("a[href^='#']");
+      if (!link || link.getAttribute("href") === "#") return;
+      jumping = true;
+      window.clearTimeout(jumpTimer);
+      // If the link does not scroll (already in place), stop ignoring.
+      jumpTimer = window.setTimeout(() => (jumping = false), 400);
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("click", handleClick, true);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", handleClick, true);
+      window.clearTimeout(jumpTimer);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
