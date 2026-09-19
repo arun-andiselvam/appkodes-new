@@ -260,7 +260,7 @@ export const mainNav: NavItem[] = [
             name: "Delivery",
             icon: "delivery",
             links: [
-              { name: "Food Delivery", href: "https://appkodes.com/food-delivery-app-development-company/" },
+              { name: "Food Delivery", href: "/food-delivery-app-development-company" },
               { name: "Grocery Delivery", href: "https://appkodes.com/grocery-delivery-app-development-company/" },
               { name: "Pharmacy Delivery", href: "https://appkodes.com/pharmacy-delivery-app-development-company/" },
               { name: "Medicine Delivery", href: "https://appkodes.com/medicine-delivery-app-development-company/" },

@@ -693,3 +693,44 @@
     animation-play-state: paused;
   }
 }
+
+/*
+ * The footer's dot field (components/layout/footer.tsx), 18 September 2026:
+ * AnimatedWave's ring dots on its 20px grid, held still. The footer is the
+ * dark emphasis panel in both themes, so the ring can be a fixed white.
+ */
+.footer-dots {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='2.75' fill='none' stroke='%23ffffff' stroke-opacity='0.1' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 20px 20px;
+}
+
+/*
+ * The service page hero's orbit (components/sections/service-orbit.tsx),
+ * 19 September 2026. Rings turn, each chip counter-turns at the same rate so
+ * it stays upright, and chips fan out from the hub once on load.
+ */
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes orbit-in {
+  from { opacity: 0; transform: translate(var(--orbit-from-x), var(--orbit-from-y)) scale(0.4); }
+  to { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+.orbit-ring {
+  animation: orbit-spin var(--orbit-duration) linear infinite;
+}
+.orbit-counter {
+  animation: orbit-spin var(--orbit-duration) linear infinite reverse;
+}
+.orbit-chip {
+  animation: orbit-in 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--orbit-delay);
+}
+.orbit-sweep {
+  background: conic-gradient(from 0deg, rgb(var(--brand-blue-rgb) / 0.22), transparent 22%);
+  animation: orbit-spin 7s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring, .orbit-counter, .orbit-sweep { animation: none; }
+  .orbit-chip { animation-duration: 1ms; }
+}

@@ -46,6 +46,8 @@ export type QuotePlacement =
   | "blog_post"
   | "case_study"
   | "how_we_work"
+  /* The home page Solutions section, added 18 September 2026. */
+  | "solutions_preview"
   /* The floating bubble in the corner, added 5 September 2026. It renders on
      every page, so it is the one placement that cannot say which page did the
      work. What it can say is how many people reach for the corner instead of
