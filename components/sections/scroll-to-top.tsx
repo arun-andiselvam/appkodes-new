@@ -28,8 +28,25 @@ import { useLayoutEffect } from "react";
  * after React commits and before paint, so the first frame is already at the
  * top.
  */
+/*
+ * !! NEVER ON BACK OR FORWARD !!
+ *
+ * A reader returning with the Back button expects to land where they left,
+ * and the browser restores that position itself. If this boundary shows on
+ * the way back, forcing the top would throw that position away. popstate is
+ * what Back and Forward fire, before the router renders, so a boundary that
+ * mounts within a second of one leaves the scroll alone. 19 September 2026.
+ */
+let lastPopState = -Infinity;
+if (typeof window !== "undefined") {
+  window.addEventListener("popstate", () => {
+    lastPopState = performance.now();
+  });
+}
+
 export function ScrollToTop() {
   useLayoutEffect(() => {
+    if (performance.now() - lastPopState < 1000) return;
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, []);
 

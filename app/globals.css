@@ -108,9 +108,18 @@
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    scroll-behavior: smooth;
-  }
+  /*
+    !! NO scroll-behavior: smooth ON <html>. IT ANIMATED THE BACK BUTTON !!
+
+    It was here until 19 September 2026, for the article's "On this page"
+    links. But it applies to every scroll the page is told to make, not just
+    anchor clicks, and that includes the browser restoring your position when
+    you go Back. Measured on the live site: returning to an article snapped to
+    the top, then slid down to where the reader had been over about half a
+    second. On a phone the page is briefly shorter while it re-renders, so the
+    slide started from the footer. The contents links now animate themselves;
+    see handleClick in components/sections/post-contents.tsx.
+  */
 
   /*
     Off-screen sections skip layout, style and paint until they are scrolled
@@ -145,7 +154,17 @@
     it is far taller than the estimate on first paint, and the fix is a
     per-section intrinsic size rather than removing this.
   */
-  main > section:nth-child(n + 4) {
+  /*
+    !! NOT ON ARTICLES: `data-cv="off"` OPTS A PAGE OUT !!
+
+    An article's <main> starts with two JSON-LD <script> tags, and they count
+    for nth-child, so this rule caught the article body. On Back the body was
+    rebuilt at the 600px estimate, the page was briefly a fraction of its real
+    height, and the browser's restored scroll position landed on the footer
+    before the body painted. Measured on 19 September 2026: 3,830px tall for a
+    frame, then 19,262px. lib/post-route.tsx sets the attribute.
+  */
+  main:not([data-cv="off"]) > section:nth-child(n + 4) {
     content-visibility: auto;
     contain-intrinsic-size: auto 600px;
   }

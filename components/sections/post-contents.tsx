@@ -56,6 +56,30 @@ export function Contents({
   const scroller = useRef<HTMLDetailsElement | null>(null);
 
   /*
+   * A contents link glides to its heading.
+   *
+   * This used to come free from `scroll-behavior: smooth` on <html>, which
+   * came out of app/globals.css on 19 September 2026 because it also animated
+   * the browser's Back restoration. See the note there. So the glide is asked
+   * for here, on the one kind of link that wants it, and nowhere else.
+   *
+   * scrollIntoView honours the headings' scroll-margin, so the sticky header
+   * still does not cover the heading it lands on. The hash is written with
+   * pushState, so the URL still names the section and Back still returns to
+   * where the reader was, exactly as the plain anchor did. A reader who has
+   * asked for reduced motion gets the jump instead of the glide.
+   */
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>, id: string) {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    event.preventDefault();
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" });
+    history.pushState(null, "", `#${id}`);
+  }
+
+  /*
    * Which section the reader is in.
    *
    * !! A SCROLL HANDLER, NOT AN IntersectionObserver, ON PURPOSE !!
@@ -206,6 +230,7 @@ export function Contents({
                        exact purpose, and it is what a screen reader announces
                        as the current item rather than as the current page. */
                     aria-current={active ? "location" : undefined}
+                    onClick={(event) => handleClick(event, id)}
                     className={`-ml-px block border-l text-sm leading-snug transition-colors ${
                       heading.kind === "h3" ? "pl-8" : "pl-4"
                     } ${

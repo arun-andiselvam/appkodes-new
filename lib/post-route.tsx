@@ -186,7 +186,15 @@ export function postRoute(
           footer around a Spanish post are still English; this marks the part
           that is not, for screen readers and hyphenation.
         */
-        <main lang={locale === "en" ? undefined : locale}>
+        /*
+          data-cv="off" opts the article out of the content-visibility rule in
+          app/globals.css. The two JSON-LD scripts below count as children, so
+          nth-child(n + 4) landed on the article body itself, which then
+          measured 600px until it painted. Going Back rebuilt it at that guess,
+          the page was a fifth of its height for a moment, and the restored
+          scroll position landed on the footer. 19 September 2026.
+        */
+        <main lang={locale === "en" ? undefined : locale} data-cv="off">
           {[articleSchema, ...(faqSchema ? [faqSchema] : [])].map((schema) => (
             <script
               key={schema["@type"]}
